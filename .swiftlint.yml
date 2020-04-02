@@ -1,0 +1,43 @@
+disabled_rules:
+  - identifier_name
+  - todo
+  - cyclomatic_complexity
+  - type_body_length
+  - file_length
+  - function_body_length
+  - function_parameter_count
+  - nesting
+  - block_based_kvo
+
+opt_in_rules: # some rules are only opt-in
+  - explicit_type_interface
+  - force_unwrapping
+  - implicit_return
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - conditional_returns_on_newline
+  - empty_string
+  - contains_over_first_not_nil
+  - prohibited_nan_comparison
+  - only_after_dot
+  - void_function_in_ternary
+  - return_value_from_void_function
+
+excluded:
+  - Carthage
+  - Pods
+
+force_cast: warning
+force_try: warning
+
+# - Force explicity type for every variable on the project, this is needed to let the Swift compiler more lightweight
+explicit_type_interface: 
+  severity: warning
+
+type_body_length:
+  - 800 # warning
+  - 1200 # error
+
+weak_delegate:
+  excluded: ".*Test\\.swift"
