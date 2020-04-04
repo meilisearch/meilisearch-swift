@@ -5,11 +5,13 @@ public class Client {
     private let config: Config
     private let indexes: Indexes
     private let documents: Documents
+    private let system: System
     
     init(_ config: Config) {
         self.config = config
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)
+        self.system = System(config: config)
     }
 
     public func createIndex(
@@ -83,6 +85,18 @@ public class Client {
         uid: String, 
         _ completion: @escaping (Result<(), Error>) -> Void) {
         self.documents.deleteAll(uid: uid, completion)
+    }
+
+    public func health(_ completion: @escaping (Result<(), Error>) -> Void) {
+        self.system.health(completion)
+    }
+
+    public func version(_ completion: @escaping (Result<(), Error>) -> Void) {
+        self.system.version(completion)
+    }
+
+    public func sysInfo(_ completion: @escaping (Result<(), Error>) -> Void) {
+        self.system.sysInfo(completion)
     }
     
 }

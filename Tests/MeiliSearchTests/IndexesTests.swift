@@ -5,9 +5,12 @@ class IndexesTests: XCTestCase {
 
     private var client: Client!
 
+    private let session = MockURLSession()
+
     override func setUp() {
         super.setUp()
-        client = Client(Config(hostURL: "http://localhost:7700", apiKey: ""))
+        client = Client(
+            Config(hostURL: "http://localhost:7700"))
     }
     
     func testCreateIndex() {
@@ -94,7 +97,7 @@ class IndexesTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to update name of Movies index to Photos")
+                    XCTFail("Failed to rename Movies index to Photos")
                 }
 
             }
@@ -111,7 +114,7 @@ class IndexesTests: XCTestCase {
 
         createIndex(named: uid) {
 
-            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+            let expectation = XCTestExpectation(description: "Delete Movies index")
 
             self.client.deleteIndex(uid: uid) { result in
 
@@ -136,7 +139,7 @@ class IndexesTests: XCTestCase {
 
         createIndex(named: uid) {
 
-            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+            let expectation = XCTestExpectation(description: "Delete Movies indexes")
 
             self.client.deleteAllIndexes { result in
 
@@ -144,7 +147,7 @@ class IndexesTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to delete Movies index")
+                    XCTFail("Failed to delete Movies indexes")
                 }
 
             }

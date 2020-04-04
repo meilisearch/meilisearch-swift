@@ -1,11 +1,24 @@
 import Foundation
 
-class Request {
+public protocol URLSessionProtocol { 
+    typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+    func execute(
+        with request: URLRequest, 
+        completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+}
+
+public protocol URLSessionDataTaskProtocol { 
+    func resume()
+}
+
+final class Request {
 
     private let config: Config
+    private let session: URLSessionProtocol
     
-    init(config: Config) {
+    init(config: Config, session: URLSessionProtocol = URLSession.shared) {
         self.config = config
+        self.session = session
     }
 
     func get(
@@ -18,9 +31,10 @@ class Request {
             urlString += param
         }
 
-        let url = URL(string: urlString)!
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "GET"
 
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = session.execute(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -44,7 +58,7 @@ class Request {
         request.httpMethod = "POST"
         request.httpBody = body
 
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -69,7 +83,7 @@ class Request {
         request.httpMethod = "PUT"
         request.httpBody = body
 
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -92,7 +106,7 @@ class Request {
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
 
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -108,3 +122,13 @@ class Request {
     }
 
 }
+
+extension URLSession: URLSessionProtocol {
+    public func execute(
+        with request: URLRequest, 
+        completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+        return self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
+    }
+}
+
+extension URLSessionDataTask: URLSessionDataTaskProtocol {}

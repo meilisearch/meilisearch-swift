@@ -1,6 +1,6 @@
 import Foundation
 
-class Documents {
+final class Documents {
 
     let request: Request
     

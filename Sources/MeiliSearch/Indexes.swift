@@ -1,6 +1,6 @@
 import Foundation
 
-class Indexes {
+final class Indexes {
 
     let request: Request
     

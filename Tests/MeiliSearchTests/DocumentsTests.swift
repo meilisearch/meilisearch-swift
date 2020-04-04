@@ -5,9 +5,11 @@ class DocumentsTests: XCTestCase {
 
     private var client: Client!
 
+    private let session = MockURLSession()
+
     override func setUp() {
         super.setUp()
-        client = Client(Config(hostURL: "http://localhost:7700", apiKey: ""))
+        client = Client(Config(hostURL: "http://localhost:7700"))
     }
     
     func testCreateDocument() {
@@ -31,7 +33,7 @@ class DocumentsTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to create Movies index")
+                    XCTFail("Failed to create Movies document")
                 }
 
             }
@@ -47,7 +49,7 @@ class DocumentsTests: XCTestCase {
         let uid: String = "Movies"
         let identifier: String = ""
 
-        let expectation = XCTestExpectation(description: "Get Movie document")
+        let expectation = XCTestExpectation(description: "Get Movies document")
 
         createIndex(named: uid) {
 
@@ -57,7 +59,7 @@ class DocumentsTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to get Movie document")
+                    XCTFail("Failed to get Movies document")
                 }
 
             }
@@ -73,7 +75,7 @@ class DocumentsTests: XCTestCase {
         let uid: String = "Movies"
         let limit: Int = 10
 
-        let expectation = XCTestExpectation(description: "Get Movie documents")
+        let expectation = XCTestExpectation(description: "Get Movies documents")
 
         createIndex(named: uid) {
 
@@ -83,7 +85,7 @@ class DocumentsTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to get Movie documents")
+                    XCTFail("Failed to get Movies documents")
                 }
 
             }
@@ -101,7 +103,7 @@ class DocumentsTests: XCTestCase {
 
         createIndex(named: uid) {
 
-            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+            let expectation = XCTestExpectation(description: "Delete Movies document")
 
             self.client.deleteDocument(uid: uid, identifier: identifier) { result in
 
@@ -109,7 +111,7 @@ class DocumentsTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to delete Movies index")
+                    XCTFail("Failed to delete Movies document")
                 }
 
             }
@@ -126,7 +128,7 @@ class DocumentsTests: XCTestCase {
 
         createIndex(named: uid) {
 
-            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+            let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
             self.client.deleteAllDocuments(uid: uid) { result in
 
@@ -134,7 +136,7 @@ class DocumentsTests: XCTestCase {
                 case .success:
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to delete Movies index")
+                    XCTFail("Failed to delete all Movies documents")
                 }
 
             }
