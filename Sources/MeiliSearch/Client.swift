@@ -98,12 +98,12 @@ public class Client {
         self.system.health(completion)
     }
 
-    public func version(_ completion: @escaping (Result<(), Error>) -> Void) {
+    public func version(_ completion: @escaping (Result<Version, Error>) -> Void) {
         self.system.version(completion)
     }
 
-    public func sysInfo(_ completion: @escaping (Result<(), Error>) -> Void) {
-        self.system.sysInfo(completion)
+    public func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
+        self.system.systemInfo(completion)
     }
     
 }

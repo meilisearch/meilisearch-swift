@@ -24,13 +24,25 @@ public class System {
 
     }
 
-    func version(_ completion: @escaping (Result<(), Error>) -> Void) {
+    func version(_ completion: @escaping (Result<Version, Error>) -> Void) {
 
         self.request.get(api: "/version") { result in
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+
+                guard let data = data else {
+                    fatalError()
+                }
+
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let vesion: Version = try decoder.decode(Version.self, from: data)
+                    completion(.success(vesion))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
@@ -40,13 +52,25 @@ public class System {
         
     }
 
-    func sysInfo(_ completion: @escaping (Result<(), Error>) -> Void) {
+    func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
 
         self.request.get(api: "/sys-info") { result in
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+
+                guard let data = data else {
+                    fatalError()
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let systemInfo: SystemInfo = try decoder.decode(SystemInfo.self, from: data)
+                    completion(.success(systemInfo))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))

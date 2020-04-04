@@ -67,6 +67,10 @@ final class Documents {
             switch result {
             case .success(let data):
 
+                guard let data = data else {
+                    fatalError()
+                }
+
                 do {
                     let dictionary = try JSONSerialization
                         .jsonObject(with: data, options: []) as! [String: Any]
@@ -93,6 +97,10 @@ final class Documents {
             
             switch result {
             case .success(let data):
+
+                guard let data = data else {
+                    fatalError()
+                }
 
                 do {
                     let dictionaries = try JSONSerialization

@@ -24,7 +24,7 @@ final class Request {
     func get(
         api: String, 
         param: String? = nil, 
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<Data?, Error>) -> Void) {
 
         var urlString: String = config.url(api: api)
         if let param: String = param, !param.isEmpty {
@@ -37,9 +37,6 @@ final class Request {
         let task = session.execute(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
-                return
-            }
-            guard let data = data else { 
                 return
             }
             completion(.success(data))
