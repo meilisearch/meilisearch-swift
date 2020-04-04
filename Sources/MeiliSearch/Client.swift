@@ -6,12 +6,14 @@ public class Client {
     private let indexes: Indexes
     private let documents: Documents
     private let system: System
+    private let stats: Stats
     
     init(_ config: Config) {
         self.config = config
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)
         self.system = System(config: config)
+        self.stats = Stats(config: config)
     }
 
     public func createIndex(
@@ -104,6 +106,14 @@ public class Client {
 
     public func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
         self.system.systemInfo(completion)
+    }
+
+    public func stat(uid: String, _ completion: @escaping (Result<Stat, Error>) -> Void) {
+        self.stats.stat(uid: uid, completion)
+    }
+
+    public func allStats(_ completion: @escaping (Result<AllStats, Error>) -> Void) {
+        self.stats.allStats(completion)
     }
     
 }

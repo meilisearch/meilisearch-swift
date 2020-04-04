@@ -118,8 +118,6 @@ class IndexesTests: XCTestCase {
 
         // Start the test with the mocked server
 
-        let uid: String = "Movies"
-
         let expectation = XCTestExpectation(description: "Load indexes")
 
         self.client.getIndexes { result in
@@ -138,48 +136,49 @@ class IndexesTests: XCTestCase {
 
     }
     
-    func testUpdateIndexName() {
+    // func testUpdateIndexName() {
 
-        //Prepare the mock server
+    //     //Prepare the mock server
 
-        let jsonString = """
-        [{
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }]
-        """
+    //     let jsonString = """
+    //     [{
+    //         "name":"Movies",
+    //         "uid":"Movies",
+    //         "createdAt":"2020-04-04T19:59:49.259572Z",
+    //         "updatedAt":"2020-04-04T19:59:49.259579Z",
+    //         "primaryKey":null
+    //     }]
+    //     """
 
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
+    //     let decoder = JSONDecoder()
+    //     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+    //     let jsonData = jsonString.data(using: .utf8)!
+    //     let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
 
-        session.pushData(jsonString)
+    //     session.pushData(jsonString)
 
-        // Start the test with the mocked server
+    //     // Start the test with the mocked server
 
-        let uid: String = "Movies"
-        let newUid: String = "Photos"
+    //     let uid: String = "Movies"
+    //     let newUid: String = "Photos"
 
-        let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+    //     let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-        self.client.updateIndex(uid: uid, name: newUid) { result in
+    //     self.client.updateIndex(uid: uid, name: newUid) { result in
                 
-            switch result {
-            case .success:
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to rename Movies index to Photos")
-            }
+    //         switch result {
+    //         case .success:
+    //             XCTAssertEqual(stubIndexes, indexes)
+    //             expectation.fulfill()
+    //         case .failure:
+    //             XCTFail("Failed to rename Movies index to Photos")
+    //         }
 
-        }
+    //     }
 
-        self.wait(for: [expectation], timeout: 1.0)
+    //     self.wait(for: [expectation], timeout: 1.0)
 
-    }
+    // }
 
     func testDeleteIndex() {
 
@@ -212,7 +211,7 @@ class IndexesTests: XCTestCase {
         ("testCreateIndex", testCreateIndex),
         ("testGetIndex", testGetIndex),
         ("testGetIndexes", testGetIndexes),
-        ("testUpdateIndexName", testUpdateIndexName),
+        // ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex),
     ]
 }

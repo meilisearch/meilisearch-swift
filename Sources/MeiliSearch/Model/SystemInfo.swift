@@ -19,4 +19,5 @@ public struct SystemInfo: Codable, Equatable {
         let memory: Int
         let cpu: Int
     }
+
 }
