@@ -30,10 +30,10 @@ class MockURLSession: URLSessionProtocol {
         return nextDataTask
     }
 
-    func pushData(_ string: String) {
+    func pushData(_ string: String, code: Int = 200) {
         self.nextData = string.data(using: .utf8)!
         self.nextError = nil
-        self.nextCode = 200
+        self.nextCode = code
     }
 
     func pushEmpty(code: Int) {

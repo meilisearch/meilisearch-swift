@@ -43,17 +43,24 @@ public class Client {
         self.indexes.delete(uid: uid, completion)
     }
 
-    public func deleteAllIndexes(
-        _ completion: @escaping (Result<(), Error>) -> Void) {
-        self.indexes.deleteAll(completion)
-    }
-
-    public func createDocument(
+    public func addOrReplaceDocument(
         uid: String,
         document: Data, 
-        primaryKey: String, 
-        _ completion: @escaping (Result<(), Error>) -> Void) {
-        self.documents.create(
+        primaryKey: String?, 
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        self.documents.addOrReplace(
+            uid: uid, 
+            document: document, 
+            primaryKey: primaryKey, 
+            completion)
+    }
+
+    public func addOrUpdateDocument(
+        uid: String,
+        document: Data, 
+        primaryKey: String?, 
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        self.documents.addOrUpdate(
             uid: uid, 
             document: document, 
             primaryKey: primaryKey, 
@@ -63,27 +70,27 @@ public class Client {
     public func getDocument(
         uid: String, 
         identifier: String, 
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
         self.documents.get(uid: uid, identifier: identifier, completion)
     }
 
     public func getDocuments(
         uid: String,
         limit: Int,
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         self.documents.getAll(uid: uid, limit: limit, completion)
     }
 
     public func deleteDocument(
         uid: String, 
         identifier: String, 
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.delete(uid: uid, identifier: identifier, completion)
     }
 
     public func deleteAllDocuments(
         uid: String, 
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.deleteAll(uid: uid, completion)
     }
 

@@ -8,19 +8,47 @@ final class Documents {
         request = Request(config: config)
     }
 
-    func create(
+    func addOrReplace(
         uid: String,
         document: Data, 
-        primaryKey: String,
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        primaryKey: String?,
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
 
-        let query: String = "/indexes/\(uid)/documents"
+        var query: String = "/indexes/\(uid)/documents"
+        if let primaryKey: String = primaryKey {
+            query += "?primaryKey=\(primaryKey)"
+        }
 
         request.post(api: query, body: document) { result in
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+                decodeUpdateJSON(data, completion)
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+    }
+
+    func addOrUpdate(
+        uid: String,
+        document: Data, 
+        primaryKey: String?,
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
+
+        var query: String = "/indexes/\(uid)/documents"
+        if let primaryKey: String = primaryKey {
+            query += "?primaryKey=\(primaryKey)"
+        }
+
+        request.put(api: query, body: document) { result in
+
+            switch result {
+            case .success(let data):
+                decodeUpdateJSON(data, completion)
+
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -31,14 +59,22 @@ final class Documents {
     func get(
         uid: String, 
         identifier: String, 
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents/\(identifier)"
         request.get(api: query) { result in
             
             switch result {
             case .success(let data):
-                completion(.success(data))
+
+                do {
+                    let dictionary = try JSONSerialization
+                        .jsonObject(with: data, options: []) as! [String: Any]
+                    completion(.success(dictionary))
+                } catch {
+                    completion(.failure(error))
+                }
+
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -50,14 +86,22 @@ final class Documents {
     func getAll(
         uid: String, 
         limit: Int = -1, 
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents?limit=\(limit)"
         request.get(api: query) { result in
             
             switch result {
             case .success(let data):
-                completion(.success(data))
+
+                do {
+                    let dictionaries = try JSONSerialization
+                        .jsonObject(with: data, options: []) as! [[String: Any]]
+                    completion(.success(dictionaries))
+                } catch {
+                    completion(.failure(error))
+                }
+
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -69,13 +113,17 @@ final class Documents {
     func delete(
         uid: String, 
         identifier: String, 
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+                guard let data = data else {
+                    return
+                }
+                decodeUpdateJSON(data, completion)
+
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -86,13 +134,17 @@ final class Documents {
 
     func deleteAll(
         uid: String,
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)/documents") { result in
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+                guard let data = data else {
+                    return
+                }
+                decodeUpdateJSON(data, completion)
+
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -101,4 +153,17 @@ final class Documents {
 
     }
 
+}
+
+fileprivate func decodeUpdateJSON(
+    _ data: Data, 
+    _ completion: (Result<Update, Error>) -> Void) {
+    do {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let update: Update = try decoder.decode(Update.self, from: data)
+        completion(.success(update))
+    } catch {
+        completion(.failure(error))
+    }
 }

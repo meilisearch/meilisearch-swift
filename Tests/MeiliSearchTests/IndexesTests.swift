@@ -8,8 +8,7 @@ class IndexesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = Client(
-            Config(hostURL: "http://localhost:7700", session: session))
+        client = Client(Config(hostURL: "http://localhost:7700", session: session))
     }
     
     func testCreateIndex() {
@@ -208,39 +207,6 @@ class IndexesTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-
-    func testDeleteAllIndexes() {
-
-        //Prepare the mock server
-
-        session.pushEmpty(code: 204)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
-
-        let expectation = XCTestExpectation(description: "Delete Movies indexes")
-
-        self.client.deleteAllIndexes { result in
-
-            switch result {
-            case .success:
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to delete Movies indexes")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    private func createIndex(uid: String, _ completion: @escaping () -> Void) {
-        self.client.createIndex(uid: uid) { result in
-            completion()
-        }
-    }
     
     static var allTests = [
         ("testCreateIndex", testCreateIndex),
@@ -248,6 +214,5 @@ class IndexesTests: XCTestCase {
         ("testGetIndexes", testGetIndexes),
         ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex),
-        ("testDeleteAllIndexes", testDeleteAllIndexes),
     ]
 }
