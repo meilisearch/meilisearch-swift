@@ -17,10 +17,15 @@ class IndexesTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Create Movies index")
 
         self.client.createIndex(uid: uid) { result in
-            expectation.fulfill()
+            switch result {
+            case .success:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get Movies index")
+            }
         }
 
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -43,7 +48,7 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 10.0)
+            self.wait(for: [expectation], timeout: 1.0)
 
         }
 
@@ -68,7 +73,7 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 10.0)
+            self.wait(for: [expectation], timeout: 1.0)
 
         }
 
@@ -94,14 +99,14 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 10.0)
+            self.wait(for: [expectation], timeout: 1.0)
 
         }
 
     }
 
     func testDeleteIndex() {
-        
+
         let uid: String = "Movies"
 
         createIndex(named: uid) {
@@ -119,7 +124,32 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 10.0)
+            self.wait(for: [expectation], timeout: 1.0)
+
+        }
+
+    }
+
+    func testDeleteAllIndexes() {
+
+        let uid: String = "Movies"
+
+        createIndex(named: uid) {
+
+            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+
+            self.client.deleteAllIndexes { result in
+
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to delete Movies index")
+                }
+
+            }
+
+            self.wait(for: [expectation], timeout: 1.0)
 
         }
 
@@ -137,5 +167,6 @@ class IndexesTests: XCTestCase {
         ("testGetIndexes", testGetIndexes),
         ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex),
+        ("testDeleteAllIndexes", testDeleteAllIndexes),
     ]
 }

@@ -37,8 +37,13 @@ public class Client {
 
     public func deleteIndex(
         uid: String, 
-        _ completion: @escaping (Result<Void, Error>) -> Void) {
+        _ completion: @escaping (Result<(), Error>) -> Void) {
         self.indexes.delete(uid: uid, completion)
+    }
+
+    public func deleteAllIndexes(
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+        self.indexes.deleteAll(completion)
     }
 
     public func createDocument(
@@ -65,6 +70,19 @@ public class Client {
         limit: Int,
         _ completion: @escaping (Result<Data, Error>) -> Void) {
         self.documents.getAll(uid: uid, limit: limit, completion)
+    }
+
+    public func deleteDocument(
+        uid: String, 
+        identifier: String, 
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+        self.documents.delete(uid: uid, identifier: identifier, completion)
+    }
+
+    public func deleteAllDocuments(
+        uid: String, 
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+        self.documents.deleteAll(uid: uid, completion)
     }
     
 }

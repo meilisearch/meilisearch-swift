@@ -66,4 +66,39 @@ class Documents {
 
     }
 
+    func delete(
+        uid: String, 
+        identifier: String, 
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+
+        self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
+
+            switch result {
+            case .success(let data):
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
+    func deleteAll(
+        uid: String,
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+
+        self.request.delete(api: "/indexes/\(uid)/documents") { result in
+
+            switch result {
+            case .success(let data):
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
 }

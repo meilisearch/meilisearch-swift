@@ -26,12 +26,19 @@ class DocumentsTests: XCTestCase {
                 uid: uid, 
                 document: document, 
                 primaryKey: primaryKey) { result in
-                expectation.fulfill()
+                
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to create Movies index")
+                }
+
             }
 
         }
 
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -45,12 +52,19 @@ class DocumentsTests: XCTestCase {
         createIndex(named: uid) {
 
             self.client.getDocument(uid: uid, identifier: identifier) { result in
-                expectation.fulfill()
+                
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to get Movie document")
+                }
+
             }
 
         }
 
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -59,115 +73,77 @@ class DocumentsTests: XCTestCase {
         let uid: String = "Movies"
         let limit: Int = 10
 
-        let expectation = XCTestExpectation(description: "Create Movie documents")
+        let expectation = XCTestExpectation(description: "Get Movie documents")
 
         createIndex(named: uid) {
+
             self.client.getDocuments(uid: uid, limit: limit) { result in
-                expectation.fulfill()
+                
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to get Movie documents")
+                }
+
             }
+
         }
 
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
-    // func testGetIndex() {
-        
-    //     let uid = "Movies"
+    func testDeleteDocument() {
 
-    //     createIndex(named: uid) {
+        let uid = "Movies"
+        let identifier: String = ""
 
-    //         let expectation = XCTestExpectation(description: "Load Movies index")
+        createIndex(named: uid) {
 
-    //         self.client.getIndex(uid: uid) { result in
-                
-    //             switch result {
-    //             case .success:
-    //                 expectation.fulfill()
-    //             case .failure:
-    //                 XCTFail("Failed to get Movies index")
-    //             }
+            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-    //         }
+            self.client.deleteDocument(uid: uid, identifier: identifier) { result in
 
-    //         self.wait(for: [expectation], timeout: 10.0)
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to delete Movies index")
+                }
 
-    //     }
+            }
 
-    // }
+            self.wait(for: [expectation], timeout: 1.0)
 
-    // func testGetIndexes() {
-    //     let uid = "Movies"
+        }
 
-    //     createIndex(named: uid) {
+    }
 
-    //         let expectation = XCTestExpectation(description: "Load indexes")
+    func testDeleteAllDocuments() {
 
-    //         self.client.getIndexes() { result in
+        let uid = "Movies"
 
-    //             switch result {
-    //             case .success:
-    //                 expectation.fulfill()
-    //             case .failure:
-    //                 XCTFail("Failed to get all Indexes")
-    //             }
+        createIndex(named: uid) {
 
-    //         }
+            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-    //         self.wait(for: [expectation], timeout: 10.0)
+            self.client.deleteAllDocuments(uid: uid) { result in
 
-    //     }
+                switch result {
+                case .success:
+                    expectation.fulfill()
+                case .failure:
+                    XCTFail("Failed to delete Movies index")
+                }
 
-    // }
-    
-    // func testUpdateIndexName() {
-    //     let uid = "Movies"
-    //     let newUid = "Photos"
+            }
 
-    //     createIndex(named: uid) {
+            self.wait(for: [expectation], timeout: 1.0)
 
-    //         let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+        }
 
-    //         self.client.updateIndex(uid: uid, name: newUid) { result in
-                
-    //             switch result {
-    //             case .success:
-    //                 expectation.fulfill()
-    //             case .failure:
-    //                 XCTFail("Failed to update name of Movies index to Photos")
-    //             }
-
-    //         }
-
-    //         self.wait(for: [expectation], timeout: 10.0)
-
-    //     }
-
-    // }
-
-    // func testDeleteIndex() {
-    //     let uid = "Movies"
-
-    //     createIndex(named: uid) {
-
-    //         let expectation = XCTestExpectation(description: "Rename Movies to Photos")
-
-    //         self.client.deleteIndex(uid: uid) { result in
-
-    //             switch result {
-    //             case .success:
-    //                 expectation.fulfill()
-    //             case .failure:
-    //                 XCTFail("Failed to delete Movies index")
-    //             }
-
-    //         }
-
-    //         self.wait(for: [expectation], timeout: 10.0)
-
-    //     }
-
-    // }
+    }
 
     private func createIndex(named: String, _ completion: @escaping () -> Void) {
         self.client.createIndex(uid: named) { result in
@@ -179,7 +155,7 @@ class DocumentsTests: XCTestCase {
         ("testCreateDocument", testCreateDocument),
         ("testGetDocument", testGetDocument),
         ("testGetDocuments", testGetDocuments),
-        // ("testUpdateIndexName", testUpdateIndexName),
-        // ("testDeleteIndex", testDeleteIndex),
+        ("testDeleteDocument", testDeleteDocument),
+        ("testDeleteAllDocuments", testDeleteAllDocuments),
     ]
 }

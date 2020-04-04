@@ -9,9 +9,8 @@ class Indexes {
     }
 
     func get(uid: String, _ completion: @escaping (Result<Index, Error>) -> Void) {
-        var api: String = "/indexes/"
-        api += uid
-        self.request.get(api: api) { result in
+
+        self.request.get(api: "/indexes/\(uid)") { result in
 
             switch result {
             case .success(let data):
@@ -28,9 +27,11 @@ class Indexes {
             }
 
         }
+
     }
 
     func getAll(_ completion: @escaping (Result<[Index], Error>) -> Void) {
+
         self.request.get(api: "/indexes") { result in
 
             switch result {
@@ -48,9 +49,10 @@ class Indexes {
             }
 
         }
+
     }
 
-    func create(uid: String, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func create(uid: String, _ completion: @escaping (Result<(), Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: uid)
         let jsonData = try! JSONEncoder().encode(payload)
@@ -66,17 +68,15 @@ class Indexes {
             }
 
         }
+
     }
 
     func update(uid: String, name: String, _ completion: @escaping (Result<(), Error>) -> Void) {
 
-        var api: String = "/indexes/"
-        api += uid
-
         let payload = UpdateIndexPayload(name: name)
         let jsonData = try! JSONEncoder().encode(payload)
 
-        self.request.put(api: api, body: jsonData) { result in
+        self.request.put(api: "/indexes/\(uid)", body: jsonData) { result in
 
             switch result {
             case .success(let data):
@@ -90,12 +90,24 @@ class Indexes {
 
     }
 
-    func delete(uid: String, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func delete(uid: String, _ completion: @escaping (Result<(), Error>) -> Void) {
 
-        var api: String = "/indexes/"
-        api += uid
+        self.request.delete(api: "/indexes/\(uid)") { result in
 
-        self.request.delete(api: api) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
+    func deleteAll(_ completion: @escaping (Result<(), Error>) -> Void) {
+
+        self.request.delete(api: "/indexes") { result in
 
             switch result {
             case .success(let data):
