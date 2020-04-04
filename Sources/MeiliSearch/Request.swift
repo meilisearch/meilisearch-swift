@@ -16,9 +16,9 @@ final class Request {
     private let config: Config
     private let session: URLSessionProtocol
     
-    init(config: Config, session: URLSessionProtocol = URLSession.shared) {
+    init(config: Config) {
         self.config = config
-        self.session = session
+        self.session = config.session
     }
 
     func get(

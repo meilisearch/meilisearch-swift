@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Index: Codable {
+public struct Index: Codable, Equatable {
 
     let name: String
     let uid: String

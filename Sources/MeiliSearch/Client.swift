@@ -16,7 +16,7 @@ public class Client {
 
     public func createIndex(
         uid: String, 
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<Index, Error>) -> Void) {
         self.indexes.create(uid: uid, completion);
     }
 

@@ -4,16 +4,31 @@ import XCTest
 class IndexesTests: XCTestCase {
 
     private var client: Client!
-
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
         client = Client(
-            Config(hostURL: "http://localhost:7700"))
+            Config(hostURL: "http://localhost:7700", session: session))
     }
     
     func testCreateIndex() {
+
+        let jsonString = """
+        {
+            "name":"Movies",
+            "uid":"Movies",
+            "createdAt":"2020-04-04T19:59:49.259572Z",
+            "updatedAt":"2020-04-04T19:59:49.259579Z",
+            "primaryKey":null}
+        """
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubIndex = try! decoder.decode(Index.self, from: jsonData)
+
+        session.pushData(jsonString)
 
         let uid: String = "Movies"
 
@@ -21,7 +36,8 @@ class IndexesTests: XCTestCase {
 
         self.client.createIndex(uid: uid) { result in
             switch result {
-            case .success:
+            case .success(let index):
+                XCTAssertEqual(stubIndex, index)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies index")
@@ -43,7 +59,8 @@ class IndexesTests: XCTestCase {
             self.client.getIndex(uid: uid) { result in
                 
                 switch result {
-                case .success:
+                case .success(let index):
+                    // XCTAssertEqual(stub, index)
                     expectation.fulfill()
                 case .failure:
                     XCTFail("Failed to get Movies index")

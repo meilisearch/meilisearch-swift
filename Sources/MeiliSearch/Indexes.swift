@@ -56,7 +56,7 @@ final class Indexes {
 
     }
 
-    func create(uid: String, _ completion: @escaping (Result<(), Error>) -> Void) {
+    func create(uid: String, _ completion: @escaping (Result<Index, Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: uid)
         let jsonData = try! JSONEncoder().encode(payload)
@@ -65,7 +65,18 @@ final class Indexes {
 
             switch result {
             case .success(let data):
-                completion(.success(()))
+
+                let str = String(decoding: data, as: UTF8.self)
+                print("create index \(str)")
+                
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let index = try decoder.decode(Index.self, from: data)
+                    completion(.success(index))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
