@@ -14,21 +14,26 @@ class IndexesTests: XCTestCase {
     
     func testCreateIndex() {
 
+        //Prepare the mock server
+
         let jsonString = """
         {
             "name":"Movies",
             "uid":"Movies",
             "createdAt":"2020-04-04T19:59:49.259572Z",
             "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null}
+            "primaryKey":null
+        }
         """
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex = try! decoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
+
+        // Start the test with the mocked server
 
         let uid: String = "Movies"
 
@@ -49,23 +54,40 @@ class IndexesTests: XCTestCase {
     }
 
     func testGetIndex() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {
+            "name":"Movies",
+            "uid":"Movies",
+            "createdAt":"2020-04-04T19:59:49.259572Z",
+            "updatedAt":"2020-04-04T19:59:49.259579Z",
+            "primaryKey":null
+        }
+        """
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
         
         let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Load Movies index")
 
-        createIndex(uid: uid) {
-
-            self.client.getIndex(uid: uid) { result in
+        self.client.getIndex(uid: uid) { result in
                 
-                switch result {
-                case .success(let index):
-                    // XCTAssertEqual(stub, index)
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to get Movies index")
-                }
-
+            switch result {
+            case .success(let index):
+                XCTAssertEqual(stubIndex, index)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get Movies index")
             }
 
         }
@@ -76,21 +98,39 @@ class IndexesTests: XCTestCase {
 
     func testGetIndexes() {
 
+        //Prepare the mock server
+
+        let jsonString = """
+        [{
+            "name":"Movies",
+            "uid":"Movies",
+            "createdAt":"2020-04-04T19:59:49.259572Z",
+            "updatedAt":"2020-04-04T19:59:49.259579Z",
+            "primaryKey":null
+        }]
+        """
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
         let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Load indexes")
 
-        createIndex(uid: uid) {
+        self.client.getIndexes { result in
 
-            self.client.getIndexes() { result in
-
-                switch result {
-                case .success:
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to get all Indexes")
-                }
-
+            switch result {
+            case .success(let indexes):
+                XCTAssertEqual(stubIndexes, indexes)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get all Indexes")
             }
 
         }
@@ -101,22 +141,39 @@ class IndexesTests: XCTestCase {
     
     func testUpdateIndexName() {
 
+        //Prepare the mock server
+
+        let jsonString = """
+        [{
+            "name":"Movies",
+            "uid":"Movies",
+            "createdAt":"2020-04-04T19:59:49.259572Z",
+            "updatedAt":"2020-04-04T19:59:49.259579Z",
+            "primaryKey":null
+        }]
+        """
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
         let uid: String = "Movies"
         let newUid: String = "Photos"
 
         let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-        createIndex(uid: uid) {
-
-            self.client.updateIndex(uid: uid, name: newUid) { result in
+        self.client.updateIndex(uid: uid, name: newUid) { result in
                 
-                switch result {
-                case .success:
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to rename Movies index to Photos")
-                }
-
+            switch result {
+            case .success:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to rename Movies index to Photos")
             }
 
         }
@@ -127,21 +184,23 @@ class IndexesTests: XCTestCase {
 
     func testDeleteIndex() {
 
+        //Prepare the mock server
+
+        session.pushEmpty(code: 204)
+
+        // Start the test with the mocked server
+
         let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Delete Movies index")
 
-        createIndex(uid: uid) {
+        self.client.deleteIndex(uid: uid) { result in
 
-            self.client.deleteIndex(uid: uid) { result in
-
-                switch result {
-                case .success:
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to delete Movies index")
-                }
-
+            switch result {
+            case .success:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to delete Movies index")
             }
 
         }
@@ -152,21 +211,23 @@ class IndexesTests: XCTestCase {
 
     func testDeleteAllIndexes() {
 
+        //Prepare the mock server
+
+        session.pushEmpty(code: 204)
+
+        // Start the test with the mocked server
+
         let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Delete Movies indexes")
 
-        createIndex(uid: uid) {
+        self.client.deleteAllIndexes { result in
 
-            self.client.deleteAllIndexes { result in
-
-                switch result {
-                case .success:
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to delete Movies indexes")
-                }
-
+            switch result {
+            case .success:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to delete Movies indexes")
             }
 
         }

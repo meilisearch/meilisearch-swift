@@ -65,9 +65,6 @@ final class Indexes {
 
             switch result {
             case .success(let data):
-
-                let str = String(decoding: data, as: UTF8.self)
-                print("create index \(str)")
                 
                 do {
                     let decoder = JSONDecoder()
