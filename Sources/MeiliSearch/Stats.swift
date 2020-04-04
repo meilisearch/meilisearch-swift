@@ -3,7 +3,7 @@ import Foundation
 final class Stats {
 
     let request: Request
-    
+
     init (config: Config) {
         request = Request(config: config)
     }

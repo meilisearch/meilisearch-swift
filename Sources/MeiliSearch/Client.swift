@@ -7,7 +7,7 @@ public class Client {
     private let documents: Documents
     private let system: System
     private let stats: Stats
-    
+
     init(_ config: Config) {
         self.config = config
         self.indexes = Indexes(config: config)
@@ -17,13 +17,13 @@ public class Client {
     }
 
     public func createIndex(
-        uid: String, 
+        uid: String,
         _ completion: @escaping (Result<Index, Error>) -> Void) {
-        self.indexes.create(uid: uid, completion);
+        self.indexes.create(uid: uid, completion)
     }
 
     public func getIndex(
-        uid: String, 
+        uid: String,
         _ completion: @escaping (Result<Index, Error>) -> Void) {
         self.indexes.get(uid: uid, completion)
     }
@@ -33,45 +33,45 @@ public class Client {
     }
 
     public func updateIndex(
-        uid: String, 
-        name: String, 
+        uid: String,
+        name: String,
         _ completion: @escaping (Result<(), Error>) -> Void) {
         self.indexes.update(uid: uid, name: name, completion)
     }
 
     public func deleteIndex(
-        uid: String, 
+        uid: String,
         _ completion: @escaping (Result<(), Error>) -> Void) {
         self.indexes.delete(uid: uid, completion)
     }
 
     public func addOrReplaceDocument(
         uid: String,
-        document: Data, 
-        primaryKey: String?, 
+        document: Data,
+        primaryKey: String?,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.addOrReplace(
-            uid: uid, 
-            document: document, 
-            primaryKey: primaryKey, 
+            uid: uid,
+            document: document,
+            primaryKey: primaryKey,
             completion)
     }
 
     public func addOrUpdateDocument(
         uid: String,
-        document: Data, 
-        primaryKey: String?, 
+        document: Data,
+        primaryKey: String?,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.addOrUpdate(
-            uid: uid, 
-            document: document, 
-            primaryKey: primaryKey, 
+            uid: uid,
+            document: document,
+            primaryKey: primaryKey,
             completion)
     }
 
     public func getDocument(
-        uid: String, 
-        identifier: String, 
+        uid: String,
+        identifier: String,
         _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
         self.documents.get(uid: uid, identifier: identifier, completion)
     }
@@ -84,14 +84,14 @@ public class Client {
     }
 
     public func deleteDocument(
-        uid: String, 
-        identifier: String, 
+        uid: String,
+        identifier: String,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.delete(uid: uid, identifier: identifier, completion)
     }
 
     public func deleteAllDocuments(
-        uid: String, 
+        uid: String,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.deleteAll(uid: uid, completion)
     }
@@ -115,5 +115,5 @@ public class Client {
     public func allStats(_ completion: @escaping (Result<AllStats, Error>) -> Void) {
         self.stats.allStats(completion)
     }
-    
+
 }

@@ -10,7 +10,7 @@ class IndexesTests: XCTestCase {
         super.setUp()
         client = Client(Config(hostURL: "http://localhost:7700", session: session))
     }
-    
+
     func testCreateIndex() {
 
         //Prepare the mock server
@@ -74,13 +74,13 @@ class IndexesTests: XCTestCase {
         session.pushData(jsonString)
 
         // Start the test with the mocked server
-        
+
         let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Load Movies index")
 
         self.client.getIndex(uid: uid) { result in
-                
+
             switch result {
             case .success(let index):
                 XCTAssertEqual(stubIndex, index)
@@ -135,7 +135,7 @@ class IndexesTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-    
+
     // func testUpdateIndexName() {
 
     //     //Prepare the mock server
@@ -165,7 +165,7 @@ class IndexesTests: XCTestCase {
     //     let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
     //     self.client.updateIndex(uid: uid, name: newUid) { result in
-                
+
     //         switch result {
     //         case .success:
     //             XCTAssertEqual(stubIndexes, indexes)
@@ -206,12 +206,12 @@ class IndexesTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-    
+
     static var allTests = [
         ("testCreateIndex", testCreateIndex),
         ("testGetIndex", testGetIndex),
         ("testGetIndexes", testGetIndexes),
         // ("testUpdateIndexName", testUpdateIndexName),
-        ("testDeleteIndex", testDeleteIndex),
+        ("testDeleteIndex", testDeleteIndex)
     ]
 }

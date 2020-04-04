@@ -7,17 +7,17 @@ class MockURLSession: URLSessionProtocol {
     private(set) var nextData: Data?
     private(set) var nextError: Error?
     private(set) var nextCode: Int = -1
-    
+
     private(set) var lastURL: URL?
-    
+
     func successHttpURLResponse(request: URLRequest) -> URLResponse {
-        return HTTPURLResponse(url: request.url!, statusCode: nextCode, httpVersion: "HTTP/1.1", headerFields: nil)!
+        HTTPURLResponse(url: request.url!, statusCode: nextCode, httpVersion: "HTTP/1.1", headerFields: nil)!
     }
 
     func failureHttpURLResponse(request: URLRequest) -> URLResponse {
-        return HTTPURLResponse(url: request.url!, statusCode: nextCode, httpVersion: "HTTP/1.1", headerFields: nil)!
+        HTTPURLResponse(url: request.url!, statusCode: nextCode, httpVersion: "HTTP/1.1", headerFields: nil)!
     }
-    
+
     func execute(with request: URLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
         lastURL = request.url
 
@@ -26,7 +26,7 @@ class MockURLSession: URLSessionProtocol {
         } else {
             completionHandler(nextData, failureHttpURLResponse(request: request), nextError)
         }
-        
+
         return nextDataTask
     }
 
@@ -52,7 +52,7 @@ class MockURLSession: URLSessionProtocol {
 
 class MockURLSessionDataTask: URLSessionDataTaskProtocol {
     private (set) var resumeWasCalled = false
-    
+
     func resume() {
         resumeWasCalled = true
     }

@@ -3,14 +3,14 @@ import Foundation
 final class Documents {
 
     let request: Request
-    
+
     init (config: Config) {
         request = Request(config: config)
     }
 
     func addOrReplace(
         uid: String,
-        document: Data, 
+        document: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
 
@@ -34,7 +34,7 @@ final class Documents {
 
     func addOrUpdate(
         uid: String,
-        document: Data, 
+        document: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
 
@@ -57,13 +57,13 @@ final class Documents {
     }
 
     func get(
-        uid: String, 
-        identifier: String, 
+        uid: String,
+        identifier: String,
         _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents/\(identifier)"
         request.get(api: query) { result in
-            
+
             switch result {
             case .success(let data):
 
@@ -88,13 +88,13 @@ final class Documents {
     }
 
     func getAll(
-        uid: String, 
-        limit: Int = -1, 
+        uid: String,
+        limit: Int = -1,
         _ completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents?limit=\(limit)"
         request.get(api: query) { result in
-            
+
             switch result {
             case .success(let data):
 
@@ -119,8 +119,8 @@ final class Documents {
     }
 
     func delete(
-        uid: String, 
-        identifier: String, 
+        uid: String,
+        identifier: String,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
@@ -163,8 +163,8 @@ final class Documents {
 
 }
 
-fileprivate func decodeUpdateJSON(
-    _ data: Data, 
+private func decodeUpdateJSON(
+    _ data: Data,
     _ completion: (Result<Update, Error>) -> Void) {
     do {
         let decoder = JSONDecoder()

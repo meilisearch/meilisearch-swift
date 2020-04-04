@@ -1,13 +1,13 @@
 import Foundation
 
-public protocol URLSessionProtocol { 
+public protocol URLSessionProtocol {
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
     func execute(
-        with request: URLRequest, 
+        with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
 }
 
-public protocol URLSessionDataTaskProtocol { 
+public protocol URLSessionDataTaskProtocol {
     func resume()
 }
 
@@ -15,15 +15,15 @@ final class Request {
 
     private let config: Config
     private let session: URLSessionProtocol
-    
+
     init(config: Config) {
         self.config = config
         self.session = config.session
     }
 
     func get(
-        api: String, 
-        param: String? = nil, 
+        api: String,
+        param: String? = nil,
         _ completion: @escaping (Result<Data?, Error>) -> Void) {
 
         var urlString: String = config.url(api: api)
@@ -34,7 +34,7 @@ final class Request {
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
 
-        let task = session.execute(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -46,8 +46,8 @@ final class Request {
     }
 
     func post(
-        api: String, 
-        body: Data, 
+        api: String,
+        body: Data,
         _ completion: @escaping (Result<Data, Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
@@ -55,12 +55,12 @@ final class Request {
         request.httpMethod = "POST"
         request.httpBody = body
 
-        let task = session.execute(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            guard let data = data else { 
+            guard let data = data else {
                 return
             }
             completion(.success(data))
@@ -72,7 +72,7 @@ final class Request {
 
     func put(
         api: String,
-        body: Data, 
+        body: Data,
         _ completion: @escaping (Result<Data, Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
@@ -80,12 +80,12 @@ final class Request {
         request.httpMethod = "PUT"
         request.httpBody = body
 
-        let task = session.execute(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            guard let data = data else { 
+            guard let data = data else {
                 return
             }
             completion(.success(data))
@@ -98,12 +98,12 @@ final class Request {
      func delete(
         api: String,
         _ completion: @escaping (Result<Data?, Error>) -> Void) {
-        
+
         let urlString: String = config.url(api: api)
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
 
-        let task = session.execute(with: request) { (data, response, error) in
+        let task = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -119,7 +119,7 @@ final class Request {
 
 extension URLSession: URLSessionProtocol {
     public func execute(
-        with request: URLRequest, 
+        with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
         self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
     }

@@ -3,7 +3,7 @@ import Foundation
 public class System {
 
     let request: Request
-    
+
     init (config: Config) {
         request = Request(config: config)
     }
@@ -49,7 +49,7 @@ public class System {
             }
 
         }
-        
+
     }
 
     func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
@@ -62,7 +62,7 @@ public class System {
                 guard let data = data else {
                     fatalError()
                 }
-                
+
                 do {
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
@@ -77,7 +77,7 @@ public class System {
             }
 
         }
-        
+
     }
 
     func prettySysInfo(_ completion: @escaping (Result<(), Error>) -> Void) {
@@ -93,7 +93,7 @@ public class System {
             }
 
         }
-        
+
     }
 
     func stats(_ completion: @escaping (Result<(), Error>) -> Void) {
@@ -109,7 +109,7 @@ public class System {
             }
 
         }
-        
+
     }
-    
+
 }

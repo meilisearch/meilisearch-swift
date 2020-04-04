@@ -11,7 +11,7 @@ class SystemTests: XCTestCase {
         super.setUp()
         client = Client(Config(hostURL: "http://localhost:7700", session: session))
     }
-    
+
     func testHealth() {
 
         //Prepare the mock server
@@ -59,7 +59,7 @@ class SystemTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Load server version")
 
         self.client.version { result in
-            
+
             switch result {
             case .success(let version):
                 XCTAssertEqual(stubVersion, version)
@@ -133,10 +133,10 @@ class SystemTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-    
+
     static var allTests = [
         ("testHealth", testHealth),
         ("testVersion", testVersion),
-        ("testSystemInfo", testSystemInfo),
+        ("testSystemInfo", testSystemInfo)
     ]
 }

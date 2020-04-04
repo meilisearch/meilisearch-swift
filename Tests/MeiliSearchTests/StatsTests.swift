@@ -11,7 +11,7 @@ class StatsTests: XCTestCase {
         super.setUp()
         client = Client(Config(hostURL: "http://localhost:7700", session: session))
     }
-    
+
     func testStats() {
 
         //Prepare the mock server
@@ -114,9 +114,9 @@ class StatsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-    
+
     static var allTests = [
         ("testStats", testStats),
-        ("testAllStats", testAllStats),
+        ("testAllStats", testAllStats)
     ]
 }

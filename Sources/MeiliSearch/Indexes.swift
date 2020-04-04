@@ -3,7 +3,7 @@ import Foundation
 final class Indexes {
 
     let request: Request
-    
+
     init (config: Config) {
         request = Request(config: config)
     }
@@ -73,7 +73,7 @@ final class Indexes {
 
             switch result {
             case .success(let data):
-                
+
                 do {
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)

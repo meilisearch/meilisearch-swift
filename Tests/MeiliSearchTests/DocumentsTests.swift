@@ -48,10 +48,10 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
         self.client.addOrReplaceDocument(
-            uid: uid, 
-            document: document, 
+            uid: uid,
+            document: document,
             primaryKey: primaryKey) { result in
-            
+
             switch result {
             case .success(let update):
                 XCTAssertEqual(stubUpdate, update)
@@ -99,10 +99,10 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Add or update Movies document")
 
         self.client.addOrUpdateDocument(
-            uid: uid, 
-            document: document, 
+            uid: uid,
+            document: document,
             primaryKey: primaryKey) { result in
-            
+
             switch result {
             case .success(let update):
                 XCTAssertEqual(stubUpdate, update)
@@ -143,7 +143,7 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Get Movies document")
 
         self.client.getDocument(uid: uid, identifier: identifier) { result in
-                
+
             switch result {
             case .success(let document):
                 XCTAssertEqual(stubDocument as NSObject, document as NSObject)
@@ -190,7 +190,7 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Get Movies documents")
 
         self.client.getDocuments(uid: uid, limit: limit) { result in
-                
+
             switch result {
             case .success(let documents):
                 XCTAssertEqual(stubDocuments as NSObject, documents as NSObject)
@@ -300,13 +300,13 @@ class DocumentsTests: XCTestCase {
         }
         fatalError()
     }
-    
+
     static var allTests = [
         ("testAddOrReplaceDocument", testAddOrReplaceDocument),
         ("testAddOrUpdateDocument", testAddOrUpdateDocument),
         ("testGetDocument", testGetDocument),
         ("testGetDocuments", testGetDocuments),
         ("testDeleteDocument", testDeleteDocument),
-        ("testDeleteAllDocuments", testDeleteAllDocuments),
+        ("testDeleteAllDocuments", testDeleteAllDocuments)
     ]
 }

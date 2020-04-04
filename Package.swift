@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "meilisearch-swift",
     products: [
-        .library(name: "MeiliSearch", targets: ["MeiliSearch"]),
+        .library(name: "MeiliSearch", targets: ["MeiliSearch"])
     ],
     targets: [
         .target(
@@ -13,6 +13,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "MeiliSearchTests",
-            dependencies: ["MeiliSearch"]),
+            dependencies: ["MeiliSearch"])
     ]
 )
