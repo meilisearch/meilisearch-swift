@@ -1,3 +1,4 @@
+import Foundation
 
 class Documents {
 
@@ -7,23 +8,62 @@ class Documents {
         request = Request(config: config)
     }
 
-    func getDocument(uid: String, identifier: String) {
-        let requestQuery: String = "/indexes/\(uid)/documents/\(identifier)"
-        request.get(api: requestQuery) { response in
-            print(response)
+    func create(
+        uid: String,
+        document: Data, 
+        primaryKey: String,
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+
+        let query: String = "/indexes/\(uid)/documents"
+
+        request.post(api: query, body: document) { result in
+
+            switch result {
+            case .success(let data):
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
         }
     }
 
-    func getDocuments(uid: String) -> String {
-        let requestQuery: String = "/indexes/\(uid)/documents"
-        // return request.get(requestQuery)
-        return ""
+    func get(
+        uid: String, 
+        identifier: String, 
+        _ completion: @escaping (Result<Data, Error>) -> Void) {
+
+        let query: String = "/indexes/\(uid)/documents/\(identifier)"
+        request.get(api: query) { result in
+            
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
     }
 
-    func getDocuments(uid: String, limit: Int) -> String {
-        let requestQuery: String = "/indexes/\(uid)/documents?limit=\(limit)"
-        // return request.get(requestQuery)
-        return ""
+    func getAll(
+        uid: String, 
+        limit: Int = -1, 
+        _ completion: @escaping (Result<Data, Error>) -> Void) {
+
+        let query: String = "/indexes/\(uid)/documents?limit=\(limit)"
+        request.get(api: query) { result in
+            
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
     }
 
 }

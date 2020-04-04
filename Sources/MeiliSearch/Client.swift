@@ -40,5 +40,31 @@ public class Client {
         _ completion: @escaping (Result<Void, Error>) -> Void) {
         self.indexes.delete(uid: uid, completion)
     }
+
+    public func createDocument(
+        uid: String,
+        document: Data, 
+        primaryKey: String, 
+        _ completion: @escaping (Result<(), Error>) -> Void) {
+        self.documents.create(
+            uid: uid, 
+            document: document, 
+            primaryKey: primaryKey, 
+            completion)
+    }
+
+    public func getDocument(
+        uid: String, 
+        identifier: String, 
+        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        self.documents.get(uid: uid, identifier: identifier, completion)
+    }
+
+    public func getDocuments(
+        uid: String,
+        limit: Int,
+        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        self.documents.getAll(uid: uid, limit: limit, completion)
+    }
     
 }

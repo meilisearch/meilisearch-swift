@@ -1,7 +1,7 @@
 @testable import MeiliSearch
 import XCTest
 
-class RequestTests: XCTestCase {
+class IndexesTests: XCTestCase {
 
     private var client: Client!
 
@@ -12,7 +12,7 @@ class RequestTests: XCTestCase {
     
     func testCreateIndex() {
 
-        let uid = "Movies"
+        let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Create Movies index")
 
@@ -26,7 +26,7 @@ class RequestTests: XCTestCase {
 
     func testGetIndex() {
         
-        let uid = "Movies"
+        let uid: String = "Movies"
 
         createIndex(named: uid) {
 
@@ -50,7 +50,8 @@ class RequestTests: XCTestCase {
     }
 
     func testGetIndexes() {
-        let uid = "Movies"
+
+        let uid: String = "Movies"
 
         createIndex(named: uid) {
 
@@ -74,8 +75,9 @@ class RequestTests: XCTestCase {
     }
     
     func testUpdateIndexName() {
-        let uid = "Movies"
-        let newUid = "Photos"
+
+        let uid: String = "Movies"
+        let newUid: String = "Photos"
 
         createIndex(named: uid) {
 
@@ -99,7 +101,8 @@ class RequestTests: XCTestCase {
     }
 
     func testDeleteIndex() {
-        let uid = "Movies"
+        
+        let uid: String = "Movies"
 
         createIndex(named: uid) {
 

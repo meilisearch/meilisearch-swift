@@ -16,12 +16,12 @@ class Indexes {
             switch result {
             case .success(let data):
 
-            do {
-                let index = try JSONDecoder().decode(Index.self, from: data)
-                completion(.success(index))
-            } catch {
-                completion(.failure(error))
-            }
+                do {
+                    let index = try JSONDecoder().decode(Index.self, from: data)
+                    completion(.success(index))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
@@ -36,12 +36,12 @@ class Indexes {
             switch result {
             case .success(let data):
 
-            do {
-                let indexes = try JSONDecoder().decode([Index].self, from: data)
-                completion(.success(indexes))
-            } catch {
-                completion(.failure(error))
-            }
+                do {
+                    let indexes = try JSONDecoder().decode([Index].self, from: data)
+                    completion(.success(indexes))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
