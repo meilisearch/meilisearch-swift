@@ -127,7 +127,7 @@ extension URLSession: URLSessionProtocol {
     public func execute(
         with request: URLRequest, 
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
-        return self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
+        self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
     }
 }
 

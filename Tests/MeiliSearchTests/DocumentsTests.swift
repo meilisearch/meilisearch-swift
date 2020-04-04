@@ -22,7 +22,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Create Movies document")
 
-        createIndex(named: uid) {
+        createIndex(uid: uid) {
 
             self.client.createDocument(
                 uid: uid, 
@@ -51,7 +51,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies document")
 
-        createIndex(named: uid) {
+        createIndex(uid: uid) {
 
             self.client.getDocument(uid: uid, identifier: identifier) { result in
                 
@@ -77,7 +77,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies documents")
 
-        createIndex(named: uid) {
+        createIndex(uid: uid) {
 
             self.client.getDocuments(uid: uid, limit: limit) { result in
                 
@@ -101,9 +101,9 @@ class DocumentsTests: XCTestCase {
         let uid = "Movies"
         let identifier: String = ""
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Delete Movies document")
 
-            let expectation = XCTestExpectation(description: "Delete Movies document")
+        createIndex(uid: uid) {
 
             self.client.deleteDocument(uid: uid, identifier: identifier) { result in
 
@@ -116,39 +116,54 @@ class DocumentsTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
     func testDeleteAllDocuments() {
 
         let uid = "Movies"
+        let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
-        createIndex(named: uid) {
+        createIndex(uid: uid) {
 
-            let expectation = XCTestExpectation(description: "Delete all Movies documents")
+            self.createDocument(uid: uid) {
 
-            self.client.deleteAllDocuments(uid: uid) { result in
+                self.client.deleteAllDocuments(uid: uid) { result in
 
-                switch result {
-                case .success:
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Failed to delete all Movies documents")
+                    switch result {
+                    case .success:
+                        expectation.fulfill()
+                    case .failure:
+                        XCTFail("Failed to delete all Movies documents")
+                    }
+
                 }
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
-    private func createIndex(named: String, _ completion: @escaping () -> Void) {
-        self.client.createIndex(uid: named) { result in
+    private func createIndex(uid: String, _ completion: @escaping () -> Void) {
+        self.client.createIndex(uid: uid) { result in
+            completion()
+        }
+    }
+
+    private func createDocument(uid: String, _ completion: @escaping () -> Void) {
+        let documentString: String = ""
+        let document: Data = documentString.data(using: .utf8)!
+        let primaryKey: String = ""
+        self.client.createDocument(
+                uid: uid, 
+                document: document, 
+                primaryKey: primaryKey) { result in
             completion()
         }
     }

@@ -36,9 +36,9 @@ class IndexesTests: XCTestCase {
         
         let uid: String = "Movies"
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Load Movies index")
 
-            let expectation = XCTestExpectation(description: "Load Movies index")
+        createIndex(uid: uid) {
 
             self.client.getIndex(uid: uid) { result in
                 
@@ -51,9 +51,9 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -61,9 +61,9 @@ class IndexesTests: XCTestCase {
 
         let uid: String = "Movies"
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Load indexes")
 
-            let expectation = XCTestExpectation(description: "Load indexes")
+        createIndex(uid: uid) {
 
             self.client.getIndexes() { result in
 
@@ -76,9 +76,9 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
     
@@ -87,9 +87,9 @@ class IndexesTests: XCTestCase {
         let uid: String = "Movies"
         let newUid: String = "Photos"
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-            let expectation = XCTestExpectation(description: "Rename Movies to Photos")
+        createIndex(uid: uid) {
 
             self.client.updateIndex(uid: uid, name: newUid) { result in
                 
@@ -102,9 +102,9 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -112,9 +112,9 @@ class IndexesTests: XCTestCase {
 
         let uid: String = "Movies"
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Delete Movies index")
 
-            let expectation = XCTestExpectation(description: "Delete Movies index")
+        createIndex(uid: uid) {
 
             self.client.deleteIndex(uid: uid) { result in
 
@@ -127,9 +127,9 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -137,9 +137,9 @@ class IndexesTests: XCTestCase {
 
         let uid: String = "Movies"
 
-        createIndex(named: uid) {
+        let expectation = XCTestExpectation(description: "Delete Movies indexes")
 
-            let expectation = XCTestExpectation(description: "Delete Movies indexes")
+        createIndex(uid: uid) {
 
             self.client.deleteAllIndexes { result in
 
@@ -152,14 +152,14 @@ class IndexesTests: XCTestCase {
 
             }
 
-            self.wait(for: [expectation], timeout: 1.0)
-
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
-    private func createIndex(named: String, _ completion: @escaping () -> Void) {
-        self.client.createIndex(uid: named) { result in
+    private func createIndex(uid: String, _ completion: @escaping () -> Void) {
+        self.client.createIndex(uid: uid) { result in
             completion()
         }
     }

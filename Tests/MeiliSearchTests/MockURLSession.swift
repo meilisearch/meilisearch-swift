@@ -1,7 +1,6 @@
 @testable import MeiliSearch
 import Foundation
 
-//MARK: MOCK
 class MockURLSession: URLSessionProtocol {
 
     var nextDataTask = MockURLSessionDataTask()
