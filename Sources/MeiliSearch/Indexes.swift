@@ -16,7 +16,9 @@ final class Indexes {
             case .success(let data):
 
                 do {
-                    let index = try JSONDecoder().decode(Index.self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let index = try decoder.decode(Index.self, from: data)
                     completion(.success(index))
                 } catch {
                     completion(.failure(error))
@@ -38,7 +40,9 @@ final class Indexes {
             case .success(let data):
 
                 do {
-                    let indexes = try JSONDecoder().decode([Index].self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let indexes = try decoder.decode([Index].self, from: data)
                     completion(.success(indexes))
                 } catch {
                     completion(.failure(error))
