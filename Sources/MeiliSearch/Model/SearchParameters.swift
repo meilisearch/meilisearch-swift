@@ -1,15 +1,15 @@
 import Foundation
 
 public struct SearchParameters: Codable, Equatable {
-    let query: String
-    let offset: Int
-    let limit: Int
-    let attributesToRetrieve: [String]?
-    let attributesToCrop: [String]
-    let cropLength: Int
-    let attributesToHighlight: [String]
-    let filters: Filter?
-    let matches: Bool
+    public let query: String
+    public let offset: Int
+    public let limit: Int
+    public let attributesToRetrieve: [String]?
+    public let attributesToCrop: [String]
+    public let cropLength: Int
+    public let attributesToHighlight: [String]
+    public let filters: Filter?
+    public let matches: Bool
 
     init(
         query: String,
@@ -38,7 +38,7 @@ public struct SearchParameters: Codable, Equatable {
 
     func dictionary() -> [String: String] {
       var dic = [String: String]()
-      dic["d"] = query
+      dic["q"] = query
       dic["offset"] = "\(offset)"
       dic["limit"] = "\(limit)"
 

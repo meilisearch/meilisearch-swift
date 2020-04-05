@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Version: Codable, Equatable {
-    let commitSha: String
-    let buildDate: Date
-    let pkgVersion: String
+    public let commitSha: String
+    public let buildDate: Date
+    public let pkgVersion: String
 }

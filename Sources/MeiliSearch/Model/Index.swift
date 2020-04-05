@@ -2,11 +2,11 @@ import Foundation
 
 public struct Index: Codable, Equatable {
 
-    let name: String
-    let uid: String
-    let createdAt: Date?
-    let updatedAt: Date?
-    let primaryKey: String?
+    public let name: String
+    public let uid: String
+    public let createdAt: Date?
+    public let updatedAt: Date?
+    public let primaryKey: String?
 
     init(
         name: String,

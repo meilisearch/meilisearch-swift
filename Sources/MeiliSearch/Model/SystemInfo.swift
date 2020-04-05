@@ -1,23 +1,23 @@
 import Foundation
 
 public struct SystemInfo: Codable, Equatable {
-    let memoryUsage: Float
-    let processorUsage: [Float]
-    let global: Global
-    let process: Process
+    public let memoryUsage: Float
+    public let processorUsage: [Float]
+    public let global: Global
+    public let process: Process
 
-    struct Global: Codable, Equatable {
-        let totalMemory: Int
-        let usedMemory: Int
-        let totalSwap: Int
-        let usedSwap: Int
-        let inputData: Int
-        let outputData: Int
+    public struct Global: Codable, Equatable {
+        public let totalMemory: Int
+        public let usedMemory: Int
+        public let totalSwap: Int
+        public let usedSwap: Int
+        public let inputData: Int
+        public let outputData: Int
     }
 
-    struct Process: Codable, Equatable {
-        let memory: Int
-        let cpu: Int
+    public struct Process: Codable, Equatable {
+        public let memory: Int
+        public let cpu: Int
     }
 
 }

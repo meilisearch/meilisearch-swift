@@ -5,6 +5,7 @@ func routes(_ app: Application) throws {
 
     let client = MeiliSearchClient(Config(hostURL: "http://localhost:7700"))
 
+    // 127.0.0.1:8080/index?uid=Movies
     app.get("index") { req -> EventLoopFuture<String> in
 
         /// Create a new void promise
@@ -42,6 +43,7 @@ func routes(_ app: Application) throws {
         return promise.futureResult
     }
 
+    // 127.0.0.1:8080/search?query=botman
     app.get("search") { req -> EventLoopFuture<String> in
 
         /// Create a new void promise
@@ -50,19 +52,24 @@ func routes(_ app: Application) throws {
         /// Dispatch some work to happen on a background thread
         req.application.threadPool.submit { _ in
 
-            guard let uid: String = req.query["uid"] else {
+            guard let query: String = req.query["query"] else {
                 promise.fail(Abort(.badRequest))
                 return
             }
 
-            client.getIndex(uid: uid) { result in
+            let searchParameters = SearchParameters.query(query)
+
+            client.search(uid: "movies", searchParameters: searchParameters) { result in
 
               switch result {
-              case .success(let index):
+              case .success(let searchResult):
 
-                let encoder = JSONEncoder()
-                let data = try! encoder.encode(index)
-                let dataString = String(decoding: data, as: UTF8.self)
+                print("searchResult.hits \(searchResult.hits)")
+
+                let jsonData = try! JSONSerialization.data(
+                  withJSONObject: searchResult.hits,
+                  options: [])
+                let dataString = String(decoding: jsonData, as: UTF8.self)
 
                 promise.succeed(dataString)
 
