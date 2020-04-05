@@ -9,7 +9,7 @@ public struct Config {
         hostURL + api
     }
 
-    init(hostURL: String,
+    public init(hostURL: String,
          apiKey: String = "",
          session: URLSessionProtocol = URLSession.shared) {
         self.hostURL = hostURL

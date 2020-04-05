@@ -22,7 +22,7 @@
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
 </p>
 
-<p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine Client written in Swift 🍎</p>
+<p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearchClient written in Swift 🍎</p>
 
 **MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
 For more information about features go to [our Swift documentation](https://docs.meilisearch.com/swift).

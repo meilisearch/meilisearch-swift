@@ -1,6 +1,6 @@
 import Foundation
 
-public class Client {
+public class MeiliSearchClient {
 
     private let config: Config
     private let indexes: Indexes
@@ -8,7 +8,7 @@ public class Client {
     private let system: System
     private let stats: Stats
 
-    init(_ config: Config) {
+    public init(_ config: Config) {
         self.config = config
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)

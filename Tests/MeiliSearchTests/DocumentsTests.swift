@@ -3,13 +3,13 @@ import XCTest
 
 class DocumentsTests: XCTestCase {
 
-    private var client: Client!
+    private var client: MeiliSearchClient!
 
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
-        client = Client(Config(hostURL: "http://localhost:7700", session: session))
+        client = MeiliSearchClient(Config(hostURL: "http://localhost:7700", session: session))
     }
 
     func testAddOrReplaceDocument() {
