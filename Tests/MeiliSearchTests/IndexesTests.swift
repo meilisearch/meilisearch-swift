@@ -214,4 +214,5 @@ class IndexesTests: XCTestCase {
         // ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex)
     ]
+    
 }

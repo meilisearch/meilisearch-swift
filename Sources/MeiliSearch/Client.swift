@@ -5,6 +5,7 @@ public class MeiliSearchClient {
     private let config: Config
     private let indexes: Indexes
     private let documents: Documents
+    private let search: Search
     private let system: System
     private let stats: Stats
 
@@ -12,6 +13,7 @@ public class MeiliSearchClient {
         self.config = config
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)
+        self.search = Search(config: config)
         self.system = System(config: config)
         self.stats = Stats(config: config)
     }
@@ -94,6 +96,13 @@ public class MeiliSearchClient {
         uid: String,
         _ completion: @escaping (Result<Update, Error>) -> Void) {
         self.documents.deleteAll(uid: uid, completion)
+    }
+
+    public func search(
+        uid: String, 
+        searchParameters: SearchParameters, 
+        _ completion: @escaping (Result<SearchResult, Error>) -> Void) {
+        self.search.search(uid: uid, searchParameters: searchParameters, completion)
     }
 
     public func health(_ completion: @escaping (Result<(), Error>) -> Void) {

@@ -14,7 +14,10 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     [
         testCase(IndexesTests.allTests),
-        testCase(DocumentsTests.allTests)
+        testCase(DocumentsTests.allTests),
+        testCase(SystemTests.allTests),
+        testCase(StatsTests.allTests),
+        testCase(SearchTests.allTests)
     ]
 }
 #endif
