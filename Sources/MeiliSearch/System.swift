@@ -1,6 +1,6 @@
 import Foundation
 
-public class System {
+final class System {
 
     let request: Request
 

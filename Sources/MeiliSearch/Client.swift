@@ -18,6 +18,11 @@ public class MeiliSearchClient {
 
     // MARK: Initializers
 
+    /**
+     Obtains a MeiliSearchClient instance for the given `config`.
+
+     - parameter config: Set the default configuration for the client. 
+     */
     public init(_ config: Config) {
         self.config = config
         self.indexes = Indexes(config: config)
@@ -27,11 +32,13 @@ public class MeiliSearchClient {
         self.stats = Stats(config: config)
     }
 
+    // MARK: Index
+
     /**
      Create a new Index for the given `uid`.
 
-     - parameter uid:         The unique identifier for the Index to be created.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Index to be created.
+     - parameter completion: The completion closure used to notify when the server 
      completes the write request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -44,8 +51,8 @@ public class MeiliSearchClient {
     /**
      Get the Index for the given `uid`.
 
-     - parameter uid:         The unique identifier for the Index to be found.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Index to be found.
+     - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -66,6 +73,15 @@ public class MeiliSearchClient {
         self.indexes.getAll(completion)
     }
 
+    /**
+     Update index name.
+     
+     - parameter uid:        The unique identifier for the Index to be found.
+     - parameter name:       New index name.
+     - parameter completion: The completion closure used to notify when the server 
+     completes the update request, it returns a `Result` object that contains `()` 
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
     public func updateIndex(
         uid: String,
         name: String,
@@ -86,6 +102,8 @@ public class MeiliSearchClient {
         self.indexes.delete(uid: uid, completion)
     }
 
+    // MARK: Document
+
     /**
      Add a list of documents or replace them if they already exist.
 
@@ -95,9 +113,9 @@ public class MeiliSearchClient {
 
      For a partial update of the document see `addOrUpdateDocument`.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter document:    The document data (JSON) to be processed.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter document:   The document data (JSON) to be processed.
+     - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `Update` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -122,9 +140,9 @@ public class MeiliSearchClient {
 
     To completely overwrite a document see `addOrReplaceDocument`.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter document:    The document data (JSON) to be processed.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter document:   The document data (JSON) to be processed.
+     - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `Update` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -143,9 +161,9 @@ public class MeiliSearchClient {
     /**
      Get the Document for the given `uid` and `identifier`.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter identifier:  The document identifier for the Document to be found.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter identifier: The document identifier for the Document to be found.
+     - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains 
      `[[String: Any]]` value. If the request was sucessful or `Error` if a 
      failure occured.
@@ -160,9 +178,9 @@ public class MeiliSearchClient {
     /**
      List the all Documents.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter limit:       Limit the size of the query.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter limit:      Limit the size of the query.
+     - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains 
      `[[String: Any]]` value. If the request was sucessful or `Error` if a 
      failure occured.
@@ -177,9 +195,9 @@ public class MeiliSearchClient {
     /**
      Delete the Document for the given `uid` and `identifier`.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter identifier:  The document identifier for the Document to be found.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter identifier: The document identifier for the Document to be found.
+     - parameter completion: The completion closure used to notify when the server 
      completes the delete request, it returns a `Result` object that contains `Update` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -193,8 +211,8 @@ public class MeiliSearchClient {
     /**
      Delete all Documents for the given `uid`.
      
-     - parameter uid:         The unique identifier for the Document's index to be found.
-     - parameter completion:  The completion closure used to notify when the server 
+     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter completion: The completion closure used to notify when the server 
      completes the delete request, it returns a `Result` object that contains `Update` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -207,10 +225,10 @@ public class MeiliSearchClient {
     /**
      Search for a document in the `uid` and `searchParameters`
      
-     - parameter uid:               The unique identifier for the Document's index to 
+     - parameter uid:              The unique identifier for the Document's index to 
      be found.
-     - parameter searchParameters:  The document identifier for the Document to be found.
-     - parameter completion:        The completion closure used to notify when the server 
+     - parameter searchParameters: The document identifier for the Document to be found.
+     - parameter completion:       The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains 
      `SearchResult` value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -220,6 +238,8 @@ public class MeiliSearchClient {
         _ completion: @escaping (Result<SearchResult, Error>) -> Void) {
         self.search.search(uid: uid, searchParameters: searchParameters, completion)
     }
+
+    // MARK: System
 
     /**
      Get health of MeiliSearch server.
@@ -253,6 +273,8 @@ public class MeiliSearchClient {
     public func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
         self.system.systemInfo(completion)
     }
+
+    // MARK: Index Stat
 
     /**
      Get stats of an index.

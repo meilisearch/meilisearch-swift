@@ -1,13 +1,13 @@
 import Foundation
 
-public protocol URLSessionProtocol {
+internal protocol URLSessionProtocol {
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
     func execute(
         with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
 }
 
-public protocol URLSessionDataTaskProtocol {
+internal protocol URLSessionDataTaskProtocol {
     func resume()
 }
 
@@ -118,7 +118,7 @@ final class Request {
 }
 
 extension URLSession: URLSessionProtocol {
-    public func execute(
+    internal func execute(
         with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
         self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol

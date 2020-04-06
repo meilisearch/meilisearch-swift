@@ -2,134 +2,8 @@
   "warnings": [
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 3,
-      "symbol": "MeiliSearchClient",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 12,
-      "symbol": "MeiliSearchClient.init(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 21,
-      "symbol": "MeiliSearchClient.createIndex(uid:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 27,
-      "symbol": "MeiliSearchClient.getIndex(uid:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 33,
-      "symbol": "MeiliSearchClient.getIndexes(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 37,
+      "line": 76,
       "symbol": "MeiliSearchClient.updateIndex(uid:name:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 44,
-      "symbol": "MeiliSearchClient.deleteIndex(uid:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 50,
-      "symbol": "MeiliSearchClient.addOrReplaceDocument(uid:document:primaryKey:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 62,
-      "symbol": "MeiliSearchClient.addOrUpdateDocument(uid:document:primaryKey:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 74,
-      "symbol": "MeiliSearchClient.getDocument(uid:identifier:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 81,
-      "symbol": "MeiliSearchClient.getDocuments(uid:limit:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 88,
-      "symbol": "MeiliSearchClient.deleteDocument(uid:identifier:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 95,
-      "symbol": "MeiliSearchClient.deleteAllDocuments(uid:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 101,
-      "symbol": "MeiliSearchClient.search(uid:searchParameters:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 108,
-      "symbol": "MeiliSearchClient.health(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 112,
-      "symbol": "MeiliSearchClient.version(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 116,
-      "symbol": "MeiliSearchClient.systemInfo(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 120,
-      "symbol": "MeiliSearchClient.stat(uid:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 124,
-      "symbol": "MeiliSearchClient.allStats(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -143,7 +17,7 @@
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Config.swift",
       "line": 12,
-      "symbol": "Config.init(hostURL:apiKey:session:)",
+      "symbol": "Config.init(hostURL:apiKey:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -516,55 +390,6 @@
       "line": 6,
       "symbol": "Version.pkgVersion",
       "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 3,
-      "symbol": "URLSessionProtocol",
-      "symbol_kind": "source.lang.swift.decl.protocol",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 4,
-      "symbol": "URLSessionProtocol.DataTaskResult",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 5,
-      "symbol": "URLSessionProtocol.execute(with:completionHandler:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 10,
-      "symbol": "URLSessionDataTaskProtocol",
-      "symbol_kind": "source.lang.swift.decl.protocol",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 11,
-      "symbol": "URLSessionDataTaskProtocol.resume()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Request.swift",
-      "line": 121,
-      "symbol": "URLSession.execute(with:completionHandler:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/System.swift",
-      "line": 3,
-      "symbol": "System",
-      "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     }
   ],

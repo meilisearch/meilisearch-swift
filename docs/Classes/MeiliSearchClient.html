@@ -14,7 +14,7 @@
     <a title="MeiliSearchClient Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (20% documented)</p>
+        <p><a href="../index.html"> Docs</a> (25% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -32,31 +32,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Classes/MeiliSearchClient.html">MeiliSearchClient</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes.html#/s:11MeiliSearch6SystemC">System</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Extensions.html">Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Extensions/URLSession.html">URLSession</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions.html#/c:objc(cs)NSURLSessionDataTask">URLSessionDataTask</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Protocols.html">Protocols</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Protocols/URLSessionDataTaskProtocol.html">URLSessionDataTaskProtocol</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/URLSessionProtocol.html">URLSessionProtocol</a>
               </li>
             </ul>
           </li>
@@ -147,7 +122,7 @@ your Swift product with the MeiliSearch server.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtains a MeiliSearchClient instance for the given <code>config</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -158,9 +133,41 @@ your Swift product with the MeiliSearch server.</p>
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>config</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Set the default configuration for the client.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Index"></a>
+                <a name="//apple_ref/swift/Section/Index" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Index"></a>
+                  <h3 class="section-name"><p>Index</p>
+</h3>
+                </div>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -346,7 +353,7 @@ value. If the request was sucessful or <code>Error</code> if a failure occured.<
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Update index name.</p>
 
                       </div>
                       <div class="declaration">
@@ -359,6 +366,51 @@ value. If the request was sucessful or <code>Error</code> if a failure occured.<
     <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">(),</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>uid</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The unique identifier for the Index to be found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>New index name.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server 
+completes the update request, it returns a <code>Result</code> object that contains <code>()</code> 
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -413,6 +465,19 @@ value. If the request was sucessful or <code>Error</code> if a failure occured.<
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Document"></a>
+                <a name="//apple_ref/swift/Section/Document" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Document"></a>
+                  <h3 class="section-name"><p>Document</p>
+</h3>
+                </div>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -942,6 +1007,19 @@ completes the query request, it returns a <code>Result</code> object that contai
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/System"></a>
+                <a name="//apple_ref/swift/Section/System" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/System"></a>
+                  <h3 class="section-name"><p>System</p>
+</h3>
+                </div>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1086,6 +1164,19 @@ value. If the request was sucessful or <code>Error</code> if a failure occured.<
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Index%20Stat"></a>
+                <a name="//apple_ref/swift/Section/Index Stat" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Index%20Stat"></a>
+                  <h3 class="section-name"><p>Index Stat</p>
+</h3>
+                </div>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
