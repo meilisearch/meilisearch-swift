@@ -1,5 +1,3 @@
-# [SCRATCH]
-
 <p align="center">
   <img src="assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
 </p>
@@ -7,6 +5,7 @@
 <h1 align="center">MeiliSearch-Swift</h1>
 
 <h4 align="center">
+  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> | 
   <a href="https://www.meilisearch.com">Website</a> | 
   <a href="https://blog.meilisearch.com">Blog</a> | 
   <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> | 
@@ -16,7 +15,6 @@
 </h4>
 
 <p align="center">
-  <a href=""><img src="https://img.shields.io/badge/docs-100%25-brightgreen.svg" alt="Docs"></a>
   <a href="https://github.com/ppamorim/meilisearch-swift/actions"><img src="https://github.com/ppamorim/meilisearch-swift/workflows/Swift/badge.svg" alt="Build Status"></a>
   <a href="https://github.com/ppamorim/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
@@ -52,6 +50,40 @@ dependencies: [
 ]
 ```
 
+## Basic setup
+
+To do a simply search using the client, you can create a Swift script like this:
+
+```swift
+import MeiliSearch
+
+func searchForMovies() {
+
+    // Create a new client instance of MeiliSearchClient with the default host.
+    let client = MeiliSearchClient(Config(hostURL: "http://localhost:7700"))
+
+    // Create a new search request with "botman" as query.
+    let searchParameters = SearchParameters.query("botman")
+
+    // Call the function search and wait for the closure result.
+    self.client.search(uid: "movies", searchParameters: searchParameters) { result in
+        switch result {
+        case .success(let searchResult):
+            print(searchResult)
+        case .failure(let error):
+            print(error)
+        }
+    }
+
+}
+```
+
+## Demo
+
+### Vapor
+
+Please check the Vapor Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/VaporDemo).
+
 ## Contributing
 
 Hey! We're glad you're thinking about contributing to **MeiliSearch-Swift**! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you! To start contributing, checking [issues tagged as "good-first-issue"](https://github.com/meilisearch/MeiliSearch-Swift/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good start!
@@ -71,3 +103,5 @@ Feel free to contact us about any questions you may have:
 * By opening an issue.
 
 Any suggestion or feedback is highly appreciated. Thank you for your support!
+
+Swift programming language from Apple
