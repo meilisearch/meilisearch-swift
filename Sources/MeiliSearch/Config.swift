@@ -1,13 +1,14 @@
 import Foundation
 
 public struct Config {
+
+    // MARK: Properties
+
     let hostURL: String
     let apiKey: String
     internal let session: URLSessionProtocol
 
-    func url(api: String) -> String {
-        hostURL + api
-    }
+    // MARK: Initializers
 
     public init(hostURL: String, apiKey: String = "") {
         self.hostURL = hostURL
@@ -21,6 +22,10 @@ public struct Config {
         self.hostURL = hostURL
         self.apiKey = apiKey
         self.session = session
+    }
+
+    func url(api: String) -> String {
+        hostURL + api
     }
 
 }

@@ -1,11 +1,28 @@
 import Foundation
 
+/**
+ `SearchResult` instances represent result of a search.
+ */
 public struct SearchResult {
+
+    // MARK: Properties
+
+    /// Possible hints from the search query.
     public let hits: [[String: Any]]
+
+    /// Number of documents skipped.
     public let offset: Int
+
+    /// Number of documents taken.
     public let limit: Int
+
+    /// Time, in milliseconds, to process the query.
     public let processingTimeMs: Int?
+
+    /// Query string from the search.
     public let query: String
+
+    // MARK: Initializers
 
     init(json: Any) {
         guard let dic = json as? [String: Any] else {

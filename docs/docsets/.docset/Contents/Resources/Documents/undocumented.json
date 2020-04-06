@@ -1,13 +1,6 @@
 {
   "warnings": [
     {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Client.swift",
-      "line": 76,
-      "symbol": "MeiliSearchClient.updateIndex(uid:name:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Config.swift",
       "line": 3,
       "symbol": "Config",

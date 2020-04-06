@@ -2,7 +2,11 @@ import Foundation
 
 final class Search {
 
+    // MARK: Properties
+
     let request: Request
+
+    // MARK: Initializers
 
     init (config: Config) {
         request = Request(config: config)

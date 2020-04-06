@@ -1,15 +1,42 @@
 import Foundation
 
+/**
+ `SearchParameters` instances represent query setup for a search request. 
+ Use `SearchParameters.query` to directly create a search query with the
+ default search configuration.
+ */
 public struct SearchParameters: Codable, Equatable {
+
+    // MARK: Properties
+
+    /// Query string (mandatory).
     public let query: String
+
+    /// Number of documents to skip.
     public let offset: Int
+
+    /// Number of documents to take.
     public let limit: Int
+
+    /// Document attributes to show.
     public let attributesToRetrieve: [String]?
+
+    /// Which attributes to crop.
     public let attributesToCrop: [String]
+
+    /// Limit length at which to crop specified attributes.
     public let cropLength: Int
+    
+    /// Which attributes to highlight.
     public let attributesToHighlight: [String]
+
+    /// Attribute with an exact match.
     public let filters: Filter?
+
+    /// Whether to return the raw matches or not.
     public let matches: Bool
+
+    // MARK: Initializers
 
     init(
         query: String,
@@ -31,6 +58,8 @@ public struct SearchParameters: Codable, Equatable {
         self.filters = filters
         self.matches = matches
     }
+
+    // MARK Query Initializers
 
     public static func query(_ value: String) -> SearchParameters {
         SearchParameters(query: value)
@@ -69,8 +98,12 @@ public struct SearchParameters: Codable, Equatable {
     }
 
     public struct Filter: Codable, Equatable {
+
+        // MARK: Properties
+
         let attribute: String
         let value: String
+
     }
 
 }

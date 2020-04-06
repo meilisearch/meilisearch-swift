@@ -9,378 +9,308 @@
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Config.swift",
-      "line": 12,
+      "line": 13,
       "symbol": "Config.init(hostURL:apiKey:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 3,
-      "symbol": "Index",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 5,
+      "line": 11,
       "symbol": "Index.name",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 6,
+      "line": 12,
       "symbol": "Index.uid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 7,
+      "line": 13,
       "symbol": "Index.createdAt",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 8,
+      "line": 14,
       "symbol": "Index.updatedAt",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Index.swift",
-      "line": 9,
+      "line": 15,
       "symbol": "Index.primaryKey",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 3,
-      "symbol": "SearchParameters",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 4,
+      "line": 12,
       "symbol": "SearchParameters.query",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 5,
+      "line": 13,
       "symbol": "SearchParameters.offset",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 6,
+      "line": 14,
       "symbol": "SearchParameters.limit",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 7,
+      "line": 15,
       "symbol": "SearchParameters.attributesToRetrieve",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 8,
+      "line": 16,
       "symbol": "SearchParameters.attributesToCrop",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 9,
+      "line": 17,
       "symbol": "SearchParameters.cropLength",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 10,
+      "line": 18,
       "symbol": "SearchParameters.attributesToHighlight",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 11,
+      "line": 19,
       "symbol": "SearchParameters.filters",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 12,
+      "line": 20,
       "symbol": "SearchParameters.matches",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 35,
+      "line": 47,
       "symbol": "SearchParameters.query(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchParameters.swift",
-      "line": 71,
+      "line": 83,
       "symbol": "SearchParameters.Filter",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 3,
-      "symbol": "SearchResult",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 4,
+      "line": 10,
       "symbol": "SearchResult.hits",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 5,
+      "line": 11,
       "symbol": "SearchResult.offset",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 6,
+      "line": 12,
       "symbol": "SearchResult.limit",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 7,
+      "line": 13,
       "symbol": "SearchResult.processingTimeMs",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SearchResult.swift",
-      "line": 8,
+      "line": 14,
       "symbol": "SearchResult.query",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 3,
-      "symbol": "AllStats",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 4,
+      "line": 10,
       "symbol": "AllStats.databaseSize",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 5,
+      "line": 11,
       "symbol": "AllStats.lastUpdate",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 6,
+      "line": 12,
       "symbol": "AllStats.indexes",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 9,
-      "symbol": "Stat",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 10,
+      "line": 23,
       "symbol": "Stat.numberOfDocuments",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 11,
+      "line": 24,
       "symbol": "Stat.isIndexing",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Stat.swift",
-      "line": 12,
+      "line": 25,
       "symbol": "Stat.fieldsFrequency",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 3,
-      "symbol": "SystemInfo",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 4,
+      "line": 11,
       "symbol": "SystemInfo.memoryUsage",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 5,
+      "line": 12,
       "symbol": "SystemInfo.processorUsage",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 6,
+      "line": 13,
       "symbol": "SystemInfo.global",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 7,
+      "line": 14,
       "symbol": "SystemInfo.process",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 9,
-      "symbol": "SystemInfo.Global",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 10,
+      "line": 23,
       "symbol": "SystemInfo.Global.totalMemory",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 11,
+      "line": 24,
       "symbol": "SystemInfo.Global.usedMemory",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 12,
+      "line": 25,
       "symbol": "SystemInfo.Global.totalSwap",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 13,
+      "line": 26,
       "symbol": "SystemInfo.Global.usedSwap",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 14,
+      "line": 27,
       "symbol": "SystemInfo.Global.inputData",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 15,
+      "line": 28,
       "symbol": "SystemInfo.Global.outputData",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 18,
-      "symbol": "SystemInfo.Process",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 19,
+      "line": 39,
       "symbol": "SystemInfo.Process.memory",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/SystemInfo.swift",
-      "line": 20,
+      "line": 40,
       "symbol": "SystemInfo.Process.cpu",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Update.swift",
-      "line": 3,
-      "symbol": "Update",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Update.swift",
-      "line": 4,
+      "line": 11,
       "symbol": "Update.updateId",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Version.swift",
-      "line": 3,
-      "symbol": "Version",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Version.swift",
-      "line": 4,
+      "line": 10,
       "symbol": "Version.commitSha",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Version.swift",
-      "line": 5,
+      "line": 11,
       "symbol": "Version.buildDate",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/ppamorim/Repository/meilisearch-swift/Sources/MeiliSearch/Model/Version.swift",
-      "line": 6,
+      "line": 12,
       "symbol": "Version.pkgVersion",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
