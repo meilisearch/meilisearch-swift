@@ -3,7 +3,9 @@ import Foundation
 /**
  A `MeiliSearchClient` instance represents a MeiliSearch client used to easily integrate 
  your Swift product with the MeiliSearch server.
- - warning: `MeiliSearchClient` instances are thread safe and can be shared across threads or dispatch queues.
+
+ - warning: `MeiliSearchClient` instances are thread safe and can be shared across threads
+ or dispatch queues.
  */
 public class MeiliSearchClient {
 

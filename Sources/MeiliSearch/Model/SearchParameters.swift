@@ -61,6 +61,12 @@ public struct SearchParameters: Codable, Equatable {
 
     // MARK Query Initializers
 
+    /**
+     Minimal static function used to easily initialize the `SearchParameters` instance with
+     the search query applied.
+
+     - parameter value: Query string (mandatory).
+     */
     public static func query(_ value: String) -> SearchParameters {
         SearchParameters(query: value)
     }
@@ -97,11 +103,17 @@ public struct SearchParameters: Codable, Equatable {
       array.joined(separator:",")
     }
 
+    /**
+     `Filter` instances represent filter used in thr search query.
+     */
     public struct Filter: Codable, Equatable {
 
         // MARK: Properties
 
+        /// Parameter from document to be filtered.
         let attribute: String
+
+        /// Value of the document parameter to be filtered.
         let value: String
 
     }
