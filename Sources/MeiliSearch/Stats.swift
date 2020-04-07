@@ -25,7 +25,7 @@ final class Stats {
                 }
 
                 do {
-                    let decoder = JSONDecoder()
+                    let decoder: JSONDecoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                     let stat: Stat = try decoder.decode(Stat.self, from: data)
                     completion(.success(stat))
@@ -54,7 +54,7 @@ final class Stats {
                 }
 
                 do {
-                    let decoder = JSONDecoder()
+                    let decoder: JSONDecoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                     let allStats: AllStats = try decoder.decode(AllStats.self, from: data)
                     completion(.success(allStats))

@@ -12,6 +12,7 @@ public extension MeiliSearch {
   enum Error: Swift.Error {
     case serverNotFound
     case dataNotFound
+    case hostNotValid
   }
 
 }

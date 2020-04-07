@@ -23,7 +23,7 @@ final class Indexes {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
-                
+
                 Indexes.decodeJSON(data, completion)
 
             case .failure(let error):
@@ -59,7 +59,7 @@ final class Indexes {
     func create(uid: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: uid)
-        let jsonData = try! JSONEncoder().encode(payload)
+        let jsonData: Data = try! JSONEncoder().encode(payload)
 
         self.request.post(api: "/indexes", body: jsonData) { result in
 
@@ -79,7 +79,7 @@ final class Indexes {
     func update(uid: String, name: String, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         let payload = UpdateIndexPayload(name: name)
-        let jsonData = try! JSONEncoder().encode(payload)
+        let jsonData: Data = try! JSONEncoder().encode(payload)
 
         self.request.put(api: "/indexes/\(uid)", body: jsonData) { result in
 
@@ -114,7 +114,7 @@ final class Indexes {
         _ data: Data,
         _ completion: (Result<Index, Swift.Error>) -> Void) {
         do {
-            let decoder = JSONDecoder()
+            let decoder: JSONDecoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
             let update: Index = try decoder.decode(Index.self, from: data)
             completion(.success(update))
@@ -127,7 +127,7 @@ final class Indexes {
         _ data: Data,
         _ completion: (Result<[Index], Swift.Error>) -> Void) {
         do {
-            let decoder = JSONDecoder()
+            let decoder: JSONDecoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
             let update: [Index] = try decoder.decode([Index].self, from: data)
             completion(.success(update))

@@ -61,7 +61,10 @@ public struct Config {
         if self.hostURL.isEmpty {
             return self
         }
-        if !Ping.pong(self.hostURL) {
+        guard let url: URL = URL(string: self.hostURL) else {
+            throw MeiliSearch.Error.hostNotValid
+        }
+        if !Ping.pong(url) {
             throw MeiliSearch.Error.serverNotFound
         }
         return self

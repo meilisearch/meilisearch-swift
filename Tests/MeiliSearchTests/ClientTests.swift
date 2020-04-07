@@ -17,6 +17,13 @@ class ClientTests: XCTestCase {
     }
   }
 
+  func testNotValidHostURL() {
+    session.pushError(nil, NSError(domain: "any", code: 404, userInfo: nil), code: 404)
+    XCTAssertThrowsError(try MeiliSearch(Config(hostURL: "Not valid host", session: session))) { error in
+      XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.hostNotValid)
+    }
+  }
+
   static var allTests = [
       ("testValidHostURL", testValidHostURL),
       ("testEmptyHostURL", testEmptyHostURL)

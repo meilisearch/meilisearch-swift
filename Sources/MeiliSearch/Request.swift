@@ -31,10 +31,10 @@ final class Request {
             urlString += param
         }
 
-        var request = URLRequest(url: URL(string: urlString)!)
+        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
 
-        let task = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -51,11 +51,11 @@ final class Request {
         _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
-        var request = URLRequest(url: URL(string: urlString)!)
+        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.httpBody = body
 
-        let task = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -76,11 +76,11 @@ final class Request {
         _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
-        var request = URLRequest(url: URL(string: urlString)!)
+        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "PUT"
         request.httpBody = body
 
-        let task = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -100,10 +100,10 @@ final class Request {
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
-        var request = URLRequest(url: URL(string: urlString)!)
+        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
 
-        let task = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -119,12 +119,12 @@ final class Request {
 
 struct Ping {
 
-  static func pong(_ address: String) -> Bool {
-      let url = URL(string: address)
-      let lock = NSLock()
+  static func pong(_ url: URL) -> Bool {
+
+      let lock: NSLock = NSLock()
       var sucess: Bool = false
 
-      let task = URLSession.shared.dataTask(with: url!) { (_, _, error) in
+      let task: URLSessionDataTaskProtocol = URLSession.shared.dataTask(with: url) { (_, _, error) in
           if error == nil {
               sucess = true
           }

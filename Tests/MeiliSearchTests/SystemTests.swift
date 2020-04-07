@@ -47,7 +47,7 @@ class SystemTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubVersion: Version = try! decoder.decode(Version.self, from: jsonData)
@@ -107,7 +107,7 @@ class SystemTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubSystemInfo: SystemInfo = try! decoder.decode(SystemInfo.self, from: jsonData)

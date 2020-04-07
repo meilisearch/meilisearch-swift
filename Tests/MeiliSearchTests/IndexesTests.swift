@@ -25,7 +25,7 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
@@ -66,7 +66,7 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
@@ -109,7 +109,7 @@ class IndexesTests: XCTestCase {
         }]
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
@@ -150,7 +150,7 @@ class IndexesTests: XCTestCase {
     //     }]
     //     """
 
-    //     let decoder = JSONDecoder()
+    //     let decoder: JSONDecoder = JSONDecoder()
     //     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     //     let jsonData = jsonString.data(using: .utf8)!
     //     let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)

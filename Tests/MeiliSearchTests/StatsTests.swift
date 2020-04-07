@@ -30,7 +30,7 @@ class StatsTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubStats: Stat = try! decoder.decode(Stat.self, from: jsonData)
@@ -90,7 +90,7 @@ class StatsTests: XCTestCase {
         }
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubAllStats: AllStats = try! decoder.decode(AllStats.self, from: jsonData)

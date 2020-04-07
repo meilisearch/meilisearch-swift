@@ -41,7 +41,7 @@ final class System {
                 }
 
                 do {
-                    let decoder = JSONDecoder()
+                    let decoder: JSONDecoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                     let vesion: Version = try decoder.decode(Version.self, from: data)
                     completion(.success(vesion))
@@ -69,7 +69,7 @@ final class System {
                 }
 
                 do {
-                    let decoder = JSONDecoder()
+                    let decoder: JSONDecoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                     let systemInfo: SystemInfo = try decoder.decode(SystemInfo.self, from: data)
                     completion(.success(systemInfo))

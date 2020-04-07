@@ -20,7 +20,7 @@ class DocumentsTests: XCTestCase {
         {"updateId":0}
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
@@ -74,7 +74,7 @@ class DocumentsTests: XCTestCase {
         {"updateId":0}
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
@@ -213,7 +213,7 @@ class DocumentsTests: XCTestCase {
         {"updateId":0}
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
@@ -251,7 +251,7 @@ class DocumentsTests: XCTestCase {
         {"updateId":0}
         """
 
-        let decoder = JSONDecoder()
+        let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)

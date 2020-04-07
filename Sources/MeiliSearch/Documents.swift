@@ -83,7 +83,7 @@ final class Documents {
                 }
 
                 do {
-                    let dictionary = try JSONSerialization
+                    let dictionary: [String: Any] = try JSONSerialization
                         .jsonObject(with: data, options: []) as! [String: Any]
                     completion(.success(dictionary))
                 } catch {
@@ -115,7 +115,7 @@ final class Documents {
                 }
 
                 do {
-                    let dictionaries = try JSONSerialization
+                    let dictionaries: [[String: Any]] = try JSONSerialization
                         .jsonObject(with: data, options: []) as! [[String: Any]]
                     completion(.success(dictionaries))
                 } catch {
@@ -185,7 +185,7 @@ final class Documents {
         _ data: Data,
         _ completion: (Result<Update, Swift.Error>) -> Void) {
         do {
-            let decoder = JSONDecoder()
+            let decoder: JSONDecoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
             let update: Update = try decoder.decode(Update.self, from: data)
             completion(.success(update))
