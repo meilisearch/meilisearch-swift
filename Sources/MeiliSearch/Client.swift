@@ -25,7 +25,7 @@ public struct MeiliSearch {
 
      - parameter config: Set the default configuration for the client. 
      */
-    public init(_ config: Config) throws {
+    public init(_ config: Config = Config.default) throws {
         self.config = try config.validate()
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)
