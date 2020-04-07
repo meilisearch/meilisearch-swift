@@ -42,7 +42,7 @@ class MockURLSession: URLSessionProtocol {
         self.nextCode = code
     }
 
-    func pushError(_ string: String?, _ error: Error, code: Int) {
+    func pushError(_ string: String? = nil, _ error: Error? = nil, code: Int) {
         self.nextData = string?.data(using: .utf8)
         self.nextError = error
         self.nextCode = code

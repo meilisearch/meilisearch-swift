@@ -24,9 +24,6 @@ public struct Config {
      - parameter apiKey:  API key needed for the production environment.
      */
     public init(hostURL: String = "", apiKey: String = "") {
-        if hostURL.isEmpty {
-            fatalError("Host URL is empty")
-        }
         self.hostURL = hostURL
         self.apiKey = apiKey
         self.session = URLSession.shared

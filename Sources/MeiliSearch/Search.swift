@@ -14,7 +14,7 @@ final class Search {
 
     func search(
       uid: String,
-      searchParameters: SearchParameters,
+      _ searchParameters: SearchParameters,
       _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
 
         let api: String = queryURL(

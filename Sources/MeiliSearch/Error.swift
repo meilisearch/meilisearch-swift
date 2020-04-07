@@ -7,11 +7,13 @@
 
 import Foundation
 
-extension MeiliSearch {
+public extension MeiliSearch {
 
-  public enum Error: Swift.Error {
+  enum Error: Swift.Error {
     case serverNotFound
     case dataNotFound
   }
 
 }
+
+extension MeiliSearch.Error: Equatable {}

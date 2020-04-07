@@ -54,7 +54,7 @@ class SearchTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Searching for botman")
 
-        self.client.search(uid: uid, searchParameters: searchParameters) { result in
+        self.client.search(uid: uid, searchParameters) { result in
             switch result {
             case .success(let searchResult):
 

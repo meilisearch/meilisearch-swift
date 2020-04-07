@@ -236,9 +236,9 @@ public struct MeiliSearch {
      */
     public func search(
         uid: String,
-        searchParameters: SearchParameters,
+        _ searchParameters: SearchParameters,
         _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
-        self.search.search(uid: uid, searchParameters: searchParameters, completion)
+        self.search.search(uid: uid, searchParameters, completion)
     }
 
     // MARK: System
