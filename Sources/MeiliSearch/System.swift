@@ -12,12 +12,12 @@ final class System {
         request = Request(config: config)
     }
 
-    func health(_ completion: @escaping (Result<(), Error>) -> Void) {
+    func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         self.request.get(api: "/health") { result in
 
             switch result {
-            case .success(let data):
+            case .success:
                 completion(.success(()))
 
             case .failure(let error):
@@ -28,15 +28,16 @@ final class System {
 
     }
 
-    func version(_ completion: @escaping (Result<Version, Error>) -> Void) {
+    func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
 
         self.request.get(api: "/version") { result in
 
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
@@ -56,7 +57,7 @@ final class System {
 
     }
 
-    func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
+    func systemInfo(_ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
 
         self.request.get(api: "/sys-info") { result in
 
@@ -84,12 +85,12 @@ final class System {
 
     }
 
-    func prettySysInfo(_ completion: @escaping (Result<(), Error>) -> Void) {
+    func prettySysInfo(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         self.request.get(api: "/sys-info/pretty") { result in
 
             switch result {
-            case .success(let data):
+            case .success:
                 completion(.success(()))
 
             case .failure(let error):
@@ -100,12 +101,12 @@ final class System {
 
     }
 
-    func stats(_ completion: @escaping (Result<(), Error>) -> Void) {
+    func stats(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         self.request.get(api: "/stats") { result in
 
             switch result {
-            case .success(let data):
+            case .success:
                 completion(.success(()))
 
             case .failure(let error):

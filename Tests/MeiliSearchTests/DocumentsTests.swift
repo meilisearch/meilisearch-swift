@@ -1,32 +1,15 @@
 @testable import MeiliSearch
 import XCTest
 
-func searchForMovies() {
-
-    let client = MeiliSearchClient(Config(hostURL: "http://localhost:7700"))
-
-    let searchParameters = SearchParameters.query("botman")
-
-    self.client.search(uid: "movies", searchParameters: searchParameters) { result in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure:
-            XCTFail("Failed to search for botman")
-        }
-    }
-
-}
-
 class DocumentsTests: XCTestCase {
 
-    private var client: MeiliSearchClient!
+    private var client: MeiliSearch!
 
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
-        client = MeiliSearchClient(Config(hostURL: "http://localhost:7700", session: session))
+        client = try! MeiliSearch(Config(hostURL: "", session: session))
     }
 
     func testAddOrReplaceDocument() {
@@ -326,5 +309,5 @@ class DocumentsTests: XCTestCase {
         ("testDeleteDocument", testDeleteDocument),
         ("testDeleteAllDocuments", testDeleteAllDocuments)
     ]
-    
+
 }

@@ -24,7 +24,7 @@ final class Request {
     func get(
         api: String,
         param: String? = nil,
-        _ completion: @escaping (Result<Data?, Error>) -> Void) {
+        _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         var urlString: String = config.url(api: api)
         if let param: String = param, !param.isEmpty {
@@ -48,7 +48,7 @@ final class Request {
     func post(
         api: String,
         body: Data,
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
         var request = URLRequest(url: URL(string: urlString)!)
@@ -73,7 +73,7 @@ final class Request {
     func put(
         api: String,
         body: Data,
-        _ completion: @escaping (Result<Data, Error>) -> Void) {
+        _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
         var request = URLRequest(url: URL(string: urlString)!)
@@ -97,7 +97,7 @@ final class Request {
 
      func delete(
         api: String,
-        _ completion: @escaping (Result<Data?, Error>) -> Void) {
+        _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
         var request = URLRequest(url: URL(string: urlString)!)
@@ -114,6 +114,27 @@ final class Request {
         task.resume()
 
     }
+
+}
+
+struct Ping {
+
+  static func pong(_ address: String) -> Bool {
+      let url = URL(string: address)
+      let lock = NSLock()
+      var sucess: Bool = false
+
+      let task = URLSession.shared.dataTask(with: url!) { (_, _, error) in
+          if error == nil {
+              sucess = true
+          }
+          lock.unlock()
+      }
+
+      task.resume()
+      lock.lock()
+      return sucess
+  }
 
 }
 

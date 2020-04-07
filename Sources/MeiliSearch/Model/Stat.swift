@@ -6,7 +6,7 @@ import Foundation
 public struct AllStats: Codable, Equatable {
 
     // MARK: Properties
-    
+
     /// Size of the whole database, in bytes.
     public let databaseSize: Int
 

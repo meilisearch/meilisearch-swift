@@ -3,12 +3,12 @@ import XCTest
 
 class IndexesTests: XCTestCase {
 
-    private var client: MeiliSearchClient!
+    private var client: MeiliSearch!
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
-        client = MeiliSearchClient(Config(hostURL: "http://localhost:7700", session: session))
+        client = try! MeiliSearch(Config(hostURL: "", session: session))
     }
 
     func testCreateIndex() {
@@ -214,5 +214,5 @@ class IndexesTests: XCTestCase {
         // ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex)
     ]
-    
+
 }

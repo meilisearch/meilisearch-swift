@@ -12,25 +12,19 @@ final class Indexes {
         request = Request(config: config)
     }
 
-    func get(uid: String, _ completion: @escaping (Result<Index, Error>) -> Void) {
+    func get(uid: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         self.request.get(api: "/indexes/\(uid)") { result in
 
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
-
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let index: Index = try decoder.decode(Index.self, from: data)
-                    completion(.success(index))
-                } catch {
-                    completion(.failure(error))
-                }
+                
+                Indexes.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -40,25 +34,19 @@ final class Indexes {
 
     }
 
-    func getAll(_ completion: @escaping (Result<[Index], Error>) -> Void) {
+    func getAll(_ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
 
         self.request.get(api: "/indexes") { result in
 
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let indexes: [Index] = try decoder.decode([Index].self, from: data)
-                    completion(.success(indexes))
-                } catch {
-                    completion(.failure(error))
-                }
+                Indexes.decodeJSONArray(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -68,7 +56,7 @@ final class Indexes {
 
     }
 
-    func create(uid: String, _ completion: @escaping (Result<Index, Error>) -> Void) {
+    func create(uid: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: uid)
         let jsonData = try! JSONEncoder().encode(payload)
@@ -78,14 +66,7 @@ final class Indexes {
             switch result {
             case .success(let data):
 
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let index: Index = try decoder.decode(Index.self, from: data)
-                    completion(.success(index))
-                } catch {
-                    completion(.failure(error))
-                }
+                Indexes.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -95,7 +76,7 @@ final class Indexes {
 
     }
 
-    func update(uid: String, name: String, _ completion: @escaping (Result<(), Error>) -> Void) {
+    func update(uid: String, name: String, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         let payload = UpdateIndexPayload(name: name)
         let jsonData = try! JSONEncoder().encode(payload)
@@ -103,7 +84,7 @@ final class Indexes {
         self.request.put(api: "/indexes/\(uid)", body: jsonData) { result in
 
             switch result {
-            case .success(let data):
+            case .success:
                 completion(.success(()))
 
             case .failure(let error):
@@ -114,12 +95,12 @@ final class Indexes {
 
     }
 
-    func delete(uid: String, _ completion: @escaping (Result<(), Error>) -> Void) {
+    func delete(uid: String, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)") { result in
 
             switch result {
-            case .success(let data):
+            case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
@@ -127,6 +108,32 @@ final class Indexes {
 
         }
 
+    }
+
+    private static func decodeJSON(
+        _ data: Data,
+        _ completion: (Result<Index, Swift.Error>) -> Void) {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+            let update: Index = try decoder.decode(Index.self, from: data)
+            completion(.success(update))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    private static func decodeJSONArray(
+        _ data: Data,
+        _ completion: (Result<[Index], Swift.Error>) -> Void) {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+            let update: [Index] = try decoder.decode([Index].self, from: data)
+            completion(.success(update))
+        } catch {
+            completion(.failure(error))
+        }
     }
 
 }

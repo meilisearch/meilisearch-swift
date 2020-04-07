@@ -26,7 +26,7 @@ public struct SearchParameters: Codable, Equatable {
 
     /// Limit length at which to crop specified attributes.
     public let cropLength: Int
-    
+
     /// Which attributes to highlight.
     public let attributesToHighlight: [String]
 
@@ -59,7 +59,7 @@ public struct SearchParameters: Codable, Equatable {
         self.matches = matches
     }
 
-    // MARK Query Initializers
+    // MARK: Query Initializers
 
     /**
      Minimal static function used to easily initialize the `SearchParameters` instance with
@@ -100,7 +100,7 @@ public struct SearchParameters: Codable, Equatable {
     }
 
     private func commaRepresentation(_ array: [String]) -> String {
-      array.joined(separator:",")
+      array.joined(separator: ",")
     }
 
     /**

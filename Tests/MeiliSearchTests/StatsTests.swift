@@ -3,13 +3,13 @@ import XCTest
 
 class StatsTests: XCTestCase {
 
-    private var client: MeiliSearchClient!
+    private var client: MeiliSearch!
 
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
-        client = MeiliSearchClient(Config(hostURL: "http://localhost:7700", session: session))
+        client = try! MeiliSearch(Config(hostURL: "", session: session))
     }
 
     func testStats() {

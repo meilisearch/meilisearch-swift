@@ -13,12 +13,12 @@ final class Search {
     }
 
     func search(
-      uid: String, 
+      uid: String,
       searchParameters: SearchParameters,
-      _ completion: @escaping (Result<SearchResult, Error>) -> Void) {
+      _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
 
         let api: String = queryURL(
-            api: "/indexes/\(uid)/search", 
+            api: "/indexes/\(uid)/search",
             searchParameters.dictionary())
 
         self.request.get(api: api) { result in
@@ -26,13 +26,14 @@ final class Search {
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
                     let json: Any = try JSONSerialization.jsonObject(
-                        with: data, 
+                        with: data,
                         options: [])
                     let result = SearchResult(json: json)
                     completion(.success(result))

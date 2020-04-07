@@ -12,15 +12,16 @@ final class Stats {
         request = Request(config: config)
     }
 
-    func stat(uid: String, _ completion: @escaping (Result<Stat, Error>) -> Void) {
+    func stat(uid: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
 
         self.request.get(api: "/indexes/\(uid)/stats") { result in
 
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
@@ -40,15 +41,16 @@ final class Stats {
 
     }
 
-    func allStats(_ completion: @escaping (Result<AllStats, Error>) -> Void) {
+    func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
 
         self.request.get(api: "/stats") { result in
 
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {

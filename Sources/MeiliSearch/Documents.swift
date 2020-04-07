@@ -12,11 +12,13 @@ final class Documents {
         request = Request(config: config)
     }
 
+    // MARK: Write
+
     func addOrReplace(
         uid: String,
         document: Data,
         primaryKey: String?,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
         var query: String = "/indexes/\(uid)/documents"
         if let primaryKey: String = primaryKey {
@@ -27,7 +29,8 @@ final class Documents {
 
             switch result {
             case .success(let data):
-                decodeUpdateJSON(data, completion)
+
+              Documents.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -40,7 +43,7 @@ final class Documents {
         uid: String,
         document: Data,
         primaryKey: String?,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
         var query: String = "/indexes/\(uid)/documents"
         if let primaryKey: String = primaryKey {
@@ -51,7 +54,8 @@ final class Documents {
 
             switch result {
             case .success(let data):
-                decodeUpdateJSON(data, completion)
+
+                Documents.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -60,10 +64,12 @@ final class Documents {
         }
     }
 
+    // MARK: Query
+
     func get(
         uid: String,
         identifier: String,
-        _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
+        _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents/\(identifier)"
         request.get(api: query) { result in
@@ -71,8 +77,9 @@ final class Documents {
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
@@ -94,7 +101,7 @@ final class Documents {
     func getAll(
         uid: String,
         limit: Int = -1,
-        _ completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
 
         let query: String = "/indexes/\(uid)/documents?limit=\(limit)"
         request.get(api: query) { result in
@@ -102,8 +109,9 @@ final class Documents {
             switch result {
             case .success(let data):
 
-                guard let data = data else {
-                    fatalError()
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
@@ -122,19 +130,24 @@ final class Documents {
 
     }
 
+    // MARK: Delete
+
     func delete(
         uid: String,
         identifier: String,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
 
             switch result {
             case .success(let data):
-                guard let data = data else {
+
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
-                decodeUpdateJSON(data, completion)
+
+                Documents.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -146,16 +159,19 @@ final class Documents {
 
     func deleteAll(
         uid: String,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(uid)/documents") { result in
 
             switch result {
             case .success(let data):
-                guard let data = data else {
+
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
-                decodeUpdateJSON(data, completion)
+
+                Documents.decodeJSON(data, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -165,17 +181,17 @@ final class Documents {
 
     }
 
-}
-
-private func decodeUpdateJSON(
-    _ data: Data,
-    _ completion: (Result<Update, Error>) -> Void) {
-    do {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let update: Update = try decoder.decode(Update.self, from: data)
-        completion(.success(update))
-    } catch {
-        completion(.failure(error))
+    private static func decodeJSON(
+        _ data: Data,
+        _ completion: (Result<Update, Swift.Error>) -> Void) {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+            let update: Update = try decoder.decode(Update.self, from: data)
+            completion(.success(update))
+        } catch {
+            completion(.failure(error))
+        }
     }
+
 }

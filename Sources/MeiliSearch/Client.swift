@@ -1,17 +1,17 @@
 import Foundation
 
 /**
- A `MeiliSearchClient` instance represents a MeiliSearch client used to easily integrate 
+ A `MeiliSearch` instance represents a MeiliSearch client used to easily integrate
  your Swift product with the MeiliSearch server.
 
- - warning: `MeiliSearchClient` instances are thread safe and can be shared across threads
+ - warning: `MeiliSearch` instances are thread safe and can be shared across threads
  or dispatch queues.
  */
-public class MeiliSearchClient {
+public struct MeiliSearch {
 
     // MARK: Properties
 
-    private let config: Config
+    public var config: Config
     private let indexes: Indexes
     private let documents: Documents
     private let search: Search
@@ -21,12 +21,12 @@ public class MeiliSearchClient {
     // MARK: Initializers
 
     /**
-     Obtains a MeiliSearchClient instance for the given `config`.
+     Obtains a MeiliSearch instance for the given `config`.
 
      - parameter config: Set the default configuration for the client. 
      */
-    public init(_ config: Config) {
-        self.config = config
+    public init(_ config: Config) throws {
+        self.config = try config.validate()
         self.indexes = Indexes(config: config)
         self.documents = Documents(config: config)
         self.search = Search(config: config)
@@ -46,7 +46,7 @@ public class MeiliSearchClient {
      */
     public func createIndex(
         uid: String,
-        _ completion: @escaping (Result<Index, Error>) -> Void) {
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
         self.indexes.create(uid: uid, completion)
     }
 
@@ -60,7 +60,7 @@ public class MeiliSearchClient {
      */
     public func getIndex(
         uid: String,
-        _ completion: @escaping (Result<Index, Error>) -> Void) {
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
         self.indexes.get(uid: uid, completion)
     }
 
@@ -71,7 +71,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `[Index]` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func getIndexes(_ completion: @escaping (Result<[Index], Error>) -> Void) {
+    public func getIndexes(_ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
         self.indexes.getAll(completion)
     }
 
@@ -87,7 +87,7 @@ public class MeiliSearchClient {
     public func updateIndex(
         uid: String,
         name: String,
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
         self.indexes.update(uid: uid, name: name, completion)
     }
 
@@ -100,7 +100,7 @@ public class MeiliSearchClient {
      */
     public func deleteIndex(
         uid: String,
-        _ completion: @escaping (Result<(), Error>) -> Void) {
+        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
         self.indexes.delete(uid: uid, completion)
     }
 
@@ -125,7 +125,7 @@ public class MeiliSearchClient {
         uid: String,
         document: Data,
         primaryKey: String?,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrReplace(
             uid: uid,
             document: document,
@@ -152,7 +152,7 @@ public class MeiliSearchClient {
         uid: String,
         document: Data,
         primaryKey: String?,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrUpdate(
             uid: uid,
             document: document,
@@ -173,7 +173,7 @@ public class MeiliSearchClient {
     public func getDocument(
         uid: String,
         identifier: String,
-        _ completion: @escaping (Result<[String: Any], Error>) -> Void) {
+        _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
         self.documents.get(uid: uid, identifier: identifier, completion)
     }
 
@@ -190,7 +190,7 @@ public class MeiliSearchClient {
     public func getDocuments(
         uid: String,
         limit: Int,
-        _ completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
         self.documents.getAll(uid: uid, limit: limit, completion)
     }
 
@@ -206,7 +206,7 @@ public class MeiliSearchClient {
     public func deleteDocument(
         uid: String,
         identifier: String,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.delete(uid: uid, identifier: identifier, completion)
     }
 
@@ -220,7 +220,7 @@ public class MeiliSearchClient {
      */
     public func deleteAllDocuments(
         uid: String,
-        _ completion: @escaping (Result<Update, Error>) -> Void) {
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.deleteAll(uid: uid, completion)
     }
 
@@ -235,9 +235,9 @@ public class MeiliSearchClient {
      `SearchResult` value. If the request was sucessful or `Error` if a failure occured.
      */
     public func search(
-        uid: String, 
-        searchParameters: SearchParameters, 
-        _ completion: @escaping (Result<SearchResult, Error>) -> Void) {
+        uid: String,
+        searchParameters: SearchParameters,
+        _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
         self.search.search(uid: uid, searchParameters: searchParameters, completion)
     }
 
@@ -250,7 +250,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `()` value. 
      If the request was sucessful or `Error` if a failure occured.
      */
-    public func health(_ completion: @escaping (Result<(), Error>) -> Void) {
+    public func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
         self.system.health(completion)
     }
 
@@ -261,7 +261,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `Version` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func version(_ completion: @escaping (Result<Version, Error>) -> Void) {
+    public func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
         self.system.version(completion)
     }
 
@@ -272,7 +272,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `SystemInfo` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func systemInfo(_ completion: @escaping (Result<SystemInfo, Error>) -> Void) {
+    public func systemInfo(_ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
         self.system.systemInfo(completion)
     }
 
@@ -285,7 +285,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `Stat` value. 
      If the request was sucessful or `Error` if a failure occured.
      */
-    public func stat(uid: String, _ completion: @escaping (Result<Stat, Error>) -> Void) {
+    public func stat(uid: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
         self.stats.stat(uid: uid, completion)
     }
 
@@ -296,7 +296,7 @@ public class MeiliSearchClient {
      completes the query request, it returns a `Result` object that contains `AllStats` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func allStats(_ completion: @escaping (Result<AllStats, Error>) -> Void) {
+    public func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
         self.stats.allStats(completion)
     }
 
