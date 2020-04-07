@@ -3,7 +3,7 @@ import MeiliSearch
 
 func routes(_ app: Application) throws {
 
-    let client = MeiliSearchClient(Config(hostURL: "http://localhost:7700"))
+    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
 
     // 127.0.0.1:8080/index?uid=Movies
     app.get("index") { req -> EventLoopFuture<String> in
@@ -24,9 +24,9 @@ func routes(_ app: Application) throws {
               switch result {
               case .success(let index):
 
-                let encoder = JSONEncoder()
-                let data = try! encoder.encode(index)
-                let dataString = String(decoding: data, as: UTF8.self)
+                let encoder: JSONEncoder = JSONEncoder()
+                let data: Data = try! encoder.encode(index)
+                let dataString: String = String(decoding: data, as: UTF8.self)
 
                 promise.succeed(dataString)
 
@@ -59,17 +59,15 @@ func routes(_ app: Application) throws {
 
             let searchParameters = SearchParameters.query(query)
 
-            client.search(uid: "movies", searchParameters: searchParameters) { result in
+            client.search(uid: "movies", searchParameters) { result in
 
               switch result {
               case .success(let searchResult):
 
-                print("searchResult.hits \(searchResult.hits)")
-
                 let jsonData = try! JSONSerialization.data(
                   withJSONObject: searchResult.hits,
                   options: [])
-                let dataString = String(decoding: jsonData, as: UTF8.self)
+                let dataString: String = String(decoding: jsonData, as: UTF8.self)
 
                 promise.succeed(dataString)
 
