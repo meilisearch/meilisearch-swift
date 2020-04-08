@@ -13,6 +13,7 @@ public extension MeiliSearch {
     case serverNotFound
     case dataNotFound
     case hostNotValid
+    case invalidJSON
   }
 
 }

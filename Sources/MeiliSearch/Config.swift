@@ -3,7 +3,7 @@ import Foundation
 /**
  A `Config` instance represents the default config used by MeiliSearch instance.
  */
-public struct Config {
+public class Config {
 
     public static let `default`: Config = Config(hostURL: "http://localhost:7700")
 
@@ -59,17 +59,37 @@ public struct Config {
     /**
      Validate if the MeiliSearch server can be connected.
      */
-    func validate() throws -> Config {
+    func validate(_ request: Request) throws -> Config {
+
         if self.hostURL.isEmpty {
             return self
         }
-        guard let url: URL = URL(string: self.hostURL) else {
+
+        guard let _ = URL(string: self.hostURL) else {
             throw MeiliSearch.Error.hostNotValid
         }
-        if !Ping.pong(url) {
+
+        let success: Bool = autoreleasepool {
+            let semaphore = DispatchSemaphore(value: 0)
+            var success: Bool = false
+            request.get(api: "") { result in
+                switch result {
+                case .success:
+                    success = true
+                case .failure:
+                    success = false
+                }
+                semaphore.signal()
+            }
+            semaphore.wait()
+            return success
+        }
+
+        if !success {
             throw MeiliSearch.Error.serverNotFound
         }
         return self
+
     }
 
 }

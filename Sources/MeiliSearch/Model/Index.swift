@@ -12,7 +12,7 @@ public struct Index: Codable, Equatable {
     public let name: String
 
     /// The index UID.
-    public let uid: String
+    public let UID: String
 
     /// The data when the index was created.
     public let createdAt: Date?
@@ -27,15 +27,23 @@ public struct Index: Codable, Equatable {
 
     init(
         name: String,
-        uid: String,
+        UID: String,
         createdAt: Date? = nil,
         updatedAt: Date? = nil,
         primaryKey: String? = nil) {
         self.name = name
-        self.uid = uid
+        self.UID = UID
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.primaryKey = primaryKey
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case UID = "uid"
+        case createdAt
+        case updatedAt
+        case primaryKey
     }
 
 }

@@ -26,12 +26,13 @@ public struct MeiliSearch {
      - parameter config: Set the default configuration for the client. 
      */
     public init(_ config: Config = Config.default) throws {
-        self.config = try config.validate()
-        self.indexes = Indexes(config: config)
-        self.documents = Documents(config: config)
-        self.search = Search(config: config)
-        self.system = System(config: config)
-        self.stats = Stats(config: config)
+      let request: Request = Request(config)
+        self.config = try config.validate(request)
+        self.indexes = Indexes(request)
+        self.documents = Documents(request)
+        self.search = Search(request)
+        self.system = System(request)
+        self.stats = Stats(request)
     }
 
     // MARK: Index
@@ -45,9 +46,9 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func createIndex(
-        uid: String,
+        UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-        self.indexes.create(uid: uid, completion)
+        self.indexes.create(UID, completion)
     }
 
     /**
@@ -59,9 +60,9 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func getIndex(
-        uid: String,
+        UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-        self.indexes.get(uid: uid, completion)
+        self.indexes.get(UID, completion)
     }
 
     /**
@@ -85,10 +86,10 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func updateIndex(
-        uid: String,
+        UID: String,
         name: String,
         _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-        self.indexes.update(uid: uid, name: name, completion)
+        self.indexes.update(UID, name, completion)
     }
 
     /**
@@ -99,9 +100,9 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteIndex(
-        uid: String,
+        UID: String,
         _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-        self.indexes.delete(uid: uid, completion)
+        self.indexes.delete(UID, completion)
     }
 
     // MARK: Document
@@ -122,14 +123,14 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func addOrReplaceDocument(
-        uid: String,
+        UID: String,
         document: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrReplace(
-            uid: uid,
-            document: document,
-            primaryKey: primaryKey,
+            UID,
+            document,
+            primaryKey,
             completion)
     }
 
@@ -149,14 +150,14 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func addOrUpdateDocument(
-        uid: String,
+        UID: String,
         document: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrUpdate(
-            uid: uid,
-            document: document,
-            primaryKey: primaryKey,
+            UID,
+            document,
+            primaryKey,
             completion)
     }
 
@@ -171,10 +172,10 @@ public struct MeiliSearch {
      failure occured.
      */
     public func getDocument(
-        uid: String,
+        UID: String,
         identifier: String,
         _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
-        self.documents.get(uid: uid, identifier: identifier, completion)
+        self.documents.get(UID, identifier, completion)
     }
 
     /**
@@ -188,10 +189,10 @@ public struct MeiliSearch {
      failure occured.
      */
     public func getDocuments(
-        uid: String,
+        UID: String,
         limit: Int,
         _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
-        self.documents.getAll(uid: uid, limit: limit, completion)
+        self.documents.getAll(UID, limit, completion)
     }
 
     /**
@@ -204,10 +205,10 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteDocument(
-        uid: String,
+        UID: String,
         identifier: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.delete(uid: uid, identifier: identifier, completion)
+        self.documents.delete(UID, identifier, completion)
     }
 
     /**
@@ -219,9 +220,25 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteAllDocuments(
-        uid: String,
+        UID: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.deleteAll(uid: uid, completion)
+        self.documents.deleteAll(UID, completion)
+    }
+
+    /**
+     Delete a selection of documents based on array of document `uid`'s.
+
+     - parameter uid:          The unique identifier for the Document's index to be deleted.
+     - parameter documentsUID: The array of unique identifier for the Document to be deleted.
+     - parameter completion:   The completion closure used to notify when the server
+     completes the delete request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    func deleteBatchDocuments(
+      UID: String,
+      documentsUID: [Int],
+      _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+      self.documents.deleteBatch(UID, documentsUID, completion)
     }
 
     /**
@@ -235,10 +252,10 @@ public struct MeiliSearch {
      `SearchResult` value. If the request was sucessful or `Error` if a failure occured.
      */
     public func search(
-        uid: String,
+        UID: String,
         _ searchParameters: SearchParameters,
         _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
-        self.search.search(uid: uid, searchParameters, completion)
+        self.search.search(UID, searchParameters, completion)
     }
 
     // MARK: System
@@ -285,8 +302,8 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains `Stat` value. 
      If the request was sucessful or `Error` if a failure occured.
      */
-    public func stat(uid: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-        self.stats.stat(uid: uid, completion)
+    public func stat(UID: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+        self.stats.stat(UID, completion)
     }
 
     /**

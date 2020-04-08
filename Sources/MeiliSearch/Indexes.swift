@@ -1,6 +1,6 @@
 import Foundation
 
-final class Indexes {
+struct Indexes {
 
     // MARK: Properties
 
@@ -8,13 +8,15 @@ final class Indexes {
 
     // MARK: Initializers
 
-    init (config: Config) {
-        request = Request(config: config)
+    init (_ request: Request) {
+      self.request = request
     }
 
-    func get(uid: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+    func get(
+      _ UID: String,
+      _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
-        self.request.get(api: "/indexes/\(uid)") { result in
+        self.request.get(api: "/indexes/\(UID)") { result in
 
             switch result {
             case .success(let data):
@@ -56,9 +58,11 @@ final class Indexes {
 
     }
 
-    func create(uid: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+    func create(
+      _ UID: String,
+      _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
-        let payload = CreateIndexPayload(uid: uid)
+        let payload = CreateIndexPayload(uid: UID)
         let jsonData: Data = try! JSONEncoder().encode(payload)
 
         self.request.post(api: "/indexes", body: jsonData) { result in
@@ -76,12 +80,15 @@ final class Indexes {
 
     }
 
-    func update(uid: String, name: String, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    func update(
+      _ UID: String,
+      _ name: String,
+      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         let payload = UpdateIndexPayload(name: name)
         let jsonData: Data = try! JSONEncoder().encode(payload)
 
-        self.request.put(api: "/indexes/\(uid)", body: jsonData) { result in
+        self.request.put(api: "/indexes/\(UID)", body: jsonData) { result in
 
             switch result {
             case .success:
@@ -95,9 +102,11 @@ final class Indexes {
 
     }
 
-    func delete(uid: String, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    func delete(
+      _ UID: String,
+      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
-        self.request.delete(api: "/indexes/\(uid)") { result in
+        self.request.delete(api: "/indexes/\(UID)") { result in
 
             switch result {
             case .success:

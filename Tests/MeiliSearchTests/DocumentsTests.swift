@@ -48,7 +48,7 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
         self.client.addOrReplaceDocument(
-            uid: uid,
+            UID: uid,
             document: document,
             primaryKey: primaryKey) { result in
 
@@ -99,7 +99,7 @@ class DocumentsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Add or update Movies document")
 
         self.client.addOrUpdateDocument(
-            uid: uid,
+            UID: uid,
             document: document,
             primaryKey: primaryKey) { result in
 
@@ -142,7 +142,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies document")
 
-        self.client.getDocument(uid: uid, identifier: identifier) { result in
+        self.client.getDocument(UID: uid, identifier: identifier) { result in
 
             switch result {
             case .success(let document):
@@ -189,7 +189,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies documents")
 
-        self.client.getDocuments(uid: uid, limit: limit) { result in
+        self.client.getDocuments(UID: uid, limit: limit) { result in
 
             switch result {
             case .success(let documents):
@@ -227,7 +227,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Delete Movies document")
 
-        self.client.deleteDocument(uid: uid, identifier: identifier) { result in
+        self.client.deleteDocument(UID: uid, identifier: identifier) { result in
 
             switch result {
             case .success(let update):
@@ -263,7 +263,7 @@ class DocumentsTests: XCTestCase {
         let uid = "Movies"
         let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
-        self.client.deleteAllDocuments(uid: uid) { result in
+        self.client.deleteAllDocuments(UID: uid) { result in
 
             switch result {
             case .success(let update):
@@ -274,6 +274,43 @@ class DocumentsTests: XCTestCase {
             }
 
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testDeleteBatchDocuments() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+        session.pushData(jsonString, code: 202)
+
+        // Start the test with the mocked server
+
+        let uid = "Movies"
+        let documentsUID: [Int] = [23488, 153738, 437035, 363869]
+        let expectation = XCTestExpectation(description: "Delete all Movies documents")
+
+      self.client.deleteBatchDocuments(UID: uid, documentsUID: documentsUID) { result in
+
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to delete all Movies documents")
+            }
+
+      }
 
         self.wait(for: [expectation], timeout: 1.0)
 
@@ -307,7 +344,8 @@ class DocumentsTests: XCTestCase {
         ("testGetDocument", testGetDocument),
         ("testGetDocuments", testGetDocuments),
         ("testDeleteDocument", testDeleteDocument),
-        ("testDeleteAllDocuments", testDeleteAllDocuments)
+        ("testDeleteAllDocuments", testDeleteAllDocuments),
+        ("testDeleteBatchDocuments", testDeleteBatchDocuments)
     ]
 
 }

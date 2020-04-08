@@ -16,7 +16,7 @@ final class Request {
     private let config: Config
     private let session: URLSessionProtocol
 
-    init(config: Config) {
+    init(_ config: Config) {
         self.config = config
         self.session = config.session
     }
@@ -25,6 +25,8 @@ final class Request {
         api: String,
         param: String? = nil,
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
+
+      autoreleasepool {
 
         var urlString: String = config.url(api: api)
         if let param: String = param, !param.isEmpty {
@@ -43,6 +45,8 @@ final class Request {
         }
 
         task.resume()
+
+      }
     }
 
     func post(
@@ -114,27 +118,6 @@ final class Request {
         task.resume()
 
     }
-
-}
-
-struct Ping {
-
-  static func pong(_ url: URL) -> Bool {
-
-      let lock: NSLock = NSLock()
-      var sucess: Bool = false
-
-      let task: URLSessionDataTaskProtocol = URLSession.shared.dataTask(with: url) { (_, _, error) in
-          if error == nil {
-              sucess = true
-          }
-          lock.unlock()
-      }
-
-      task.resume()
-      lock.lock()
-      return sucess
-  }
 
 }
 

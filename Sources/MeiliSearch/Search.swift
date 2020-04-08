@@ -1,6 +1,6 @@
 import Foundation
 
-final class Search {
+struct Search {
 
     // MARK: Properties
 
@@ -8,17 +8,17 @@ final class Search {
 
     // MARK: Initializers
 
-    init (config: Config) {
-        request = Request(config: config)
+    init (_ request: Request) {
+      self.request = request
     }
 
     func search(
-      uid: String,
+      _ UID: String,
       _ searchParameters: SearchParameters,
       _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
 
         let api: String = queryURL(
-            api: "/indexes/\(uid)/search",
+            api: "/indexes/\(UID)/search",
             searchParameters.dictionary())
 
         self.request.get(api: api) { result in

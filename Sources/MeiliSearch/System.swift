@@ -1,6 +1,6 @@
 import Foundation
 
-final class System {
+struct System {
 
     // MARK: Properties
 
@@ -8,8 +8,8 @@ final class System {
 
     // MARK: Initializers
 
-    init (config: Config) {
-        request = Request(config: config)
+    init (_ request: Request) {
+      self.request = request
     }
 
     func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {

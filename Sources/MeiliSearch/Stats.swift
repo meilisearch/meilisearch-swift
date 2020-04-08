@@ -1,6 +1,6 @@
 import Foundation
 
-final class Stats {
+struct Stats {
 
     // MARK: Properties
 
@@ -8,13 +8,15 @@ final class Stats {
 
     // MARK: Initializers
 
-    init (config: Config) {
-        request = Request(config: config)
+    init (_ request: Request) {
+      self.request = request
     }
 
-    func stat(uid: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+    func stat(
+      _ UID: String,
+      _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
 
-        self.request.get(api: "/indexes/\(uid)/stats") { result in
+        self.request.get(api: "/indexes/\(UID)/stats") { result in
 
             switch result {
             case .success(let data):

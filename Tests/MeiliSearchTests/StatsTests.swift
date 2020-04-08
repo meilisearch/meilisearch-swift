@@ -43,7 +43,7 @@ class StatsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Check Movies stats")
 
-        self.client.stat(uid: uid) { result in
+        self.client.stat(UID: uid) { result in
             switch result {
             case .success(let stats):
                 XCTAssertEqual(stubStats, stats)

@@ -38,7 +38,7 @@ class IndexesTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Create Movies index")
 
-        self.client.createIndex(uid: uid) { result in
+        self.client.createIndex(UID: uid) { result in
             switch result {
             case .success(let index):
                 XCTAssertEqual(stubIndex, index)
@@ -79,7 +79,7 @@ class IndexesTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Load Movies index")
 
-        self.client.getIndex(uid: uid) { result in
+        self.client.getIndex(UID: uid) { result in
 
             switch result {
             case .success(let index):
@@ -164,7 +164,7 @@ class IndexesTests: XCTestCase {
 
     //     let expectation = XCTestExpectation(description: "Rename Movies to Photos")
 
-    //     self.client.updateIndex(uid: uid, name: newUid) { result in
+    //     self.client.updateIndex(UID: uid, name: newUid) { result in
 
     //         switch result {
     //         case .success:
@@ -192,7 +192,7 @@ class IndexesTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Delete Movies index")
 
-        self.client.deleteIndex(uid: uid) { result in
+        self.client.deleteIndex(UID: uid) { result in
 
             switch result {
             case .success:

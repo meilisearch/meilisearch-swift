@@ -1,6 +1,6 @@
 import Foundation
 
-final class Documents {
+struct Documents {
 
     // MARK: Properties
 
@@ -8,70 +8,18 @@ final class Documents {
 
     // MARK: Initializers
 
-    init (config: Config) {
-        request = Request(config: config)
-    }
-
-    // MARK: Write
-
-    func addOrReplace(
-        uid: String,
-        document: Data,
-        primaryKey: String?,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        var query: String = "/indexes/\(uid)/documents"
-        if let primaryKey: String = primaryKey {
-            query += "?primaryKey=\(primaryKey)"
-        }
-
-        request.post(api: query, body: document) { result in
-
-            switch result {
-            case .success(let data):
-
-              Documents.decodeJSON(data, completion)
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-    }
-
-    func addOrUpdate(
-        uid: String,
-        document: Data,
-        primaryKey: String?,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        var query: String = "/indexes/\(uid)/documents"
-        if let primaryKey: String = primaryKey {
-            query += "?primaryKey=\(primaryKey)"
-        }
-
-        request.put(api: query, body: document) { result in
-
-            switch result {
-            case .success(let data):
-
-                Documents.decodeJSON(data, completion)
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+    init (_ request: Request) {
+      self.request = request
     }
 
     // MARK: Query
 
     func get(
-        uid: String,
-        identifier: String,
+        _ UID: String,
+        _ identifier: String,
         _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
 
-        let query: String = "/indexes/\(uid)/documents/\(identifier)"
+        let query: String = "/indexes/\(UID)/documents/\(identifier)"
         request.get(api: query) { result in
 
             switch result {
@@ -99,11 +47,11 @@ final class Documents {
     }
 
     func getAll(
-        uid: String,
-        limit: Int = -1,
+        _ UID: String,
+        _ limit: Int = -1,
         _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
 
-        let query: String = "/indexes/\(uid)/documents?limit=\(limit)"
+        let query: String = "/indexes/\(UID)/documents?limit=\(limit)"
         request.get(api: query) { result in
 
             switch result {
@@ -130,14 +78,66 @@ final class Documents {
 
     }
 
+    // MARK: Write
+
+    func addOrReplace(
+        _ UID: String,
+        _ document: Data,
+        _ primaryKey: String?,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+        var query: String = "/indexes/\(UID)/documents"
+        if let primaryKey: String = primaryKey {
+            query += "?primaryKey=\(primaryKey)"
+        }
+
+        request.post(api: query, body: document) { result in
+
+            switch result {
+            case .success(let data):
+
+              Documents.decodeJSON(data, completion)
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+    }
+
+    func addOrUpdate(
+        _ UID: String,
+        _ document: Data,
+        _ primaryKey: String?,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+        var query: String = "/indexes/\(UID)/documents"
+        if let primaryKey: String = primaryKey {
+            query += "?primaryKey=\(primaryKey)"
+        }
+
+        request.put(api: query, body: document) { result in
+
+            switch result {
+            case .success(let data):
+
+                Documents.decodeJSON(data, completion)
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+    }
+
     // MARK: Delete
 
     func delete(
-        uid: String,
-        identifier: String,
+        _ UID: String,
+        _ identifier: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
+        self.request.delete(api: "/indexes/\(UID)/documents/\(identifier)") { result in
 
             switch result {
             case .success(let data):
@@ -158,10 +158,10 @@ final class Documents {
     }
 
     func deleteAll(
-        uid: String,
+        _ UID: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        self.request.delete(api: "/indexes/\(uid)/documents") { result in
+        self.request.delete(api: "/indexes/\(UID)/documents") { result in
 
             switch result {
             case .success(let data):
@@ -170,6 +170,35 @@ final class Documents {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
+
+                Documents.decodeJSON(data, completion)
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
+    func deleteBatch(
+        _ UID: String,
+        _ documentsUID: [Int],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+      let body: Data
+
+        do {
+          body = try JSONSerialization.data(withJSONObject: documentsUID, options: [])
+        } catch {
+          completion(.failure(MeiliSearch.Error.invalidJSON))
+          return
+        }
+
+        self.request.post(api: "/indexes/\(UID)/delete-batch", body: body) { result in
+
+            switch result {
+            case .success(let data):
 
                 Documents.decodeJSON(data, completion)
 
