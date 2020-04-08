@@ -15,6 +15,7 @@ public struct MeiliSearch {
     private let indexes: Indexes
     private let documents: Documents
     private let search: Search
+    private let keys: Keys
     private let system: System
     private let stats: Stats
 
@@ -31,6 +32,7 @@ public struct MeiliSearch {
         self.indexes = Indexes(request)
         self.documents = Documents(request)
         self.search = Search(request)
+        self.keys = Keys(request)
         self.system = System(request)
         self.stats = Stats(request)
     }
@@ -257,6 +259,14 @@ public struct MeiliSearch {
         _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
         self.search.search(UID, searchParameters, completion)
     }
+
+    // MARK: Keys
+
+  public func keys(
+    masterKey: String,
+    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    self.keys.get(masterKey, completion)
+  }
 
     // MARK: System
 

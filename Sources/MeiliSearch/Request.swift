@@ -24,6 +24,7 @@ final class Request {
     func get(
         api: String,
         param: String? = nil,
+        headers: [String: String] = [:],
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
       autoreleasepool {
@@ -35,6 +36,9 @@ final class Request {
 
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
+        headers.forEach { (key, value) in
+          request.addValue(value, forHTTPHeaderField: key)
+        }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
