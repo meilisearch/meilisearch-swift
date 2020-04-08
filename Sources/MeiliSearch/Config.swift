@@ -7,8 +7,14 @@ public class Config {
 
     // MARK: Static
 
+  public static let `default`: Config = Config(hostURL: "http://localhost:7700")
+
     /// Default config instance set up to use localhost and port 7700.
-    public static let `default`: Config = Config(hostURL: "http://localhost:7700")
+  public static func `default`(
+    with apiKey: String = "",
+    session: URLSessionProtocol = URLSession.shared) -> Config {
+    Config(hostURL: "http://localhost:7700", apiKey: apiKey, session: session)
+  }
 
     // MARK: Properties
 
@@ -18,7 +24,8 @@ public class Config {
     /// API key needed for the production environment.
     let apiKey: String
 
-    internal let session: URLSessionProtocol
+    /// Custom URL session useful to replace the native network library.
+    var session: URLSessionProtocol
 
     // MARK: Initializers
 
@@ -42,7 +49,7 @@ public class Config {
      - parameter apiKey:  API key needed for the production environment.
      - parameter session:  A custom produced URLSessionProtocol.
     */
-    internal init(
+    public init(
         hostURL: String,
         apiKey: String = "",
         session: URLSessionProtocol) {

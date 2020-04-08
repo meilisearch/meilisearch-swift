@@ -22,7 +22,7 @@ import PerfectHTTPServer
 import MeiliSearch
 import Foundation
 
-let client = try! MeiliSearch()
+private let client = try! MeiliSearch()
 
 func index(request: HTTPRequest, response: HTTPResponse) {
 
