@@ -66,7 +66,7 @@ func searchForMovies() {
     let searchParameters = SearchParameters.query("botman")
 
     // Call the function search and wait for the closure result.
-    self.client.search(uid: "movies", searchParameters) { result in
+    self.client.search(UID: "movies", searchParameters) { result in
         switch result {
         case .success(let searchResult):
             print(searchResult)
