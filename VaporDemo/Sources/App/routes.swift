@@ -19,7 +19,7 @@ func routes(_ app: Application) throws {
                 return
             }
 
-            client.getIndex(uid: uid) { result in
+            client.getIndex(UID: uid) { result in
 
               switch result {
               case .success(let index):
@@ -59,7 +59,7 @@ func routes(_ app: Application) throws {
 
             let searchParameters = SearchParameters.query(query)
 
-            client.search(uid: "movies", searchParameters) { result in
+            client.search(UID: "movies", searchParameters) { result in
 
               switch result {
               case .success(let searchResult):
