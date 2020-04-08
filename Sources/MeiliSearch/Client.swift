@@ -11,7 +11,12 @@ public struct MeiliSearch {
 
     // MARK: Properties
 
-    public var config: Config
+    /**
+     Current and immutable MeiliSearch configuration. To change this configuration please
+     create a new MeiliSearch instance.
+     */
+    private(set) var config: Config
+
     private let indexes: Indexes
     private let documents: Documents
     private let search: Search
@@ -27,7 +32,7 @@ public struct MeiliSearch {
      - parameter config: Set the default configuration for the client. 
      */
     public init(_ config: Config = Config.default) throws {
-      let request: Request = Request(config)
+        let request: Request = Request(config)
         self.config = try config.validate(request)
         self.indexes = Indexes(request)
         self.documents = Documents(request)
@@ -42,7 +47,7 @@ public struct MeiliSearch {
     /**
      Create a new Index for the given `uid`.
 
-     - parameter uid:        The unique identifier for the Index to be created.
+     - parameter UID:        The unique identifier for the Index to be created.
      - parameter completion: The completion closure used to notify when the server 
      completes the write request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
@@ -56,7 +61,7 @@ public struct MeiliSearch {
     /**
      Get the Index for the given `uid`.
 
-     - parameter uid:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the Index to be found.
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
@@ -81,7 +86,7 @@ public struct MeiliSearch {
     /**
      Update index name.
      
-     - parameter uid:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the Index to be found.
      - parameter name:       New index name.
      - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `()` 
@@ -118,7 +123,7 @@ public struct MeiliSearch {
 
      For a partial update of the document see `addOrUpdateDocument`.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter document:   The document data (JSON) to be processed.
      - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `Update` 
@@ -145,7 +150,7 @@ public struct MeiliSearch {
 
     To completely overwrite a document see `addOrReplaceDocument`.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter document:   The document data (JSON) to be processed.
      - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `Update` 
@@ -166,7 +171,7 @@ public struct MeiliSearch {
     /**
      Get the Document for the given `uid` and `identifier`.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter identifier: The document identifier for the Document to be found.
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains 
@@ -183,7 +188,7 @@ public struct MeiliSearch {
     /**
      List the all Documents.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter limit:      Limit the size of the query.
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains 
@@ -200,7 +205,7 @@ public struct MeiliSearch {
     /**
      Delete the Document for the given `uid` and `identifier`.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter identifier: The document identifier for the Document to be found.
      - parameter completion: The completion closure used to notify when the server 
      completes the delete request, it returns a `Result` object that contains `Update` 
@@ -216,7 +221,7 @@ public struct MeiliSearch {
     /**
      Delete all Documents for the given `uid`.
      
-     - parameter uid:        The unique identifier for the Document's index to be found.
+     - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter completion: The completion closure used to notify when the server 
      completes the delete request, it returns a `Result` object that contains `Update` 
      value. If the request was sucessful or `Error` if a failure occured.
@@ -230,23 +235,23 @@ public struct MeiliSearch {
     /**
      Delete a selection of documents based on array of document `uid`'s.
 
-     - parameter uid:          The unique identifier for the Document's index to be deleted.
+     - parameter UID:          The unique identifier for the Document's index to be deleted.
      - parameter documentsUID: The array of unique identifier for the Document to be deleted.
      - parameter completion:   The completion closure used to notify when the server
      completes the delete request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    func deleteBatchDocuments(
-      UID: String,
-      documentsUID: [Int],
-      _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-      self.documents.deleteBatch(UID, documentsUID, completion)
+    public func deleteBatchDocuments(
+        UID: String,
+        documentsUID: [Int],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.documents.deleteBatch(UID, documentsUID, completion)
     }
 
     /**
      Search for a document in the `uid` and `searchParameters`
      
-     - parameter uid:              The unique identifier for the Document's index to 
+     - parameter UID:              The unique identifier for the Document's index to
      be found.
      - parameter searchParameters: The document identifier for the Document to be found.
      - parameter completion:       The completion closure used to notify when the server 
@@ -262,11 +267,20 @@ public struct MeiliSearch {
 
     // MARK: Keys
 
-  public func keys(
-    masterKey: String,
-    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.get(masterKey, completion)
-  }
+    /**
+     Each instance of MeiliSearch has three keys: a master, a private, and a public. Each key has a given
+     set of permissions on the API routes.
+
+     - parameter masterKey:  Master key to access the `keys` function.
+     - parameter completion: The completion closure used to notify when the server
+    completes the query request, it returns a `Result` object that contains
+    `Key` value. If the request was sucessful or `Error` if a failure occured.
+    */
+    public func keys(
+        masterKey: String,
+        _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+        self.keys.get(masterKey, completion)
+    }
 
     // MARK: System
 
@@ -303,7 +317,7 @@ public struct MeiliSearch {
         self.system.systemInfo(completion)
     }
 
-    // MARK: Index Stat
+    // MARK: Stat
 
     /**
      Get stats of an index.

@@ -5,6 +5,9 @@ import Foundation
  */
 public class Config {
 
+    // MARK: Static
+
+    /// Default config instance set up to use localhost and port 7700.
     public static let `default`: Config = Config(hostURL: "http://localhost:7700")
 
     // MARK: Properties
