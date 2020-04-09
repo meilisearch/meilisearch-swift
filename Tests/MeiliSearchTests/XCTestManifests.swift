@@ -15,10 +15,13 @@ public func allTests() -> [XCTestCaseEntry] {
     [
         testCase(IndexesTests.allTests),
         testCase(DocumentsTests.allTests),
-        testCase(SystemTests.allTests),
-        testCase(StatsTests.allTests),
         testCase(SearchTests.allTests),
-        testCase(ClientTests.allTests)
+        testCase(UpdatesTests.allTests),
+        testCase(KeysTests.allTests),
+        testCase(SettingsTests.allTests),
+        testCase(StatsTests.allTests),
+        testCase(SystemTests.allTests),
+        testCase(ClientTests.allTests),
     ]
 }
 #endif

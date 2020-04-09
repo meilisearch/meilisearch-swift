@@ -9,7 +9,7 @@ struct Documents {
     // MARK: Initializers
 
     init (_ request: Request) {
-      self.request = request
+        self.request = request
     }
 
     // MARK: Query
@@ -91,7 +91,7 @@ struct Documents {
             query += "?primaryKey=\(primaryKey)"
         }
 
-        request.post(api: query, body: document) { result in
+        request.post(api: query, document) { result in
 
             switch result {
             case .success(let data):
@@ -186,16 +186,16 @@ struct Documents {
         _ documentsUID: [Int],
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-      let body: Data
+      let data: Data
 
         do {
-          body = try JSONSerialization.data(withJSONObject: documentsUID, options: [])
+          data = try JSONSerialization.data(withJSONObject: documentsUID, options: [])
         } catch {
           completion(.failure(MeiliSearch.Error.invalidJSON))
           return
         }
 
-        self.request.post(api: "/indexes/\(UID)/delete-batch", body: body) { result in
+        self.request.post(api: "/indexes/\(UID)/delete-batch", data) { result in
 
             switch result {
             case .success(let data):

@@ -9,12 +9,12 @@ struct Indexes {
     // MARK: Initializers
 
     init (_ request: Request) {
-      self.request = request
+        self.request = request
     }
 
     func get(
-      _ UID: String,
-      _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+        _ UID: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         self.request.get(api: "/indexes/\(UID)") { result in
 
@@ -59,13 +59,13 @@ struct Indexes {
     }
 
     func create(
-      _ UID: String,
-      _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+        _ UID: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: UID)
-        let jsonData: Data = try! JSONEncoder().encode(payload)
+        let data: Data = try! JSONEncoder().encode(payload)
 
-        self.request.post(api: "/indexes", body: jsonData) { result in
+        self.request.post(api: "/indexes", data) { result in
 
             switch result {
             case .success(let data):
@@ -81,9 +81,9 @@ struct Indexes {
     }
 
     func update(
-      _ UID: String,
-      _ name: String,
-      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        _ UID: String,
+        _ name: String,
+        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         let payload = UpdateIndexPayload(name: name)
         let jsonData: Data = try! JSONEncoder().encode(payload)
@@ -103,8 +103,8 @@ struct Indexes {
     }
 
     func delete(
-      _ UID: String,
-      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        _ UID: String,
+        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
 
         self.request.delete(api: "/indexes/\(UID)") { result in
 

@@ -9,13 +9,13 @@ struct Search {
     // MARK: Initializers
 
     init (_ request: Request) {
-      self.request = request
+        self.request = request
     }
 
     func search(
-      _ UID: String,
-      _ searchParameters: SearchParameters,
-      _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
+        _ UID: String,
+        _ searchParameters: SearchParameters,
+        _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
 
         let api: String = queryURL(
             api: "/indexes/\(UID)/search",

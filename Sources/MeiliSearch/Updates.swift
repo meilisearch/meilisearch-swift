@@ -1,6 +1,9 @@
 import Foundation
 
-struct Stats {
+/**
+ Settings is a list of all the customization possible for an index.
+ */
+struct Updates {
 
     // MARK: Properties
 
@@ -12,40 +15,12 @@ struct Stats {
         self.request = request
     }
 
-    func stat(
+    func get(
         _ UID: String,
-        _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+        _ update: Update,
+        _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
 
-        self.request.get(api: "/indexes/\(UID)/stats") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let stat: Stat = try decoder.decode(Stat.self, from: data)
-                    completion(.success(stat))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
-
-        self.request.get(api: "/stats") { result in
+        self.request.get(api: "/indexes/\(UID)/updates/\(update.updateId)") { result in
 
             switch result {
             case .success(let data):
@@ -58,8 +33,8 @@ struct Stats {
                 do {
                     let decoder: JSONDecoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let allStats: AllStats = try decoder.decode(AllStats.self, from: data)
-                    completion(.success(allStats))
+                    let result: Update.Result = try decoder.decode(Update.Result.self, from: data)
+                    completion(.success(result))
                 } catch {
                     completion(.failure(error))
                 }
@@ -71,5 +46,37 @@ struct Stats {
         }
 
     }
+
+    func getAll(
+        _ UID: String,
+        _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+
+        self.request.get(api: "/indexes/\(UID)/updates") { result in
+
+            switch result {
+            case .success(let data):
+
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+                    let result: [Update.Result] = try decoder.decode([Update.Result].self, from: data)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
 
 }

@@ -9,12 +9,12 @@ struct Keys {
     // MARK: Initializers
 
     init (_ request: Request) {
-      self.request = request
+        self.request = request
     }
 
-  func get(
-    _ masterKey: String,
-    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    func get(
+        _ masterKey: String,
+        _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
 
         let headers: [String: String] = ["X-Meili-API-Key": masterKey]
 
@@ -30,8 +30,8 @@ struct Keys {
 
                 do {
                     let decoder: JSONDecoder = JSONDecoder()
-                    let update: Key = try decoder.decode(Key.self, from: data)
-                    completion(.success(update))
+                    let key: Key = try decoder.decode(Key.self, from: data)
+                    completion(.success(key))
                 } catch {
                     completion(.failure(error))
                 }

@@ -20,9 +20,11 @@ public struct MeiliSearch {
     private let indexes: Indexes
     private let documents: Documents
     private let search: Search
+    private let updates: Updates
     private let keys: Keys
-    private let system: System
+    private let settings: Settings
     private let stats: Stats
+    private let system: System
 
     // MARK: Initializers
 
@@ -37,9 +39,11 @@ public struct MeiliSearch {
         self.indexes = Indexes(request)
         self.documents = Documents(request)
         self.search = Search(request)
+        self.updates = Updates(request)
         self.keys = Keys(request)
-        self.system = System(request)
+        self.settings = Settings(request)
         self.stats = Stats(request)
+        self.system = System(request)
     }
 
     // MARK: Index
@@ -265,6 +269,41 @@ public struct MeiliSearch {
         self.search.search(UID, searchParameters, completion)
     }
 
+    // MARK: Updates
+
+    /**
+     Get the status of an update in a given `Index`.
+
+     - parameter UID:       The unique identifier for the Document's index to
+     be found.
+     - parameter update:    The update value.
+     - parameter completion:The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Key` value.
+     If the request was sucessful or `Error` if a failure occured.
+    */
+    public func getUpdate(
+        UID: String,
+        _ update: Update,
+        _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+        self.updates.get(UID, update, completion)
+    }
+
+    /**
+     Get the status of an update in a given `Index`.
+
+     - parameter UID:       The unique identifier for the Document's index to
+     be found.
+     - parameter update:    The update value.
+     - parameter completion:The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Key` value.
+     If the request was sucessful or `Error` if a failure occured.
+    */
+    public func getAllUpdates(
+        UID: String,
+        _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+        self.updates.getAll(UID, completion)
+    }
+
     // MARK: Keys
 
     /**
@@ -273,13 +312,129 @@ public struct MeiliSearch {
 
      - parameter masterKey:  Master key to access the `keys` function.
      - parameter completion: The completion closure used to notify when the server
-    completes the query request, it returns a `Result` object that contains
-    `Key` value. If the request was sucessful or `Error` if a failure occured.
+     completes the query request, it returns a `Result` object that contains `Key` value.
+     If the request was sucessful or `Error` if a failure occured.
     */
     public func keys(
         masterKey: String,
         _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
         self.keys.get(masterKey, completion)
+    }
+
+    // MARK: Settings
+
+    /**
+     Get a list of all the customization possible for an `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Setting`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getSetting(
+        UID: String,
+        _ completion: @escaping (Result<Setting, Swift.Error>) -> Void) {
+        self.settings.get(UID, completion)
+    }
+
+    /**
+     Update the settings for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter setting:    Setting to be applied into Index.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateSetting(
+        UID: String,
+        _ setting: Setting,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.update(UID, setting, completion)
+    }
+
+    /**
+     Reset the settings for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetSetting(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.reset(UID, completion)
+    }
+
+    // MARK: Synonyms
+
+    /**
+     Get a list of all synonyms possible for an `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[String: [String]]`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getSynonyms(
+        UID: String,
+        _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
+        self.settings.getSynonyms(UID, completion)
+    }
+
+    /**
+     Update the synonyms for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter setting:    Setting to be applied into Index.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateSynonyms(
+        UID: String,
+        _ synonyms: [String: [String]],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateSynonyms(UID, synonyms, completion)
+    }
+
+    /**
+     Reset the synonyms for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetSynonyms(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetSynonyms(UID, completion)
+    }
+
+    // MARK: Stats
+
+    /**
+     Get stats of an index.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Stat` value.
+     If the request was sucessful or `Error` if a failure occured.
+     */
+    public func stat(UID: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+        self.stats.stat(UID, completion)
+    }
+
+    /**
+     Get stats of all indexes.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `AllStats`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
+        self.stats.allStats(completion)
     }
 
     // MARK: System
@@ -315,30 +470,6 @@ public struct MeiliSearch {
      */
     public func systemInfo(_ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
         self.system.systemInfo(completion)
-    }
-
-    // MARK: Stat
-
-    /**
-     Get stats of an index.
-
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `Stat` value. 
-     If the request was sucessful or `Error` if a failure occured.
-     */
-    public func stat(UID: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-        self.stats.stat(UID, completion)
-    }
-
-    /**
-     Get stats of all indexes.
-
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `AllStats` 
-     value. If the request was sucessful or `Error` if a failure occured.
-     */
-    public func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
-        self.stats.allStats(completion)
     }
 
 }

@@ -9,7 +9,7 @@ struct System {
     // MARK: Initializers
 
     init (_ request: Request) {
-      self.request = request
+        self.request = request
     }
 
     func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {

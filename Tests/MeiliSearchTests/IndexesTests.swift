@@ -136,50 +136,6 @@ class IndexesTests: XCTestCase {
 
     }
 
-    // func testUpdateIndexName() {
-
-    //     //Prepare the mock server
-
-    //     let jsonString = """
-    //     [{
-    //         "name":"Movies",
-    //         "uid":"Movies",
-    //         "createdAt":"2020-04-04T19:59:49.259572Z",
-    //         "updatedAt":"2020-04-04T19:59:49.259579Z",
-    //         "primaryKey":null
-    //     }]
-    //     """
-
-    //     let decoder: JSONDecoder = JSONDecoder()
-    //     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-    //     let jsonData = jsonString.data(using: .utf8)!
-    //     let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
-
-    //     session.pushData(jsonString)
-
-    //     // Start the test with the mocked server
-
-    //     let uid: String = "Movies"
-    //     let newUid: String = "Photos"
-
-    //     let expectation = XCTestExpectation(description: "Rename Movies to Photos")
-
-    //     self.client.updateIndex(UID: uid, name: newUid) { result in
-
-    //         switch result {
-    //         case .success:
-    //             XCTAssertEqual(stubIndexes, indexes)
-    //             expectation.fulfill()
-    //         case .failure:
-    //             XCTFail("Failed to rename Movies index to Photos")
-    //         }
-
-    //     }
-
-    //     self.wait(for: [expectation], timeout: 1.0)
-
-    // }
-
     func testDeleteIndex() {
 
         //Prepare the mock server
