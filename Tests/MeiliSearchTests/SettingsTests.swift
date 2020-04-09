@@ -721,7 +721,7 @@ class SettingsTests: XCTestCase {
         """
 
         let jsonData = jsonString.data(using: .utf8)!
-        let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
+        let stubDisplayedAttributes: [String] = try! JSONSerialization.jsonObject(
           with: jsonData, options: []) as! [String]
 
         session.pushData(jsonString)
@@ -734,8 +734,8 @@ class SettingsTests: XCTestCase {
 
         self.client.getDisplayedAttributes(UID: UID) { result in
             switch result {
-            case .success(let searchableAttribute):
-                XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
+            case .success(let displayedAttributes):
+                XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get displayed attribute")
@@ -824,6 +824,74 @@ class SettingsTests: XCTestCase {
 
     }
 
+    // MARK: Accept New Fields
+
+    func testGetAcceptNewFields() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        true
+        """
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get displayed attribute")
+
+        self.client.getAcceptNewFields(UID: UID) { result in
+            switch result {
+            case .success(let acceptNewFields):
+                XCTAssertTrue(acceptNewFields)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateAcceptNewFields() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+        let acceptNewFields = true
+
+        let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+        self.client.updateAcceptNewFields(UID: UID, acceptNewFields) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
     private func buildStubSetting() -> Setting {
         let data = json.data(using: .utf8)!
         let decoder: JSONDecoder = JSONDecoder()
@@ -848,7 +916,9 @@ class SettingsTests: XCTestCase {
         ("testResetSearchableAttributes", testResetSearchableAttributes),
         ("testGetDisplayedAttributes", testGetDisplayedAttributes),
         ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
-        ("testResetDisplayedAttributes", testResetDisplayedAttributes)
+        ("testResetDisplayedAttributes", testResetDisplayedAttributes),
+        ("testGetAcceptNewFields", testGetAcceptNewFields),
+        ("testUpdateAcceptNewFields", testUpdateAcceptNewFields)
     ]
 
 }

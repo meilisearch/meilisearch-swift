@@ -629,6 +629,38 @@ public struct MeiliSearch {
         self.settings.updateDisplayedAttributes(UID, displayedAttribute, completion)
     }
 
+    // MARK: Accept New Fields
+
+    /**
+     Get the accept new fields field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Bool`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getAcceptNewFields(
+        UID: String,
+        _ completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        self.settings.getAcceptNewFields(UID, completion)
+    }
+
+    /**
+     Update the accept new fields field of an `Index`.
+
+     - parameter UID:             The unique identifier for the `Index` to be found.
+     - parameter acceptNewFields: The displayed attribute to be applied into `Index`.
+     - parameter completion:      The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateAcceptNewFields(
+        UID: String,
+        _ acceptNewFields: Bool,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateAcceptNewFields(UID, acceptNewFields, completion)
+    }
+
     /**
      Reset the displayed attribute field of an `Index`.
 
