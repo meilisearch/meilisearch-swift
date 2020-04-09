@@ -14,10 +14,11 @@ struct Documents {
 
     // MARK: Query
 
-    func get<T: Codable>(
+    func get<T>(
         _ UID: String,
         _ identifier: String,
-        _ completion: @escaping (Result<T, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<T, Swift.Error>) -> Void)
+        where T: Codable, T: Equatable {
 
         let query: String = "/indexes/\(UID)/documents/\(identifier)"
         request.get(api: query) { result in
@@ -40,10 +41,11 @@ struct Documents {
 
     }
 
-    func getAll<T: Codable>(
+    func getAll<T>(
         _ UID: String,
         _ limit: Int = -1,
-        _ completion: @escaping (Result<[T], Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
+        where T: Codable, T: Equatable {
 
         let query: String = "/indexes/\(UID)/documents?limit=\(limit)"
         request.get(api: query) { result in
