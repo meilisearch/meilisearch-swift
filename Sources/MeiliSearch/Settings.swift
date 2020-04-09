@@ -277,7 +277,7 @@ struct Settings {
         _ UID: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        self.request.get(api: "/indexes/\(UID)/settings/stop-words") { result in
+        self.request.delete(api: "/indexes/\(UID)/settings/stop-words") { result in
 
             switch result {
             case .success(let data):

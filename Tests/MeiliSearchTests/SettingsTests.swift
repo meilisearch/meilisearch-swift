@@ -40,6 +40,8 @@ class SettingsTests: XCTestCase {
         client = try! MeiliSearch(Config(hostURL: "", session: session))
     }
 
+    // MARK: Settings
+
     func testGetSetting() {
 
         //Prepare the mock server
@@ -136,6 +138,8 @@ class SettingsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
+
+    // MARK: Synonyms
 
     func testGetSynonyms() {
 
@@ -241,21 +245,122 @@ class SettingsTests: XCTestCase {
 
         let UID: String = "movies"
 
-        let json = """
-        {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
+        let expectation = XCTestExpectation(description: "Reset synonyms")
+
+        self.client.resetSynonyms(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to reset synonyms")
+            }
         }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    // MARK: Stop words
+
+    func testGetStopWords() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        ["of", "the", "to"]
         """
 
-        let jsonData = json.data(using: .utf8)!
-        let synonyms: [String: [String]] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String: [String]]
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubStopWords: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get stop-words")
+
+        self.client.getStopWords(UID: UID) { result in
+            switch result {
+            case .success(let stopWords):
+                XCTAssertEqual(stubStopWords, stopWords)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get stop-words")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateStopWords() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let json = """
+        ["of", "the", "to"]
+        """
+
+        let stopWords: [String] = try! JSONSerialization.jsonObject(
+          with: json.data(using: .utf8)!, options: []) as! [String]
+
+        let expectation = XCTestExpectation(description: "Update stop-words")
+
+        self.client.updateStopWords(UID: UID, stopWords) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update stop-words")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetStopWords() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
 
         let expectation = XCTestExpectation(description: "Reset synonyms")
 
-        self.client.updateSynonyms(UID: UID, synonyms) { result in
+        self.client.resetStopWords(UID: UID) { result in
             switch result {
             case .success(let update):
                 XCTAssertEqual(stubUpdate, update)
@@ -282,6 +387,9 @@ class SettingsTests: XCTestCase {
         ("testGetSynonyms", testGetSynonyms),
         ("testUpdateSynonyms", testUpdateSynonyms),
         ("testResetSynonyms", testResetSynonyms),
+        ("testGetStopWords", testGetStopWords),
+        ("testUpdateStopWords", testUpdateStopWords),
+        ("testResetStopWords", testResetStopWords)
     ]
 
 }

@@ -106,7 +106,7 @@ class UpdatesTests: XCTestCase {
 
     static var allTests = [
         ("testGetSetting", testGetUpdate),
-        ("testGetAllUpdates", testGetAllUpdates),
+        ("testGetAllUpdates", testGetAllUpdates)
     ]
 
 }

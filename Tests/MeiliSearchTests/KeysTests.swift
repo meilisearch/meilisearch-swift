@@ -42,7 +42,7 @@ class KeysTests: XCTestCase {
             case .failure:
                 XCTFail("Failed to get public and private key")
             }
-        }
+      }
 
         self.wait(for: [expectation], timeout: 1.0)
 

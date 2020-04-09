@@ -78,5 +78,4 @@ struct Updates {
 
     }
 
-
 }

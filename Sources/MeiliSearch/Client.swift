@@ -413,6 +413,52 @@ public struct MeiliSearch {
         self.settings.resetSynonyms(UID, completion)
     }
 
+    // MARK: Stop words
+
+    /**
+     Get a list of all stop-words possible for an `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[String]`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getStopWords(
+        UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+        self.settings.getStopWords(UID, completion)
+    }
+
+    /**
+     Update the stop-words for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter setting:    Setting to be applied into Index.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateStopWords(
+        UID: String,
+        _ stopWords: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateStopWords(UID, stopWords, completion)
+    }
+
+    /**
+     Reset the stop-words for a given `Index`.
+
+     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetStopWords(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetStopWords(UID, completion)
+    }
+
     // MARK: Stats
 
     /**
