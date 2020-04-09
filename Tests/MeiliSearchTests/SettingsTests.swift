@@ -358,7 +358,7 @@ class SettingsTests: XCTestCase {
 
         let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Reset synonyms")
+        let expectation = XCTestExpectation(description: "Reset stop-words")
 
         self.client.resetStopWords(UID: UID) { result in
             switch result {
@@ -366,7 +366,343 @@ class SettingsTests: XCTestCase {
                 XCTAssertEqual(stubUpdate, update)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to reset synonyms")
+                XCTFail("Failed to reset stop-words")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    // MARK: Ranking rules
+
+    func testGetRankingRules() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        [
+            "typo",
+            "words",
+            "proximity",
+            "attribute",
+            "wordsPosition",
+            "exactness",
+            "desc(release_date)"
+        ]
+        """
+
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubRakingRules: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get ranking rules")
+
+        self.client.getRankingRules(UID: UID) { result in
+            switch result {
+            case .success(let rankingRules):
+                XCTAssertEqual(stubRakingRules, rankingRules)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get ranking rules")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateRankingRules() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let json = """
+        ["of", "the", "to"]
+        """
+
+        let stopWords: [String] = try! JSONSerialization.jsonObject(
+          with: json.data(using: .utf8)!, options: []) as! [String]
+
+        let expectation = XCTestExpectation(description: "Update ranking rules")
+
+        self.client.updateRankingRules(UID: UID, stopWords) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update ranking rules")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetRankingRules() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Reset ranking rules")
+
+        self.client.resetRankingRules(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to reset ranking rules")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    // MARK: Distinct Attribute
+
+    func testGetDistinctAttribute() {
+
+        //Prepare the mock server
+
+        let stubDistinctAttribute = "movie_id"
+
+        session.pushData(stubDistinctAttribute)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get distinct attribute")
+
+        self.client.getDistinctAttribute(UID: UID) { result in
+            switch result {
+            case .success(let distinctAttribute):
+                XCTAssertEqual(stubDistinctAttribute, distinctAttribute)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get distinct attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateDistinctAttribute() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+        let distinctAttribute = "movie_id"
+
+        let expectation = XCTestExpectation(description: "Update distinct attribute")
+
+        self.client.updateDistinctAttribute(UID: UID, distinctAttribute) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update distinct attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetDistinctAttribute() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Reset distinct attribute")
+
+        self.client.resetDistinctAttribute(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to reset distinct attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    // MARK: Searchable Attribute
+
+    func testGetSearchableAttribute() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        ["title", "description", "uid"]
+        """
+
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get distinct attribute")
+
+        self.client.getSearchableAttribute(UID: UID) { result in
+            switch result {
+            case .success(let searchableAttribute):
+                XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get distinct attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateSearchableAttribute() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let json = """
+        ["title", "description", "uid"]
+        """
+
+        let jsonData = json.data(using: .utf8)!
+        let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        let expectation = XCTestExpectation(description: "Update distinct attribute")
+
+        self.client.updateSearchableAttribute(UID: UID, searchableAttribute) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update distinct attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetSearchableAttribute() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Reset distinct attribute")
+
+        self.client.resetSearchableAttribute(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to reset distinct attribute")
             }
         }
 
@@ -389,7 +725,13 @@ class SettingsTests: XCTestCase {
         ("testResetSynonyms", testResetSynonyms),
         ("testGetStopWords", testGetStopWords),
         ("testUpdateStopWords", testUpdateStopWords),
-        ("testResetStopWords", testResetStopWords)
+        ("testResetStopWords", testResetStopWords),
+        ("testGetRankingRules", testGetRankingRules),
+        ("testUpdateRankingRules", testUpdateRankingRules),
+        ("testResetRankingRules", testResetRankingRules),
+        ("testGetSearchableAttribute", testGetSearchableAttribute),
+        ("testUpdateSearchableAttribute", testUpdateSearchableAttribute),
+        ("testResetSearchableAttribute", testResetSearchableAttribute)
     ]
 
 }

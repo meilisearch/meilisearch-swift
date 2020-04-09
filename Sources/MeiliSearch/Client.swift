@@ -51,7 +51,7 @@ public struct MeiliSearch {
     /**
      Create a new Index for the given `uid`.
 
-     - parameter UID:        The unique identifier for the Index to be created.
+     - parameter UID:        The unique identifier for the `Index` to be created.
      - parameter completion: The completion closure used to notify when the server 
      completes the write request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
@@ -65,7 +65,7 @@ public struct MeiliSearch {
     /**
      Get the Index for the given `uid`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains `Index` 
      value. If the request was sucessful or `Error` if a failure occured.
@@ -90,7 +90,7 @@ public struct MeiliSearch {
     /**
      Update index name.
      
-     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter name:       New index name.
      - parameter completion: The completion closure used to notify when the server 
      completes the update request, it returns a `Result` object that contains `()` 
@@ -326,7 +326,7 @@ public struct MeiliSearch {
     /**
      Get a list of all the customization possible for an `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Setting`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -340,8 +340,8 @@ public struct MeiliSearch {
     /**
      Update the settings for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
-     - parameter setting:    Setting to be applied into Index.
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter setting:    Setting to be applied into `Index`.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -356,7 +356,7 @@ public struct MeiliSearch {
     /**
      Reset the settings for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter UID:        The unique identifier for the `Index` to be reset.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -372,7 +372,7 @@ public struct MeiliSearch {
     /**
      Get a list of all synonyms possible for an `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `[String: [String]]`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -386,8 +386,8 @@ public struct MeiliSearch {
     /**
      Update the synonyms for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
-     - parameter setting:    Setting to be applied into Index.
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter setting:    Setting to be applied into `Index`.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -402,7 +402,7 @@ public struct MeiliSearch {
     /**
      Reset the synonyms for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter UID:        The unique identifier for the `Index` to be reset.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -418,7 +418,7 @@ public struct MeiliSearch {
     /**
      Get a list of all stop-words possible for an `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
+     - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `[String]`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -432,8 +432,8 @@ public struct MeiliSearch {
     /**
      Update the stop-words for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be found.
-     - parameter setting:    Setting to be applied into Index.
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter stopWords:  Array of stop-word to be applied into `Index`.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -448,7 +448,7 @@ public struct MeiliSearch {
     /**
      Reset the stop-words for a given `Index`.
 
-     - parameter UID:        The unique identifier for the Index to be reset.
+     - parameter UID:        The unique identifier for the `Index` to be reset.
      - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -457,6 +457,144 @@ public struct MeiliSearch {
         UID: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.settings.resetStopWords(UID, completion)
+    }
+
+    // MARK: Ranking rules
+
+    /**
+     Get a list of all ranking rules possible for an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[String]`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getRankingRules(
+        UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+        self.settings.getRankingRules(UID, completion)
+    }
+
+    /**
+     Update the ranking rules for a given `Index`.
+
+     - parameter UID:          The unique identifier for the `Index` to be found.
+     - parameter rankingRules: Array of ranking rules to be applied into `Index`.
+     - parameter completion:   The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateRankingRules(
+        UID: String,
+        _ rankingRules: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateRankingRules(UID, rankingRules, completion)
+    }
+
+    /**
+     Reset the ranking rules for a given `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetRankingRules(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetRankingRules(UID, completion)
+    }
+
+    // MARK: Distinct Attribute
+
+    /**
+     Get the distinct attribute field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[String]`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getDistinctAttribute(
+        UID: String,
+        _ completion: @escaping (Result<String, Swift.Error>) -> Void) {
+        self.settings.getDistinctAttribute(UID, completion)
+    }
+
+    /**
+     Update the distinct attribute field of an `Index`.
+
+     - parameter UID:               The unique identifier for the `Index` to be found.
+     - parameter distinctAttribute: The distinct attribute to be applied into `Index`.
+     - parameter completion:        The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateDistinctAttribute(
+        UID: String,
+        _ distinctAttribute: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateDistinctAttribute(UID, distinctAttribute, completion)
+    }
+
+    /**
+     Reset the distinct attribute field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetDistinctAttribute(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetDistinctAttribute(UID, completion)
+    }
+
+    // MARK: Searchable Attribute
+
+    /**
+     Get the searchable attribute field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[String]`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getSearchableAttribute(
+        UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+        self.settings.getSearchableAttributes(UID, completion)
+    }
+
+    /**
+     Update the searchable attribute field of an `Index`.
+
+     - parameter UID:                 The unique identifier for the `Index` to be found.
+     - parameter searchableAttribute: The searchable attribute to be applied into `Index`.
+     - parameter completion:          The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateSearchableAttribute(
+        UID: String,
+        _ searchableAttribute: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateSearchableAttributes(UID, searchableAttribute, completion)
+    }
+
+    /**
+     Reset the searchable attribute field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetSearchableAttribute(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetSearchableAttributes(UID, completion)
     }
 
     // MARK: Stats
