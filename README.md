@@ -161,6 +161,10 @@ Has to document, all implemented :)
 
 Please check the Vapor Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/VaporDemo).
 
+### Perfect
+
+Please check the Perfect Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/PerfectDemo).
+
 ## Contributing
 
 Hey! We're glad you're thinking about contributing to **MeiliSearch-Swift**! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you! To start contributing, checking [issues tagged as "good-first-issue"](https://github.com/meilisearch/MeiliSearch-Swift/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good start!
