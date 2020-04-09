@@ -582,4 +582,100 @@ struct Settings {
 
     }
 
+    // MARK: Displayed attributes
+
+    func getDisplayedAttributes(
+        _ UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+        self.request.get(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+
+            switch result {
+            case .success(let data):
+
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                do {
+                    let dictionary: [String] = try JSONSerialization
+                        .jsonObject(with: data, options: []) as! [String]
+                    completion(.success(dictionary))
+                } catch {
+                    completion(.failure(error))
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
+    func updateDisplayedAttributes(
+        _ UID: String,
+        _ displayedAttributes: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+        let data: Data
+        do {
+          data = try JSONSerialization.data(withJSONObject: displayedAttributes, options: [])
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        self.request.post(api: "/indexes/\(UID)/settings/displayed-attributes", data) { result in
+
+            switch result {
+            case .success(let data):
+
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    let update: Update = try decoder.decode(Update.self, from: data)
+                    completion(.success(update))
+                } catch {
+                    completion(.failure(error))
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
+    func resetDisplayedAttributes(
+        _ UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+        self.request.delete(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+
+            switch result {
+            case .success(let data):
+
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    let update: Update = try decoder.decode(Update.self, from: data)
+                    completion(.success(update))
+                } catch {
+                    completion(.failure(error))
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
 }

@@ -598,7 +598,7 @@ class SettingsTests: XCTestCase {
 
     // MARK: Searchable Attribute
 
-    func testGetSearchableAttribute() {
+    func testGetSearchableAttributes() {
 
         //Prepare the mock server
 
@@ -616,15 +616,15 @@ class SettingsTests: XCTestCase {
 
         let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Get distinct attribute")
+        let expectation = XCTestExpectation(description: "Get searchable attribute")
 
-        self.client.getSearchableAttribute(UID: UID) { result in
+        self.client.getSearchableAttributes(UID: UID) { result in
             switch result {
             case .success(let searchableAttribute):
                 XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get distinct attribute")
+                XCTFail("Failed to get searchable attribute")
             }
         }
 
@@ -632,7 +632,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    func testUpdateSearchableAttribute() {
+    func testUpdateSearchableAttributes() {
 
         //Prepare the mock server
 
@@ -659,15 +659,15 @@ class SettingsTests: XCTestCase {
         let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
           with: jsonData, options: []) as! [String]
 
-        let expectation = XCTestExpectation(description: "Update distinct attribute")
+        let expectation = XCTestExpectation(description: "Update searchable attribute")
 
-        self.client.updateSearchableAttribute(UID: UID, searchableAttribute) { result in
+        self.client.updateSearchableAttributes(UID: UID, searchableAttribute) { result in
             switch result {
             case .success(let update):
                 XCTAssertEqual(stubUpdate, update)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to update distinct attribute")
+                XCTFail("Failed to update searchable attribute")
             }
         }
 
@@ -675,7 +675,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    func testResetSearchableAttribute() {
+    func testResetSearchableAttributes() {
 
         //Prepare the mock server
 
@@ -694,15 +694,129 @@ class SettingsTests: XCTestCase {
 
         let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Reset distinct attribute")
+        let expectation = XCTestExpectation(description: "Reset searchable attribute")
 
-        self.client.resetSearchableAttribute(UID: UID) { result in
+        self.client.resetSearchableAttributes(UID: UID) { result in
             switch result {
             case .success(let update):
                 XCTAssertEqual(stubUpdate, update)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to reset distinct attribute")
+                XCTFail("Failed to reset searchable attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    // MARK: Displayed Attributes
+
+    func testGetDisplayedAttributes() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        ["title", "description", "release_date", "rank", "poster"]
+        """
+
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get displayed attribute")
+
+        self.client.getDisplayedAttributes(UID: UID) { result in
+            switch result {
+            case .success(let searchableAttribute):
+                XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateDisplayedAttributes() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let json = """
+        ["title", "description", "release_date", "rank", "poster"]
+        """
+
+        let jsonData = json.data(using: .utf8)!
+        let displayedAttributes: [String] = try! JSONSerialization.jsonObject(
+          with: jsonData, options: []) as! [String]
+
+        let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+        self.client.updateDisplayedAttributes(UID: UID, displayedAttributes) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetDisplayedAttributes() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Reset displayed attribute")
+
+        self.client.resetDisplayedAttributes(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to reset displayed attribute")
             }
         }
 
@@ -729,9 +843,12 @@ class SettingsTests: XCTestCase {
         ("testGetRankingRules", testGetRankingRules),
         ("testUpdateRankingRules", testUpdateRankingRules),
         ("testResetRankingRules", testResetRankingRules),
-        ("testGetSearchableAttribute", testGetSearchableAttribute),
-        ("testUpdateSearchableAttribute", testUpdateSearchableAttribute),
-        ("testResetSearchableAttribute", testResetSearchableAttribute)
+        ("testGetSearchableAttributes", testGetSearchableAttributes),
+        ("testUpdateSearchableAttributes", testUpdateSearchableAttributes),
+        ("testResetSearchableAttributes", testResetSearchableAttributes),
+        ("testGetDisplayedAttributes", testGetDisplayedAttributes),
+        ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
+        ("testResetDisplayedAttributes", testResetDisplayedAttributes)
     ]
 
 }
