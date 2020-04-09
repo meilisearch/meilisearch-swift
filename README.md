@@ -78,6 +78,43 @@ func searchForMovies() {
 }
 ```
 
+The current functions implemented are:
+
+### Index
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `createIndex(UID:_)`  | `POST - /indexes`  |
+| `getIndex(UID:_)`  | `GET - /indexes/:index_uid`  |
+| `getIndexes(:_)`  | `GET - /indexes`  |
+| `updateIndex(UID:_)`  | `POST - /indexes/:index_uid`  |
+| `deleteIndex(UID:_)`  | `DELETE - /indexes/:index_uid`  |
+
+### Documents
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `addOrReplaceDocument(UID:document:primaryKey:_)`  | `POST - /indexes/:index_uid/documents`  |
+| `addOrUpdateDocument(UID:document:primaryKey:_)`  | `PUT - /indexes/:index_uid/documents`  |
+| `getDocument(UID:identifier:_)`  | `GET - /indexes/:index_uid/documents/:document_id`  |
+| `getDocuments(UID:limit:_)`  | `GET - /indexes/:index_uid/documents`  |
+| `deleteDocument(UID:identifier:_)`  | `DELETE - /indexes/:index_uid/documents/:document_id`  |
+| `deleteAllDocuments(UID:_)`  | `DELETE - /indexes/:index_uid/documents`  |
+| `deleteBatchDocuments(UID:documentsUID:_)`  | `POST - /indexes/:index_uid/documents/delete-batch`  |
+
+### Search
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `search(UID:_:_)`  | `GET - /indexes/:index_uid/search`  |
+
+### Updates
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `getUpdate(UID:_:_)`  | `GET - /indexes/:index_uid/updates/:updateId`  |
+| `getAllUpdates(UID:_)`  | `GET - /indexes/:index_uid/updates`  |
+
 ## Demo
 
 ### Vapor

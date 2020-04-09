@@ -629,6 +629,21 @@ public struct MeiliSearch {
         self.settings.updateDisplayedAttributes(UID, displayedAttribute, completion)
     }
 
+    /**
+     Reset the displayed attribute field of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetDisplayedAttributes(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetDisplayedAttributes(UID, completion)
+    }
+
+
     // MARK: Accept New Fields
 
     /**
@@ -649,7 +664,7 @@ public struct MeiliSearch {
      Update the accept new fields field of an `Index`.
 
      - parameter UID:             The unique identifier for the `Index` to be found.
-     - parameter acceptNewFields: The displayed attribute to be applied into `Index`.
+     - parameter acceptNewFields: The accept new fields option to be applied into `Index`.
      - parameter completion:      The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
@@ -659,20 +674,6 @@ public struct MeiliSearch {
         _ acceptNewFields: Bool,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.settings.updateAcceptNewFields(UID, acceptNewFields, completion)
-    }
-
-    /**
-     Reset the displayed attribute field of an `Index`.
-
-     - parameter UID:        The unique identifier for the `Index` to be reset.
-     - parameter completion: The completion closure used to notify when the server
-     completes the query request, it returns a `Result` object that contains `Update`
-     value. If the request was sucessful or `Error` if a failure occured.
-     */
-    public func resetDisplayedAttributes(
-        UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.settings.resetDisplayedAttributes(UID, completion)
     }
 
     // MARK: Stats
