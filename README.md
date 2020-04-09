@@ -78,6 +78,8 @@ func searchForMovies() {
 }
 ```
 
+## Functions
+
 The current functions implemented are:
 
 ### Index
@@ -114,6 +116,44 @@ The current functions implemented are:
 | ------------- | ------------- |
 | `getUpdate(UID:_:_)`  | `GET - /indexes/:index_uid/updates/:updateId`  |
 | `getAllUpdates(UID:_)`  | `GET - /indexes/:index_uid/updates`  |
+
+### Keys
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `keys(masterKey:_)`  | `GET - /keys`  |
+| `getAllUpdates(UID:_)`  | `GET - /indexes/:index_uid/updates`  |
+
+### Settings
+
+Has to document, all implemented :)
+
+### Stats
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `stat(UID:_)`  | `GET - /indexes/:index_uid/stats`  |
+| `allStats(:_)`  | `GET - /stats`  |
+
+### Health
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `health(UID:_)`  | `GET - /health`  |
+| Not implemented | `PUT - /health`  |
+
+### Version
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| `version(:_)`  | `GET - /version`  |
+
+### System information
+
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
+| Not implemented | `GET - /sys-info/pretty`  |
+| `systemInfo(:_)`  | `GET - /sys-info`  |
 
 ## Demo
 
