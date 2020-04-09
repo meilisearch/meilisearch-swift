@@ -182,10 +182,10 @@ public struct MeiliSearch {
      `[[String: Any]]` value. If the request was sucessful or `Error` if a 
      failure occured.
      */
-    public func getDocument(
+  public func getDocument<T: Codable>(
         UID: String,
         identifier: String,
-        _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<T, Swift.Error>) -> Void) {
         self.documents.get(UID, identifier, completion)
     }
 
@@ -199,10 +199,10 @@ public struct MeiliSearch {
      `[[String: Any]]` value. If the request was sucessful or `Error` if a 
      failure occured.
      */
-    public func getDocuments(
+    public func getDocuments<T: Codable>(
         UID: String,
         limit: Int,
-        _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<[T], Swift.Error>) -> Void) {
         self.documents.getAll(UID, limit, completion)
     }
 
@@ -262,10 +262,11 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains 
      `SearchResult` value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func search(
+    public func search<T>(
         UID: String,
         _ searchParameters: SearchParameters,
-        _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
+        where T:Codable, T: Equatable {
         self.search.search(UID, searchParameters, completion)
     }
 

@@ -12,10 +12,11 @@ struct Search {
         self.request = request
     }
 
-    func search(
+    func search<T>(
         _ UID: String,
         _ searchParameters: SearchParameters,
-        _ completion: @escaping (Result<SearchResult, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
+        where T:Codable, T: Equatable {
 
         let api: String = queryURL(
             api: "/indexes/\(UID)/search",
@@ -31,15 +32,7 @@ struct Search {
                     return
                 }
 
-                do {
-                    let json: Any = try JSONSerialization.jsonObject(
-                        with: data,
-                        options: [])
-                    let result = SearchResult(json: json)
-                    completion(.success(result))
-                } catch {
-                    completion(.failure(error))
-                }
+                Search.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -47,6 +40,27 @@ struct Search {
 
         }
 
+    }
+
+    private static func decodeJSON<T: Codable>(
+        _ data: Data,
+        _ customDecoder: JSONDecoder? = nil,
+        completion: (Result<T, Swift.Error>) -> Void) {
+        do {
+
+            let decoder: JSONDecoder
+            if let customDecoder: JSONDecoder = customDecoder {
+              decoder = customDecoder
+            } else {
+              decoder = JSONDecoder()
+              decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+            }
+
+            let value: T = try decoder.decode(T.self, from: data)
+            completion(.success(value))
+        } catch {
+            completion(.failure(error))
+        }
     }
 
 }

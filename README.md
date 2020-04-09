@@ -66,7 +66,7 @@ func searchForMovies() {
     let searchParameters = SearchParameters.query("botman")
 
     // Call the function search and wait for the closure result.
-    self.client.search(UID: "movies", searchParameters) { result in
+    self.client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
             print(searchResult)
@@ -76,6 +76,25 @@ func searchForMovies() {
     }
 
 }
+
+private struct Movie: Codable, Equatable {
+
+    let id: Int
+    let title: String
+    let poster: String
+    let overview: String
+    let releaseDate: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case poster
+        case overview
+        case releaseDate = "release_date"
+    }
+
+}
+
 ```
 
 ## Functions

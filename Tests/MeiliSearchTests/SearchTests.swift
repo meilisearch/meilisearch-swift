@@ -1,6 +1,24 @@
 @testable import MeiliSearch
 import XCTest
 
+private struct Movie: Codable, Equatable {
+
+    let id: Int
+    let title: String
+    let poster: String
+    let overview: String
+    let releaseDate: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case poster
+        case overview
+        case releaseDate = "release_date"
+    }
+
+}
+
 class SearchTests: XCTestCase {
 
     private var client: MeiliSearch!
@@ -19,18 +37,18 @@ class SearchTests: XCTestCase {
         {
             "hits": [
                 {
-                    "id": "29751",
+                    "id": 29751,
                     "title": "Batman Unmasked: The Psychology of the Dark Knight",
                     "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
                     "overview": "Delve into the world of Batman and the vigilante justice tha",
-                    "release_date": "2008-07-15"
+                    "release_date": "2020-04-04T19:59:49.259572Z"
                 },
                 {
-                    "id": "471474",
+                    "id": 471474,
                     "title": "Batman: Gotham by Gaslight",
                     "poster": "https://image.tmdb.org/t/p/w1280/7souLi5zqQCnpZVghaXv0Wowi0y.jpg",
                     "overview": "ve Victorian Age Gotham City, Batman begins his war on crime",
-                    "release_date": "2018-01-12"
+                    "release_date": "2020-04-04T19:59:49.259572Z"
                 }
             ],
             "offset": 0,
@@ -40,9 +58,10 @@ class SearchTests: XCTestCase {
         }
         """
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let json: Any = try! JSONSerialization.jsonObject(with: jsonData, options: [])
-        let stubSearchResult: SearchResult = SearchResult(json: json)
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let data = jsonString.data(using: .utf8)!
+        let stubSearchResult: SearchResult<Movie> = try! decoder.decode(SearchResult<Movie>.self, from: data)
 
         session.pushData(jsonString)
 
@@ -54,15 +73,11 @@ class SearchTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Searching for botman")
 
-        self.client.search(UID: uid, searchParameters) { result in
+        self.client.search(UID: uid, searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
             switch result {
             case .success(let searchResult):
 
-                XCTAssertEqual(stubSearchResult.hits.count, searchResult.hits.count)
-                XCTAssertEqual(stubSearchResult.offset, searchResult.offset)
-                XCTAssertEqual(stubSearchResult.limit, searchResult.limit)
-                XCTAssertEqual(stubSearchResult.processingTimeMs, searchResult.processingTimeMs)
-                XCTAssertEqual(stubSearchResult.query, searchResult.query)
+                XCTAssertEqual(stubSearchResult, searchResult)
 
                 expectation.fulfill()
             case .failure:

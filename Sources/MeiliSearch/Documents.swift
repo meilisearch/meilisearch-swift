@@ -14,10 +14,10 @@ struct Documents {
 
     // MARK: Query
 
-    func get(
+    func get<T: Codable>(
         _ UID: String,
         _ identifier: String,
-        _ completion: @escaping (Result<[String: Any], Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<T, Swift.Error>) -> Void) {
 
         let query: String = "/indexes/\(UID)/documents/\(identifier)"
         request.get(api: query) { result in
@@ -30,13 +30,7 @@ struct Documents {
                     return
                 }
 
-                do {
-                    let dictionary: [String: Any] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String: Any]
-                    completion(.success(dictionary))
-                } catch {
-                    completion(.failure(error))
-                }
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -46,10 +40,10 @@ struct Documents {
 
     }
 
-    func getAll(
+    func getAll<T: Codable>(
         _ UID: String,
         _ limit: Int = -1,
-        _ completion: @escaping (Result<[[String: Any]], Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<[T], Swift.Error>) -> Void) {
 
         let query: String = "/indexes/\(UID)/documents?limit=\(limit)"
         request.get(api: query) { result in
@@ -62,13 +56,7 @@ struct Documents {
                     return
                 }
 
-                do {
-                    let dictionaries: [[String: Any]] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [[String: Any]]
-                    completion(.success(dictionaries))
-                } catch {
-                    completion(.failure(error))
-                }
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -96,7 +84,7 @@ struct Documents {
             switch result {
             case .success(let data):
 
-              Documents.decodeJSON(data, completion)
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -121,7 +109,7 @@ struct Documents {
             switch result {
             case .success(let data):
 
-                Documents.decodeJSON(data, completion)
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -147,7 +135,7 @@ struct Documents {
                     return
                 }
 
-                Documents.decodeJSON(data, completion)
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -171,7 +159,7 @@ struct Documents {
                     return
                 }
 
-                Documents.decodeJSON(data, completion)
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -200,7 +188,7 @@ struct Documents {
             switch result {
             case .success(let data):
 
-                Documents.decodeJSON(data, completion)
+                Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -210,14 +198,22 @@ struct Documents {
 
     }
 
-    private static func decodeJSON(
+    private static func decodeJSON<T: Codable>(
         _ data: Data,
-        _ completion: (Result<Update, Swift.Error>) -> Void) {
+        _ customDecoder: JSONDecoder? = nil,
+        completion: (Result<T, Swift.Error>) -> Void) {
         do {
-            let decoder: JSONDecoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-            let update: Update = try decoder.decode(Update.self, from: data)
-            completion(.success(update))
+
+            let decoder: JSONDecoder
+            if let customDecoder: JSONDecoder = customDecoder {
+              decoder = customDecoder
+            } else {
+              decoder = JSONDecoder()
+              decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+            }
+
+            let value: T = try decoder.decode(T.self, from: data)
+            completion(.success(value))
         } catch {
             completion(.failure(error))
         }

@@ -1,5 +1,22 @@
 @testable import MeiliSearch
 import XCTest
+import Foundation
+
+private struct Movie: Codable, Equatable {
+
+    let id: Int
+    let title: String
+    let overview: String
+    let releaseDate: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case overview
+        case releaseDate = "release_date"
+    }
+
+}
 
 class DocumentsTests: XCTestCase {
 
@@ -125,13 +142,16 @@ class DocumentsTests: XCTestCase {
             "title": "American Ninja 5",
             "poster": "https://image.tmdb.org/t/p/w1280/iuAQVI4mvjI83wnirpD8GVNRVuY.jpg",
             "overview": "When a scientists daughter is kidnapped, American Ninja, attempts to find her, but this time he teams up with a youngster he has trained in the ways of the ninja.",
-            "release_date": "1993-01-01"
+            "release_date": "2020-04-04T19:59:49.259572Z"
         }
         """
 
         session.pushData(jsonString, code: 200)
 
-        let stubDocument: [String: Any] = convertToDictionary(jsonString)
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let data = jsonString.data(using: .utf8)!
+        let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
 
         // Start the test with the mocked server
 
@@ -140,11 +160,11 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies document")
 
-        self.client.getDocument(UID: uid, identifier: identifier) { result in
+      self.client.getDocument(UID: uid, identifier: identifier) { (result: Result<Movie, Swift.Error>) in
 
             switch result {
-            case .success(let document):
-                XCTAssertEqual(stubDocument as NSObject, document as NSObject)
+            case .success(let movie):
+                XCTAssertEqual(stubMovie, movie)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies document")
@@ -163,14 +183,14 @@ class DocumentsTests: XCTestCase {
         let jsonString = """
         [{
             "id": 25684,
-            "release_date": "1993-01-01",
+            "release_date": "2020-04-04T19:59:49.259572Z",
             "poster": "https://image.tmdb.org/t/p/w1280/iuAQVI4mvjI83wnirpD8GVNRVuY.jpg",
             "title": "American Ninja 5",
             "overview": "When a scientists daughter is kidnapped, American Ninja, attempts to find her, but this time he teams up with a youngster he has trained in the ways of the ninja."
         },{
             "id": 468219,
             "title": "Dead in a Week (Or Your Money Back)",
-            "release_date": "2018-09-12",
+            "release_date": "2020-04-04T19:59:49.259572Z",
             "poster": "https://image.tmdb.org/t/p/w1280/f4ANVEuEaGy2oP5M0Y2P1dwxUNn.jpg",
             "overview": "William has failed to kill himself so many times that he outsources his suicide to aging assassin Leslie. But with the contract signed and death assured within a week (or his money back), William suddenly discovers reasons to live... However Leslie is under pressure from his boss to make sure the contract is completed."
         }]
@@ -178,7 +198,10 @@ class DocumentsTests: XCTestCase {
 
         session.pushData(jsonString, code: 200)
 
-        let stubDocuments: [[String: Any]] = convertToArrayDictionary(jsonString)
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let data = jsonString.data(using: .utf8)!
+        let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
 
         // Start the test with the mocked server
 
@@ -187,11 +210,11 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get Movies documents")
 
-        self.client.getDocuments(UID: uid, limit: limit) { result in
+        self.client.getDocuments(UID: uid, limit: limit) { (result: Result<[Movie], Swift.Error>) in
 
             switch result {
-            case .success(let documents):
-                XCTAssertEqual(stubDocuments as NSObject, documents as NSObject)
+            case .success(let movies):
+                XCTAssertEqual(stubMovies, movies)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies documents")

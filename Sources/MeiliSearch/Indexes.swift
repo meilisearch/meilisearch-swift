@@ -125,8 +125,8 @@ struct Indexes {
         do {
             let decoder: JSONDecoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-            let update: Index = try decoder.decode(Index.self, from: data)
-            completion(.success(update))
+            let index: Index = try decoder.decode(Index.self, from: data)
+            completion(.success(index))
         } catch {
             completion(.failure(error))
         }
@@ -138,8 +138,8 @@ struct Indexes {
         do {
             let decoder: JSONDecoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-            let update: [Index] = try decoder.decode([Index].self, from: data)
-            completion(.success(update))
+            let indexes: [Index] = try decoder.decode([Index].self, from: data)
+            completion(.success(indexes))
         } catch {
             completion(.failure(error))
         }
