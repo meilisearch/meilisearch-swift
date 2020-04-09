@@ -64,9 +64,12 @@ func searchForMovies() {
 
     // Create a new search request with "botman" as query.
     let searchParameters = SearchParameters.query("botman")
+    
+    // Typealias that represents the result from Meili.
+    typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
     // Call the function search and wait for the closure result.
-    self.client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    self.client.search(UID: "movies", searchParameters) { (result: MeiliResult) in
         switch result {
         case .success(let searchResult):
             print(searchResult)

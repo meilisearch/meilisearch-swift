@@ -73,7 +73,9 @@ class SearchTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Searching for botman")
 
-        self.client.search(UID: uid, searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+        typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
+
+        self.client.search(UID: uid, searchParameters) { (result: MeiliResult) in
             switch result {
             case .success(let searchResult):
 
