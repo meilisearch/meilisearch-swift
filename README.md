@@ -10,7 +10,7 @@
   <a href="https://blog.meilisearch.com">Blog</a> | 
   <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> | 
   <a href="https://twitter.com/meilisearch">Twitter</a> | 
-  <a href="https://docs.meilisearch.com">Documentation</a> | 
+  <a href="https://ppamorim.github.io/meilisearch-swift/">Documentation</a> | 
   <a href="https://docs.meilisearch.com/resources/faq.html">FAQ</a>
 </h4>
 
