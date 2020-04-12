@@ -148,7 +148,52 @@ The current functions implemented are:
 
 ### Settings
 
-Has to document, all implemented :)
+#### All Settings
+
+| `getSetting(UID:_)`  | `GET - /indexes/:index_uid/settings`  |
+| `updateSetting(UID:_:_)`  | `POST - /indexes/:index_uid/settings`  |
+| `resetSetting(UID:_)`  | `DELETE - /indexes/:index_uid/settings`  |
+
+#### Synonyms
+
+| `getSynonyms(UID:_)`  | `GET - /indexes/:index_uid/settings/synonyms`  |
+| `updateSynonyms(UID:_:_)`  | `POST - /indexes/:index_uid/settings/synonyms`  |
+| `resetSynonyms(UID:_)`  | `DELETE - /indexes/:index_uid/settings/synonyms`  |
+
+#### Stop-words
+
+| `getStopWords(UID:_)`  | `GET - /indexes/:index_uid/settings/stop-words`  |
+| `updateStopWords(UID:_:_)`  | `POST - /indexes/:index_uid/settings/stop-words`  |
+| `resetStopWords(UID:_)`  | `DELETE - /indexes/:index_uid/settings/stop-words`  |
+
+#### Ranking rules
+
+| `getRankingRules(UID:_)`  | `GET - /indexes/:index_uid/settings/ranking-rules`  |
+| `updateRankingRules(UID:_:_)`  | `POST - /indexes/:index_uid/settings/ranking-rules`  |
+| `resetRankingRules(UID:_)`  | `DELETE - /indexes/:index_uid/settings/ranking-rules`  |
+
+#### Distinct attribute
+
+| `getDistinctAttribute(UID:_)`  | `GET - /indexes/:index_uid/settings/distinct-attribute`  |
+| `updateDistinctAttribute(UID:_:_)`  | `POST - /indexes/:index_uid/settings/distinct-attribute`  |
+| `resetDistinctAttribute(UID:_)`  | `DELETE - /indexes/:index_uid/settings/distinct-attribute`  |
+
+#### Searchable attributes
+
+| `getSearchableAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/searchable-attributes`  |
+| `updateSearchableAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/searchable-attributes`  |
+| `resetSearchableAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/searchable-attributes`  |
+
+#### Displayed attributes
+
+| `getDisplayedAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/displayed-attributes`  |
+| `updateDisplayedAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/displayed-attributes`  |
+| `resetDisplayedAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/displayed-attributes`  |
+
+#### Accept new fields
+
+| `getAcceptNewFields(UID:_)`  | `GET - /indexes/:index_uid/settings/accept-new-fields`  |
+| `updateAcceptNewFields(UID:_:_)`  | `POST - /indexes/:index_uid/settings/accept-new-fields`  |
 
 ### Stats
 
@@ -174,7 +219,7 @@ Has to document, all implemented :)
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| Not implemented | `GET - /sys-info/pretty`  |
+| `prettySystemInfo(:_)` | `GET - /sys-info/pretty`  |
 | `systemInfo(:_)`  | `GET - /sys-info`  |
 
 ## Demo
