@@ -52,6 +52,8 @@ dependencies: [
 
 ## Basic setup
 
+Make sure to firstly setup your `MeiliSearch` server. Please follow this getting started [here](https://docs.meilisearch.com/guides/introduction/quick_start_guide.html).
+
 To do a simply search using the client, you can create a Swift script like this:
 
 ```swift
