@@ -83,7 +83,8 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains `[Index]` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func getIndexes(_ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
+    public func getIndexes(
+      _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
         self.indexes.getAll(completion)
     }
 
@@ -148,9 +149,10 @@ public struct MeiliSearch {
     /**
      Add a list of documents and update them if they already.
 
-    If you send an already existing document (same id) the old document will be only 
-    partially updated according to the fields of the new document. Thus, any fields not 
-    present in the new document are kept and remained unchanged.
+    If you send an already existing document (same id) the old document
+    will be only  partially updated according to the fields of the new
+    document. Thus, any fields not present in the new document are kept
+    and remained unchanged.
 
     To completely overwrite a document see `addOrReplaceDocument`.
      
@@ -536,7 +538,10 @@ public struct MeiliSearch {
         UID: String,
         _ distinctAttribute: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.settings.updateDistinctAttribute(UID, distinctAttribute, completion)
+        self.settings.updateDistinctAttribute(
+          UID,
+          distinctAttribute,
+          completion)
     }
 
     /**
@@ -582,7 +587,10 @@ public struct MeiliSearch {
         UID: String,
         _ searchableAttribute: [String],
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.settings.updateSearchableAttributes(UID, searchableAttribute, completion)
+        self.settings.updateSearchableAttributes(
+          UID,
+          searchableAttribute,
+          completion)
     }
 
     /**
@@ -628,7 +636,10 @@ public struct MeiliSearch {
         UID: String,
         _ displayedAttribute: [String],
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.settings.updateDisplayedAttributes(UID, displayedAttribute, completion)
+        self.settings.updateDisplayedAttributes(
+          UID,
+          displayedAttribute,
+          completion)
     }
 
     /**
@@ -687,7 +698,9 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains `Stat` value.
      If the request was sucessful or `Error` if a failure occured.
      */
-    public func stat(UID: String, _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+    public func stat(
+      UID: String,
+      _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
         self.stats.stat(UID, completion)
     }
 
@@ -698,14 +711,15 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains `AllStats`
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
+    public func allStats(
+      _ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
         self.stats.allStats(completion)
     }
 
     // MARK: System
 
     /**
-     Get health of MeiliSearch server.
+     Update health of MeiliSearch server.
 
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains `()` value. 
@@ -716,13 +730,28 @@ public struct MeiliSearch {
     }
 
     /**
+     Get health of MeiliSearch server.
+
+     - parameter health:     Set the MeiliSearch server health status.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `()` value.
+     If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateHealth(
+      health: Bool,
+      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        self.system.updateHealth(health, completion)
+    }
+
+    /**
      Get version of MeiliSearch.
 
      - parameter completion: The completion closure used to notify when the server 
      completes the query request, it returns a `Result` object that contains `Version` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
+    public func version(
+      _ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
         self.system.version(completion)
     }
 
@@ -733,7 +762,8 @@ public struct MeiliSearch {
      completes the query request, it returns a `Result` object that contains `SystemInfo` 
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func systemInfo(_ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
+    public func systemInfo(
+      _ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
         self.system.systemInfo(completion)
     }
 

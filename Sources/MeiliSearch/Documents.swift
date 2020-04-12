@@ -111,6 +111,11 @@ struct Documents {
             switch result {
             case .success(let data):
 
+                guard let data: Data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
                 Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
@@ -176,7 +181,7 @@ struct Documents {
         _ documentsUID: [Int],
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-      let data: Data
+        let data: Data
 
         do {
           data = try JSONSerialization.data(withJSONObject: documentsUID, options: [])

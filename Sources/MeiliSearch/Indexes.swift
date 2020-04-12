@@ -63,7 +63,14 @@ struct Indexes {
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
         let payload = CreateIndexPayload(uid: UID)
-        let data: Data = try! JSONEncoder().encode(payload)
+        let data: Data
+
+        do {
+            data = try JSONEncoder().encode(payload)
+        } catch {
+            completion(.failure(MeiliSearch.Error.invalidJSON))
+            return
+        }
 
         self.request.post(api: "/indexes", data) { result in
 

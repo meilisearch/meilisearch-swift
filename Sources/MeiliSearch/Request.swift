@@ -81,7 +81,7 @@ final class Request {
     func put(
         api: String,
         body: Data,
-        _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
@@ -91,9 +91,6 @@ final class Request {
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error = error {
                 completion(.failure(error))
-                return
-            }
-            guard let data = data else {
                 return
             }
             completion(.success(data))
