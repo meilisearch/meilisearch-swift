@@ -150,48 +150,64 @@ The current functions implemented are:
 
 #### All Settings
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getSetting(UID:_)`  | `GET - /indexes/:index_uid/settings`  |
 | `updateSetting(UID:_:_)`  | `POST - /indexes/:index_uid/settings`  |
 | `resetSetting(UID:_)`  | `DELETE - /indexes/:index_uid/settings`  |
 
 #### Synonyms
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getSynonyms(UID:_)`  | `GET - /indexes/:index_uid/settings/synonyms`  |
 | `updateSynonyms(UID:_:_)`  | `POST - /indexes/:index_uid/settings/synonyms`  |
 | `resetSynonyms(UID:_)`  | `DELETE - /indexes/:index_uid/settings/synonyms`  |
 
 #### Stop-words
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getStopWords(UID:_)`  | `GET - /indexes/:index_uid/settings/stop-words`  |
 | `updateStopWords(UID:_:_)`  | `POST - /indexes/:index_uid/settings/stop-words`  |
 | `resetStopWords(UID:_)`  | `DELETE - /indexes/:index_uid/settings/stop-words`  |
 
 #### Ranking rules
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getRankingRules(UID:_)`  | `GET - /indexes/:index_uid/settings/ranking-rules`  |
 | `updateRankingRules(UID:_:_)`  | `POST - /indexes/:index_uid/settings/ranking-rules`  |
 | `resetRankingRules(UID:_)`  | `DELETE - /indexes/:index_uid/settings/ranking-rules`  |
 
 #### Distinct attribute
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getDistinctAttribute(UID:_)`  | `GET - /indexes/:index_uid/settings/distinct-attribute`  |
 | `updateDistinctAttribute(UID:_:_)`  | `POST - /indexes/:index_uid/settings/distinct-attribute`  |
 | `resetDistinctAttribute(UID:_)`  | `DELETE - /indexes/:index_uid/settings/distinct-attribute`  |
 
 #### Searchable attributes
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getSearchableAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/searchable-attributes`  |
 | `updateSearchableAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/searchable-attributes`  |
 | `resetSearchableAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/searchable-attributes`  |
 
 #### Displayed attributes
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getDisplayedAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/displayed-attributes`  |
 | `updateDisplayedAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/displayed-attributes`  |
 | `resetDisplayedAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/displayed-attributes`  |
 
 #### Accept new fields
 
+| Swift function  | Similar to API call |
+| ------------- | ------------- |
 | `getAcceptNewFields(UID:_)`  | `GET - /indexes/:index_uid/settings/accept-new-fields`  |
 | `updateAcceptNewFields(UID:_:_)`  | `POST - /indexes/:index_uid/settings/accept-new-fields`  |
 
