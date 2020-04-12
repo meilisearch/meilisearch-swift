@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
+  <img src="https://github.com/ppamorim/meilisearch-swift/blob/master/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
 </p>
 
 <h1 align="center">MeiliSearch-Swift</h1>

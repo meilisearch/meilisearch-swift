@@ -7,6 +7,8 @@ public class Config {
 
     // MARK: Static
 
+    ///Deafault configuration for the default MeiliSearch host, do not use this in
+    ///production since it does not contains the apiKey.
     public static let `default`: Config = Config(hostURL: "http://localhost:7700")
 
     /// Default config instance set up to use localhost and port 7700.

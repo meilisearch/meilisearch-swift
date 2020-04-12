@@ -8,18 +8,25 @@ public struct Setting: Codable, Equatable {
 
     // MARK: Properties
 
+    ///List of ranking rules for a given `Index`.
     public let rankingRules: [String]
 
+    ///List of searchable attributes for a given `Index`.
     public let searchableAttributes: [String]
 
+    ///List of displayed attributes for a given `Index`.
     public let displayedAttributes: [String]
 
+    ///List of stop-words for a given `Index`.
     public let stopWords: [String]
 
+    ///List of synonyms and its values for a given `Index`.
     public let synonyms: [String: [String]]
 
+    ///Return if a given `Index` allows new fields.
     public let acceptNewFields: Bool
 
+    ///Tries to decode the JSON object to Setting object.
     public init(from decoder: Decoder) throws {
         let values = try? decoder.container(keyedBy: CodingKeys.self)
         rankingRules = (try? values?.decodeIfPresent([String].self, forKey: .rankingRules)) ?? []

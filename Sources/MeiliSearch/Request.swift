@@ -1,13 +1,23 @@
 import Foundation
 
+/**
+ Protocol that allows custom implementation of the HTTP layer.
+ */
 public protocol URLSessionProtocol {
+
+    /// Result for the `execute` function.
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+    
+    ///Function that will trigger the HTTP request.
     func execute(
         with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+
 }
 
+/// URLSessionDataTaskProtocol handler.
 public protocol URLSessionDataTaskProtocol {
+    ///Trigger HTTP request.
     func resume()
 }
 
