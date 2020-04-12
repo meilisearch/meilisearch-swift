@@ -242,11 +242,11 @@ The current functions implemented are:
 
 ### Vapor
 
-Please check the Vapor Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/VaporDemo).
+Please check the Vapor Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/Demos/VaporDemo).
 
 ### Perfect
 
-Please check the Perfect Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/PerfectDemo).
+Please check the Perfect Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/Demos/PerfectDemo).
 
 ## Contributing
 
