@@ -3,7 +3,7 @@ import Foundation
 /**
  `SearchResult` instances represent result of a search.
  */
-public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable  {
+public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable {
 
     // MARK: Properties
 

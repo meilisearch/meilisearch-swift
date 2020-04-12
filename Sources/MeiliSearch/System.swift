@@ -91,12 +91,12 @@ struct System {
             case .success(let data):
 
                 guard let data = data else {
-                    fatalError()
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
                 }
 
                 do {
                     let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                     let systemInfo: SystemInfo = try decoder.decode(SystemInfo.self, from: data)
                     completion(.success(systemInfo))
                 } catch {
@@ -111,13 +111,26 @@ struct System {
 
     }
 
-    func prettySysInfo(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    func prettySystemInfo(_ completion: @escaping (Result<PrettySystemInfo, Swift.Error>) -> Void) {
 
         self.request.get(api: "/sys-info/pretty") { result in
 
             switch result {
-            case .success:
-                completion(.success(()))
+            case .success(let data):
+
+                guard let data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    let prettySystemInfo: PrettySystemInfo =
+                      try decoder.decode(PrettySystemInfo.self, from: data)
+                    completion(.success(prettySystemInfo))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))

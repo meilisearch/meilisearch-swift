@@ -131,7 +131,6 @@ class SystemTests: XCTestCase {
         """
 
         let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
         let stubSystemInfo: SystemInfo = try! decoder.decode(SystemInfo.self, from: jsonData)
 
@@ -157,9 +156,71 @@ class SystemTests: XCTestCase {
 
     }
 
+    func testPrettySystemInfo() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {
+            "memoryUsage": "56.3 %",
+            "processorUsage": [
+                "0.0 %",
+                "25.0 %",
+                "4.5 %",
+                "20.7 %",
+                "4.0 %",
+                "18.1 %",
+                "3.7 %",
+                "14.8 %",
+                "3.4 %"
+            ],
+            "global": {
+                "totalMemory": "17.18 GB",
+                "usedMemory": "9.67 GB",
+                "totalSwap": "4.29 GB",
+                "usedSwap": "2.58 GB",
+                "inputData": "29.82 GB",
+                "outputData": "4.22 GB"
+            },
+            "process": {
+                "memory": "5.2 MB",
+                "cpu": "0.0 %"
+            }
+        }
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubPrettySystemInfo: PrettySystemInfo =
+          try! decoder.decode(PrettySystemInfo.self, from: jsonData)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let expectation = XCTestExpectation(description: "Load pretty system info")
+
+        self.client.prettySystemInfo { result in
+
+            switch result {
+            case .success(let prettySystemInfo):
+                XCTAssertEqual(stubPrettySystemInfo, prettySystemInfo)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to load pretty system info")
+            }
+
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
     static var allTests = [
         ("testHealth", testHealth),
+        ("testUpdateHealth", testUpdateHealth),
         ("testVersion", testVersion),
-        ("testSystemInfo", testSystemInfo)
+        ("testSystemInfo", testSystemInfo),
+        ("testPrettySystemInfo", testPrettySystemInfo)
     ]
 }

@@ -16,7 +16,7 @@ struct Search {
         _ UID: String,
         _ searchParameters: SearchParameters,
         _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
-        where T:Codable, T: Equatable {
+        where T: Codable, T: Equatable {
 
         let api: String = queryURL(
             api: "/indexes/\(UID)/search",

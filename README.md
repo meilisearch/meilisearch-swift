@@ -161,8 +161,8 @@ Has to document, all implemented :)
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `health(UID:_)`  | `GET - /health`  |
-| Not implemented | `PUT - /health`  |
+| `health(:_)`  | `GET - /health`  |
+| `updateHealth(health:_)` | `PUT - /health`  |
 
 ### Version
 

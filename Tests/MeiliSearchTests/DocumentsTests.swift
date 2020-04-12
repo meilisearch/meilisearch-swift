@@ -170,7 +170,7 @@ class DocumentsTests: XCTestCase {
                 XCTFail("Failed to get Movies document")
             }
 
-        }
+      }
 
         self.wait(for: [expectation], timeout: 1.0)
 

@@ -269,7 +269,7 @@ public struct MeiliSearch {
         UID: String,
         _ searchParameters: SearchParameters,
         _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
-        where T:Codable, T: Equatable {
+        where T: Codable, T: Equatable {
         self.search.search(UID, searchParameters, completion)
     }
 
@@ -656,7 +656,6 @@ public struct MeiliSearch {
         self.settings.resetDisplayedAttributes(UID, completion)
     }
 
-
     // MARK: Accept New Fields
 
     /**
@@ -765,6 +764,18 @@ public struct MeiliSearch {
     public func systemInfo(
       _ completion: @escaping (Result<SystemInfo, Swift.Error>) -> Void) {
         self.system.systemInfo(completion)
+    }
+
+    /**
+     Get the pretty system information.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `SystemInfo`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func prettySystemInfo(
+      _ completion: @escaping (Result<PrettySystemInfo, Swift.Error>) -> Void) {
+        self.system.prettySystemInfo(completion)
     }
 
 }
