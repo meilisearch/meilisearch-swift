@@ -23,18 +23,15 @@
 <p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Swift 🍎</p>
 
 **MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
-For more information about features go to [our Swift documentation](https://docs.meilisearch.com/swift).
+For more information about features go to [our Swift documentation](https://ppamorim.github.io/meilisearch-swift/).
 
 ## Features
-* Search as-you-type experience (answers < 50 milliseconds)
-* Full-text search
-* Typo tolerant (understands typos and miss-spelling)
-* Supports Kanji
-* Supports Synonym
+* Complete API
 * Easy to install, deploy, and maintain
-* Whole documents are returned
 * Highly customizable
-* RESTful API
+* No external dependencies
+* Thread safe
+* Uses Codable
 
 ## Get started
 
@@ -253,12 +250,6 @@ Please check the Perfect Demo source code [here](https://github.com/ppamorim/mei
 ## Contributing
 
 Hey! We're glad you're thinking about contributing to **MeiliSearch-Swift**! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you! To start contributing, checking [issues tagged as "good-first-issue"](https://github.com/meilisearch/MeiliSearch-Swift/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good start!
-
-### Analytic Events
-
-Once a day, events are being sent to our Amplitude instance so we can know how many people are using MeiliSearch.<br/>
-Only information about the platform on which the server runs is stored. No other information is being sent.<br/>
-If this doesn't suit you, you can disable these analytics by using the `MEILI_NO_ANALYTICS` env variable.
 
 ## Contact
 
