@@ -26,7 +26,7 @@
 For more information about features go to [our Swift documentation](https://ppamorim.github.io/meilisearch-swift/).
 
 ## Features
-* Complete API
+* Complete full API wrapper
 * Easy to install, deploy, and maintain
 * Highly customizable
 * No external dependencies
