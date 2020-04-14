@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ppamorim/meilisearch-swift/blob/master/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
+  <img src="https://github.com/meilisearch/meilisearch-swift/blob/master/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
 </p>
 
 <h1 align="center">MeiliSearch-Swift</h1>
@@ -10,20 +10,20 @@
   <a href="https://blog.meilisearch.com">Blog</a> | 
   <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> | 
   <a href="https://twitter.com/meilisearch">Twitter</a> | 
-  <a href="https://ppamorim.github.io/meilisearch-swift/">Documentation</a> | 
+  <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> | 
   <a href="https://docs.meilisearch.com/resources/faq.html">FAQ</a>
 </h4>
 
 <p align="center">
-  <a href="https://github.com/ppamorim/meilisearch-swift/actions"><img src="https://github.com/ppamorim/meilisearch-swift/workflows/Swift/badge.svg" alt="Build Status"></a>
-  <a href="https://github.com/ppamorim/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
+  <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Swift/badge.svg" alt="Build Status"></a>
+  <a href="https://github.com/meilisearch/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
 </p>
 
 <p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Swift 🍎</p>
 
 **MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
-For more information about features go to [our Swift documentation](https://ppamorim.github.io/meilisearch-swift/).
+For more information about features go to [our Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
 
 ## Features
 * Complete full API wrapper
@@ -43,7 +43,7 @@ Once you have your Swift package set up, adding **MeiliSearch-Swift** as a depen
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ppamorim/meilisearch-swift.git")
+    .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
 ]
 ```
 
@@ -241,11 +241,11 @@ The current functions implemented are:
 
 ### Vapor
 
-Please check the Vapor Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/Demos/VaporDemo).
+Please check the Vapor Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/VaporDemo).
 
 ### Perfect
 
-Please check the Perfect Demo source code [here](https://github.com/ppamorim/meilisearch-swift/tree/master/Demos/PerfectDemo).
+Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/PerfectDemo).
 
 ## Contributing
 
