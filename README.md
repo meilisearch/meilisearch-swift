@@ -107,43 +107,44 @@ The current functions implemented are:
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `createIndex(UID:_)`  | `POST - /indexes`  |
-| `getIndex(UID:_)`  | `GET - /indexes/:index_uid`  |
-| `getIndexes(:_)`  | `GET - /indexes`  |
-| `updateIndex(UID:_)`  | `POST - /indexes/:index_uid`  |
-| `deleteIndex(UID:_)`  | `DELETE - /indexes/:index_uid`  |
+| `createIndex(UID:_)`  |  `POST - /indexes`  |
+| `getIndex(UID:_)`  |  `GET - /indexes/:index_uid`  |
+| `getIndexes(:_)`  |  `GET - /indexes`  |
+| `updateIndex(UID:_)`  |  `POST - /indexes/:index_uid`  |
+|  `DeleteIndex(UID:_)`  |  `DELETE - /indexes/:index_uid`  |
+|  `DeleteAllIndexes`  |  `DELETE - /indexes/:index_uid`  |
 
 ### Documents
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `addOrReplaceDocument(UID:document:primaryKey:_)`  | `POST - /indexes/:index_uid/documents`  |
-| `addOrUpdateDocument(UID:document:primaryKey:_)`  | `PUT - /indexes/:index_uid/documents`  |
-| `getDocument(UID:identifier:_)`  | `GET - /indexes/:index_uid/documents/:document_id`  |
-| `getDocuments(UID:limit:_)`  | `GET - /indexes/:index_uid/documents`  |
-| `deleteDocument(UID:identifier:_)`  | `DELETE - /indexes/:index_uid/documents/:document_id`  |
-| `deleteAllDocuments(UID:_)`  | `DELETE - /indexes/:index_uid/documents`  |
-| `deleteBatchDocuments(UID:documentsUID:_)`  | `POST - /indexes/:index_uid/documents/delete-batch`  |
+| `addOrReplaceDocument(UID:document:primaryKey:_)`  |  `POST - /indexes/:index_uid/documents`  |
+| `addOrUpdateDocument(UID:document:primaryKey:_)`  |  `PUT - /indexes/:index_uid/documents`  |
+| `getDocument(UID:identifier:_)`  |  `GET - /indexes/:index_uid/documents/:document_id`  |
+| `getDocuments(UID:limit:_)`  |  `GET - /indexes/:index_uid/documents`  |
+|  `DeleteDocument(UID:identifier:_)`  |  `DELETE - /indexes/:index_uid/documents/:document_id`  |
+|  `DeleteAllDocuments(UID:_)`  |  `DELETE - /indexes/:index_uid/documents`  |
+|  `DeleteBatchDocuments(UID:documentsUID:_)`  |  `POST - /indexes/:index_uid/documents/delete-batch`  |
 
 ### Search
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `search(UID:_:_)`  | `GET - /indexes/:index_uid/search`  |
+| `search(UID:_:_)`  |  `GET - /indexes/:index_uid/search`  |
 
 ### Updates
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getUpdate(UID:_:_)`  | `GET - /indexes/:index_uid/updates/:updateId`  |
-| `getAllUpdates(UID:_)`  | `GET - /indexes/:index_uid/updates`  |
+| `getUpdate(UID:_:_)`  |  `GET - /indexes/:index_uid/updates/:updateId`  |
+| `getAllUpdates(UID:_)`  |  `GET - /indexes/:index_uid/updates`  |
 
 ### Keys
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `keys(masterKey:_)`  | `GET - /keys`  |
-| `getAllUpdates(UID:_)`  | `GET - /indexes/:index_uid/updates`  |
+| `keys(masterKey:_)`  |  `GET - /keys`  |
+| `getAllUpdates(UID:_)`  |  `GET - /indexes/:index_uid/updates`  |
 
 ### Settings
 
@@ -151,91 +152,91 @@ The current functions implemented are:
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getSetting(UID:_)`  | `GET - /indexes/:index_uid/settings`  |
-| `updateSetting(UID:_:_)`  | `POST - /indexes/:index_uid/settings`  |
-| `resetSetting(UID:_)`  | `DELETE - /indexes/:index_uid/settings`  |
+| `getSetting(UID:_)`  |  `GET - /indexes/:index_uid/settings`  |
+| `updateSetting(UID:_:_)`  |  `POST - /indexes/:index_uid/settings`  |
+| `resetSetting(UID:_)`  |  `DELETE - /indexes/:index_uid/settings`  |
 
 #### Synonyms
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getSynonyms(UID:_)`  | `GET - /indexes/:index_uid/settings/synonyms`  |
-| `updateSynonyms(UID:_:_)`  | `POST - /indexes/:index_uid/settings/synonyms`  |
-| `resetSynonyms(UID:_)`  | `DELETE - /indexes/:index_uid/settings/synonyms`  |
+| `getSynonyms(UID:_)`  |  `GET - /indexes/:index_uid/settings/synonyms`  |
+| `updateSynonyms(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/synonyms`  |
+| `resetSynonyms(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/synonyms`  |
 
 #### Stop-words
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getStopWords(UID:_)`  | `GET - /indexes/:index_uid/settings/stop-words`  |
-| `updateStopWords(UID:_:_)`  | `POST - /indexes/:index_uid/settings/stop-words`  |
-| `resetStopWords(UID:_)`  | `DELETE - /indexes/:index_uid/settings/stop-words`  |
+| `getStopWords(UID:_)`  |  `GET - /indexes/:index_uid/settings/stop-words`  |
+| `updateStopWords(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/stop-words`  |
+| `resetStopWords(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/stop-words`  |
 
 #### Ranking rules
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getRankingRules(UID:_)`  | `GET - /indexes/:index_uid/settings/ranking-rules`  |
-| `updateRankingRules(UID:_:_)`  | `POST - /indexes/:index_uid/settings/ranking-rules`  |
-| `resetRankingRules(UID:_)`  | `DELETE - /indexes/:index_uid/settings/ranking-rules`  |
+| `getRankingRules(UID:_)`  |  `GET - /indexes/:index_uid/settings/ranking-rules`  |
+| `updateRankingRules(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/ranking-rules`  |
+| `resetRankingRules(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/ranking-rules`  |
 
 #### Distinct attribute
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getDistinctAttribute(UID:_)`  | `GET - /indexes/:index_uid/settings/distinct-attribute`  |
-| `updateDistinctAttribute(UID:_:_)`  | `POST - /indexes/:index_uid/settings/distinct-attribute`  |
-| `resetDistinctAttribute(UID:_)`  | `DELETE - /indexes/:index_uid/settings/distinct-attribute`  |
+| `getDistinctAttribute(UID:_)`  |  `GET - /indexes/:index_uid/settings/distinct-attribute`  |
+| `updateDistinctAttribute(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/distinct-attribute`  |
+| `resetDistinctAttribute(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/distinct-attribute`  |
 
 #### Searchable attributes
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getSearchableAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/searchable-attributes`  |
-| `updateSearchableAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/searchable-attributes`  |
-| `resetSearchableAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/searchable-attributes`  |
+| `getSearchableAttributes(UID:_)`  |  `GET - /indexes/:index_uid/settings/searchable-attributes`  |
+| `updateSearchableAttributes(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/searchable-attributes`  |
+| `resetSearchableAttributes(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/searchable-attributes`  |
 
 #### Displayed attributes
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getDisplayedAttributes(UID:_)`  | `GET - /indexes/:index_uid/settings/displayed-attributes`  |
-| `updateDisplayedAttributes(UID:_:_)`  | `POST - /indexes/:index_uid/settings/displayed-attributes`  |
-| `resetDisplayedAttributes(UID:_)`  | `DELETE - /indexes/:index_uid/settings/displayed-attributes`  |
+| `getDisplayedAttributes(UID:_)`  |  `GET - /indexes/:index_uid/settings/displayed-attributes`  |
+| `updateDisplayedAttributes(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/displayed-attributes`  |
+| `resetDisplayedAttributes(UID:_)`  |  `DELETE - /indexes/:index_uid/settings/displayed-attributes`  |
 
 #### Accept new fields
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `getAcceptNewFields(UID:_)`  | `GET - /indexes/:index_uid/settings/accept-new-fields`  |
-| `updateAcceptNewFields(UID:_:_)`  | `POST - /indexes/:index_uid/settings/accept-new-fields`  |
+| `getAcceptNewFields(UID:_)`  |  `GET - /indexes/:index_uid/settings/accept-new-fields`  |
+| `updateAcceptNewFields(UID:_:_)`  |  `POST - /indexes/:index_uid/settings/accept-new-fields`  |
 
 ### Stats
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `stat(UID:_)`  | `GET - /indexes/:index_uid/stats`  |
-| `allStats(:_)`  | `GET - /stats`  |
+| `stat(UID:_)`  |  `GET - /indexes/:index_uid/stats`  |
+| `allStats(:_)`  |  `GET - /stats`  |
 
 ### Health
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `health(:_)`  | `GET - /health`  |
-| `updateHealth(health:_)` | `PUT - /health`  |
+| `health(:_)`  |  `GET - /health`  |
+| `updateHealth(health:_)` |  `PUT - /health`  |
 
 ### Version
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `version(:_)`  | `GET - /version`  |
+| `version(:_)`  |  `GET - /version`  |
 
 ### System information
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `prettySystemInfo(:_)` | `GET - /sys-info/pretty`  |
-| `systemInfo(:_)`  | `GET - /sys-info`  |
+|  `PrettySystemInfo(:_)` |  `GET - /sys-info/pretty`  |
+| `systemInfo(:_)`  |  `GET - /sys-info`  |
 
 ## Demo
 

@@ -126,6 +126,33 @@ struct Indexes {
 
     }
 
+    func deleteAll(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+
+        self.getAll { result in
+
+            switch result {
+            case .success(var indexes):
+
+                var dispatch: ((Index) -> Void)!
+                dispatch = { index in
+                    self.delete(index.UID) { result in
+                        if indexes.isEmpty {
+                            completion(.success(()))
+                        } else {
+                            dispatch(indexes.removeFirst())
+                        }
+                    }
+                }
+                dispatch(indexes.removeFirst())
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+
+    }
+
     private static func decodeJSON(
         _ data: Data,
         _ completion: (Result<Index, Swift.Error>) -> Void) {

@@ -117,6 +117,17 @@ public struct MeiliSearch {
         self.indexes.delete(UID, completion)
     }
 
+    /**
+     Delete all the Indexex from MeiliSearch.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the delete request, it returns a `Result` object that contains `()`
+     value. If the request was sucessful or `Error` if a failure occured.
+    */
+    public func deleteAll(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        self.indexes.deleteAll(completion)
+    }
+
     // MARK: Document
 
     /**
