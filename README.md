@@ -108,6 +108,7 @@ The current functions implemented are:
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
 | `createIndex(UID:_)`  | `POST - /indexes`  |
+| `getOrCreateIndex(UID:_)`  | `POST - /indexes` `GET - /indexes/:index_uid`  |
 | `getIndex(UID:_)`  | `GET - /indexes/:index_uid`  |
 | `getIndexes(:_)`  | `GET - /indexes`  |
 | `updateIndex(UID:_)`  | `POST - /indexes/:index_uid`  |

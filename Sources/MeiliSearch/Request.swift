@@ -21,6 +21,15 @@ public protocol URLSessionDataTaskProtocol {
     func resume()
 }
 
+struct MSError: Swift.Error {
+    let data: Data?
+    let underlying: Swift.Error
+}
+
+struct MSErrorResponse: Decodable {
+  let message: String
+}
+
 final class Request {
 
     private let config: Config
@@ -51,7 +60,7 @@ final class Request {
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
@@ -74,8 +83,9 @@ final class Request {
         request.httpBody = data
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
-                completion(.failure(error))
+          if let error: Swift.Error = error {
+            let msError = MSError(data: data, underlying: error)
+                completion(.failure(msError))
                 return
             }
             guard let data = data else {
@@ -99,7 +109,7 @@ final class Request {
         request.httpBody = body
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
@@ -119,7 +129,7 @@ final class Request {
         request.httpMethod = "DELETE"
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }

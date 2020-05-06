@@ -62,6 +62,12 @@ public struct MeiliSearch {
         self.indexes.create(UID, completion)
     }
 
+    public func getOrCreateIndex(
+        UID: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+        self.indexes.getOrCreate(UID, completion)
+    }
+
     /**
      Get the Index for the given `uid`.
 
