@@ -262,3 +262,7 @@ Feel free to contact us about any questions you may have:
 Any suggestion or feedback is highly appreciated. Thank you for your support!
 
 Swift programming language from Apple
+
+<hr>
+
+**MeiliSearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
