@@ -84,29 +84,29 @@ struct Indexes {
     enum CreateError: Swift.Error {
         case indexAlreadyExists
 
-      static func decode(_ error: MSError) -> Swift.Error {
+        static func decode(_ error: MSError) -> Swift.Error {
 
-        let underlyingError: NSError = error.underlying as NSError
+            let underlyingError: NSError = error.underlying as NSError
 
-        if let data = error.data {
+            if let data = error.data {
 
-          let msErrorResponse: MSErrorResponse?
-          do {
-              let decoder: JSONDecoder = JSONDecoder()
-              msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
-          } catch {
-              msErrorResponse = nil
-          }
+                let msErrorResponse: MSErrorResponse?
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
+                } catch {
+                    msErrorResponse = nil
+                }
 
-          if underlyingError.code == 400 && msErrorResponse?.message == "Impossible to create index; index already exists" {
-              return CreateError.indexAlreadyExists
-          }
-          return error
+                if underlyingError.code == 400 && msErrorResponse?.message == "Impossible to create index; index already exists" {
+                    return CreateError.indexAlreadyExists
+                }
+                return error
 
+            }
+
+            return error
         }
-
-        return error
-      }
     }
 
     func create(

@@ -7,7 +7,7 @@ public protocol URLSessionProtocol {
 
     /// Result for the `execute` function.
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
-    
+
     ///Function that will trigger the HTTP request.
     func execute(
         with request: URLRequest,
@@ -83,8 +83,8 @@ final class Request {
         request.httpBody = data
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-          if let error: Swift.Error = error {
-            let msError = MSError(data: data, underlying: error)
+            if let error: Swift.Error = error {
+                let msError = MSError(data: data, underlying: error)
                 completion(.failure(msError))
                 return
             }
