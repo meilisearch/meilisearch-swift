@@ -58,6 +58,57 @@ struct Indexes {
 
     }
 
+    func getOrCreate(_ UID: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+
+        self.create(UID) { result in
+
+            switch result {
+
+            case .success(let index):
+                completion(.success(index))
+
+            case .failure(let error):
+                switch error {
+                case CreateError.indexAlreadyExists:
+                    self.get(UID, completion)
+                default:
+                    completion(.failure(error))
+                }
+
+            }
+
+        }
+
+    }
+
+    enum CreateError: Swift.Error {
+        case indexAlreadyExists
+
+        static func decode(_ error: MSError) -> Swift.Error {
+
+            let underlyingError: NSError = error.underlying as NSError
+
+            if let data = error.data {
+
+                let msErrorResponse: MSErrorResponse?
+                do {
+                    let decoder: JSONDecoder = JSONDecoder()
+                    msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
+                } catch {
+                    msErrorResponse = nil
+                }
+
+                if underlyingError.code == 400 && msErrorResponse?.message == "Impossible to create index; index already exists" {
+                    return CreateError.indexAlreadyExists
+                }
+                return error
+
+            }
+
+            return error
+        }
+    }
+
     func create(
         _ UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
@@ -80,7 +131,14 @@ struct Indexes {
                 Indexes.decodeJSON(data, completion)
 
             case .failure(let error):
-                completion(.failure(error))
+
+                switch error {
+                case let msError as MSError:
+                    completion(.failure(CreateError.decode(msError)))
+                default:
+                    completion(.failure(error))
+                }
+
             }
 
         }

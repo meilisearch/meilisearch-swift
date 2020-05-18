@@ -7,7 +7,7 @@ public protocol URLSessionProtocol {
 
     /// Result for the `execute` function.
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
-    
+
     ///Function that will trigger the HTTP request.
     func execute(
         with request: URLRequest,
@@ -19,6 +19,15 @@ public protocol URLSessionProtocol {
 public protocol URLSessionDataTaskProtocol {
     ///Trigger HTTP request.
     func resume()
+}
+
+struct MSError: Swift.Error {
+    let data: Data?
+    let underlying: Swift.Error
+}
+
+struct MSErrorResponse: Decodable {
+  let message: String
 }
 
 final class Request {
@@ -51,7 +60,7 @@ final class Request {
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
@@ -74,8 +83,9 @@ final class Request {
         request.httpBody = data
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
-                completion(.failure(error))
+            if let error: Swift.Error = error {
+                let msError = MSError(data: data, underlying: error)
+                completion(.failure(msError))
                 return
             }
             guard let data = data else {
@@ -99,7 +109,7 @@ final class Request {
         request.httpBody = body
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
@@ -119,7 +129,7 @@ final class Request {
         request.httpMethod = "DELETE"
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error = error {
+            if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }

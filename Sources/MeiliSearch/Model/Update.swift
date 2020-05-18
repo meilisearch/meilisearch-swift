@@ -27,7 +27,7 @@ public struct Update: Codable, Equatable {
 
         ///Duration of the update process.
         public let duration: TimeInterval
-        
+
         ///Date when the update has been enqueued.
         public let enqueuedAt: Date
 
