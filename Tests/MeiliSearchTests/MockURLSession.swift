@@ -27,7 +27,7 @@ class MockURLSession: URLSessionProtocol {
 
         let first: ResponsePayload = responses.removeFirst()
 
-        if first.nextType == SUCCESS {
+        if first.nextType == ResponseStatus.success {
             completionHandler(first.nextData, successHttpURLResponse(request, first.nextCode), first.nextError)
         } else {
             completionHandler(first.nextData, failureHttpURLResponse(request, first.nextCode), first.nextError)
@@ -38,7 +38,7 @@ class MockURLSession: URLSessionProtocol {
 
     func pushData(_ string: String, code: Int = 200) {
         let payload = ResponsePayload(
-            nextType: SUCCESS,
+            nextType: ResponseStatus.success,
             nextData: string.data(using: .utf8),
             nextError: nil,
             nextCode: code)
@@ -47,7 +47,7 @@ class MockURLSession: URLSessionProtocol {
 
     func pushEmpty(code: Int) {
         let payload = ResponsePayload(
-            nextType: SUCCESS,
+            nextType: ResponseStatus.success,
             nextData: nil,
             nextError: nil,
             nextCode: code)
@@ -56,7 +56,7 @@ class MockURLSession: URLSessionProtocol {
 
     func pushError(_ string: String? = nil, _ error: Error? = nil, code: Int) {
         let payload = ResponsePayload(
-            nextType: ERROR,
+            nextType: ResponseStatus.error,
             nextData: string?.data(using: .utf8),
             nextError: error ?? NSError(domain: "", code: code, userInfo: nil),
             nextCode: code)
@@ -73,11 +73,12 @@ class MockURLSessionDataTask: URLSessionDataTaskProtocol {
     }
 }
 
-private let ERROR = 0
-private let SUCCESS = 1
+enum ResponseStatus {
+  case success, error
+}
 
 struct ResponsePayload {
-    let nextType: Int
+    let nextType: ResponseStatus
     let nextData: Data?
     let nextError: Error?
     let nextCode: Int
