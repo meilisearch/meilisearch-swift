@@ -98,7 +98,7 @@ struct Indexes {
                     msErrorResponse = nil
                 }
 
-                if underlyingError.code == 400 && msErrorResponse?.message == "Impossible to create index; index already exists" {
+                if underlyingError.code == 400 && msErrorResponse?.errorType == "invalid_request_error" && msErrorResponse?.errorCode == "index_already_exists" {
                     return CreateError.indexAlreadyExists
                 }
                 return error

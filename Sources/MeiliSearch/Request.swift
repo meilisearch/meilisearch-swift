@@ -28,6 +28,9 @@ struct MSError: Swift.Error {
 
 struct MSErrorResponse: Decodable {
   let message: String
+  let errorCode: String
+  let errorType: String
+  let errorLink: String
 }
 
 final class Request {
