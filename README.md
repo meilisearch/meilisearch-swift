@@ -5,12 +5,12 @@
 <h1 align="center">MeiliSearch-Swift</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> | 
-  <a href="https://www.meilisearch.com">Website</a> | 
-  <a href="https://blog.meilisearch.com">Blog</a> | 
-  <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> | 
-  <a href="https://twitter.com/meilisearch">Twitter</a> | 
-  <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> | 
+  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://www.meilisearch.com">Website</a> |
+  <a href="https://blog.meilisearch.com">Blog</a> |
+  <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> |
+  <a href="https://twitter.com/meilisearch">Twitter</a> |
+  <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
@@ -63,7 +63,7 @@ func searchForMovies() {
 
     // Create a new search request with "botman" as query.
     let searchParameters = SearchParameters.query("botman")
-    
+
     // Typealias that represents the result from Meili.
     typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
@@ -98,6 +98,11 @@ private struct Movie: Codable, Equatable {
 }
 
 ```
+
+## Compatibility with MeiliSearch
+
+This package is compatible with the following MeiliSearch versions:
+- `v0.10.X`
 
 ## Functions
 
