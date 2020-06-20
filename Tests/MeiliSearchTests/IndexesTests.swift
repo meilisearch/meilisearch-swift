@@ -98,7 +98,7 @@ class IndexesTests: XCTestCase {
         //Prepare the mock server
 
         let createJsonString = """
-        {"message":"Impossible to create index; index already exists"}
+        {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
         """
 
         session.pushError(createJsonString, nil, code: 400)
