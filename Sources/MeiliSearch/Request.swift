@@ -26,11 +26,11 @@ struct MSError: Swift.Error {
     let underlying: Swift.Error
 }
 
-struct MSErrorResponse: Decodable {
+struct MSErrorResponse: Codable {
   let message: String
   let errorCode: String
   let errorType: String
-  let errorLink: String
+  let errorLink: String?
 }
 
 final class Request {
