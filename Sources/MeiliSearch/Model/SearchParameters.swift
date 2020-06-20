@@ -33,6 +33,13 @@ public struct SearchParameters: Codable, Equatable {
     /// Attribute with an exact match.
     public let filters: Filter?
 
+    /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
+    //TODO: Migrate to FacetFilter object
+    public let facetFilters: String?
+
+    /// Retrieve the count of matching terms for each facets.
+    public let facetsDistribution: [String]?
+
     /// Whether to return the raw matches or not.
     public let matches: Bool
 
@@ -47,6 +54,8 @@ public struct SearchParameters: Codable, Equatable {
         cropLength: Int = 200,
         attributesToHighlight: [String] = [],
         filters: Filter? = nil,
+        facetFilters: String? = nil,
+        facetsDistribution: [String]? = nil,
         matches: Bool = false) {
         self.query = query
         self.offset = offset
@@ -56,6 +65,8 @@ public struct SearchParameters: Codable, Equatable {
         self.cropLength = cropLength
         self.attributesToHighlight = attributesToHighlight
         self.filters = filters
+        self.facetFilters = facetFilters
+        self.facetsDistribution = facetsDistribution
         self.matches = matches
     }
 
@@ -72,35 +83,60 @@ public struct SearchParameters: Codable, Equatable {
     }
 
     func dictionary() -> [String: String] {
-      var dic = [String: String]()
-      dic["q"] = query
-      dic["offset"] = "\(offset)"
-      dic["limit"] = "\(limit)"
+        var dic = [String: String]()
+        dic["q"] = query
+        dic["offset"] = "\(offset)"
+        dic["limit"] = "\(limit)"
 
-      if let attributesToRetrieve = self.attributesToRetrieve {
-        dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
-      }
+        if let attributesToRetrieve = self.attributesToRetrieve {
+            dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
+        }
 
-      if !attributesToCrop.isEmpty {
-        dic["attributesToCrop"] = commaRepresentation(attributesToCrop)
-      }
+        if !attributesToCrop.isEmpty {
+            dic["attributesToCrop"] = commaRepresentation(attributesToCrop)
+        }
 
-      dic["cropLength"] = "\(cropLength)"
+        dic["cropLength"] = "\(cropLength)"
 
-      if !attributesToHighlight.isEmpty {
-        dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
-      }
+        if !attributesToHighlight.isEmpty {
+            dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
+        }
 
-      if let filters: Filter = self.filters {
-        dic["filters"] = "\(filters.attribute):\(filters.value)"
-      }
+        if let filters: Filter = self.filters {
+            dic["filters"] = "\(filters.attribute):\(filters.value)"
+        }
 
-      dic["matches"] = "\(matches)"
-      return dic
+        if let facetFilters: String = self.facetFilters {
+  //        var facets: [String] = []
+  //        facetFilters.forEach { any in
+  //          switch any {
+  //          case let filter as Filter:
+  //            print("ddd")
+  ////            facets
+  //          default:
+  //            print("ddsssd")
+  //          }
+  //        }
+            dic["facetFilters"] = facetFilters
+        }
+
+        if let facetsDistribution: [String] = self.facetsDistribution {
+            dic["facetsDistribution"] = commaRepresentationEscaped(facetsDistribution)
+        }
+
+        dic["matches"] = "\(matches)"
+        return dic
     }
 
     private func commaRepresentation(_ array: [String]) -> String {
-      array.joined(separator: ",")
+        array.joined(separator: ",")
+    }
+
+    private func commaRepresentationEscaped(_ array: [String]) -> String {
+        var value: String = "["
+        value += array.map({ string in "\"\(string)\"" }).joined(separator: ",")
+        value += "]"
+        return value
     }
 
     /**

@@ -892,6 +892,109 @@ class SettingsTests: XCTestCase {
 
     }
 
+    // MARK: Attributes for faceting
+
+    func testGetAttributesForFaceting() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        ["genre", "director"]
+        """
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Get displayed attribute")
+
+        self.client.getAttributesForFaceting(UID: UID) { result in
+            switch result {
+            case .success(let attributesForFaceting):
+                XCTAssertFalse(attributesForFaceting.isEmpty)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testUpdateAttributesForFaceting() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+        let attributes: [String] = ["genre", "director"]
+
+        let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+        self.client.updateAttributesForFaceting(UID: UID, attributes) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testResetAttributesForFaceting() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":1}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let stubUpdate: Update = try! decoder.decode(
+          Update.self,
+          from: jsonString.data(using: .utf8)!)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+
+        let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+        self.client.resetAttributesForFaceting(UID: UID) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update displayed attribute")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
     private func buildStubSetting() -> Setting {
         let data = json.data(using: .utf8)!
         let decoder: JSONDecoder = JSONDecoder()
@@ -918,7 +1021,10 @@ class SettingsTests: XCTestCase {
         ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
         ("testResetDisplayedAttributes", testResetDisplayedAttributes),
         ("testGetAcceptNewFields", testGetAcceptNewFields),
-        ("testUpdateAcceptNewFields", testUpdateAcceptNewFields)
+        ("testUpdateAcceptNewFields", testUpdateAcceptNewFields),
+        ("testGetAttributesForFaceting", testGetAttributesForFaceting),
+        ("testUpdateAttributesForFaceting", testUpdateAttributesForFaceting),
+        ("testResetAttributesForFaceting", testResetAttributesForFaceting)
     ]
 
 }

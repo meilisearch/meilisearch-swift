@@ -694,6 +694,52 @@ public struct MeiliSearch {
         self.settings.updateAcceptNewFields(UID, acceptNewFields, completion)
     }
 
+    // MARK: Attributes for faceting
+
+    /**
+    Get the attributes selected to be faceted of an `Index`.
+
+    - parameter UID:             The unique identifier for the `Index` to be found.
+    - parameter completion:      The completion closure used to notify when the server
+    completes the query request, it returns a `Result` object that contains an `[String]`
+    value. If the request was sucessful or `Error` if a failure occured.
+    */
+    public func getAttributesForFaceting(
+        UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+        self.settings.getAttributesForFaceting(UID, completion)
+    }
+
+    /**
+     Update the faceted attributes of an `Index`.
+
+     - parameter UID:             The unique identifier for the `Index` to be found.
+     - parameter acceptNewFields: The faceted attributes to be applied into `Index`.
+     - parameter completion:      The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func updateAttributesForFaceting(
+        UID: String,
+        _ attributes: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateAttributesForFaceting(UID, attributes, completion)
+    }
+
+    /**
+     Reset the faceted attributes of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func resetAttributesForFaceting(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetAttributesForFaceting(UID, completion)
+    }
+
     // MARK: Stats
 
     /**
