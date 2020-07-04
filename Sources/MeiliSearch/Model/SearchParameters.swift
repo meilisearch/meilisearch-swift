@@ -35,7 +35,7 @@ public struct SearchParameters: Codable, Equatable {
 
     /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
     //TODO: Migrate to FacetFilter object
-    public let facetFilters: String?
+    public let facetFilters: [[String]]?
 
     /// Retrieve the count of matching terms for each facets.
     public let facetsDistribution: [String]?
@@ -54,7 +54,7 @@ public struct SearchParameters: Codable, Equatable {
         cropLength: Int = 200,
         attributesToHighlight: [String] = [],
         filters: Filter? = nil,
-        facetFilters: String? = nil,
+        facetFilters: [[String]]? = nil,
         facetsDistribution: [String]? = nil,
         matches: Bool = false) {
         self.query = query
@@ -106,18 +106,14 @@ public struct SearchParameters: Codable, Equatable {
             dic["filters"] = "\(filters.attribute):\(filters.value)"
         }
 
-        if let facetFilters: String = self.facetFilters {
-  //        var facets: [String] = []
-  //        facetFilters.forEach { any in
-  //          switch any {
-  //          case let filter as Filter:
-  //            print("ddd")
-  ////            facets
-  //          default:
-  //            print("ddsssd")
-  //          }
-  //        }
-            dic["facetFilters"] = facetFilters
+        if let facetFilters: [[String]] = self.facetFilters {
+            var value = ""
+            facetFilters.forEach { (facetFilter: [String]) in
+              let entry = commaRepresentationEscaped(facetFilter)
+              value += entry
+              value += ","
+            }
+            dic["facetFilters"] = value
         }
 
         if let facetsDistribution: [String] = self.facetsDistribution {
