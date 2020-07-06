@@ -29,7 +29,7 @@ class DocumentsTests: XCTestCase {
         client = try! MeiliSearch(Config(hostURL: "", session: session))
     }
 
-    func testAddOrReplaceDocument() {
+    func testAddDocuments() {
 
         //Prepare the mock server
 
@@ -59,13 +59,13 @@ class DocumentsTests: XCTestCase {
 
         let primaryKey: String = ""
 
-        let document: Data = documentJsonString.data(using: .utf8)!
+        let documents: Data = documentJsonString.data(using: .utf8)!
 
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-        self.client.addOrReplaceDocument(
+        self.client.addDocuments(
             UID: uid,
-            document: document,
+            documents: documents,
             primaryKey: primaryKey) { result in
 
             switch result {
@@ -82,7 +82,7 @@ class DocumentsTests: XCTestCase {
 
     }
 
-    func testAddOrUpdateDocument() {
+    func testUpdateDocuments() {
 
         //Prepare the mock server
 
@@ -109,13 +109,13 @@ class DocumentsTests: XCTestCase {
 
         let primaryKey: String = "movieskud"
 
-        let document: Data = documentJsonString.data(using: .utf8)!
+        let documents: Data = documentJsonString.data(using: .utf8)!
 
         let expectation = XCTestExpectation(description: "Add or update Movies document")
 
-        self.client.addOrUpdateDocument(
+        self.client.updateDocuments(
             UID: uid,
-            document: document,
+            documents: documents,
             primaryKey: primaryKey) { result in
 
             switch result {
@@ -357,8 +357,8 @@ class DocumentsTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testAddOrReplaceDocument", testAddOrReplaceDocument),
-        ("testAddOrUpdateDocument", testAddOrUpdateDocument),
+        ("testAddDocuments", testAddDocuments),
+        ("testUpdateDocuments", testUpdateDocuments),
         ("testGetDocument", testGetDocument),
         ("testGetDocuments", testGetDocuments),
         ("testDeleteDocument", testDeleteDocument),

@@ -124,8 +124,8 @@ The current functions implemented are:
 
 | Swift function  | Similar to API call |
 | ------------- | ------------- |
-| `addOrReplaceDocument(UID:document:primaryKey:_)`  | `POST - /indexes/:index_uid/documents`  |
-| `addOrUpdateDocument(UID:document:primaryKey:_)`  | `PUT - /indexes/:index_uid/documents`  |
+| `addDocuments(UID:documents:primaryKey:_)`  | `POST - /indexes/:index_uid/documents`  |
+| `updateDocuments(UID:documents:primaryKey:_)`  | `PUT - /indexes/:index_uid/documents`  |
 | `getDocument(UID:identifier:_)`  | `GET - /indexes/:index_uid/documents/:document_id`  |
 | `getDocuments(UID:limit:_)`  | `GET - /indexes/:index_uid/documents`  |
 | `deleteDocument(UID:identifier:_)`  | `DELETE - /indexes/:index_uid/documents/:document_id`  |
