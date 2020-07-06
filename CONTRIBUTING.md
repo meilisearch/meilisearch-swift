@@ -57,15 +57,7 @@ About this automation:
 
 #### How to Publish the Release
 
-Make a PR modifying the file [`lib/meilisearch/version.rb`](/lib/meilisearch/version.rb) with the right version.
-
-```ruby
-VERSION = 'X.X.X'
-```
-
 Once the changes are merged on `master`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-swift/releases).
-
-A GitHub Action will be triggered and push the package to [RubyGems](https://rubygems.org/gems/meilisearch).
 
 ## Git Guidelines
 
