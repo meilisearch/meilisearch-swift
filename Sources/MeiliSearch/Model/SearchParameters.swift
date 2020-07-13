@@ -90,7 +90,7 @@ public struct SearchParameters: Codable, Equatable {
         dic["offset"] = "\(offset)"
         dic["limit"] = "\(limit)"
 
-        if let attributesToRetrieve = self.attributesToRetrieve {
+        if let attributesToRetrieve = self.attributesToRetrieve, !attributesToRetrieve.isEmpty {
             dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
         }
 
@@ -104,11 +104,11 @@ public struct SearchParameters: Codable, Equatable {
             dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
         }
 
-        if let filters: String = self.filters {
+        if let filters: String = self.filters, !filters.isEmpty {
             dic["filters"] = filters
         }
 
-        if let facetFilters: [[String]] = self.facetFilters {
+        if let facetFilters: [[String]] = self.facetFilters, !facetFilters.isEmpty {
             var value = "["
             for (index, facetFilter) in facetFilters.enumerated() {
                 let entry = commaRepresentationEscaped(facetFilter)
@@ -121,7 +121,7 @@ public struct SearchParameters: Codable, Equatable {
             dic["facetFilters"] = value
         }
 
-        if let facetsDistribution: [String] = self.facetsDistribution {
+        if let facetsDistribution: [String] = self.facetsDistribution, !facetsDistribution.isEmpty {
             dic["facetsDistribution"] = commaRepresentationEscaped(facetsDistribution)
         }
 
