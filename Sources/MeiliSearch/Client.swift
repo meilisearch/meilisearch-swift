@@ -31,7 +31,7 @@ public struct MeiliSearch {
     /**
      Obtains a MeiliSearch instance for the given `config`.
 
-     - parameter config: Set the default configuration for the client. 
+     - parameter config: Set the default configuration for the client.
      */
     public init(_ config: Config = Config.default) throws {
         let request: Request = Request(config)
@@ -52,8 +52,8 @@ public struct MeiliSearch {
      Create a new Index for the given `uid`.
 
      - parameter UID:        The unique identifier for the `Index` to be created.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the write request, it returns a `Result` object that contains `Index` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the write request, it returns a `Result` object that contains `Index`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func createIndex(
@@ -72,8 +72,8 @@ public struct MeiliSearch {
      Get the Index for the given `uid`.
 
      - parameter UID:        The unique identifier for the `Index` to be found.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `Index` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Index`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func getIndex(
@@ -84,9 +84,9 @@ public struct MeiliSearch {
 
     /**
      List the all Indexes.
-     
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `[Index]` 
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `[Index]`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func getIndexes(
@@ -96,11 +96,11 @@ public struct MeiliSearch {
 
     /**
      Update index name.
-     
+
      - parameter UID:        The unique identifier for the `Index` to be found.
      - parameter name:       New index name.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the update request, it returns a `Result` object that contains `()` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the update request, it returns a `Result` object that contains `()`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func updateIndex(
@@ -112,9 +112,9 @@ public struct MeiliSearch {
 
     /**
      Delete the Index for the given `uid`.
-     
-     - parameter completion: The completion closure used to notify when the server 
-     completes the delete request, it returns a `Result` object that contains `()` 
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the delete request, it returns a `Result` object that contains `()`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteIndex(
@@ -128,26 +128,26 @@ public struct MeiliSearch {
     /**
      Add a list of documents or replace them if they already exist.
 
-     If you send an already existing document (same id) the whole existing document will 
+     If you send an already existing document (same id) the whole existing document will
      be overwritten by the new document. Fields previously in the document not present in
      the new document are removed.
 
-     For a partial update of the document see `addOrUpdateDocument`.
-     
+     For a partial update of the document see `updateDocument`.
+
      - parameter UID:        The unique identifier for the Document's index to be found.
-     - parameter document:   The document data (JSON) to be processed.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the update request, it returns a `Result` object that contains `Update` 
+     - parameter documents:  The documents data (JSON) to be processed.
+     - parameter completion: The completion closure used to notify when the server
+     completes the update request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func addOrReplaceDocument(
+    public func addDocuments(
         UID: String,
-        document: Data,
+        documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrReplace(
             UID,
-            document,
+            documents,
             primaryKey,
             completion)
     }
@@ -160,32 +160,32 @@ public struct MeiliSearch {
     document. Thus, any fields not present in the new document are kept
     and remained unchanged.
 
-    To completely overwrite a document see `addOrReplaceDocument`.
-     
+    To completely overwrite a document see `addDocument`.
+
      - parameter UID:        The unique identifier for the Document's index to be found.
-     - parameter document:   The document data (JSON) to be processed.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the update request, it returns a `Result` object that contains `Update` 
+     - parameter documents:   The document data (JSON) to be processed.
+     - parameter completion: The completion closure used to notify when the server
+     completes the update request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
      */
-    public func addOrUpdateDocument(
+    public func updateDocuments(
         UID: String,
-        document: Data,
+        documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.documents.addOrUpdate(
             UID,
-            document,
+            documents,
             primaryKey,
             completion)
     }
 
     /**
      Get the Document for the given `uid` and `identifier`.
-     
+
      - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter identifier: The document identifier for the Document to be found.
-     - parameter completion: The completion closure used to notify when the server 
+     - parameter completion: The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains  `T` value.
      If the request was sucessful or `Error` if a failure occured.
      */
@@ -199,11 +199,11 @@ public struct MeiliSearch {
 
     /**
      List the all Documents.
-     
+
      - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter limit:      Limit the size of the query.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains 
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains
      `[T]` value. If the request was sucessful or `Error` if a
      failure occured.
      */
@@ -217,11 +217,11 @@ public struct MeiliSearch {
 
     /**
      Delete the Document for the given `uid` and `identifier`.
-     
+
      - parameter UID:        The unique identifier for the Document's index to be found.
      - parameter identifier: The document identifier for the Document to be found.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the delete request, it returns a `Result` object that contains `Update` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the delete request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteDocument(
@@ -233,10 +233,10 @@ public struct MeiliSearch {
 
     /**
      Delete all Documents for the given `uid`.
-     
+
      - parameter UID:        The unique identifier for the Document's index to be found.
-     - parameter completion: The completion closure used to notify when the server 
-     completes the delete request, it returns a `Result` object that contains `Update` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the delete request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func deleteAllDocuments(
@@ -263,11 +263,11 @@ public struct MeiliSearch {
 
     /**
      Search for a document in the `uid` and `searchParameters`
-     
+
      - parameter UID:              The unique identifier for the Document's index to
      be found.
      - parameter searchParameters: The document identifier for the Document to be found.
-     - parameter completion:       The completion closure used to notify when the server 
+     - parameter completion:       The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains  `SearchResult<T>`
      value. If the request was sucessful or `Error` if a failure occured.
      */
@@ -726,8 +726,8 @@ public struct MeiliSearch {
     /**
      Update health of MeiliSearch server.
 
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `()` value. 
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `()` value.
      If the request was sucessful or `Error` if a failure occured.
      */
     public func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
@@ -751,8 +751,8 @@ public struct MeiliSearch {
     /**
      Get version of MeiliSearch.
 
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `Version` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Version`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func version(
@@ -763,8 +763,8 @@ public struct MeiliSearch {
     /**
      Get system information.
 
-     - parameter completion: The completion closure used to notify when the server 
-     completes the query request, it returns a `Result` object that contains `SystemInfo` 
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `SystemInfo`
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func systemInfo(
