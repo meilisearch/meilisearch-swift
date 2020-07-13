@@ -1,0 +1,25 @@
+name: Swift
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        swift-version: '5.2.0'
+
+    - name: Run tests
+      run: swift test -v
+
+    - name: Publish Jazzy Docs
+      uses: Steven0351/publish-jazzy-docs@v1.1.1
+      with:
+        personal_access_token: ${{ secrets.ACCESS_TOKEN }}
