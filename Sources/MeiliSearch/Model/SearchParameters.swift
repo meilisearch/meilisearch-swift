@@ -31,7 +31,7 @@ public struct SearchParameters: Codable, Equatable {
     public let attributesToHighlight: [String]
 
     /// Attribute with an exact match.
-    public let filters: Filter?
+    public let filters: String?
 
     /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
     //TODO: Migrate to FacetFilter object
@@ -53,7 +53,7 @@ public struct SearchParameters: Codable, Equatable {
         attributesToCrop: [String] = [],
         cropLength: Int = 200,
         attributesToHighlight: [String] = [],
-        filters: Filter? = nil,
+        filters: String? = nil,
         facetFilters: [[String]]? = nil,
         facetsDistribution: [String]? = nil,
         matches: Bool = false) {
@@ -83,7 +83,9 @@ public struct SearchParameters: Codable, Equatable {
     }
 
     func dictionary() -> [String: String] {
+
         var dic = [String: String]()
+
         dic["q"] = query
         dic["offset"] = "\(offset)"
         dic["limit"] = "\(limit)"
@@ -102,17 +104,20 @@ public struct SearchParameters: Codable, Equatable {
             dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
         }
 
-        if let filters: Filter = self.filters {
-            dic["filters"] = "\(filters.attribute):\(filters.value)"
+        if let filters: String = self.filters {
+            dic["filters"] = filters
         }
 
         if let facetFilters: [[String]] = self.facetFilters {
-            var value = ""
-            facetFilters.forEach { (facetFilter: [String]) in
-              let entry = commaRepresentationEscaped(facetFilter)
-              value += entry
-              value += ","
+            var value = "["
+            for (index, facetFilter) in facetFilters.enumerated() {
+                let entry = commaRepresentationEscaped(facetFilter)
+                value += entry
+                if index < facetFilters.count - 1 {
+                    value += ","
+                }
             }
+            value += "]"
             dic["facetFilters"] = value
         }
 
@@ -133,21 +138,6 @@ public struct SearchParameters: Codable, Equatable {
         value += array.map({ string in "\"\(string)\"" }).joined(separator: ",")
         value += "]"
         return value
-    }
-
-    /**
-     `Filter` instances represent filter used in thr search query.
-     */
-    public struct Filter: Codable, Equatable {
-
-        // MARK: Properties
-
-        /// Parameter from document to be filtered.
-        let attribute: String
-
-        /// Value of the document parameter to be filtered.
-        let value: String
-
     }
 
 }
