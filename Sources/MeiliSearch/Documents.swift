@@ -70,7 +70,7 @@ struct Documents {
 
     // MARK: Write
 
-    func addOrReplace(
+    func add(
         _ UID: String,
         _ document: Data,
         _ primaryKey: String?,
@@ -95,7 +95,7 @@ struct Documents {
         }
     }
 
-    func addOrUpdate(
+    func update(
         _ UID: String,
         _ document: Data,
         _ primaryKey: String?,
@@ -106,7 +106,7 @@ struct Documents {
             query += "?primaryKey=\(primaryKey)"
         }
 
-        request.put(api: query, body: document) { result in
+        request.put(api: query, document) { result in
 
             switch result {
             case .success(let data):
@@ -135,14 +135,14 @@ struct Documents {
         self.request.delete(api: "/indexes/\(UID)/documents/\(identifier)") { result in
 
             switch result {
-            case .success(let data):
+            case .success(let result):
 
-                guard let data: Data = data else {
+                guard let result: Data = result else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
 
-                Documents.decodeJSON(data, completion: completion)
+                Documents.decodeJSON(result, completion: completion)
 
             case .failure(let error):
                 completion(.failure(error))

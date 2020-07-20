@@ -40,7 +40,7 @@ public struct MeiliSearch {
         self.documents = Documents(request)
         self.search = Search(request)
         self.updates = Updates(request)
-        self.keys = Keys(request)
+        self.keys = Keys(request, config)
         self.settings = Settings(request)
         self.stats = Stats(request)
         self.system = System(request)
@@ -105,9 +105,9 @@ public struct MeiliSearch {
      */
     public func updateIndex(
         UID: String,
-        name: String,
-        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-        self.indexes.update(UID, name, completion)
+        primaryKey: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+        self.indexes.update(UID, primaryKey, completion)
     }
 
     /**
@@ -145,7 +145,7 @@ public struct MeiliSearch {
         documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.addOrReplace(
+        self.documents.add(
             UID,
             documents,
             primaryKey,
@@ -173,7 +173,7 @@ public struct MeiliSearch {
         documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.addOrUpdate(
+        self.documents.update(
             UID,
             documents,
             primaryKey,
@@ -326,9 +326,8 @@ public struct MeiliSearch {
      If the request was sucessful or `Error` if a failure occured.
     */
     public func keys(
-        masterKey: String,
         _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-        self.keys.get(masterKey, completion)
+        self.keys.get(completion)
     }
 
     // MARK: Settings
@@ -692,6 +691,52 @@ public struct MeiliSearch {
         _ acceptNewFields: Bool,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
         self.settings.updateAcceptNewFields(UID, acceptNewFields, completion)
+    }
+
+    // MARK: Attributes for faceting
+
+    /**
+    Get the attributes selected to be faceted of an `Index`.
+
+    - parameter UID:             The unique identifier for the `Index` to be found.
+    - parameter completion:      The completion closure used to notify when the server
+    completes the query request, it returns a `Result` object that contains an `[String]`
+    value if the request was successful, or `Error` if a failure occurred.
+    */
+    public func getAttributesForFaceting(
+        UID: String,
+        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+        self.settings.getAttributesForFaceting(UID, completion)
+    }
+
+    /**
+     Update the faceted attributes of an `Index`.
+
+     - parameter UID:             The unique identifier for the `Index` to be found.
+     - parameter attributes:   The faceted attributes to be applied into `Index`.
+     - parameter completion:      The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value if the request was successful, or `Error` if a failure occurred.
+     */
+    public func updateAttributesForFaceting(
+        UID: String,
+        _ attributes: [String],
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.updateAttributesForFaceting(UID, attributes, completion)
+    }
+
+    /**
+     Reset the faceted attributes of an `Index`.
+
+     - parameter UID:        The unique identifier for the `Index` to be reset.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains `Update`
+     value if the request was successful, or `Error` if a failure occurred.
+     */
+    public func resetAttributesForFaceting(
+        UID: String,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+        self.settings.resetAttributesForFaceting(UID, completion)
     }
 
     // MARK: Stats

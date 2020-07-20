@@ -8,7 +8,11 @@ class KeysTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(Config(hostURL: "", session: session))
+        let config = Config(
+          hostURL: "",
+          apiKey: "c4dff5a196824a0704c2023916c21eaf0a13485a9d637416820bc623375f2a",
+          session: session)
+        client = try! MeiliSearch(config)
     }
 
     func testKeys() {
@@ -28,13 +32,9 @@ class KeysTests: XCTestCase {
 
         session.pushData(jsonString)
 
-        // Start the test with the mocked server
-
-        let masterKey = "c4dff5a196824a0704c2023916c21eaf0a13485a9d637416820bc623375f2a"
-
         let expectation = XCTestExpectation(description: "Get public and private key")
 
-      self.client.keys(masterKey: masterKey) { result in
+        self.client.keys { result in
             switch result {
             case .success(let key):
                 XCTAssertEqual(stubKey, key)
@@ -42,10 +42,9 @@ class KeysTests: XCTestCase {
             case .failure:
                 XCTFail("Failed to get public and private key")
             }
-      }
+        }
 
         self.wait(for: [expectation], timeout: 1.0)
-
     }
 
     static var allTests = [

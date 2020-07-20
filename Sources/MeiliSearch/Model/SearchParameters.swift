@@ -31,7 +31,14 @@ public struct SearchParameters: Codable, Equatable {
     public let attributesToHighlight: [String]
 
     /// Attribute with an exact match.
-    public let filters: Filter?
+    public let filters: String?
+
+    /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
+    //TODO: Migrate to FacetFilter object
+    public let facetFilters: [[String]]?
+
+    /// Retrieve the count of matching terms for each facets.
+    public let facetsDistribution: [String]?
 
     /// Whether to return the raw matches or not.
     public let matches: Bool
@@ -46,7 +53,9 @@ public struct SearchParameters: Codable, Equatable {
         attributesToCrop: [String] = [],
         cropLength: Int = 200,
         attributesToHighlight: [String] = [],
-        filters: Filter? = nil,
+        filters: String? = nil,
+        facetFilters: [[String]]? = nil,
+        facetsDistribution: [String]? = nil,
         matches: Bool = false) {
         self.query = query
         self.offset = offset
@@ -56,6 +65,8 @@ public struct SearchParameters: Codable, Equatable {
         self.cropLength = cropLength
         self.attributesToHighlight = attributesToHighlight
         self.filters = filters
+        self.facetFilters = facetFilters
+        self.facetsDistribution = facetsDistribution
         self.matches = matches
     }
 
@@ -72,50 +83,61 @@ public struct SearchParameters: Codable, Equatable {
     }
 
     func dictionary() -> [String: String] {
-      var dic = [String: String]()
-      dic["q"] = query
-      dic["offset"] = "\(offset)"
-      dic["limit"] = "\(limit)"
 
-      if let attributesToRetrieve = self.attributesToRetrieve {
-        dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
-      }
+        var dic = [String: String]()
 
-      if !attributesToCrop.isEmpty {
-        dic["attributesToCrop"] = commaRepresentation(attributesToCrop)
-      }
+        dic["q"] = query
+        dic["offset"] = "\(offset)"
+        dic["limit"] = "\(limit)"
 
-      dic["cropLength"] = "\(cropLength)"
+        if let attributesToRetrieve = self.attributesToRetrieve, !attributesToRetrieve.isEmpty {
+            dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
+        }
 
-      if !attributesToHighlight.isEmpty {
-        dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
-      }
+        if !attributesToCrop.isEmpty {
+            dic["attributesToCrop"] = commaRepresentation(attributesToCrop)
+        }
 
-      if let filters: Filter = self.filters {
-        dic["filters"] = "\(filters.attribute):\(filters.value)"
-      }
+        dic["cropLength"] = "\(cropLength)"
 
-      dic["matches"] = "\(matches)"
-      return dic
+        if !attributesToHighlight.isEmpty {
+            dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
+        }
+
+        if let filters: String = self.filters, !filters.isEmpty {
+            dic["filters"] = filters
+        }
+
+        if let facetFilters: [[String]] = self.facetFilters, !facetFilters.isEmpty {
+            var value = "["
+            for (index, facetFilter) in facetFilters.enumerated() {
+                let entry = commaRepresentationEscaped(facetFilter)
+                value += entry
+                if index < facetFilters.count - 1 {
+                    value += ","
+                }
+            }
+            value += "]"
+            dic["facetFilters"] = value
+        }
+
+        if let facetsDistribution: [String] = self.facetsDistribution, !facetsDistribution.isEmpty {
+            dic["facetsDistribution"] = commaRepresentationEscaped(facetsDistribution)
+        }
+
+        dic["matches"] = "\(matches)"
+        return dic
     }
 
     private func commaRepresentation(_ array: [String]) -> String {
-      array.joined(separator: ",")
+        array.joined(separator: ",")
     }
 
-    /**
-     `Filter` instances represent filter used in thr search query.
-     */
-    public struct Filter: Codable, Equatable {
-
-        // MARK: Properties
-
-        /// Parameter from document to be filtered.
-        let attribute: String
-
-        /// Value of the document parameter to be filtered.
-        let value: String
-
+    private func commaRepresentationEscaped(_ array: [String]) -> String {
+        var value: String = "["
+        value += array.map({ string in "\"\(string)\"" }).joined(separator: ",")
+        value += "]"
+        return value
     }
 
 }
