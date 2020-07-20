@@ -1,3 +1,4 @@
 ## vX.X.X
 
 - Added getOrCreateIndex function (#4)
+- Added Facets support (#15)
