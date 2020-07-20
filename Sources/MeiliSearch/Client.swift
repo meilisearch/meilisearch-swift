@@ -702,7 +702,7 @@ public struct MeiliSearch {
     - parameter UID:             The unique identifier for the `Index` to be found.
     - parameter completion:      The completion closure used to notify when the server
     completes the query request, it returns a `Result` object that contains an `[String]`
-    value. If the request was sucessful or `Error` if a failure occured.
+    value if the request was successful, or `Error` if a failure occurred.
     */
     public func getAttributesForFaceting(
         UID: String,
