@@ -714,7 +714,7 @@ public struct MeiliSearch {
      Update the faceted attributes of an `Index`.
 
      - parameter UID:             The unique identifier for the `Index` to be found.
-     - parameter attributes: The faceted attributes to be applied into `Index`.
+     - parameter attributes:   The faceted attributes to be applied into `Index`.
      - parameter completion:      The completion closure used to notify when the server
      completes the query request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.
