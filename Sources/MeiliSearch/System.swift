@@ -42,7 +42,7 @@ struct System {
           return
       }
 
-      self.request.put(api: "/health", body: data) { result in
+      self.request.put(api: "/health", data) { result in
           switch result {
           case .success:
               completion(.success(()))

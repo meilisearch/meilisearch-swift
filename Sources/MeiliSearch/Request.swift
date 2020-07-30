@@ -103,13 +103,13 @@ final class Request {
 
     func put(
         api: String,
-        body: Data,
+        _ data: Data,
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         let urlString: String = config.url(api: api)
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "PUT"
-        request.httpBody = body
+        request.httpBody = data
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
             if let error: Swift.Error = error {

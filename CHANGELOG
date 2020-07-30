@@ -1,4 +1,11 @@
 ## vX.X.X
 
+- XXX
+
+## v0.1.1
+
 - Added getOrCreateIndex function (#4)
 - Added Facets support (#15)
+- Add .code-samples.meilisearch.yaml file for documentation
+- Update `updateIndex` function to return `Index` on success
+- Remove `apiKey` from `keys` function

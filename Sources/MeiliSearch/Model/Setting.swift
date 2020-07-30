@@ -26,6 +26,21 @@ public struct Setting: Codable, Equatable {
     ///Return if a given `Index` allows new fields.
     public let acceptNewFields: Bool
 
+    public init(
+      rankingRules: [String],
+      searchableAttributes: [String],
+      displayedAttributes: [String],
+      stopWords: [String],
+      synonyms: [String: [String]],
+      acceptNewFields: Bool) {
+      self.rankingRules = rankingRules
+      self.searchableAttributes = searchableAttributes
+      self.displayedAttributes = displayedAttributes
+      self.stopWords = stopWords
+      self.synonyms = synonyms
+      self.acceptNewFields = acceptNewFields
+    }
+
     ///Tries to decode the JSON object to Setting object.
     public init(from decoder: Decoder) throws {
         let values = try? decoder.container(keyedBy: CodingKeys.self)

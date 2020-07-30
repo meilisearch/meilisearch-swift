@@ -19,14 +19,14 @@ struct Indexes {
         self.request.get(api: "/indexes/\(UID)") { result in
 
             switch result {
-            case .success(let data):
+            case .success(let result):
 
-                guard let data: Data = data else {
+                guard let result: Data = result else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
 
-                Indexes.decodeJSON(data, completion)
+                Indexes.decodeJSON(result, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -41,14 +41,14 @@ struct Indexes {
         self.request.get(api: "/indexes") { result in
 
             switch result {
-            case .success(let data):
+            case .success(let result):
 
-                guard let data: Data = data else {
+                guard let result: Data = result else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
                 }
 
-                Indexes.decodeJSONArray(data, completion)
+                Indexes.decodeJSONArray(result, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -98,9 +98,9 @@ struct Indexes {
         self.request.post(api: "/indexes", data) { result in
 
             switch result {
-            case .success(let data):
+            case .success(let result):
 
-                Indexes.decodeJSON(data, completion)
+                Indexes.decodeJSON(result, completion)
 
             case .failure(let error):
 
@@ -119,17 +119,23 @@ struct Indexes {
 
     func update(
         _ UID: String,
-        _ name: String,
-        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        _ primaryKey: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
-        let payload = UpdateIndexPayload(name: name)
-        let jsonData: Data = try! JSONEncoder().encode(payload)
+        let payload = UpdateIndexPayload(primaryKey: primaryKey)
+        let data: Data = try! JSONEncoder().encode(payload)
 
-        self.request.put(api: "/indexes/\(UID)", body: jsonData) { result in
+        self.request.put(api: "/indexes/\(UID)", data) { result in
 
             switch result {
-            case .success:
-                completion(.success(()))
+            case .success(let result):
+
+                guard let result: Data = result else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                Indexes.decodeJSON(result, completion)
 
             case .failure(let error):
                 completion(.failure(error))
@@ -189,7 +195,7 @@ struct CreateIndexPayload: Codable {
 }
 
 struct UpdateIndexPayload: Codable {
-    let name: String
+    let primaryKey: String
 }
 
 public enum CreateError: Swift.Error, Equatable {

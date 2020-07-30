@@ -224,6 +224,47 @@ class IndexesTests: XCTestCase {
 
     }
 
+    func testUpdateIndex() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {
+          "uid": "movie_review",
+          "primaryKey": "movie_review_id",
+          "createdAt": "2019-11-20T09:40:33.711324Z",
+          "updatedAt": "2019-11-20T10:16:42.761858Z"
+        }
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        session.pushData(jsonString)
+
+        // Start the test with the mocked server
+
+        let UID: String = "movies"
+        let primaryKey: String = "movie_review_id"
+
+        let expectation = XCTestExpectation(description: "Update Movies index")
+
+        self.client.updateIndex(UID: UID, primaryKey: primaryKey) { result in
+            switch result {
+            case .success(let index):
+                XCTAssertEqual(stubIndex, index)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update Movies index")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
     func testDeleteIndex() {
 
         //Prepare the mock server
@@ -255,7 +296,7 @@ class IndexesTests: XCTestCase {
         ("testCreateIndex", testCreateIndex),
         ("testGetIndex", testGetIndex),
         ("testGetIndexes", testGetIndexes),
-        // ("testUpdateIndexName", testUpdateIndexName),
+        ("testUpdateIndex", testUpdateIndex),
         ("testDeleteIndex", testDeleteIndex)
     ]
 

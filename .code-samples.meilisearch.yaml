@@ -1,0 +1,966 @@
+# This code-samples file is used by the MeiliSearch documentation
+# Every example written here will be automatically fetched by
+# the documentation on build
+# You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
+---
+get_one_index_1: |-
+  client.getIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+      switch result {
+      case .success(let index):
+          print(index)
+      case .failure(let error):
+          print(error)
+      }
+  }
+list_all_indexes_1: |-
+  client.getIndexes { (result: Result<[Index], Swift.Error>) in
+      switch result {
+      case .success(let indexes):
+          print(indexes)
+      case .failure(let error):
+          print(error)
+      }
+  }
+create_an_index_1: |-
+  client.createIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+      switch result {
+      case .success(let index):
+          print(index)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_an_index_1: |-
+  client.updateIndex(UID: "movies", primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
+      switch result {
+      case .success(let index):
+          print(index)
+      case .failure:
+          print(error)
+      }
+  }
+delete_an_index_1: |-
+  client.deleteIndex(UID: "movies") { (result: Result<(), Swift.Error>) in
+      switch result {
+      case .success:
+          print("Index deleted")
+      case .failure:
+          print(error)
+      }
+  }
+get_one_document_1: |-
+  client.getDocument(UID: "movies", identifier: 25684) { (result: Result<Movie, Swift.Error>) in
+      switch result {
+      case .success(let movie):
+          print(movie)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_documents_1: |-
+  client.getDocuments(UID: "movies", limit: 2) { (result: Result<[Movie], Swift.Error>) in
+      switch result {
+      case .success(let movies):
+          print(movies)
+      case .failure(let error):
+          print(error)
+      }
+  }
+add_or_replace_documents_1: |-
+  let documents: Data = //...
+  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+add_or_update_documents_1: |-
+  let documents: Data = //...
+  client.updateDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+delete_all_documents_1: |-
+  client.deleteAllDocuments(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+delete_one_document_1: |-
+  client.deleteDocument(UID: "movies", identifier: 25684) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+delete_documents_1: |-
+  client.deleteBatchDocuments(
+    UID: "movies", 
+    documentsUID: [23488, 153738, 437035, 363869]) { (result: Result<Update, Swift.Error>) in
+        switch result {
+        case .success(let update):
+            print(update)
+        case .failure(let error):
+            print(error)
+        }
+    }
+search_1: |-
+  let searchParameters = SearchParameters.query("American ninja")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_update_1: |-
+  client.getUpdate(UID: "movies", 1) { (result: Result<Update.Result, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_all_updates_1: |-
+  client.getAllUpdates(UID: "movies") { (result: Result<[Update.Result], Swift.Error>) in
+      switch result {
+      case .success(let updates):
+          print(updates)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_keys_1: |-
+    client.keys { (result: Result<Key, Swift.Error>) in
+        switch result {
+        case .success(let key):
+            print(key)
+        case .failure(let error):
+            print(error)
+        }
+    }
+get_settings_1: |-
+  client.getSetting(UID: "movies") { (result: Result<Setting, Swift.Error>) in
+      switch result {
+      case .success(let setting):
+          print(setting)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_settings_1: |-
+  let settings = Setting(rankingRules: [
+      "typo",
+      "words",
+      "proximity",
+      "attribute",
+      "wordsPosition",
+      "exactness",
+      "desc(release_date)",
+      "desc(rank)"
+  ], searchableAttributes: [
+      "uid",
+      "movie_id",
+      "title",
+      "description",
+      "poster",
+      "release_date",
+      "rank"
+  ], displayedAttributes: [
+      "title",
+      "description",
+      "poster",
+      "release_date",
+      "rank"
+  ], stopWords: [
+      "the",
+      "a",
+      "an"
+  ], synonyms: [
+      "wolverine": ["xmen", "logan"],
+      "logan": ["wolverine"]
+  ], acceptNewFields: false)
+  client.updateSetting(UID: "movies", settings) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_settings_1: |-
+  client.resetSetting(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_synonyms_1: |-
+  client.getSynonyms(UID: "movies") { (result: Result<[String: [String]], Swift.Error>) in
+      switch result {
+      case .success(let synonyms):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_synonyms_1: |-
+  let synonyms: [String: [String]] = [
+      "wolverine": ["xmen", "logan"],
+      "logan": ["wolverine", "xmen"],
+      "wow": ["world of warcraft"]
+  ]
+  client.updateSynonyms(UID: "movies", synonyms) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_synonyms_1: |-
+  client.resetSynonyms(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_stop_words_1: |-
+  client.getStopWords(UID: "movies") { (result: Result<[String], Swift.Error>) in
+      switch result {
+      case .success(let stopWords):
+          print(stopWords)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_stop_words_1: |-
+  let stopWords: [String] = ["of", "the", "to"]
+  client.updateStopWords(UID: "movies", stopWords) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_stop_words_1: |-
+  client.resetStopWords(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_ranking_rules_1: |-
+  client.getRankingRules(UID: "movies") { (result: Result<[String], Swift.Error>) in
+      switch result {
+      case .success(let rankingRules):
+          print(rankingRules)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_ranking_rules_1: |-
+  let rankingRules: [String] = [
+      "typo",
+      "words",
+      "proximity",
+      "attribute",
+      "wordsPosition",
+      "exactness",
+      "asc(release_date)",
+      "desc(rank)"
+  ]
+  client.updateRankingRules(UID: "movies", rankingRules) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_ranking_rules_1: |-
+  client.resetRankingRules(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_distinct_attribute_1: |-
+  client.getDistinctAttribute(UID: "movies") { (result: Result<String, Swift.Error>) in
+      switch result {
+      case .success(let distinctAttribute):
+          print(distinctAttribute)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_distinct_attribute_1: |-
+  client.updateDistinctAttribute(UID: "movies", "movie_id") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_distinct_attribute_1: |-
+  client.resetDistinctAttribute(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_searchable_attributes_1: |-
+  client.getSearchableAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
+      switch result {
+      case .success(let searchableAttributes):
+          print(searchableAttributes)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_searchable_attributes_1: |-
+  let searchableAttributes: [String] = ["title", "description", "uid"]
+  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_searchable_attributes_1: |-
+  client.resetSearchableAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_displayed_attributes_1: |-
+  client.getDisplayedAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
+      switch result {
+      case .success(let displayedAttributes):
+          print(displayedAttributes)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_displayed_attributes_1: |-
+  let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]        
+  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_displayed_attributes_1: |-
+  client.resetDisplayedAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_accept_new_fields_1: |-
+  client.getAcceptNewFields(UID: "movies") { (result: Result<Bool, Swift.Error>) in
+      switch result {
+      case .success(let acceptNewFields):
+          print(acceptNewFields)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_accept_new_fields_1: |-
+  let acceptNewFields = true
+  client.updateAcceptNewFields(UID: "movies", acceptNewFields) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_index_stats_1: |-
+  client.stat(UID: "movies") { (result: Result<Stat, Swift.Error>) in
+      switch result {
+      case .success(let stat):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_indexes_stats_1: |-
+  client.allStats { (result: Result<AllStats, Swift.Error>) in
+      switch result {
+      case .success(let allStats):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_health_1: |-
+  client.health { (result: Result<(), Swift.Error>) in
+      switch result {
+      case .success:
+          print("Healthy!")
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_health_1: |-
+  client.updateHealth(health: "movies") { (result: Result<(), Swift.Error>) in
+      switch result {
+      case .success:
+          print("Health updated!")
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_version_1: |-
+  client.version { (result: Result<Version, Swift.Error>) in
+      switch result {
+      case .success(let version):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_pretty_sys_info_1: |-
+  client.prettySystemInfo { (result: Result<PrettySystemInfo, Swift.Error>) in
+      switch result {
+      case .success(let systemInfo):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_sys_info_1: |-
+  client.systemInfo { (result: Result<SystemInfo, Swift.Error>) in
+      switch result {
+      case .success(let systemInfo):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+distinct_attribute_guide_1: |-
+  client.updateDistinctAttribute(UID: "movies", "product_id") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+field_properties_guide_searchable_1: |-
+  let searchableAttributes: [String] = [
+      "uid", 
+      "movie_id", 
+      "title", 
+      "description", 
+      "poster", 
+      "release_date", 
+      "rank"
+  ]     
+  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+field_properties_guide_displayed_1: |-
+  let displayedAttributes: [String] = [
+      "title", 
+      "description", 
+      "poster", 
+      "release_date", 
+      "rank"
+  ]        
+  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+filtering_guide_1: |-
+  let searchParameters = SearchParameters(
+      query: "Avengers",
+      filters: "release_date > 795484800")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+filtering_guide_2: |-
+  let searchParameters = SearchParameters(
+      query: "Batman",
+      filters: "release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\"")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+filtering_guide_3: |-
+  let searchParameters = SearchParameters(
+      query: "horror",
+      filters: "director = \"Jordan Peele\"")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+filtering_guide_4: |-
+  let searchParameters = SearchParameters(
+      query: "Planet of the Apes",
+      filters: "rating >= 3 AND (NOT director = \"Tim Burton\"")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_query_1: |-
+  client.search(UID: "movies", .query("shifu")) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_offset_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      offset: 1)
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_limit_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      limit: 2)
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_retrieve_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      attributesToRetrieve: ["overview", "title"])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_crop_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      attributesToCrop: "overview",
+      cropLength: 10)
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_highlight_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      attributesToHighlight: ["overview"])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_filter_1: |-
+  let searchParameters = SearchParameters(
+      query: "n",
+      filters: "title = Nightshift")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_filter_2: |-
+  let searchParameters = SearchParameters(
+      query: "n",
+      filters: "title=\"Kung Fu Panda\"")
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_matches_1: |-
+  let searchParameters = SearchParameters(
+      query: "n",
+      filters: "title=\"Kung Fu Panda\"",
+      attributesToHighlight: ["overview"],
+      matches: true)
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_stop_words_1: |-
+  let stopWords: [String] = [
+      "the", 
+      "a", 
+      "an"
+  ]
+  client.updateStopWords(UID: "movies", stopWords) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_ranking_rules_1: |-
+  let rankingRules: [String] = [
+      "typo",
+      "words",
+      "proximity",
+      "attribute",
+      "wordsPosition",
+      "exactness",
+      "asc(release_date)",
+      "desc(rank)"
+  ]
+  client.updateRankingRules(UID: "movies", rankingRules) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_distinct_1: |-
+  client.updateDistinctAttribute(UID: "movies", "product_id") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_searchable_1: |-
+  let searchableAttributes: [String] = [
+      "uid", 
+      "movie_id", 
+      "title", 
+      "description", 
+      "poster", 
+      "release_date", 
+      "rank"
+  ]     
+  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_displayed_1: |-
+  let displayedAttributes: [String] = [
+      "title", 
+      "description", 
+      "poster", 
+      "release_date", 
+      "rank"
+  ]        
+  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_accept_new_fields_1: |-
+  client.updateAcceptNewFields(UID: "movies", false) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+add_movies_json_1: |-
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
+  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+documents_guide_add_movie_1: |-
+  let documentJsonString = """
+  [{
+      "movie_id": 123sq178,
+      "title": "Amélie Poulain"
+  }]
+  """
+  let documents: Data = documentJsonString.data(using: .utf8)!
+  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_guide_1: |-
+  let parameters = SearchParameters(
+      query: "shifu", 
+      limit: 5, 
+      offset: 10)
+  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_guide_2: |-
+  let parameters = SearchParameters(
+      query: "Avengers", 
+      filters: "release_date > 795484800")
+  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+getting_started_create_index_md: |-
+  Add this in your `Package.swift`:  
+  ```
+    dependencies: [
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
+    ]
+  ```
+  Example:
+  ```swift
+    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    client.createIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+        switch result {
+        case .success(let index):
+            print(index)
+        case .failure(let error):
+            print(error)
+        }
+    }
+  ```
+getting_started_add_documents_md: |-
+  Add this in your `Package.swift`:  
+  ```
+    dependencies: [
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
+    ]
+  ```
+  Example:
+  ```swift
+    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let documents: Data = /...
+    client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+        switch result {
+        case .success(let update):
+            print(update)
+        case .failure(let error):
+            print(error)
+        }
+    }
+  ```
+getting_started_search_md: |-
+  Add this in your `Package.swift`:  
+  ```
+    dependencies: [
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
+    ]
+  ```
+  Example:
+  ```swift
+    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let searchParameters = SearchParameters.query("botman")
+    client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+        switch result {
+        case .success(let searchResult):
+            print(searchResult)
+        case .failure(let error):
+            print(error)
+        }
+    }
+  ```
+get_attributes_for_faceting_1: |-
+  client.getAttributesForFaceting(UID: "movies") { (result: Result<[String], Swift.Error>) in
+      switch result {
+      case .success(let attributes):
+          print(attributes)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_attributes_for_faceting_1: |-
+  client.updateAttributesForFaceting(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+reset_attributes_for_faceting_1: |-
+  client.resetAttributesForFaceting(UID: "movies") { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let attributes):
+          print(attributes)
+      case .failure(let error):
+          print(error)
+      }
+  }
+faceted_search_update_settings_1: |-
+  client.updateAttributesForFaceting(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+faceted_search_facet_filters_1: |-
+  let searchParameters = SearchParameters(
+      query: "thriller",
+      facetFilters: [["genres:Horror", "genres:Mystery"], ["director:Jordan Peele"]])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+faceted_search_facets_distribution_1: |-
+  let searchParameters = SearchParameters(
+      query: "Batman",
+      facetsDistribution: ["genres"]])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+faceted_search_walkthrough_attributes_for_faceting_1: |-
+  client.updateAttributesForFaceting(UID: "movies", [
+      "director",
+      "producer",
+      "genres",
+      "production_companies"]) { (result: Result<Update, Swift.Error>) in
+    switch result {
+    case .success(let update):
+        print(update)
+    case .failure(let error):
+        print(error)
+    }
+  }
+faceted_search_walkthrough_facet_filters_1: |-
+  let searchParameters = SearchParameters(
+      query: "thriller",
+      facetFilters: [["genres:Horror", "genres:Mystery"], ["director:Jordan Peele"]])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+faceted_search_walkthrough_facets_distribution_1: |-
+  let searchParameters = SearchParameters(
+      query: "Batman",
+      facetsDistribution: ["genres"])
+  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }

@@ -8,9 +8,6 @@ public struct Index: Codable, Equatable {
 
     // MARK: Properties
 
-    /// The index name.
-    public let name: String
-
     /// The index UID.
     public let UID: String
 
@@ -31,7 +28,6 @@ public struct Index: Codable, Equatable {
         createdAt: Date? = nil,
         updatedAt: Date? = nil,
         primaryKey: String? = nil) {
-        self.name = name
         self.UID = UID
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -39,7 +35,6 @@ public struct Index: Codable, Equatable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case name
         case UID = "uid"
         case createdAt
         case updatedAt

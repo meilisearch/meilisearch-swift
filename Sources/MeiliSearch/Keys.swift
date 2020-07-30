@@ -5,18 +5,18 @@ struct Keys {
     // MARK: Properties
 
     let request: Request
+    let config: Config
 
     // MARK: Initializers
 
-    init (_ request: Request) {
+    init (_ request: Request, _ config: Config) {
         self.request = request
+        self.config = config
     }
 
-    func get(
-        _ masterKey: String,
-        _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    func get(_ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
 
-        let headers: [String: String] = ["X-Meili-API-Key": masterKey]
+        let headers: [String: String] = ["X-Meili-API-Key": config.apiKey]
 
         self.request.get(api: "/keys", headers: headers) { result in
 

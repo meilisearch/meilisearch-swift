@@ -40,7 +40,7 @@ public struct MeiliSearch {
         self.documents = Documents(request)
         self.search = Search(request)
         self.updates = Updates(request)
-        self.keys = Keys(request)
+        self.keys = Keys(request, config)
         self.settings = Settings(request)
         self.stats = Stats(request)
         self.system = System(request)
@@ -105,9 +105,9 @@ public struct MeiliSearch {
      */
     public func updateIndex(
         UID: String,
-        name: String,
-        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-        self.indexes.update(UID, name, completion)
+        primaryKey: String,
+        _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+        self.indexes.update(UID, primaryKey, completion)
     }
 
     /**
@@ -145,7 +145,7 @@ public struct MeiliSearch {
         documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.addOrReplace(
+        self.documents.add(
             UID,
             documents,
             primaryKey,
@@ -173,7 +173,7 @@ public struct MeiliSearch {
         documents: Data,
         primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-        self.documents.addOrUpdate(
+        self.documents.update(
             UID,
             documents,
             primaryKey,
@@ -326,9 +326,8 @@ public struct MeiliSearch {
      If the request was sucessful or `Error` if a failure occured.
     */
     public func keys(
-        masterKey: String,
         _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-        self.keys.get(masterKey, completion)
+        self.keys.get(completion)
     }
 
     // MARK: Settings
