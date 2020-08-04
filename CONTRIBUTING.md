@@ -29,13 +29,31 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 ## Development Workflow
 
+### On a terminal 
+
 ### Setup
 
-_WIP_
+```bash
+swift build
+```
 
 ### Tests and Linter
 
-_WIP_
+```bash
+swift test
+```
+
+### On XCode
+
+### Setup
+
+To build the project, if it's not already done, click on the play button in the top left corner of the IDE.
+
+### Tests and linter
+
+To launch the tests, either: 
+- Go to Product>Test
+- Use the shortcut command + U
 
 ### Release Process
 
