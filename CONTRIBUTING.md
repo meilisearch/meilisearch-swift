@@ -51,7 +51,7 @@ To build the project, if it's not already done, click on the play button in the 
 
 ### Tests and linter
 
-To launch the tests, either: 
+To launch the tests: 
 - Go to Product>Test
 - Use the shortcut command + U
 
