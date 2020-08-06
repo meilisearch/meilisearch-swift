@@ -62,11 +62,24 @@ final class Request {
           request.addValue(value, forHTTPHeaderField: key)
         }
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             completion(.success(data))
         }
 
@@ -126,11 +139,24 @@ final class Request {
         request.httpMethod = "PUT"
         request.httpBody = body
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             completion(.success(data))
         }
 
@@ -146,11 +172,24 @@ final class Request {
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             completion(.success(data))
         }
 
