@@ -4,7 +4,6 @@ import XCTest
 class ClientTests: XCTestCase {
 
   func testValidHostURL() {
-    let client: MeiliSearch = try! MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey"))
     XCTAssertNotNil(try? MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey")))
   }
 
