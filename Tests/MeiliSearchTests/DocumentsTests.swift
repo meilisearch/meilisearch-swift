@@ -29,7 +29,10 @@ class DocumentsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+
+        if client == nil {
+            client = try! MeiliSearch(Config.default)
+        }
 
         let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
