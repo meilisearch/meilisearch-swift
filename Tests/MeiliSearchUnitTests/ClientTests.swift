@@ -4,6 +4,10 @@ import XCTest
 class ClientTests: XCTestCase {
 
   func testValidHostURL() {
+<<<<<<< HEAD:Tests/MeiliSearchUnitTests/ClientTests.swift
+=======
+    let client: MeiliSearch = try! MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey"))
+>>>>>>> 57d8160... Remove mock server from client tests:Tests/MeiliSearchTests/ClientTests.swift
     XCTAssertNotNil(try? MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey")))
   }
 
