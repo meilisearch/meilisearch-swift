@@ -21,7 +21,7 @@ public class Config {
     // MARK: Properties
 
     /// Address for the MeiliSearch server.
-    let hostURL: String
+    let hostURL: String?
 
     /// API key needed for the production environment.
     let apiKey: String
@@ -37,7 +37,7 @@ public class Config {
      - parameter hostURL: Address for the MeiliSearch server.
      - parameter apiKey:  API key needed for the production environment.
      */
-    public init(hostURL: String = "", apiKey: String = "") {
+    public init(hostURL: String? = nil, apiKey: String = "") {
         self.hostURL = hostURL
         self.apiKey = apiKey
         self.session = URLSession.shared
@@ -52,7 +52,7 @@ public class Config {
      - parameter session:  A custom produced URLSessionProtocol.
     */
     public init(
-        hostURL: String,
+        hostURL: String?,
         apiKey: String = "",
         session: URLSessionProtocol) {
         self.hostURL = hostURL
@@ -63,7 +63,7 @@ public class Config {
     // MARK: Build
 
     func url(api: String) -> String {
-        hostURL + api
+        hostURL! + api
     }
 
     // MARK: Validate
@@ -73,11 +73,11 @@ public class Config {
      */
     func validate(_ request: Request) throws -> Config {
 
-        if self.hostURL.isEmpty {
+        guard let hostURL = self.hostURL else {
             return self
         }
 
-        guard let _ = URL(string: self.hostURL) else {
+        guard let _ = URL(string: hostURL) else {
             throw MeiliSearch.Error.hostNotValid
         }
 
