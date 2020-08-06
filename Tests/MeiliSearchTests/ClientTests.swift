@@ -3,23 +3,19 @@ import XCTest
 
 class ClientTests: XCTestCase {
 
-  private let session = MockURLSession()
-
   func testValidHostURL() {
-    session.pushEmpty(code: 200)
-    XCTAssertNotNil(try? MeiliSearch(Config(hostURL: "", session: session)))
+    let client: MeiliSearch = try! MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey"))
+    XCTAssertNotNil(try? MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey")))
   }
 
   func testEmptyHostURL() {
-    session.pushError(nil, NSError(domain: "any", code: 404, userInfo: nil), code: 404)
-    XCTAssertThrowsError(try MeiliSearch(Config(hostURL: "http://localhost:7700", session: session))) { error in
+    XCTAssertThrowsError(try MeiliSearch(Config(hostURL: "http://localhost:1234"))) { error in
       XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.serverNotFound)
     }
   }
 
   func testNotValidHostURL() {
-    session.pushError(nil, NSError(domain: "any", code: 404, userInfo: nil), code: 404)
-    XCTAssertThrowsError(try MeiliSearch(Config(hostURL: "Not valid host", session: session))) { error in
+    XCTAssertThrowsError(try MeiliSearch(Config(hostURL: "Not valid host"))) { error in
       XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.hostNotValid)
     }
   }
