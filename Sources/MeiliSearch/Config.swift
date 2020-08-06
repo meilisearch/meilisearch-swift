@@ -63,7 +63,10 @@ public class Config {
     // MARK: Build
 
     func url(api: String) -> String {
-        hostURL! + api
+        guard let hostURL = self.hostURL else {
+            return api
+        }
+        return hostURL + api
     }
 
     // MARK: Validate
