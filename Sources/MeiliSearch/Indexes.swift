@@ -196,26 +196,17 @@ public enum CreateError: Swift.Error, Equatable {
     case indexAlreadyExists
 
     static func decode(_ error: MSError) -> Swift.Error {
-
+        // print("CREATE ERROR")
+        // print(error)
         let underlyingError: NSError = error.underlying as NSError
-
-        if let data = error.data {
-
-            let msErrorResponse: MSErrorResponse?
-            do {
-                let decoder: JSONDecoder = JSONDecoder()
-                msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
-            } catch {
-                msErrorResponse = nil
-            }
-
-            if underlyingError.code == 400 && msErrorResponse?.errorType == "invalid_request_error" && msErrorResponse?.errorCode == "index_already_exists" {
+        // print(underlyingError)
+        if let msErrorResponse: MSErrorResponse = error.data {
+            if underlyingError.code == 400 && msErrorResponse.errorType == "invalid_request_error" && msErrorResponse.errorCode == "index_already_exists" {
                 return CreateError.indexAlreadyExists
             }
             return error
 
         }
-
         return error
     }
 }

@@ -13,7 +13,7 @@ public class Config {
 
     /// Default config instance set up to use localhost and port 7700.
     public static func `default`(
-        with apiKey: String = "",
+        with apiKey: String = "masterKey",
         session: URLSessionProtocol = URLSession.shared) -> Config {
         Config(hostURL: "http://localhost:7700", apiKey: apiKey, session: session)
     }
