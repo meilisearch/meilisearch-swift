@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Download and Run  MeiliSearch
-      run: curl -L https://install.meilisearch.com | sh && nohup bash -c "./meilisearch & --no-analytics=true --master-key='masterKey'"
+      run: curl -L https://install.meilisearch.com | sh && nohup bash -c "./meilisearch --no-analytics=true --master-key='masterKey' &"
     - name: Run tests
       run: swift test -v
