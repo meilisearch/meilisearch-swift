@@ -8,7 +8,11 @@ class KeysTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(Config(hostURL: nil, session: session))
+        let config = Config(
+          hostURL: "",
+          apiKey: "c4dff5a196824a0704c2023916c21eaf0a13485a9d637416820bc623375f2a",
+          session: session)
+        client = try! MeiliSearch(config)
     }
 
     func testKeys() {
