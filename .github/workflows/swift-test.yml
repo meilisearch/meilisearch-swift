@@ -4,17 +4,19 @@ on:
   push:
     branches: [ master ]
   pull_request:
-
 jobs:
-  build:
-
+  download: 
     runs-on: macos-latest
+    steps:
+    - name: Download  MeiliSearch
+      run: curl -L https://install.meilisearch.com | sh
+  build:
+    runs-on: macos-latest
+    needs: download
     env:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Download and Run  MeiliSearch
-      run: curl -L https://install.meilisearch.com | sh && nohup bash -c "./meilisearch --no-analytics=true --master-key='masterKey' &"
+    - name: Run  MeiliSearch
+      run: ls -la && ./meilisearch &
     - name: Run tests
       run: swift test -v
