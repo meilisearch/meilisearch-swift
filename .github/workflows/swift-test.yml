@@ -14,9 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Download MeiliSearch
-      run: curl -L https://install.meilisearch.com | sh
-    - name: Run MeiliSearch
-      run: ./meilisearch --no-analytics=true --master-key='masterKey'
+    - name: Download and Run  MeiliSearch
+      run: curl -L https://install.meilisearch.com | sh && ./meilisearch --no-analytics=true --master-key='masterKey'
     - name: Run tests
       run: swift test -v
