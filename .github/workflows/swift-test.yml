@@ -10,12 +10,21 @@ jobs:
     steps:
     - name: Download  MeiliSearch
       run: curl -L https://install.meilisearch.com | sh
+    - name: Upload MeiliSearch artifact
+      uses: actions/upload-artifact@v2
+        with:
+          name: meilisearch
+          path: meilisearch
   build:
     runs-on: macos-latest
     needs: download
     env:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
     steps:
+    - name: Download MeiliSearch Artifact
+      uses: actions/download-artifact@v2
+        with:
+          name: meilisearch
     - name: Run  MeiliSearch
       run: ls -la && ./meilisearch &
     - name: Run tests
