@@ -1,5 +1,4 @@
 import Foundation
-import FoundationNetworking
 
 /**
  Protocol that allows custom implementation of the HTTP layer.

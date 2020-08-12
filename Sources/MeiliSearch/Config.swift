@@ -1,5 +1,4 @@
 import Foundation
-import FoundationNetworking
 
 /**
  A `Config` instance represents the default config used by MeiliSearch instance.
