@@ -15,6 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Download and Run  MeiliSearch
-      run: curl -L https://install.meilisearch.com | sh && ./meilisearch --no-analytics=true --master-key='masterKey'
+      run: sudo curl -L https://install.meilisearch.com | sh ; sleep 2 
+    - name: Run MeiliSearch
+      run: chmod +x meilisearch ; ls -la ;  ./meilisearch &
     - name: Run tests
       run: swift test -v
