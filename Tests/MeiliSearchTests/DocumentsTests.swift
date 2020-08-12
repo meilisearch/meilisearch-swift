@@ -288,7 +288,6 @@ class DocumentsTests: XCTestCase {
         ) { (result: Result<[Movie], Swift.Error>) in
             switch result {
             case .success(let results):
-                print(results)
                 XCTAssertEqual([], results)
                 getExpectation.fulfill()
             case .failure(let error):
@@ -339,7 +338,6 @@ class DocumentsTests: XCTestCase {
             switch result {
             case .success(let results):
                 let filteredMovies : [Movie] = movies.filter { $0.id != 2 || $0.id != 4 || $0.id != 1 }
-                print(results)
                 XCTAssertEqual(filteredMovies, results)
                 getExpectation.fulfill()
             case .failure(let error):
