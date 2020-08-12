@@ -13,14 +13,10 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Swift
       uses: YOCKOW/Action-setup-swift@master
-    - name: Install xcbeautify
-      uses: Cyberbeni/install-swift-tool@v2
       with:
-        url: https://github.com/Cyberbeni/xcbeautify
-        branch: linux-fixes
+        swift-version: '5.2.4' # This value is passed to swiftenv without modification. 
     - name: Docker setup
       run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --no-analytics=true --master-key='masterKey'
     - name: Test
       run: |
-        set -o pipefail
-        swift test | xcbeautify
+        swift test
