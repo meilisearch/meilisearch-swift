@@ -29,7 +29,6 @@ private let movies = [
     Movie(id: 1344, title: "The Hobbit", comment: "An awesome book"),
     Movie(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book"),
     Movie(id: 42, title: "The Hitchhiker's Guide to the Galaxy"),
-    
 ]
 
 
@@ -247,16 +246,116 @@ class DocumentsTests: XCTestCase {
          }
          self.wait(for: [getExpectation], timeout: 3.0)
         
-        
      }
+    
+        
+    func testDeleteAllDocuments(){
+        let documents: Data = try! JSONEncoder().encode(movies)
 
+        let expectation = XCTestExpectation(description: "Delete one Movie")
+        self.client.addDocuments(
+            UID: uid,
+            documents: documents,
+            primaryKey: nil
+        ) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(Update(updateId: 0), update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to add or replace Movies document")
+            }
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+        sleep(1)
+        let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
+        self.client.deleteAllDocuments(UID: uid) { (result: Result<Update, Swift.Error>) in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(Update(updateId: 1), update)
+                deleteExpectation.fulfill()
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        self.wait(for: [deleteExpectation], timeout: 3.0)
+       
+        sleep(1)
+        let getExpectation = XCTestExpectation(description: "Add or update Movies document")
+        self.client.getDocuments(
+            UID: uid,
+            limit: 20
+        ) { (result: Result<[Movie], Swift.Error>) in
+            switch result {
+            case .success(let results):
+                print(results)
+                XCTAssertEqual([], results)
+                getExpectation.fulfill()
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        self.wait(for: [getExpectation], timeout: 3.0)
+       
+    }
+
+    func testDeleteBatchDocuments(){
+        let documents: Data = try! JSONEncoder().encode(movies)
+
+        let expectation = XCTestExpectation(description: "Delete one Movie")
+        self.client.addDocuments(
+            UID: uid,
+            documents: documents,
+            primaryKey: nil
+        ) { result in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(Update(updateId: 0), update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to add or replace Movies document")
+            }
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+        sleep(1)
+        let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
+        self.client.deleteBatchDocuments(UID: uid, documentsUID: [2,1,4]) { (result: Result<Update, Swift.Error>) in
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(Update(updateId: 1), update)
+                deleteExpectation.fulfill()
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        self.wait(for: [deleteExpectation], timeout: 3.0)
+       
+        sleep(1)
+        let getExpectation = XCTestExpectation(description: "Add or update Movies document")
+        self.client.getDocuments(
+            UID: uid,
+            limit: 20
+        ) { (result: Result<[Movie], Swift.Error>) in
+            switch result {
+            case .success(let results):
+                let filteredMovies : [Movie] = movies.filter { $0.id != 2 || $0.id != 4 || $0.id != 1 }
+                print(results)
+                XCTAssertEqual(filteredMovies, results)
+                getExpectation.fulfill()
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        self.wait(for: [getExpectation], timeout: 3.0)
+       
+    }
+    
     static var allTests = [
         ("testAddAndGetDocuments", testAddAndGetDocuments),
         ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
         ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),
         ("testUpdateAndGetDocuments", testUpdateAndGetDocuments),
-        ("testDeleteOneDocument", testDeleteOneDocument)
-        ("testDeleteDocument", testDeleteDocument),
+        ("testDeleteOneDocument", testDeleteOneDocument),
         ("testDeleteAllDocuments", testDeleteAllDocuments),
         ("testDeleteBatchDocuments", testDeleteBatchDocuments)
     ]
