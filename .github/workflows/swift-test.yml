@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Download and Run  MeiliSearch
-      run: curl -OL https://github.com/meilisearch/MeiliSearch/releases/download/v0.13.0/meilisearch-macos-amd64
+      run:  brew update && brew install meilisearch
     - name: Run MeiliSearch
-      run: chmod +x meilisearch-macos-amd64 ;  ./meilisearch-macos-amd64 --no-analytics=true &
+      run: meilisearch --no-analytics=true &
     - name: Run tests
       run: swift test -v
