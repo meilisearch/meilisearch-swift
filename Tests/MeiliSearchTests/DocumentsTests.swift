@@ -58,6 +58,7 @@ class DocumentsTests: XCTestCase {
                     case .success:
                         expectation.fulfill()
                     case .failure(let error):
+                        print(error)
                         expectation.fulfill()
                     }
                 }
@@ -113,9 +114,9 @@ class DocumentsTests: XCTestCase {
             identifier: "123456"
         ) { (result: Result<Movie, Swift.Error>) in
             switch result {
-            case .success(let returnedMovie):
+            case .success:
                 XCTFail("Document has been found while it should not have")
-            case .failure(let error):
+            case .failure:
                 getExpectation.fulfill()
             }
         }
@@ -240,7 +241,7 @@ class DocumentsTests: XCTestCase {
              switch result {
              case .success:
                  XCTFail("Movie should not exist")
-             case .failure(let error):
+             case .failure:
                  getExpectation.fulfill()
              }
          }
