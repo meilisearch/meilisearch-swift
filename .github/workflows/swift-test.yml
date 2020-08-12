@@ -16,12 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Download and Run  MeiliSearch
       run: curl -OL https://github.com/meilisearch/MeiliSearch/releases/download/v0.13.0/meilisearch-macos-amd64
-    - name: Install xcbeautify
-      uses: Cyberbeni/install-swift-tool@v2
-      with:
-        url: https://github.com/Cyberbeni/xcbeautify
-        branch: linux-fixes
     - name: Run MeiliSearch
       run: chmod +x meilisearch-macos-amd64 ;  ./meilisearch-macos-amd64 --no-analytics=true &
     - name: Run tests
-      run: swift test -v | xcbeautify
+      run: swift test -v
