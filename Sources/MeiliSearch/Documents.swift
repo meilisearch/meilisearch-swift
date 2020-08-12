@@ -75,7 +75,6 @@ struct Documents {
         _ document: Data,
         _ primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-            print("addOrReplace")
         var query: String = "/indexes/\(UID)/documents"
         if let primaryKey: String = primaryKey {
             query += "?primaryKey=\(primaryKey)"
@@ -89,7 +88,6 @@ struct Documents {
                 Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
-                print("ERROR")
                 completion(.failure(error))
             }
 
