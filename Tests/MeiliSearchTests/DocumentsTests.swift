@@ -59,7 +59,6 @@ class DocumentsTests: XCTestCase {
                     case .success:
                         expectation.fulfill()
                     case .failure(let error):
-                        print(error)
                         expectation.fulfill()
                     }
                 }
@@ -85,8 +84,6 @@ class DocumentsTests: XCTestCase {
                 XCTAssertEqual(Update(updateId: 0), update)
                 expectation.fulfill()
             case .failure(let error):
-                print("Back in testAddAndGetDocuments")
-                print(error.localizedDescription)
                 XCTFail(error.localizedDescription)
             }
         }
@@ -118,11 +115,8 @@ class DocumentsTests: XCTestCase {
         ) { (result: Result<Movie, Swift.Error>) in
             switch result {
             case .success(let returnedMovie):
-                print(returnedMovie)
                 XCTFail("Document has been found while it should not have")
             case .failure(let error):
-                print("BACK IN Test get one doc")
-                print(error)
                 getExpectation.fulfill()
             }
         }
