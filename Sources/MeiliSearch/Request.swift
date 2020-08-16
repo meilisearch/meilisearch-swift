@@ -73,6 +73,10 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
+                 if let body : Data = data {
+                    let jsonString = String(data: body, encoding: .utf8)!
+                    print(jsonString)
+                 }
                 completion(.failure(
                   MSError(
                     data: data,
@@ -111,6 +115,10 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
+                if let body : Data = data {
+                   let jsonString = String(data: body, encoding: .utf8)!
+                   print(jsonString)
+                }
                 completion(.failure(
                   MSError(
                     data: data,
@@ -150,6 +158,10 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
+                if let body : Data = data {
+                   let jsonString = String(data: body, encoding: .utf8)!
+                   print(jsonString)
+                }
                 completion(.failure(
                   MSError(
                     data: data,
@@ -183,6 +195,10 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
+                if let body : Data = data {
+                    let jsonString = String(data: body, encoding: .utf8)!
+                    print(jsonString)
+                 }
                 completion(.failure(
                   MSError(
                     data: data,

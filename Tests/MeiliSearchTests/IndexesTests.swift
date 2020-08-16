@@ -1,47 +1,40 @@
 @testable import MeiliSearch
 import XCTest
 
+
+
 class IndexesTests: XCTestCase {
 
     private var client: MeiliSearch!
+    private var uid: String = ""
     private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(Config(hostURL: nil, session: session))
+        uid = "books_test"
+        client = try! MeiliSearch(Config.default)
+        let expectation = XCTestExpectation(description: "Try to delete index between tests")
+        self.client.deleteIndex(UID: self.uid) { result in
+            switch result {
+            case .success:
+                expectation.fulfill()
+            case .failure:
+                expectation.fulfill()
+            }
+        }
+        self.wait(for: [expectation], timeout: 2.0)
+
     }
 
     func testCreateIndex() {
 
-        //Prepare the mock server
-
-        let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
-
         let expectation = XCTestExpectation(description: "Create Movies index")
 
-        self.client.createIndex(UID: uid) { result in
+        self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                XCTAssertEqual(stubIndex, index)
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies index")
@@ -54,35 +47,13 @@ class IndexesTests: XCTestCase {
 
     func testGetOrCreateIndex() {
 
-        //Prepare the mock server
-
-        let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
-
         let expectation = XCTestExpectation(description: "Get or create Movies index")
 
         self.client.getOrCreateIndex(UID: uid) { result in
             switch result {
             case .success(let index):
-                XCTAssertEqual(stubIndex, index)
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get or create Movies index")
@@ -95,41 +66,13 @@ class IndexesTests: XCTestCase {
 
     func testGetOrCreateIndexAlreadyExists() {
 
-        //Prepare the mock server
+        let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-        let createJsonString = """
-        {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
-        """
-
-        session.pushError(createJsonString, nil, code: 400)
-
-        let getJsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = getJsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
-
-        session.pushData(getJsonString)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
-
-        let expectation = XCTestExpectation(description: "Get or create Movies index")
-
-        self.client.getOrCreateIndex(UID: uid) { result in
+        self.client.getOrCreateIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                XCTAssertEqual(stubIndex, index)
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("Failed to get or create Movies index, error: \(error)")
@@ -137,44 +80,90 @@ class IndexesTests: XCTestCase {
         }
 
         self.wait(for: [expectation], timeout: 1.0)
+        
+        let SecondExpectation = XCTestExpectation(description: "Get or create an existing index")
+
+        self.client.getOrCreateIndex(UID: self.uid) { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
+                SecondExpectation.fulfill()
+            case .failure(let error):
+                XCTFail("Failed to get or create an existing index, error: \(error)")
+            }
+        }
+
+        self.wait(for: [SecondExpectation], timeout: 1.0)
 
     }
 
     func testGetIndex() {
 
-        //Prepare the mock server
+        let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-        let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
-
-        let expectation = XCTestExpectation(description: "Load Movies index")
-
-        self.client.getIndex(UID: uid) { result in
-
+        self.client.getOrCreateIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                XCTAssertEqual(stubIndex, index)
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
+            case .failure(let error):
+                XCTFail("Failed to get or create Movies index, error: \(error)")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+        
+        let getIndexExpectation = XCTestExpectation(description: "Get index")
+
+        self.client.getIndex(UID: self.uid) { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
+                getIndexExpectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get index")
+            }
+
+        }
+
+        self.wait(for: [getIndexExpectation], timeout: 1.0)
+
+    }
+
+    func testGetIndexes() {
+        
+        let CreateIndexExpectation = XCTestExpectation(description: "Create Movies index")
+
+        self.client.createIndex(UID: self.uid) { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
+                CreateIndexExpectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies index")
+            }
+        }
+
+        self.wait(for: [CreateIndexExpectation], timeout: 1.0)
+
+        sleep(1)
+        
+        let expectation = XCTestExpectation(description: "Load indexes")
+
+        self.client.getIndexes { result in
+
+            switch result {
+            case .success(let indexes):
+                let stubIndexes = [Index(name: self.uid, UID: self.uid)]
+                print(indexes)
+                XCTAssertEqual(stubIndexes.count, indexes.count)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get all Indexes")
             }
 
         }
@@ -182,29 +171,8 @@ class IndexesTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-
-    func testGetIndexes() {
-
-        //Prepare the mock server
-
-        let jsonString = """
-        [{
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }]
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
+    
+    func testGetEmptyIndexes() {
 
         let expectation = XCTestExpectation(description: "Load indexes")
 
@@ -212,7 +180,7 @@ class IndexesTests: XCTestCase {
 
             switch result {
             case .success(let indexes):
-                XCTAssertEqual(stubIndexes, indexes)
+                XCTAssertEqual([], indexes)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get all Indexes")
@@ -226,17 +194,11 @@ class IndexesTests: XCTestCase {
 
     func testDeleteIndex() {
 
-        //Prepare the mock server
 
-        session.pushEmpty(code: 204)
-
-        // Start the test with the mocked server
-
-        let uid: String = "Movies"
 
         let expectation = XCTestExpectation(description: "Delete Movies index")
 
-        self.client.deleteIndex(UID: uid) { result in
+        self.client.deleteIndex(UID: self.uid) { result in
 
             switch result {
             case .success:

@@ -28,15 +28,14 @@ private let movies = [
     Movie(id: 1, title: "Alice In Wonderland", comment: "A weird book"),
     Movie(id: 1344, title: "The Hobbit", comment: "An awesome book"),
     Movie(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book"),
-    Movie(id: 42, title: "The Hitchhiker's Guide to the Galaxy"),
+    Movie(id: 42, title: "The Hitchhiker's Gself.uide to the Galaxy"),
 ]
 
-
-let uid: String = "books_test"
 
 class DocumentsTests: XCTestCase {
 
     private var client: MeiliSearch!
+    private var uid: String = ""
     
     override class func setUp() { // 1.
            super.setUp()
@@ -45,15 +44,15 @@ class DocumentsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        
+        uid = "books_test"
         if client == nil {
             client = try! MeiliSearch(Config.default)
         }
         let expectation = XCTestExpectation(description: "Create index if it does not exist")
-        self.client.deleteIndex(UID: uid) { result in
+        self.client.deleteIndex(UID: self.uid) { result in
             switch result {
             case .success:
-                self.client.getOrCreateIndex(UID: uid) { result in
+                self.client.getOrCreateIndex(UID: self.uid) { result in
                     switch result {
                     case .success:
                         expectation.fulfill()
@@ -75,7 +74,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
         self.client.addDocuments(
-            UID: uid,
+            UID: self.uid,
             documents: documents,
             primaryKey: nil
         ) { result in
@@ -91,7 +90,7 @@ class DocumentsTests: XCTestCase {
         sleep(1)
         let getExpectation = XCTestExpectation(description: "Add or replace Movies document")
         self.client.getDocuments(
-            UID: uid,
+            UID: self.uid,
             limit: 20
         ) { (result: Result<[Movie], Swift.Error>) in
 
@@ -110,7 +109,7 @@ class DocumentsTests: XCTestCase {
         
         let getExpectation = XCTestExpectation(description: "Get one document and fail")
         self.client.getDocument(
-            UID: uid,
+            UID: self.uid,
             identifier: "123456"
         ) { (result: Result<Movie, Swift.Error>) in
             switch result {
@@ -131,7 +130,7 @@ class DocumentsTests: XCTestCase {
          let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
          self.client.addDocuments(
-             UID: uid,
+             UID: self.uid,
              documents: documents,
              primaryKey: nil
          ) { result in
@@ -147,7 +146,7 @@ class DocumentsTests: XCTestCase {
          sleep(1)
          let getExpectation = XCTestExpectation(description: "Add or replace Movies document")
          self.client.getDocument(
-             UID: uid,
+             UID: self.uid,
              identifier: "10"
          ) { (result: Result<Movie, Swift.Error>) in
 
@@ -170,7 +169,7 @@ class DocumentsTests: XCTestCase {
          let expectation = XCTestExpectation(description: "Add or update Movies document")
 
          self.client.updateDocuments(
-             UID: uid,
+             UID: self.uid,
              documents: documents,
              primaryKey: nil
          ) { result in
@@ -186,7 +185,7 @@ class DocumentsTests: XCTestCase {
          sleep(1)
          let getExpectation = XCTestExpectation(description: "Add or update Movies document")
          self.client.getDocument(
-             UID: uid,
+             UID: self.uid,
              identifier: "10"
          ) { (result: Result<Movie, Swift.Error>) in
 
@@ -206,7 +205,7 @@ class DocumentsTests: XCTestCase {
 
          let expectation = XCTestExpectation(description: "Delete one Movie")
          self.client.addDocuments(
-             UID: uid,
+             UID: self.uid,
              documents: documents,
              primaryKey: nil
          ) { result in
@@ -221,7 +220,7 @@ class DocumentsTests: XCTestCase {
          self.wait(for: [expectation], timeout: 1.0)
          sleep(1)
          let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-         self.client.deleteDocument(UID: uid, identifier: "42") { (result: Result<Update, Swift.Error>) in
+         self.client.deleteDocument(UID: self.uid, identifier: "42") { (result: Result<Update, Swift.Error>) in
              switch result {
              case .success(let update):
                  XCTAssertEqual(Update(updateId: 1), update)
@@ -235,7 +234,7 @@ class DocumentsTests: XCTestCase {
          sleep(1)
          let getExpectation = XCTestExpectation(description: "Add or update Movies document")
          self.client.getDocument(
-             UID: uid,
+             UID: self.uid,
              identifier: "10"
          ) { (result: Result<Movie, Swift.Error>) in
              switch result {
@@ -255,7 +254,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Delete one Movie")
         self.client.addDocuments(
-            UID: uid,
+            UID: self.uid,
             documents: documents,
             primaryKey: nil
         ) { result in
@@ -270,7 +269,7 @@ class DocumentsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
         sleep(1)
         let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-        self.client.deleteAllDocuments(UID: uid) { (result: Result<Update, Swift.Error>) in
+        self.client.deleteAllDocuments(UID: self.uid) { (result: Result<Update, Swift.Error>) in
             switch result {
             case .success(let update):
                 XCTAssertEqual(Update(updateId: 1), update)
@@ -284,7 +283,7 @@ class DocumentsTests: XCTestCase {
         sleep(1)
         let getExpectation = XCTestExpectation(description: "Add or update Movies document")
         self.client.getDocuments(
-            UID: uid,
+            UID: self.uid,
             limit: 20
         ) { (result: Result<[Movie], Swift.Error>) in
             switch result {
@@ -304,7 +303,7 @@ class DocumentsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Delete one Movie")
         self.client.addDocuments(
-            UID: uid,
+            UID: self.uid,
             documents: documents,
             primaryKey: nil
         ) { result in
@@ -319,7 +318,7 @@ class DocumentsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
         sleep(1)
         let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-        self.client.deleteBatchDocuments(UID: uid, documentsUID: [2,1,4]) { (result: Result<Update, Swift.Error>) in
+        self.client.deleteBatchDocuments(UID: self.uid, documentsUID: [2,1,4]) { (result: Result<Update, Swift.Error>) in
             switch result {
             case .success(let update):
                 XCTAssertEqual(Update(updateId: 1), update)
@@ -333,7 +332,7 @@ class DocumentsTests: XCTestCase {
         sleep(1)
         let getExpectation = XCTestExpectation(description: "Add or update Movies document")
         self.client.getDocuments(
-            UID: uid,
+            UID: self.uid,
             limit: 20
         ) { (result: Result<[Movie], Swift.Error>) in
             switch result {
