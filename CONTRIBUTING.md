@@ -43,16 +43,16 @@ swift build
 swift test
 ```
 
-### On XCode
+### On Xcode
 
 ### Setup
 
-To build the project, if it's not already done, click on the play button in the top left corner of the IDE.
+To build the project, if it's not already done, click on the play button in the top left corner of Xcode.
 
 ### Tests and linter
 
 To launch the tests: 
-- Go to Product>Test
+- Go to Product > Test
 - Use the shortcut command + U
 
 ### Release Process
