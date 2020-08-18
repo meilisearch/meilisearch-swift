@@ -7,7 +7,6 @@ class IndexesTests: XCTestCase {
 
     private var client: MeiliSearch!
     private var uid: String = ""
-    private let session = MockURLSession()
 
     override func setUp() {
         super.setUp()
