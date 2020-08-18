@@ -191,6 +191,38 @@ class IndexesTests: XCTestCase {
 
     }
 
+    func testUpdateIndexName() {
+        
+        let createExpectation = XCTestExpectation(description: "Create Movies index")
+
+        self.client.createIndex(UID: self.uid) { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
+                createExpectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get Movies index")
+            }
+        }
+
+        self.wait(for: [createExpectation], timeout: 1.0)
+
+        // This tests should tests primary key when they are added to this function
+        let updateExpectation = XCTestExpectation(description: "Update movie index")
+        self.client.updateIndex(UID: self.uid, name: "random") { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: "random", UID: self.uid)
+                XCTAssertEqual(stubIndex.name, index.name)
+                updateExpectation.fulfill()
+            case .failure:
+                XCTFail("Failed to update movie index")
+            }
+        }
+        self.wait(for: [updateExpectation], timeout: 1.0)
+    }
+
     func testDeleteIndex() {
 
         let createExpectation = XCTestExpectation(description: "Create Movies index")
@@ -227,9 +259,12 @@ class IndexesTests: XCTestCase {
 
     static var allTests = [
         ("testCreateIndex", testCreateIndex),
+        ("testGetOrCreateIndex", testGetOrCreateIndex),
+        ("testGetOrCreateIndexAlreadyExists", testGetOrCreateIndexAlreadyExists),
         ("testGetIndex", testGetIndex),
         ("testGetIndexes", testGetIndexes),
-        // ("testUpdateIndexName", testUpdateIndexName),
+        ("testGetEmptyIndexes", testGetEmptyIndexes),
+        ("testUpdateIndexName", testUpdateIndexName),
         ("testDeleteIndex", testDeleteIndex)
     ]
 
