@@ -28,21 +28,20 @@ class IndexesTests: XCTestCase {
 
     func testCreateIndex() {
 
-        let expectation = XCTestExpectation(description: "Create Movies index")
+        let createExpectation = XCTestExpectation(description: "Create Movies index")
 
         self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
                 let stubIndex = Index(name: self.uid, UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
-                expectation.fulfill()
+                createExpectation.fulfill()
             case .failure:
                 XCTFail("Failed to get Movies index")
             }
         }
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+        self.wait(for: [createExpectation], timeout: 1.0)
     }
 
     func testGetOrCreateIndex() {
@@ -194,7 +193,20 @@ class IndexesTests: XCTestCase {
 
     func testDeleteIndex() {
 
+        let createExpectation = XCTestExpectation(description: "Create Movies index")
 
+        self.client.createIndex(UID: self.uid) { result in
+            switch result {
+            case .success(let index):
+                let stubIndex = Index(name: self.uid, UID: self.uid)
+                XCTAssertEqual(stubIndex.UID, index.UID)
+                createExpectation.fulfill()
+            case .failure:
+                XCTFail("Failed to get Movies index")
+            }
+        }
+
+        self.wait(for: [createExpectation], timeout: 1.0)
 
         let expectation = XCTestExpectation(description: "Delete Movies index")
 
