@@ -9,9 +9,13 @@
  */
 
 import XCTest
-
-import PlayingCardTests
+@testable import MeiliSearchIntegrationTests
+@testable import MeiliSearchUnitTests
 
 var tests = [XCTestCaseEntry]()
-tests += MeiliSearchTests.allTests()
+#if INSTRUMENTED
+tests += MeiliSearchIntegrationTests.allTests()
+#else
+tests += MeiliSearchUnitTests.allTests()
+#endif
 XCTMain(tests)

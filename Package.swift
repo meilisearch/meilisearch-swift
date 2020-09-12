@@ -12,7 +12,10 @@ let package = Package(
             name: "MeiliSearch",
             dependencies: []),
         .testTarget(
-            name: "MeiliSearchTests",
+            name: "MeiliSearchUnitTests",
+            dependencies: ["MeiliSearch"]),
+        .testTarget(
+            name: "MeiliSearchIntegrationTests",
             dependencies: ["MeiliSearch"])
     ]
 )
