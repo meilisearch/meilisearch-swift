@@ -97,6 +97,8 @@ final class Request {
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.httpBody = data
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
 
@@ -138,6 +140,8 @@ final class Request {
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "PUT"
         request.httpBody = data
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
@@ -171,6 +175,8 @@ final class Request {
         let urlString: String = config.url(api: api)
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {

@@ -30,7 +30,7 @@ private let movies: [Movie] = [
     Movie(id: 1344, title: "The Hobbit", comment: "An awesome book"),
     Movie(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book"),
     Movie(id: 42, title: "The Hitchhiker's Guide to the Galaxy"),
-    Movie(id: 1844, title: "A Moreninha", comment: "A Book from oaquim Manuel de Macedo")
+    Movie(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo")
 ]
 
 private let uid: String = "books_test"
@@ -51,12 +51,12 @@ class DocumentsTests: XCTestCase {
         self.client.deleteIndex(UID: uid) { _ in
             self.client.getOrCreateIndex(UID: uid) { result in
                 switch result {
-                case .success:
-                    expectation.fulfill()
+                case .success(_):
+                    break
                 case .failure(let error):
                     print(error)
-                    expectation.fulfill()
-                }
+              }
+                expectation.fulfill()
             }
         }
 
@@ -173,7 +173,7 @@ class DocumentsTests: XCTestCase {
 
     func testUpdateAndGetDocuments() {
 
-       let identifier: Int = 1844
+        let identifier: Int = 1844
 
         let movie: Movie = movies.first(where: { (movie: Movie) in movie.id == identifier })!
         let documents: Data = try! JSONEncoder().encode([movie])

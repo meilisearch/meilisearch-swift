@@ -189,7 +189,7 @@ struct Documents {
           return
         }
 
-        self.request.post(api: "/indexes/\(UID)/delete-batch", data) { result in
+        self.request.post(api: "/indexes/\(UID)/documents/delete-batch", data) { result in
 
             switch result {
             case .success(let data):
