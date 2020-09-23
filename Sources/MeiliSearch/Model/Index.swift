@@ -23,7 +23,6 @@ public struct Index: Codable, Equatable {
     // MARK: Initializers
 
     init(
-        name: String,
         UID: String,
         createdAt: Date? = nil,
         updatedAt: Date? = nil,

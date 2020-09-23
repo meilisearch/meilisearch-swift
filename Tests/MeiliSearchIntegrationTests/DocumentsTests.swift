@@ -43,8 +43,11 @@ class DocumentsTests: XCTestCase {
         super.setUp()
 
         if client == nil {
-            client = try! MeiliSearch(Config.default)
+            client = try! MeiliSearch(
+              Config.default(apiKey: "5YsHgCa4hkA8W8hGrftkKPVbyQDHzdJR"))
         }
+
+        pool(client)
 
         let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
@@ -55,7 +58,7 @@ class DocumentsTests: XCTestCase {
                     break
                 case .failure(let error):
                     print(error)
-              }
+                }
                 expectation.fulfill()
             }
         }

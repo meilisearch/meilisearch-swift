@@ -1,27 +1,25 @@
 @testable import MeiliSearch
 import XCTest
 
-
-
 class IndexesTests: XCTestCase {
 
     private var client: MeiliSearch!
-    private var uid: String = ""
+    private let uid: String = "books_test"
 
     override func setUp() {
         super.setUp()
-        uid = "books_test"
-        client = try! MeiliSearch(Config.default)
+
+        if client == nil {
+            client = try! MeiliSearch(Config.default(apiKey: "5YsHgCa4hkA8W8hGrftkKPVbyQDHzdJR"))
+        }
+
+        pool(client)
+
         let expectation = XCTestExpectation(description: "Try to delete index between tests")
         self.client.deleteIndex(UID: self.uid) { result in
-            switch result {
-            case .success:
-                expectation.fulfill()
-            case .failure:
-                expectation.fulfill()
-            }
+            expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 2.0)
+        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
@@ -32,7 +30,7 @@ class IndexesTests: XCTestCase {
         self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 createExpectation.fulfill()
             case .failure:
@@ -50,7 +48,7 @@ class IndexesTests: XCTestCase {
         self.client.getOrCreateIndex(UID: uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure:
@@ -69,7 +67,7 @@ class IndexesTests: XCTestCase {
         self.client.getOrCreateIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure(let error):
@@ -84,7 +82,7 @@ class IndexesTests: XCTestCase {
         self.client.getOrCreateIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 SecondExpectation.fulfill()
             case .failure(let error):
@@ -103,7 +101,7 @@ class IndexesTests: XCTestCase {
         self.client.getOrCreateIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 expectation.fulfill()
             case .failure(let error):
@@ -118,7 +116,7 @@ class IndexesTests: XCTestCase {
         self.client.getIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 getIndexExpectation.fulfill()
             case .failure:
@@ -138,7 +136,7 @@ class IndexesTests: XCTestCase {
         self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 CreateIndexExpectation.fulfill()
             case .failure:
@@ -156,8 +154,7 @@ class IndexesTests: XCTestCase {
 
             switch result {
             case .success(let indexes):
-                let stubIndexes = [Index(name: self.uid, UID: self.uid)]
-                print(indexes)
+                let stubIndexes = [Index(UID: self.uid)]
                 XCTAssertEqual(stubIndexes.count, indexes.count)
                 expectation.fulfill()
             case .failure:
@@ -197,7 +194,7 @@ class IndexesTests: XCTestCase {
         self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 createExpectation.fulfill()
             case .failure:
@@ -209,11 +206,12 @@ class IndexesTests: XCTestCase {
 
         // This tests should tests primary key when they are added to this function
         let updateExpectation = XCTestExpectation(description: "Update movie index")
-        self.client.updateIndex(UID: self.uid, name: "random") { result in
+        self.client.updateIndex(UID: self.uid, primaryKey: "random") { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: "random", UID: self.uid)
-                XCTAssertEqual(stubIndex.name, index.name)
+                let stubIndex = Index(UID: self.uid, primaryKey: "random")
+                XCTAssertEqual(stubIndex.primaryKey, index.primaryKey)
+                XCTAssertEqual(stubIndex.UID, index.UID)
                 updateExpectation.fulfill()
             case .failure:
                 XCTFail("Failed to update movie index")
@@ -229,7 +227,7 @@ class IndexesTests: XCTestCase {
         self.client.createIndex(UID: self.uid) { result in
             switch result {
             case .success(let index):
-                let stubIndex = Index(name: self.uid, UID: self.uid)
+                let stubIndex = Index(UID: self.uid)
                 XCTAssertEqual(stubIndex.UID, index.UID)
                 createExpectation.fulfill()
             case .failure:

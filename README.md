@@ -115,6 +115,10 @@ Please check the Vapor Demo source code [here](https://github.com/meilisearch/me
 
 Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/PerfectDemo).
 
+## Testing
+
+To run the unit and instrumented tests, run the script  `./run_test.sh`.
+
 ## Development Workflow and Contributing
 
 Any new contribution is more than welcome in this project!

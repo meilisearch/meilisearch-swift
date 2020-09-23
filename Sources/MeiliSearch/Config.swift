@@ -17,7 +17,7 @@ public class Config {
 
     /// Default config instance set up to use localhost and port 7700.
     public static func `default`(
-        with apiKey: String = "",
+        apiKey: String = "",
         session: URLSessionProtocol = URLSession.shared) -> Config {
         Config(hostURL: localhost, apiKey: apiKey, session: session)
     }
@@ -80,7 +80,7 @@ public class Config {
      */
     func validate(_ request: Request) throws -> Config {
 
-      guard let hostURL: String = self.hostURL else {
+        guard let hostURL: String = self.hostURL else {
             return self
         }
 

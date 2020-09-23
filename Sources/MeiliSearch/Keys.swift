@@ -16,9 +16,7 @@ struct Keys {
 
     func get(_ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
 
-        let headers: [String: String] = ["X-Meili-API-Key": config.apiKey]
-
-        self.request.get(api: "/keys", headers: headers) { result in
+        self.request.get(api: "/keys") { result in
 
             switch result {
             case .success(let data):
