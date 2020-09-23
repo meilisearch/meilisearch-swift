@@ -10,7 +10,7 @@ class IndexesTests: XCTestCase {
         super.setUp()
 
         if client == nil {
-            client = try! MeiliSearch(Config.default(apiKey: "5YsHgCa4hkA8W8hGrftkKPVbyQDHzdJR"))
+            client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
         }
 
         pool(client)

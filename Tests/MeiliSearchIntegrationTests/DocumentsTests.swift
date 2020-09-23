@@ -44,7 +44,7 @@ class DocumentsTests: XCTestCase {
 
         if client == nil {
             client = try! MeiliSearch(
-              Config.default(apiKey: "5YsHgCa4hkA8W8hGrftkKPVbyQDHzdJR"))
+              Config.default(apiKey: "masterKey"))
         }
 
         pool(client)
