@@ -44,7 +44,8 @@ If you have a running MeiliSearch instance at port `localhost:7700` with the fol
 swift test
 ```
 
-If you do not have a MeiliSearch instance with the previous mentionned parameters, you can run de test script that will automaticly run a docker with MeiliSearch:
+If you do not have a MeiliSearch instance with the previous mentioned parameters, you can run de test script that will automatically run a docker with MeiliSearch:
+
 ```bash
 ./run_test.sh
 ```
