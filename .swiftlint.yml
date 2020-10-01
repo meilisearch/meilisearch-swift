@@ -35,7 +35,7 @@ force_cast: warning
 force_try: warning
 
 # - Force explicity type for every variable on the project, this is needed to let the Swift compiler more lightweight
-explicit_type_interface: 
+explicit_type_interface:
   severity: warning
 
 type_body_length:

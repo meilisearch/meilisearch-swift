@@ -49,30 +49,47 @@ final class Request {
         headers: [String: String] = [:],
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
-      autoreleasepool {
+        autoreleasepool {
 
-        var urlString: String = config.url(api: api)
-        if let param: String = param, !param.isEmpty {
-            urlString += param
-        }
-
-        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
-        request.httpMethod = "GET"
-        headers.forEach { (key, value) in
-          request.addValue(value, forHTTPHeaderField: key)
-        }
-
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
-            if let error: Swift.Error = error {
-                completion(.failure(error))
-                return
+            var urlString: String = config.url(api: api)
+            if let param: String = param, !param.isEmpty {
+                urlString += param
             }
-            completion(.success(data))
+
+            var request: URLRequest = URLRequest(url: URL(string: urlString)!)
+            request.httpMethod = "GET"
+            headers.forEach { (key, value) in
+                request.addValue(value, forHTTPHeaderField: key)
+            }
+
+            if !config.apiKey.isEmpty {
+                request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+            }
+
+            let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
+                if let error: Swift.Error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                guard let response = response as? HTTPURLResponse else {
+                    fatalError("Correct handles invalid response, please create a custom error type")
+                }
+
+                if 400 ... 599 ~= response.statusCode {
+                    completion(.failure(
+                      MSError(
+                        data: data,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    return
+                }
+
+                completion(.success(data))
+            }
+
+            task.resume()
+
         }
-
-        task.resume()
-
-      }
     }
 
     func post(
@@ -84,16 +101,37 @@ final class Request {
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.httpBody = data
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        if !config.apiKey.isEmpty {
+            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        }
+
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
+
             if let error: Swift.Error = error {
                 let msError = MSError(data: data, underlying: error)
                 completion(.failure(msError))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             guard let data = data else {
                 return
             }
+
             completion(.success(data))
         }
 
@@ -110,12 +148,31 @@ final class Request {
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "PUT"
         request.httpBody = data
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        if !config.apiKey.isEmpty {
+            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        }
+
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             completion(.success(data))
         }
 
@@ -130,12 +187,31 @@ final class Request {
         let urlString: String = config.url(api: api)
         var request: URLRequest = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "DELETE"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, _, error) in
+        if !config.apiKey.isEmpty {
+            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        }
+
+        let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
             if let error: Swift.Error = error {
                 completion(.failure(error))
                 return
             }
+
+            guard let response = response as? HTTPURLResponse else {
+                fatalError("Correct handles invalid response, please create a custom error type")
+            }
+
+            if 400 ... 599 ~= response.statusCode {
+                completion(.failure(
+                  MSError(
+                    data: data,
+                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                return
+            }
+
             completion(.success(data))
         }
 

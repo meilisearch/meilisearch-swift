@@ -29,7 +29,7 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 ## Development Workflow
 
-### On a terminal 
+### On a terminal
 
 ### Setup
 
@@ -39,8 +39,15 @@ swift build
 
 ### Tests and Linter
 
+If you have a running MeiliSearch instance at port `localhost:7700` with the following master key: `masterKey`, you will need to run the following command to test the package:
 ```bash
 swift test
+```
+
+If you do not have a MeiliSearch instance with the previous mentioned parameters, you can run the test script that will automatically run a Docker container with MeiliSearch:
+
+```bash
+./run_test.sh
 ```
 
 ### On Xcode
@@ -51,7 +58,7 @@ To build the project, if it's not already done, click on the play button in the 
 
 ### Tests and linter
 
-To launch the tests: 
+To launch the tests:
 - Go to Product > Test
 - Use the shortcut command + U
 

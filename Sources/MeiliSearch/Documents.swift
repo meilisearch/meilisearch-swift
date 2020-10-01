@@ -75,7 +75,6 @@ struct Documents {
         _ document: Data,
         _ primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
         var query: String = "/indexes/\(UID)/documents"
         if let primaryKey: String = primaryKey {
             query += "?primaryKey=\(primaryKey)"
@@ -190,7 +189,7 @@ struct Documents {
           return
         }
 
-        self.request.post(api: "/indexes/\(UID)/delete-batch", data) { result in
+        self.request.post(api: "/indexes/\(UID)/documents/delete-batch", data) { result in
 
             switch result {
             case .success(let data):

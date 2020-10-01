@@ -19,13 +19,8 @@ class MockURLSession: URLSessionProtocol {
 
     func execute(with request: URLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
 
-        if responses.isEmpty {
-            fatalError()
-        }
-
+        let first: ResponsePayload = !responses.isEmpty ? responses.removeFirst() : ResponsePayload.default
         lastURL = request.url
-
-        let first: ResponsePayload = responses.removeFirst()
 
         if first.nextType == ResponseStatus.success {
             completionHandler(first.nextData, successHttpURLResponse(request, first.nextCode), first.nextError)
@@ -82,4 +77,6 @@ struct ResponsePayload {
     let nextData: Data?
     let nextError: Error?
     let nextCode: Int
+
+  static let `default` = ResponsePayload(nextType: ResponseStatus.success, nextData: nil, nextError: nil, nextCode: 200)
 }

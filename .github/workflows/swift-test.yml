@@ -14,8 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        swift-version: '5.2.0'
-
+    - name: Download and run MeiliSearch
+      run:  brew update && brew install meilisearch
+    - name: Run MeiliSearch
+      run: meilisearch --no-analytics=true --master-key=masterKey &
     - name: Run tests
       run: swift test -v
