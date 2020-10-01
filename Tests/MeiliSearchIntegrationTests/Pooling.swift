@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pedro Paulo de Amorim on 23/09/2020.
 //
@@ -19,7 +19,7 @@ public func pool(_ client: MeiliSearch) {
             switch result {
             case .success:
                 success = true
-            case .failure(let error):
+            case .failure:
                 Thread.sleep(forTimeInterval: 0.5)
                 success = false
             }
@@ -31,5 +31,5 @@ public func pool(_ client: MeiliSearch) {
         }
         break
     }
-  
+
 }
