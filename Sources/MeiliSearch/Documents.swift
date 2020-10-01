@@ -215,8 +215,7 @@ struct Documents {
             if let customDecoder: JSONDecoder = customDecoder {
               decoder = customDecoder
             } else {
-              decoder = JSONDecoder()
-              decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+              decoder = Constants.customJSONDecoder
             }
 
             let value: T = try decoder.decode(T.self, from: data)

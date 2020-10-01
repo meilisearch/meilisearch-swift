@@ -25,10 +25,9 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -66,10 +65,9 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -113,10 +111,9 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = getJsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(getJsonString)
 
@@ -154,10 +151,9 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -197,10 +193,9 @@ class IndexesTests: XCTestCase {
         }]
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndexes: [Index] = try! decoder.decode([Index].self, from: jsonData)
+
+        let stubIndexes = try! Constants.customJSONDecoder.decode([Index].self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -237,10 +232,9 @@ class IndexesTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let jsonData = jsonString.data(using: .utf8)!
-        let stubIndex: Index = try! decoder.decode(Index.self, from: jsonData)
+
+        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 

@@ -31,9 +31,8 @@ struct Updates {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let result: Update.Result = try decoder.decode(Update.Result.self, from: data)
+                    let result = try Constants.customJSONDecoder.decode(Update.Result.self, from: data)
+
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))
@@ -62,9 +61,8 @@ struct Updates {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let result: [Update.Result] = try decoder.decode([Update.Result].self, from: data)
+                    let result = try Constants.customJSONDecoder.decode([Update.Result].self, from: data)
+                    
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))

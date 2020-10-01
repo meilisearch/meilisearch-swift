@@ -58,10 +58,9 @@ class SearchTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let data = jsonString.data(using: .utf8)!
-        let stubSearchResult: SearchResult<Movie> = try! decoder.decode(SearchResult<Movie>.self, from: data)
+
+        let stubSearchResult = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
 
         session.pushData(jsonString)
 
@@ -118,10 +117,9 @@ class SearchTests: XCTestCase {
         }
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let data = jsonString.data(using: .utf8)!
-        let stubSearchResult: SearchResult<Movie> = try! decoder.decode(SearchResult<Movie>.self, from: data)
+
+        let stubSearchResult = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
 
         session.pushData(jsonString)
 
