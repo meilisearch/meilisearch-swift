@@ -17,6 +17,6 @@ jobs:
     - name: Download and Run  MeiliSearch
       run:  brew update && brew install meilisearch
     - name: Run MeiliSearch
-      run: meilisearch --no-analytics=true &
+      run: meilisearch --no-analytics=true --no-analytics=true --master-key=masterKey &
     - name: Run tests
       run: swift test -v
