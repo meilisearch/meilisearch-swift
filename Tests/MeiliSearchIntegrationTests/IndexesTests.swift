@@ -76,7 +76,9 @@ class IndexesTests: XCTestCase {
         }
 
         self.wait(for: [expectation], timeout: 1.0)
-        
+
+        sleep(2)
+
         let SecondExpectation = XCTestExpectation(description: "Get or create an existing index")
 
         self.client.getOrCreateIndex(UID: self.uid) { result in
@@ -110,7 +112,7 @@ class IndexesTests: XCTestCase {
         }
 
         self.wait(for: [expectation], timeout: 1.0)
-        
+
         let getIndexExpectation = XCTestExpectation(description: "Get index")
 
         self.client.getIndex(UID: self.uid) { result in
@@ -130,7 +132,7 @@ class IndexesTests: XCTestCase {
     }
 
     func testGetIndexes() {
-        
+
         let CreateIndexExpectation = XCTestExpectation(description: "Create Movies index")
 
         self.client.createIndex(UID: self.uid) { result in
@@ -147,7 +149,7 @@ class IndexesTests: XCTestCase {
         self.wait(for: [CreateIndexExpectation], timeout: 1.0)
 
         sleep(1)
-        
+
         let expectation = XCTestExpectation(description: "Load indexes")
 
         self.client.getIndexes { result in
@@ -166,7 +168,7 @@ class IndexesTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
 
     }
-    
+
     func testGetEmptyIndexes() {
 
         let expectation = XCTestExpectation(description: "Load indexes")
@@ -188,7 +190,7 @@ class IndexesTests: XCTestCase {
     }
 
     func testUpdateIndexName() {
-        
+
         let createExpectation = XCTestExpectation(description: "Create Movies index")
 
         self.client.createIndex(UID: self.uid) { result in
