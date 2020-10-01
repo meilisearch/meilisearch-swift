@@ -148,10 +148,9 @@ class DocumentsTests: XCTestCase {
 
         session.pushData(jsonString, code: 200)
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let data = jsonString.data(using: .utf8)!
-        let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
+
+        let stubMovie = try! Constants.customJSONDecoder.decode(Movie.self, from: data)
 
         // Start the test with the mocked server
 
@@ -198,10 +197,9 @@ class DocumentsTests: XCTestCase {
 
         session.pushData(jsonString, code: 200)
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
         let data = jsonString.data(using: .utf8)!
-        let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
+
+        let stubMovies = try! Constants.customJSONDecoder.decode([Movie].self, from: data)
 
         // Start the test with the mocked server
 

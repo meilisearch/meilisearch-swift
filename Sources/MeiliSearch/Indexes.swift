@@ -166,9 +166,8 @@ struct Indexes {
         _ data: Data,
         _ completion: (Result<Index, Swift.Error>) -> Void) {
         do {
-            let decoder: JSONDecoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-            let index: Index = try decoder.decode(Index.self, from: data)
+            let index = try Constants.customJSONDecoder.decode(Index.self, from: data)
+
             completion(.success(index))
         } catch {
             completion(.failure(error))
@@ -179,9 +178,8 @@ struct Indexes {
         _ data: Data,
         _ completion: (Result<[Index], Swift.Error>) -> Void) {
         do {
-            let decoder: JSONDecoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-            let indexes: [Index] = try decoder.decode([Index].self, from: data)
+            let indexes = try Constants.customJSONDecoder.decode([Index].self, from: data)
+
             completion(.success(indexes))
         } catch {
             completion(.failure(error))

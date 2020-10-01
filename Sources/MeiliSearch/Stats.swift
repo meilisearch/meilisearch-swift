@@ -27,9 +27,8 @@ struct Stats {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let stat: Stat = try decoder.decode(Stat.self, from: data)
+                    let stat = try Constants.customJSONDecoder.decode(Stat.self, from: data)
+
                     completion(.success(stat))
                 } catch {
                     completion(.failure(error))
@@ -56,9 +55,8 @@ struct Stats {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-                    let allStats: AllStats = try decoder.decode(AllStats.self, from: data)
+                    let allStats = try Constants.customJSONDecoder.decode(AllStats.self, from: data)
+                    
                     completion(.success(allStats))
                 } catch {
                     completion(.failure(error))

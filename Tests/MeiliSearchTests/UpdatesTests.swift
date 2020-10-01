@@ -30,9 +30,8 @@ class UpdatesTests: XCTestCase {
         """
 
         let data = json.data(using: .utf8)!
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let stubResult: Update.Result = try! decoder.decode(Update.Result.self, from: data)
+
+        let stubResult = try! Constants.customJSONDecoder.decode(Update.Result.self, from: data)
 
         session.pushData(json)
 
@@ -78,9 +77,8 @@ class UpdatesTests: XCTestCase {
         """
 
         let data = json.data(using: .utf8)!
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let stubResults: [Update.Result] = try! decoder.decode([Update.Result].self, from: data)
+
+        let stubResults = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
 
         session.pushData(json)
 
