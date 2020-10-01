@@ -17,7 +17,6 @@ struct System {
     func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
         request.get(api: "/health") { result in
             switch result {
-
             case .success:
                 completion(.success(()))
 
@@ -39,7 +38,6 @@ struct System {
 
         request.put(api: "/health", data) { result in
             switch result {
-
             case .success:
                 completion(.success(()))
 
@@ -52,7 +50,6 @@ struct System {
     func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
         request.get(api: "/version") { result in
             switch result {
-
             case .success(let data):
                 guard let data = data else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
@@ -74,6 +71,6 @@ struct System {
     }
 }
 
-struct CreateHealthPayload: Codable {
+private struct CreateHealthPayload: Codable {
     let health: Bool
 }
