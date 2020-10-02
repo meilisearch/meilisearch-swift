@@ -127,6 +127,22 @@ class DocumentsTests: XCTestCase {
         }
         self.wait(for: [getExpectation], timeout: 3.0)
     }
+    
+    func testGetOneDocumentWithIntIdentifierAndFail() {
+        let getExpectation = XCTestExpectation(description: "Get one document and fail")
+        self.client.getDocument(
+            UID: uid,
+            identifier: 123456
+        ) { (result: Result<Movie, Swift.Error>) in
+            switch result {
+            case .success:
+                XCTFail("Document has been found while it should not have")
+            case .failure:
+                getExpectation.fulfill()
+            }
+        }
+        self.wait(for: [getExpectation], timeout: 3.0)
+    }
 
     func testAddAndGetOneDocuments() {
 
@@ -382,6 +398,7 @@ class DocumentsTests: XCTestCase {
     static var allTests = [
         ("testAddAndGetDocuments", testAddAndGetDocuments),
         ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
+        ("testGetOneDocumentWithIntIdentifierAndFail", testGetOneDocumentWithIntIdentifierAndFail),
         ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),
         ("testUpdateAndGetDocuments", testUpdateAndGetDocuments),
         ("testDeleteOneDocument", testDeleteOneDocument),
