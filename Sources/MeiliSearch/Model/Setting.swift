@@ -23,14 +23,6 @@ public struct Setting: Codable, Equatable {
     /// List of synonyms and its values for a given `Index`.
     public let synonyms: [String: [String]]
 
-    public init(rankingRules: [String], searchableAttributes: [String], displayedAttributes: [String], stopWords: [String], synonyms: [String: [String]]) {
-        self.rankingRules = rankingRules
-        self.searchableAttributes = searchableAttributes
-        self.displayedAttributes = displayedAttributes
-        self.stopWords = stopWords
-        self.synonyms = synonyms
-    }
-
     /// Tries to decode the JSON object to Setting object.
     public init(from decoder: Decoder) throws {
         let values = try? decoder.container(keyedBy: CodingKeys.self)
