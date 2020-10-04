@@ -3,8 +3,11 @@ import XCTest
 
 class ClientTests: XCTestCase {
 
+  private let session = MockURLSession()
+
   func testValidHostURL() {
-    XCTAssertNotNil(try? MeiliSearch(Config(hostURL: "http://localhost:7700", apiKey: "masterKey")))
+    session.pushEmpty(code: 200)
+    XCTAssertNotNil(try? MeiliSearch(Config.default(apiKey: "masterKey", session: session)))
   }
 
   func testEmptyHostURL() {

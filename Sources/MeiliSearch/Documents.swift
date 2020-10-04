@@ -75,12 +75,49 @@ struct Documents {
         _ document: Data,
         _ primaryKey: String?,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
         var query: String = "/indexes/\(UID)/documents"
         if let primaryKey: String = primaryKey {
             query += "?primaryKey=\(primaryKey)"
         }
 
         request.post(api: query, document) { result in
+
+            switch result {
+            case .success(let data):
+
+                Documents.decodeJSON(data, completion: completion)
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        }
+    }
+
+    func add<T>(
+        _ UID: String,
+        _ documents: [T],
+        _ encoder: JSONEncoder? = nil,
+        _ primaryKey: String?,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+
+        var query: String = "/indexes/\(UID)/documents"
+        if let primaryKey: String = primaryKey {
+            query += "?primaryKey=\(primaryKey)"
+        }
+
+        let data: Data!
+
+        switch encodeJSON(documents, encoder) {
+        case .success(let documentData):
+          data = documentData
+        case .failure(let error):
+          completion(.failure(error))
+          return
+        }
+
+        request.post(api: query, data) { result in
 
             switch result {
             case .success(let data):
@@ -214,6 +251,18 @@ struct Documents {
             completion(.success(value))
         } catch {
             completion(.failure(error))
+        }
+    }
+
+    private func encodeJSON<T: Encodable>(
+        _ documents: [T],
+        _ encoder: JSONEncoder?) -> Result<Data, Swift.Error> {
+        do {
+            let data: Data = try (encoder ?? Constants.customJSONEecoder)
+              .encode(documents)
+            return .success(data)
+        } catch {
+            return .failure(error)
         }
     }
 
