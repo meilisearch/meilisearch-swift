@@ -16,7 +16,7 @@ class IndexesTests: XCTestCase {
         pool(client)
 
         let expectation = XCTestExpectation(description: "Try to delete index between tests")
-        self.client.deleteIndex(UID: self.uid) { result in
+        self.client.deleteIndex(UID: self.uid) { _ in
             expectation.fulfill()
         }
         self.wait(for: [expectation], timeout: 1.0)

@@ -26,13 +26,22 @@ public struct Update: Codable, Equatable {
         public let type: Type
 
         ///Duration of the update process.
-        public let duration: TimeInterval
+        public let duration: TimeInterval?
 
         ///Date when the update has been enqueued.
         public let enqueuedAt: Date
 
         ///Date when the update has been processed.
-        public let processedAt: Date
+        public let processedAt: Date?
+
+        enum CodingKeys: String, CodingKey {
+            case status
+            case updateId
+            case type
+            case duration
+            case enqueuedAt
+            case processedAt
+        }
 
         ///Typr of `Update`.
         public struct `Type`: Codable, Equatable {
@@ -44,6 +53,11 @@ public struct Update: Codable, Equatable {
 
             /// ID of update type.
             public let number: Int
+
+            enum CodingKeys: String, CodingKey {
+                case name
+                case number
+            }
 
         }
 

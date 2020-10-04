@@ -32,8 +32,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let settings: Setting = try decoder.decode(Setting.self, from: data)
+                    let settings: Setting = try Constants.customJSONDecoder.decode(Setting.self, from: data)
                     completion(.success(settings))
                 } catch {
                     completion(.failure(error))
@@ -66,8 +65,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -96,8 +94,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -162,8 +159,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -192,8 +188,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -258,8 +253,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -288,8 +282,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -342,7 +335,7 @@ struct Settings {
 
         let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: rankingRules, options: [])
+            data = try JSONSerialization.data(withJSONObject: rankingRules, options: [])
         } catch {
             completion(.failure(error))
             return
@@ -354,8 +347,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -384,8 +376,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -401,9 +392,20 @@ struct Settings {
 
     // MARK: Distinct attribute
 
+    struct DistinctAttributePayload: Codable, Equatable {
+
+        /// Distinct attribute key
+        public let distinctAttribute: String
+
+        enum CodingKeys: String, CodingKey {
+            case distinctAttribute
+        }
+
+    }
+
     func getDistinctAttribute(
         _ UID: String,
-        _ completion: @escaping (Result<String, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
 
         self.request.get(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
 
@@ -415,8 +417,8 @@ struct Settings {
                     return
                 }
 
-                let distinctAttribute: String = String(
-                  decoding: data, as: UTF8.self)
+                let distinctAttribute: String? =
+                  try? Constants.customJSONDecoder.decode(String.self, from: data)
 
                 completion(.success(distinctAttribute))
 
@@ -433,19 +435,22 @@ struct Settings {
         _ distinctAttribute: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        guard let data: Data = distinctAttribute.data(using: .ascii) else {
-            completion(.failure(MeiliSearch.Error.invalidJSON))
+        let encoder = JSONEncoder()
+        let data: Data
+        do {
+            data = try encoder.encode(DistinctAttributePayload(distinctAttribute: distinctAttribute))
+        } catch {
+            completion(.failure(error))
             return
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/distinct-attribute", data) { result in
+        self.request.post(api: "/indexes/\(UID)/settings", data) { result in
 
             switch result {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -474,8 +479,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -540,8 +544,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -570,8 +573,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -636,8 +638,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -666,8 +667,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -732,8 +732,7 @@ struct Settings {
             case .success(let data):
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))
@@ -762,8 +761,7 @@ struct Settings {
                 }
 
                 do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
+                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
                     completion(.success(update))
                 } catch {
                     completion(.failure(error))

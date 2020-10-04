@@ -12,6 +12,8 @@ struct Indexes {
         self.request = request
     }
 
+    // MARK: Functions
+
     func get(
         _ UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
@@ -162,6 +164,8 @@ struct Indexes {
 
     }
 
+    // MARK: Codable
+
     private static func decodeJSON(
         _ data: Data,
         _ completion: (Result<Index, Swift.Error>) -> Void) {
@@ -196,8 +200,17 @@ struct UpdateIndexPayload: Codable {
     let primaryKey: String
 }
 
+/**
+Error type for all functions included in the `Indexes` struct.
+*/
 public enum CreateError: Swift.Error, Equatable {
+
+    // MARK: Values
+
+    /// Case the `Index` already exists in the Meilisearch instance, this error will return.
     case indexAlreadyExists
+
+    // MARK: Codable
 
     static func decode(_ error: MSError) -> Swift.Error {
 
