@@ -41,7 +41,7 @@ class SettingsTests: XCTestCase {
     // MARK: Settings
 
     func testShouldInstantiateFromEmptyData() {
-        let stubSetting = buildStubSetting(from: "{}")
+        let stubSetting: Setting = buildStubSetting(from: "{}")
 
         XCTAssertTrue(stubSetting.rankingRules.isEmpty)
         XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
@@ -54,7 +54,7 @@ class SettingsTests: XCTestCase {
 
         //Prepare the mock server
 
-        let stubSetting = buildStubSetting(from: json)
+        let stubSetting: Setting = buildStubSetting(from: json)
 
         session.pushData(json)
 
@@ -942,6 +942,7 @@ class SettingsTests: XCTestCase {
     }
 
     static var allTests = [
+        ("testShouldInstantiateFromEmptyData", testShouldInstantiateFromEmptyData),
         ("testGetSetting", testGetSetting),
         ("testUpdateSetting", testUpdateSetting),
         ("testResetSetting", testResetSetting),

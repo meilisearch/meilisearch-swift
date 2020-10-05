@@ -27,7 +27,7 @@ struct Stats {
                 }
 
                 do {
-                    let stat = try Constants.customJSONDecoder.decode(Stat.self, from: data)
+                    let stat: Stat = try Constants.customJSONDecoder.decode(Stat.self, from: data)
 
                     completion(.success(stat))
                 } catch {
@@ -55,7 +55,7 @@ struct Stats {
                 }
 
                 do {
-                    let allStats = try Constants.customJSONDecoder.decode(AllStats.self, from: data)
+                    let allStats: AllStats = try Constants.customJSONDecoder.decode(AllStats.self, from: data)
                     
                     completion(.success(allStats))
                 } catch {
