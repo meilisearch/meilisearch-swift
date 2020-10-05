@@ -1,9 +1,11 @@
 name: Swift
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
+  push:
+    branches:
+      - trying
+      - staging
 
 jobs:
   tests:
