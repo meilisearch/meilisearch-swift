@@ -17,26 +17,26 @@ struct Search {
         _ searchParameters: SearchParameters,
         _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
         where T: Codable, T: Equatable {
+            
+            let searchParamBody: Data
+            do {
+               searchParamBody = try JSONEncoder().encode(searchParameters)
+           } catch {
+               completion(.failure(MeiliSearch.Error.invalidJSON))
+               return
+           }
+            let api: String = "/indexes/\(UID)/search"
 
-        let api: String = queryURL(
-            api: "/indexes/\(UID)/search",
-            searchParameters.dictionary())
+            self.request.post(api: api, searchParamBody) { result in
 
-        self.request.get(api: api) { result in
+                switch result {
+                case .success(let data):
+                
+                    Search.decodeJSON(data, completion: completion)
 
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-
-                Search.decodeJSON(data, completion: completion)
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
 
         }
 

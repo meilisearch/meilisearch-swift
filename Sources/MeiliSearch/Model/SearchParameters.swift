@@ -82,54 +82,7 @@ public struct SearchParameters: Codable, Equatable {
         SearchParameters(query: value)
     }
 
-    func dictionary() -> [String: String] {
-
-        var dic = [String: String]()
-
-        dic["q"] = query
-        dic["offset"] = "\(offset)"
-        dic["limit"] = "\(limit)"
-
-        if let attributesToRetrieve = self.attributesToRetrieve, !attributesToRetrieve.isEmpty {
-            dic["attributesToRetrieve"] = commaRepresentation(attributesToRetrieve)
-        }
-
-        if !attributesToCrop.isEmpty {
-            dic["attributesToCrop"] = commaRepresentation(attributesToCrop)
-        }
-
-        dic["cropLength"] = "\(cropLength)"
-
-        if !attributesToHighlight.isEmpty {
-            dic["attributesToHighlight"] = commaRepresentation(attributesToHighlight)
-        }
-
-        if let filters: String = self.filters, !filters.isEmpty {
-            dic["filters"] = filters
-        }
-
-        if let facetFilters: [[String]] = self.facetFilters, !facetFilters.isEmpty {
-            var value = "["
-            for (index, facetFilter) in facetFilters.enumerated() {
-                let entry = commaRepresentationEscaped(facetFilter)
-                value += entry
-                if index < facetFilters.count - 1 {
-                    value += ","
-                }
-            }
-            value += "]"
-            dic["facetFilters"] = value
-        }
-
-        if let facetsDistribution: [String] = self.facetsDistribution, !facetsDistribution.isEmpty {
-            dic["facetsDistribution"] = commaRepresentationEscaped(facetsDistribution)
-        }
-
-        dic["matches"] = "\(matches)"
-        return dic
-    }
-
-    private func commaRepresentation(_ array: [String]) -> String {
+   private func commaRepresentation(_ array: [String]) -> String {
         array.joined(separator: ",")
     }
 
