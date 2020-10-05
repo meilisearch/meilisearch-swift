@@ -17,7 +17,6 @@ class SettingsTests: XCTestCase {
             "exactness",
             "desc(release_date)"
         ],
-        "distinctAttribute": null,
         "searchableAttributes": ["title", "description", "uid"],
         "displayedAttributes": [
             "title",
@@ -30,8 +29,7 @@ class SettingsTests: XCTestCase {
         "synonyms": {
             "wolverine": ["xmen", "logan"],
             "logan": ["wolverine", "xmen"]
-        },
-        "acceptNewFields": false
+        }
     }
     """
 
@@ -42,11 +40,21 @@ class SettingsTests: XCTestCase {
 
     // MARK: Settings
 
+    func testShouldInstantiateFromEmptyData() {
+        let stubSetting: Setting = buildStubSetting(from: "{}")
+
+        XCTAssertTrue(stubSetting.rankingRules.isEmpty)
+        XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
+        XCTAssertEqual(stubSetting.displayedAttributes, ["*"])
+        XCTAssertTrue(stubSetting.stopWords.isEmpty)
+        XCTAssertTrue(stubSetting.synonyms.isEmpty)
+    }
+
     func testGetSetting() {
 
         //Prepare the mock server
 
-        let stubSetting: Setting = buildStubSetting()
+        let stubSetting: Setting = buildStubSetting(from: json)
 
         session.pushData(json)
 
@@ -87,7 +95,7 @@ class SettingsTests: XCTestCase {
         // Start the test with the mocked server
 
         let UID: String = "movies"
-        let setting: Setting = buildStubSetting()
+        let setting: Setting = buildStubSetting(from: json)
 
         let expectation = XCTestExpectation(description: "Update settings")
 
@@ -824,74 +832,6 @@ class SettingsTests: XCTestCase {
 
     }
 
-    // MARK: Accept New Fields
-
-    func testGetAcceptNewFields() {
-
-        //Prepare the mock server
-
-        let jsonString = """
-        true
-        """
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-
-        let expectation = XCTestExpectation(description: "Get displayed attribute")
-
-        self.client.getAcceptNewFields(UID: UID) { result in
-            switch result {
-            case .success(let acceptNewFields):
-                XCTAssertTrue(acceptNewFields)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get displayed attribute")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testUpdateAcceptNewFields() {
-
-        //Prepare the mock server
-
-        let jsonString = """
-        {"updateId":0}
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-        let acceptNewFields = true
-
-        let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-        self.client.updateAcceptNewFields(UID: UID, acceptNewFields) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update displayed attribute")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
     // MARK: Attributes for faceting
 
     func testGetAttributesForFaceting() {
@@ -995,13 +935,14 @@ class SettingsTests: XCTestCase {
 
     }
 
-    private func buildStubSetting() -> Setting {
+    private func buildStubSetting(from json: String) -> Setting {
         let data = json.data(using: .utf8)!
         let decoder: JSONDecoder = JSONDecoder()
         return try! decoder.decode(Setting.self, from: data)
     }
 
     static var allTests = [
+        ("testShouldInstantiateFromEmptyData", testShouldInstantiateFromEmptyData),
         ("testGetSetting", testGetSetting),
         ("testUpdateSetting", testUpdateSetting),
         ("testResetSetting", testResetSetting),
@@ -1020,8 +961,6 @@ class SettingsTests: XCTestCase {
         ("testGetDisplayedAttributes", testGetDisplayedAttributes),
         ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
         ("testResetDisplayedAttributes", testResetDisplayedAttributes),
-        ("testGetAcceptNewFields", testGetAcceptNewFields),
-        ("testUpdateAcceptNewFields", testUpdateAcceptNewFields),
         ("testGetAttributesForFaceting", testGetAttributesForFaceting),
         ("testUpdateAttributesForFaceting", testUpdateAttributesForFaceting),
         ("testResetAttributesForFaceting", testResetAttributesForFaceting)

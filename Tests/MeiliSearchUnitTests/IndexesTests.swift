@@ -27,7 +27,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -67,7 +67,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -113,7 +113,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = getJsonString.data(using: .utf8)!
 
-        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(getJsonString)
 
@@ -153,7 +153,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -195,7 +195,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubIndexes = try! Constants.customJSONDecoder.decode([Index].self, from: jsonData)
+        let stubIndexes: [Index] = try! Constants.customJSONDecoder.decode([Index].self, from: jsonData)
 
         session.pushData(jsonString)
 
@@ -234,7 +234,7 @@ class IndexesTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubIndex = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
+        let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
 
         session.pushData(jsonString)
 

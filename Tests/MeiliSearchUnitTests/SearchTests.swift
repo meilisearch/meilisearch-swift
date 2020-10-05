@@ -60,7 +60,7 @@ class SearchTests: XCTestCase {
 
         let data = jsonString.data(using: .utf8)!
 
-        let stubSearchResult = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
+        let stubSearchResult: SearchResult<Movie> = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
 
         session.pushData(jsonString)
 
@@ -119,7 +119,7 @@ class SearchTests: XCTestCase {
 
         let data = jsonString.data(using: .utf8)!
 
-        let stubSearchResult = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
+        let stubSearchResult: SearchResult<Movie> = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
 
         session.pushData(jsonString)
 
