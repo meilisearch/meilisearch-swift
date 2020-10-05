@@ -6,8 +6,8 @@ on:
   pull_request:
 
 jobs:
-  build:
-
+  tests:
+    name: swift-test
     runs-on: macos-latest
     env:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
