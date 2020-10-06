@@ -141,7 +141,7 @@ class DocumentsTests: XCTestCase {
                    case .failure(let error):
                        XCTFail(error.localizedDescription)
                    }
-                   expectation.fulfill()
+                   getExpectation.fulfill()
 
                }
     }
