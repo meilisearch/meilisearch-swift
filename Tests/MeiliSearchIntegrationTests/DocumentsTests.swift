@@ -127,21 +127,23 @@ class DocumentsTests: XCTestCase {
         }
         self.wait(for: [getExpectation], timeout: 3.0)
     }
-    
-    func testGetOneDocumentWithIntIdentifierAndFail() {
-        let getExpectation = XCTestExpectation(description: "Get one document and fail")
+    func testGetOneDocumentWithIntIdentifierAndSucceed() {
+        let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
+        let getExpectation = XCTestExpectation(description: "Get one document using and int identifier and succeed")
         self.client.getDocument(
-            UID: uid,
-            identifier: 123456
-        ) { (result: Result<Movie, Swift.Error>) in
-            switch result {
-            case .success:
-                XCTFail("Document has been found while it should not have")
-            case .failure:
-                getExpectation.fulfill()
-            }
-        }
-        self.wait(for: [getExpectation], timeout: 3.0)
+                   UID: uid,
+                   identifier: 10
+               ) { (result: Result<Movie, Swift.Error>) in
+
+                   switch result {
+                   case .success(let returnedMovie):
+                       XCTAssertEqual(movie, returnedMovie)
+                   case .failure(let error):
+                       XCTFail(error.localizedDescription)
+                   }
+                   expectation.fulfill()
+
+               }
     }
 
     func testAddAndGetOneDocuments() {
