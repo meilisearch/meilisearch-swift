@@ -72,7 +72,7 @@ class SystemTests: XCTestCase {
 
         let jsonData = jsonString.data(using: .utf8)!
 
-        let stubVersion = try! Constants.customJSONDecoder.decode(Version.self, from: jsonData)
+        let stubVersion: Version = try! Constants.customJSONDecoder.decode(Version.self, from: jsonData)
 
         session.pushData(jsonString)
 

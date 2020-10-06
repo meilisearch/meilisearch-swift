@@ -1,13 +1,17 @@
 name: Swift
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
+  push:
+    # trying and staging branches are for BORS config
+    branches:
+      - trying
+      - staging
+      - master
 
 jobs:
-  build:
-
+  tests:
+    name: swift-test
     runs-on: macos-latest
     env:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer

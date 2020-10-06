@@ -31,7 +31,7 @@ struct Updates {
                 }
 
                 do {
-                    let result = try Constants.customJSONDecoder.decode(Update.Result.self, from: data)
+                    let result: Update.Result = try Constants.customJSONDecoder.decode(Update.Result.self, from: data)
 
                     completion(.success(result))
                 } catch {
@@ -61,7 +61,7 @@ struct Updates {
                 }
 
                 do {
-                    let result = try Constants.customJSONDecoder.decode([Update.Result].self, from: data)
+                    let result: [Update.Result] = try Constants.customJSONDecoder.decode([Update.Result].self, from: data)
                     
                     completion(.success(result))
                 } catch {

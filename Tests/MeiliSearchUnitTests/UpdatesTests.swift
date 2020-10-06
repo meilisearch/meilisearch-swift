@@ -31,7 +31,7 @@ class UpdatesTests: XCTestCase {
 
         let data = json.data(using: .utf8)!
 
-        let stubResult = try! Constants.customJSONDecoder.decode(Update.Result.self, from: data)
+        let stubResult: Update.Result = try! Constants.customJSONDecoder.decode(Update.Result.self, from: data)
 
         session.pushData(json)
 
@@ -78,7 +78,7 @@ class UpdatesTests: XCTestCase {
 
         let data = json.data(using: .utf8)!
 
-        let stubResults = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
+        let stubResults: [Update.Result] = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
 
         session.pushData(json)
 

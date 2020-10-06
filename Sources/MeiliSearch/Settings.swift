@@ -681,66 +681,6 @@ struct Settings {
 
     }
 
-    // MARK: Accept New Fields
-
-    func getAcceptNewFields(
-        _ UID: String,
-        _ completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/accept-new-fields") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                let acceptNewFields: String = String(decoding: data, as: UTF8.self)
-
-                completion(.success(acceptNewFields == "true"))
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateAcceptNewFields(
-        _ UID: String,
-        _ acceptNewFields: Bool,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let acceptNewFieldsString: String = acceptNewFields ? "true" : "false"
-        guard let data: Data = acceptNewFieldsString.data(using: .ascii) else {
-            completion(.failure(MeiliSearch.Error.invalidJSON))
-            return
-        }
-
-        self.request.post(api: "/indexes/\(UID)/settings/accept-new-fields", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    let update: Update = try decoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
     // MARK: Attributes for faceting
 
     func getAttributesForFaceting(
