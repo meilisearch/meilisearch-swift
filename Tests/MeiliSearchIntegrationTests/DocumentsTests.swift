@@ -400,7 +400,7 @@ class DocumentsTests: XCTestCase {
     static var allTests = [
         ("testAddAndGetDocuments", testAddAndGetDocuments),
         ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
-        ("testGetOneDocumentWithIntIdentifierAndFail", testGetOneDocumentWithIntIdentifierAndFail),
+        ("testGetOneDocumentWithIntIdentifierAndSucceed", testGetOneDocumentWithIntIdentifierAndSucceed),
         ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),
         ("testUpdateAndGetDocuments", testUpdateAndGetDocuments),
         ("testDeleteOneDocument", testDeleteOneDocument),
