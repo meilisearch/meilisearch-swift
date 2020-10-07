@@ -14,9 +14,4 @@ public struct Key: Codable, Equatable {
     ///Public key used to access a determined set of API routes.
     public let `public`: String
 
-    enum CodingKeys: String, CodingKey {
-        case `private`
-        case `public`
-    }
-
 }

@@ -16,12 +16,6 @@ public struct AllStats: Codable, Equatable {
     /// Dictionary of all Indexes containing the stat for each Index.  
     public let indexes: [String: Stat]
 
-    enum CodingKeys: String, CodingKey {
-        case databaseSize
-        case lastUpdate
-        case indexes
-    }
-
 }
 
 /**
@@ -39,11 +33,5 @@ public struct Stat: Codable, Equatable {
 
     /// Usage frequency for each Index field.
     public let fieldsFrequency: [String: Int]
-
-    enum CodingKeys: String, CodingKey {
-        case numberOfDocuments
-        case isIndexing
-        case fieldsFrequency
-    }
 
 }

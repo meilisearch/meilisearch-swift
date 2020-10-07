@@ -16,10 +16,4 @@ public struct Version: Codable, Equatable {
     /// Package version, human readable, overly documented.
     public let pkgVersion: String
 
-    enum CodingKeys: String, CodingKey {
-        case commitSha
-        case buildDate
-        case pkgVersion
-    }
-
 }

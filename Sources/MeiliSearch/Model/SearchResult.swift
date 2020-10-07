@@ -35,23 +35,6 @@ public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable
     /// Query string from the search.
     public let query: String
 
-    // MARK: Codable Keys
-
-    /**
-    Codable key mapping
-    */
-    enum CodingKeys: String, CodingKey {
-        case hits
-        case offset
-        case limit
-        case nbHits
-        case exhaustiveNbHits
-        case facetsDistribution
-        case exhaustiveFacetsCount
-        case processingTimeMs
-        case query
-    }
-
     // MARK: Dynamic Codable
 
     /**
