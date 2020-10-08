@@ -1,0 +1,6 @@
+use_frameworks!
+target 'MeiliSearch_Tests' do
+  pod 'MeiliSearch', :path => '../'
+  
+  
+end

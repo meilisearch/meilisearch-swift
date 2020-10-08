@@ -1,0 +1,16 @@
+PODS:
+  - MeiliSearch (0.1.0)
+
+DEPENDENCIES:
+  - MeiliSearch (from `../`)
+
+EXTERNAL SOURCES:
+  MeiliSearch:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  MeiliSearch: 0ea6bb074c0724efc15426e30c3cfe3ce320788b
+
+PODFILE CHECKSUM: 31c7ecb519e14c4a42eeb8a1289429fe7fcc0f0c
+
+COCOAPODS: 1.9.3
