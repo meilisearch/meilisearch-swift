@@ -33,6 +33,6 @@ public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable
     public let processingTimeMs: Int?
 
     /// Query string from the search.
-    public let query: String
+    public let query: String?
 
 }
