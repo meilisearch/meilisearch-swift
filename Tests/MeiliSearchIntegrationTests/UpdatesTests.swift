@@ -68,29 +68,18 @@ class UpdatesTests: XCTestCase {
             switch result {
             case .success(let update):
 
-              func getUpdate() {
-
                 self.client.getUpdate(UID: self.uid, update) { result in
 
                     switch result {
                     case .success(let update):
-
-                        if update.status == "enqueued" {
-                          getUpdate()
-                          return
-                        }
-
-                        expectation.fulfill()
+                        XCTAssertTrue(["enqueued", "processed", "fail"].contains(update.status))
                     case .failure(let error):
                         print(error)
                         XCTFail()
                     }
+                    expectation.fulfill()
 
                 }
-
-              }
-
-              getUpdate()
 
             case .failure:
                 XCTFail("Failed to update movie index")
@@ -113,33 +102,22 @@ class UpdatesTests: XCTestCase {
             self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { _ in }
         }
 
-        func getAllUpdates() {
+        self.client.getAllUpdates(UID: self.uid) { result in
 
-          self.client.getAllUpdates(UID: self.uid) { result in
+            switch result {
+            case .success(let updates):
+                let statuses: [String] = ["enqueued", "processed", "fail"]
+                updates.forEach { (update: Update.Result) in
+                    XCTAssertTrue(statuses.contains(update.status))
+                }
 
-              switch result {
-              case .success(let updates):
-
-                  let enqueues = updates
-                    .filter { (update: Update.Result) in update.status != "processed" }
-                    .count
-
-                  if enqueues > 0 {
-                    getAllUpdates()
-                    return
-                  }
-
-                  expectation.fulfill()
-              case .failure(let error):
-                  print(error)
-                  XCTFail()
-              }
-
-          }
+            case .failure(let error):
+                print(error)
+                XCTFail()
+            }
+            expectation.fulfill()
 
         }
-
-        getAllUpdates()
 
         self.wait(for: [expectation], timeout: 10.0)
 
