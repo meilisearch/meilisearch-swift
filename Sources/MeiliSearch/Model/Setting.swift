@@ -26,6 +26,9 @@ public struct Setting: Codable, Equatable {
     /// Optional distinct attribute set for a given `Index`.
     public let distinctAttribute: String?
 
+    /// List of attributes used for the faceting
+    public let attributesForFaceting: [String]
+
 }
 
 extension Setting {
@@ -39,6 +42,7 @@ extension Setting {
         stopWords = (try? values?.decodeIfPresent([String].self, forKey: .stopWords)) ?? []
         synonyms = (try? values?.decodeIfPresent([String: [String]].self, forKey: .synonyms)) ?? [:]
         distinctAttribute = try? values?.decodeIfPresent(String.self, forKey: .distinctAttribute)
+        attributesForFaceting = (try? values?.decodeIfPresent([String].self, forKey: .attributesForFaceting)) ?? []
     }
 
 }

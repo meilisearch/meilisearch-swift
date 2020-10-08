@@ -6,6 +6,21 @@ class SettingsTests: XCTestCase {
 
     private var client: MeiliSearch!
     private let uid: String = "books_test"
+    private let defaultRankingRules: [String] = [
+        "typo",
+        "words",
+        "proximity",
+        "attribute",
+        "wordsPosition",
+        "exactness"
+    ]
+    private let defaultDistinctAttribute: String? = nil
+    private let defaultDisplayedAttributes: [String] = ["*"]
+    private let defaultSearchableAttributes: [String] = ["*"]
+    private let defaultAttributesForFaceting: [String] = []
+    private let defaultStopWords: [String] = []
+    private let defaultSynonyms: [String: [String]] = [:]
+    private var defaultGlobalSettings: Setting? = nil
 
     // MARK: Setup
 
@@ -35,6 +50,17 @@ class SettingsTests: XCTestCase {
         }
 
         self.wait(for: [expectation], timeout: 10.0)
+
+        self.defaultGlobalSettings = Setting(
+            rankingRules: self.defaultRankingRules,
+            searchableAttributes: self.defaultSearchableAttributes,
+            displayedAttributes: self.defaultDisplayedAttributes,
+            stopWords: self.defaultStopWords,
+            synonyms: self.defaultSynonyms,
+            distinctAttribute: self.defaultDistinctAttribute,
+            attributesForFaceting: self.defaultAttributesForFaceting
+        )
+
     }
 
     // MARK: Attributes for faceting
@@ -43,39 +69,18 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current attributes for faceting")
 
-        let attributesForFaceting: [String] = ["id", "title"]
-
-        self.client.updateAttributesForFaceting(UID: self.uid, attributesForFaceting) { result in
-
+        self.client.getAttributesForFaceting(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let attributes):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
 
-                self.client.getAttributesForFaceting(UID: self.uid) { result in
-                    switch result {
-                    case .success(let attributes):
-
-                        XCTAssertEqual(attributesForFaceting.count, attributes.count)
-
-                        let lhs: [String] = attributesForFaceting.sorted()
-                        let rhs: [String] = attributes.sorted()
-
-                        XCTAssertEqual(lhs, rhs)
-
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -85,10 +90,9 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update settings for attributes for faceting")
 
-        let initialAttributesForFaceting: [String] = ["id", "title"]
+        let newAttributesForFaceting: [String] = ["title"]
 
-        self.client.updateAttributesForFaceting(UID: self.uid, initialAttributesForFaceting) { result in
-
+        self.client.updateAttributesForFaceting(UID: self.uid, newAttributesForFaceting) { result in
             switch result {
             case .success:
 
@@ -99,37 +103,9 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attributes):
 
-                        XCTAssertEqual(initialAttributesForFaceting, attributes)
-                        let newAttributesForFaceting: [String] = ["title"]
+                        XCTAssertEqual(newAttributesForFaceting, attributes)
 
-                        self.client.updateAttributesForFaceting(UID: self.uid, newAttributesForFaceting) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getAttributesForFaceting(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let attributes):
-
-                                      XCTAssertNotEqual(initialAttributesForFaceting, attributes)
-                                      XCTAssertEqual(newAttributesForFaceting, attributes)
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -163,7 +139,7 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attributes):
 
-                        XCTAssertTrue(attributes.isEmpty)
+                        XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -188,40 +164,20 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current displayed attributes")
 
-        let displayedAttributes = ["id", "title"]
-
-        self.client.updateDisplayedAttributes(UID: self.uid, displayedAttributes) { result in
+        self.client.getDisplayedAttributes(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let attributes):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                XCTAssertEqual(self.defaultDisplayedAttributes, attributes)
 
-                self.client.getDisplayedAttributes(UID: self.uid) { result in
-
-                    switch result {
-                    case .success(let attributes):
-
-                        XCTAssertEqual(displayedAttributes.count, attributes.count)
-
-                        let lhs: [String] = displayedAttributes.sorted()
-                        let rhs: [String] = attributes.sorted()
-
-                        XCTAssertEqual(lhs, rhs)
-
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-
-                }
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
+
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -231,10 +187,9 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update settings for displayed attributes")
 
-        let initialDisplayedAttributes: [String] = ["id"]
+        let newDisplayedAttributes: [String] = ["title"]
 
-        self.client.updateDisplayedAttributes(UID: self.uid, initialDisplayedAttributes) { result in
-
+        self.client.updateDisplayedAttributes(UID: self.uid, newDisplayedAttributes) { result in
             switch result {
             case .success:
 
@@ -245,37 +200,9 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attributes):
 
-                        XCTAssertEqual(initialDisplayedAttributes, attributes)
-                        let newDisplayedAttributes: [String] = ["title"]
+                        XCTAssertEqual(newDisplayedAttributes, attributes)
 
-                        self.client.updateDisplayedAttributes(UID: self.uid, newDisplayedAttributes) { result in
-                            switch result {
-                            case .success:
-
-                                Thread.sleep(forTimeInterval: TimeInterval(0.5))
-
-                                self.client.getDisplayedAttributes(UID: self.uid) { result in
-
-                                    switch result {
-                                    case .success(let attributes):
-
-                                        XCTAssertNotEqual(initialDisplayedAttributes, attributes)
-                                        XCTAssertEqual(newDisplayedAttributes, attributes)
-
-                                        expectation.fulfill()
-
-                                    case .failure(let error):
-                                        print(error)
-                                        XCTFail()
-                                    }
-
-                                }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -309,7 +236,7 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attribute):
 
-                        XCTAssertEqual(["*"], attribute)
+                        XCTAssertEqual(self.defaultDisplayedAttributes, attribute)
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -334,34 +261,20 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current distinct attribute")
 
-        let distinctAttribute = "product_id"
-
-        self.client.updateDistinctAttribute(UID: self.uid, distinctAttribute) { result in
+        self.client.getDistinctAttribute(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let attribute):
 
-              Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                XCTAssertEqual(self.defaultDistinctAttribute, attribute)
 
-              self.client.getDistinctAttribute(UID: self.uid) { result in
-
-                  switch result {
-                  case .success(let attribute):
-
-                      XCTAssertEqual(distinctAttribute, attribute)
-                      expectation.fulfill()
-
-                  case .failure(let error):
-                      print(error)
-                      XCTFail()
-                  }
-
-              }
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
+
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -371,10 +284,9 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update settings for distinct attribute")
 
-        let intialDistinctAttribute = "id"
+        let newDistinctAttribute: String = "title"
 
-        self.client.updateDistinctAttribute(UID: self.uid, intialDistinctAttribute) { result in
-
+        self.client.updateDistinctAttribute(UID: self.uid, newDistinctAttribute) { result in
             switch result {
             case .success:
 
@@ -385,37 +297,9 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attribute):
 
-                        XCTAssertEqual(intialDistinctAttribute, attribute)
-                        let newDistinctAttribute: String = "title"
+                        XCTAssertEqual(newDistinctAttribute, attribute)
 
-                        self.client.updateDistinctAttribute(UID: self.uid, newDistinctAttribute) { result in
-                            switch result {
-                            case .success:
-
-                                Thread.sleep(forTimeInterval: TimeInterval(0.5))
-
-                                self.client.getDistinctAttribute(UID: self.uid) { result in
-
-                                    switch result {
-                                    case .success(let attribute):
-
-                                        XCTAssertNotEqual(intialDistinctAttribute, attribute)
-                                        XCTAssertEqual(newDistinctAttribute, attribute)
-
-                                        expectation.fulfill()
-
-                                    case .failure(let error):
-                                        print(error)
-                                        XCTFail()
-                                    }
-
-                                }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -428,6 +312,7 @@ class SettingsTests: XCTestCase {
                 print(error)
                 XCTFail()
             }
+
         }
 
         self.wait(for: [expectation], timeout: 10.0)
@@ -449,7 +334,8 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let attribute):
 
-                        XCTAssertNil(attribute)
+                        XCTAssertEqual(self.defaultDistinctAttribute, attribute)
+
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -474,43 +360,18 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current ranking rules")
 
-        let newRankingRules: [String] = [
-            "typo",
-            "words",
-            "proximity"
-        ]
-
-        self.client.updateRankingRules(UID: self.uid, newRankingRules) { result in
-
+        self.client.getRankingRules(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let rankingRules):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                XCTAssertEqual(self.defaultRankingRules, rankingRules)
 
-                self.client.getRankingRules(UID: self.uid) { result in
-                    switch result {
-                    case .success(let rankingRules):
-
-                        XCTAssertEqual(newRankingRules.count, rankingRules.count)
-
-                        let lhs: [String] = newRankingRules.sorted()
-                        let rhs: [String] = rankingRules.sorted()
-
-                        XCTAssertEqual(lhs, rhs)
-
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -520,14 +381,13 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update settings for ranking rules")
 
-        let initialRankingRules: [String] = [
-            "typo",
+        let newRankingRules: [String] = [
             "words",
+            "typo",
             "proximity"
         ]
 
-        self.client.updateRankingRules(UID: self.uid, initialRankingRules) { result in
-
+        self.client.updateRankingRules(UID: self.uid, newRankingRules) { result in
             switch result {
             case .success:
 
@@ -538,41 +398,9 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let rankingRules):
 
-                        XCTAssertEqual(initialRankingRules, rankingRules)
-                        let newRankingRules: [String] = [
-                            "words",
-                            "typo",
-                            "proximity"
-                        ]
+                        XCTAssertEqual(newRankingRules, rankingRules)
 
-                        self.client.updateRankingRules(UID: self.uid, newRankingRules) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getRankingRules(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let rankingRules):
-
-                                      XCTAssertNotEqual(initialRankingRules, rankingRules)
-                                      XCTAssertEqual(newRankingRules, rankingRules)
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -606,7 +434,7 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let rankingRules):
 
-                        XCTAssertEqual(["typo", "words", "proximity", "attribute", "wordsPosition", "exactness"], rankingRules)
+                        XCTAssertEqual(self.defaultRankingRules, rankingRules)
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -631,43 +459,18 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current searchable attributes")
 
-        let newSearchableAttributes: [String] = [
-            "id",
-            "title",
-            "comment"
-        ]
-
-        self.client.updateSearchableAttributes(UID: self.uid, newSearchableAttributes) { result in
-
+        self.client.getSearchableAttributes(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let searchableAttributes):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
 
-                self.client.getSearchableAttributes(UID: self.uid) { result in
-                    switch result {
-                    case .success(let searchableAttributes):
-
-                        XCTAssertEqual(newSearchableAttributes.count, searchableAttributes.count)
-
-                        let lhs: [String] = newSearchableAttributes.sorted()
-                        let rhs: [String] = searchableAttributes.sorted()
-
-                        XCTAssertEqual(lhs, rhs)
-
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -677,14 +480,12 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update settings for searchable attributes")
 
-        let initialRankingRules: [String] = [
+        let newSearchableAttributes: [String] = [
             "id",
-            "title",
-            "comment"
+            "title"
         ]
 
-        self.client.updateSearchableAttributes(UID: self.uid, initialRankingRules) { result in
-
+        self.client.updateSearchableAttributes(UID: self.uid, newSearchableAttributes) { result in
             switch result {
             case .success:
 
@@ -693,42 +494,11 @@ class SettingsTests: XCTestCase {
                 self.client.getSearchableAttributes(UID: self.uid) { result in
 
                     switch result {
-                    case .success(let rankingRules):
+                    case .success(let searchableAttributes):
 
-                        XCTAssertEqual(initialRankingRules, rankingRules)
-                        let newRankingRules: [String] = [
-                            "id",
-                            "title"
-                        ]
+                        XCTAssertEqual(newSearchableAttributes, searchableAttributes)
 
-                        self.client.updateSearchableAttributes(UID: self.uid, newRankingRules) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getSearchableAttributes(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let rankingRules):
-
-                                      XCTAssertNotEqual(initialRankingRules, rankingRules)
-                                      XCTAssertEqual(newRankingRules, rankingRules)
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -741,6 +511,7 @@ class SettingsTests: XCTestCase {
                 print(error)
                 XCTFail()
             }
+
         }
 
         self.wait(for: [expectation], timeout: 2.0)
@@ -760,9 +531,9 @@ class SettingsTests: XCTestCase {
                 self.client.getSearchableAttributes(UID: self.uid) { result in
 
                     switch result {
-                    case .success(let rankingRules):
+                    case .success(let searchableAttributes):
 
-                        XCTAssertEqual(["*"], rankingRules)
+                        XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -781,206 +552,23 @@ class SettingsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
     }
 
-    // MARK: Settings
-
-    func testGetSettings() {
-
-        let expectation = XCTestExpectation(description: "Get current settings")
-
-        let newSettings: Setting = Setting(
-            rankingRules: ["typo", "words", "proximity", "attribute", "wordsPosition", "exactness"],
-            searchableAttributes: ["*"],
-            displayedAttributes: ["*"],
-            stopWords: [],
-            synonyms: [:],
-            distinctAttribute: nil)
-
-        self.client.updateSetting(UID: self.uid, newSettings) { result in
-
-            switch result {
-            case .success:
-
-                Thread.sleep(forTimeInterval: 0.5)
-
-                self.client.getSetting(UID: self.uid) { result in
-                    switch result {
-                    case .success(let settings):
-                        XCTAssertEqual(newSettings, settings)
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
-
-            case .failure(let error):
-                print(error)
-                XCTFail()
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testUpdateSettings() {
-
-        let expectation = XCTestExpectation(description: "Update settings")
-
-        let initialSettings: Setting = Setting(
-            rankingRules: ["typo", "words", "proximity", "attribute", "wordsPosition", "exactness"],
-            searchableAttributes: ["*"],
-            displayedAttributes: ["*"],
-            stopWords: [],
-            synonyms: [:],
-            distinctAttribute: nil)
-
-        self.client.updateSetting(UID: self.uid, initialSettings) { result in
-
-            switch result {
-            case .success:
-
-                Thread.sleep(forTimeInterval: 0.5)
-
-                self.client.getSetting(UID: self.uid) { result in
-
-                    switch result {
-                    case .success(let setting):
-
-                        XCTAssertEqual(initialSettings, setting)
-
-                        let newSettings: Setting = Setting(
-                            rankingRules: ["words", "typo", "proximity", "attribute", "wordsPosition", "exactness"],
-                            searchableAttributes: ["id", "title"],
-                            displayedAttributes: ["*"],
-                            stopWords: ["the", "a"],
-                            synonyms: [:],
-                            distinctAttribute: nil)
-
-                        self.client.updateSetting(UID: self.uid, newSettings) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getSetting(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let finalSetting):
-
-                                      XCTAssertNotEqual(initialSettings, finalSetting)
-                                      XCTAssertEqual(newSettings.rankingRules.sorted(), finalSetting.rankingRules.sorted())
-                                      XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
-                                      XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
-                                      XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
-                                      XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-
-                }
-
-            case .failure(let error):
-                print(error)
-                XCTFail()
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 10.0)
-    }
-
-    func testResetSettings() {
-
-        let expectation = XCTestExpectation(description: "Reset settings")
-
-        self.client.resetSetting(UID: self.uid) { result in
-            switch result {
-            case .success:
-
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
-
-                self.client.getSetting(UID: self.uid) { result in
-
-                    switch result {
-                    case .success(let settings):
-
-                        let expected = Setting(
-                            rankingRules: ["typo", "words", "proximity", "attribute", "wordsPosition", "exactness"],
-                            searchableAttributes: ["*"],
-                            displayedAttributes: ["*"],
-                            stopWords: [],
-                            synonyms: [:],
-                            distinctAttribute: nil)
-
-                        XCTAssertEqual(expected, settings)
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-
-                }
-
-            case .failure(let error):
-                print(error)
-                XCTFail()
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-    }
-
-    // MARK: Stop words
+    // // MARK: Stop words
 
     func testGetStopWords() {
 
         let expectation = XCTestExpectation(description: "Get current stop words")
 
-        let newStopWords: [String] = ["the", "a", "an"]
-
-        self.client.updateStopWords(UID: self.uid, newStopWords) { result in
-
+        self.client.getStopWords(UID: self.uid) { result in
             switch result {
-            case .success:
 
-                Thread.sleep(forTimeInterval: 0.5)
-
-                self.client.getStopWords(UID: self.uid) { result in
-                    switch result {
-                    case .success(let stopWords):
-                      XCTAssertEqual(newStopWords.sorted(), stopWords.sorted())
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
+            case .success(let stopWords):
+                XCTAssertEqual(self.defaultStopWords, stopWords)
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -990,10 +578,9 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update stop words")
 
-        let initialStopWords: [String] = ["the", "a", "an"]
+        let newStopWords: [String] = ["the"]
 
-        self.client.updateStopWords(UID: self.uid, initialStopWords) { result in
-
+        self.client.updateStopWords(UID: self.uid, newStopWords) { result in
             switch result {
             case .success:
 
@@ -1002,40 +589,11 @@ class SettingsTests: XCTestCase {
                 self.client.getStopWords(UID: self.uid) { result in
 
                     switch result {
-                    case .success(let stopWords):
+                    case .success(let finalStopWords):
 
-                        XCTAssertEqual(initialStopWords.sorted(), stopWords.sorted())
+                        XCTAssertEqual(newStopWords, finalStopWords)
 
-                        let newStopWords: [String] = ["the"]
-
-                        self.client.updateStopWords(UID: self.uid, newStopWords) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getStopWords(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let finalStopWords):
-
-                                      XCTAssertNotEqual(initialStopWords.sorted(), finalStopWords.sorted())
-                                      XCTAssertEqual(newStopWords.sorted(), finalStopWords.sorted())
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -1048,6 +606,7 @@ class SettingsTests: XCTestCase {
                 print(error)
                 XCTFail()
             }
+
         }
 
         self.wait(for: [expectation], timeout: 10.0)
@@ -1067,7 +626,7 @@ class SettingsTests: XCTestCase {
 
                     switch result {
                     case .success(let stopWords):
-                        XCTAssertTrue(stopWords.isEmpty)
+                        XCTAssertEqual(self.defaultStopWords, stopWords)
                         expectation.fulfill()
 
                     case .failure(let error):
@@ -1092,39 +651,17 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Get current synonyms")
 
-        let newSynonyms: [String: [String]] = [
-            "wolverine": ["xmen", "logan"],
-             "logan": ["wolverine", "xmen"],
-             "wow": ["world of warcraft"]
-        ]
-
-        self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
-
+        self.client.getSynonyms(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let synonyms):
 
-                Thread.sleep(forTimeInterval: 0.5)
-
-                self.client.getSynonyms(UID: self.uid) { result in
-                    switch result {
-                    case .success(let synonyms):
-
-                        let lhs = Array(newSynonyms.keys).sorted(by: <)
-                        let rhs = Array(synonyms.keys).sorted(by: <)
-                        XCTAssertEqual(lhs, rhs)
-                        expectation.fulfill()
-
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
-                    }
-                }
+                XCTAssertEqual(self.defaultSynonyms, synonyms)
+                expectation.fulfill()
 
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-
         }
 
         self.wait(for: [expectation], timeout: 1.0)
@@ -1134,14 +671,14 @@ class SettingsTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Update synonyms")
 
-        let initialSynonyms: [String: [String]] = [
+        let newSynonyms: [String: [String]] = [
             "wolverine": ["xmen", "logan"],
             "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
+            "wow": ["world of warcraft"],
+            "rct": ["rollercoaster tycoon"]
         ]
 
-        self.client.updateSynonyms(UID: self.uid, initialSynonyms) { result in
-
+        self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
             switch result {
             case .success:
 
@@ -1150,48 +687,12 @@ class SettingsTests: XCTestCase {
                 self.client.getSynonyms(UID: self.uid) { result in
 
                     switch result {
-                    case .success(let synonyms):
+                    case .success(let updatedSynonyms):
 
-                        let lhs = Array(initialSynonyms.keys).sorted(by: <)
-                        let rhs = Array(synonyms.keys).sorted(by: <)
-                        XCTAssertEqual(lhs, rhs)
+                        let rhs = Array(updatedSynonyms.keys).sorted(by: <)
+                        XCTAssertEqual(Array(newSynonyms.keys).sorted(by: <), rhs)
 
-                        let newSynonyms: [String: [String]] = [
-                            "wolverine": ["xmen", "logan"],
-                            "logan": ["wolverine", "xmen"],
-                            "wow": ["world of warcraft"],
-                            "rct": ["rollercoaster tycoon"]
-                        ]
-
-                        self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
-                            switch result {
-                            case .success:
-
-                              Thread.sleep(forTimeInterval: 0.5)
-
-                              self.client.getSynonyms(UID: self.uid) { result in
-
-                                  switch result {
-                                  case .success(let updatedSynonyms):
-
-                                      let rhs = Array(updatedSynonyms.keys).sorted(by: <)
-                                      XCTAssertNotEqual(Array(initialSynonyms.keys).sorted(by: <), rhs)
-                                      XCTAssertEqual(Array(newSynonyms.keys).sorted(by: <), rhs)
-
-                                      expectation.fulfill()
-
-                                  case .failure(let error):
-                                      print(error)
-                                      XCTFail()
-                                  }
-
-                              }
-
-                            case .failure(let error):
-                                print(error)
-                                XCTFail()
-                            }
-                        }
+                        expectation.fulfill()
 
                     case .failure(let error):
                         print(error)
@@ -1224,7 +725,112 @@ class SettingsTests: XCTestCase {
                     switch result {
                     case .success(let synonyms):
 
-                      XCTAssertTrue(synonyms.isEmpty)
+                        XCTAssertEqual(self.defaultSynonyms, synonyms)
+                        expectation.fulfill()
+
+                    case .failure(let error):
+                        print(error)
+                        XCTFail()
+                    }
+
+                }
+
+            case .failure(let error):
+                print(error)
+                XCTFail()
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+
+    // MARK: Global Settings
+
+    func testGetSettings() {
+
+        let expectation = XCTestExpectation(description: "Get current settings")
+
+        self.client.getSetting(UID: self.uid) { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertEqual(self.defaultGlobalSettings, settings)
+                expectation.fulfill()
+
+            case .failure(let error):
+                print(error)
+                XCTFail()
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testUpdateSettings() {
+
+        let expectation = XCTestExpectation(description: "Update settings")
+
+        let newSettings: Setting = Setting(
+            rankingRules: ["words", "typo", "proximity", "attribute", "wordsPosition", "exactness"],
+            searchableAttributes: ["id", "title"],
+            displayedAttributes: ["*"],
+            stopWords: ["the", "a"],
+            synonyms: [:],
+            distinctAttribute: nil,
+            attributesForFaceting: ["title"])
+
+        self.client.updateSetting(UID: self.uid, newSettings) { result in
+            switch result {
+            case .success:
+
+                Thread.sleep(forTimeInterval: 0.5)
+
+                self.client.getSetting(UID: self.uid) { result in
+
+                    switch result {
+                    case .success(let finalSetting):
+
+                        XCTAssertEqual(newSettings.rankingRules.sorted(), finalSetting.rankingRules.sorted())
+                        XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
+                        XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
+                        XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
+                        XCTAssertEqual(newSettings.attributesForFaceting, finalSetting.attributesForFaceting)
+                        XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
+
+                        expectation.fulfill()
+
+                    case .failure(let error):
+                        print(error)
+                        XCTFail()
+                    }
+
+                }
+
+            case .failure(let error):
+                print(error)
+                XCTFail()
+            }
+
+        }
+
+        self.wait(for: [expectation], timeout: 10.0)
+    }
+
+    func testResetSettings() {
+
+        let expectation = XCTestExpectation(description: "Reset settings")
+
+        self.client.resetSetting(UID: self.uid) { result in
+            switch result {
+            case .success:
+
+                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+
+                self.client.getSetting(UID: self.uid) { result in
+
+                    switch result {
+                    case .success(let settings):
+
+                        XCTAssertEqual(self.defaultGlobalSettings, settings)
                         expectation.fulfill()
 
                     case .failure(let error):
