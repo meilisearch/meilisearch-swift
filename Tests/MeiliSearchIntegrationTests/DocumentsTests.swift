@@ -128,11 +128,30 @@ class DocumentsTests: XCTestCase {
         }
         self.wait(for: [getExpectation], timeout: 3.0)
     }
-    func testGetOneDocumentWithIntIdentifierAndSucceed() {
+    
+    func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
+
         let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
-        let getExpectation = XCTestExpectation(description: "Get one document using and int identifier and succeed")
-        self.client.getDocument(
-                   UID: uid,
+        let documents: Data = try! JSONEncoder().encode([movie])
+
+        let expectation = XCTestExpectation(description: "Add or replace Movies document")
+
+        self.client.addDocuments(
+            UID: self.uid,
+            documents: documents,
+            primaryKey: nil
+        ) { result in
+
+            switch result {
+
+            case .success(let update):
+
+                XCTAssertEqual(Update(updateId: 0), update)
+
+                Thread.sleep(forTimeInterval: 1.0)
+
+               self.client.getDocument(
+                   UID: self.uid,
                    identifier: 10
                ) { (result: Result<Movie, Swift.Error>) in
 
@@ -140,11 +159,22 @@ class DocumentsTests: XCTestCase {
                    case .success(let returnedMovie):
                        XCTAssertEqual(movie, returnedMovie)
                    case .failure(let error):
-                       XCTFail(error.localizedDescription)
+                       print(error)
+                       XCTFail()
                    }
-                   getExpectation.fulfill()
+                   expectation.fulfill()
 
                }
+
+            case .failure(let error):
+                print(error)
+                XCTFail()
+                expectation.fulfill()
+            }
+
+        }
+
+         self.wait(for: [expectation], timeout: 5.0)
     }
 
     func testAddAndGetOneDocuments() {
@@ -410,7 +440,7 @@ class DocumentsTests: XCTestCase {
     static var allTests = [
         ("testAddAndGetDocuments", testAddAndGetDocuments),
         ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
-        ("testGetOneDocumentWithIntIdentifierAndSucceed", testGetOneDocumentWithIntIdentifierAndSucceed),
+        ("testAddAndGetOneDocumentWithIntIdentifierAndSucceed", testAddAndGetOneDocumentWithIntIdentifierAndSucceed),
         ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),
         ("testUpdateAndGetDocuments", testUpdateAndGetDocuments),
         ("testDeleteOneDocument", testDeleteOneDocument),
