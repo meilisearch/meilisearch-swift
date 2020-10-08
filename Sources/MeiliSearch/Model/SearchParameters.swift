@@ -12,11 +12,11 @@ public struct SearchParameters: Codable, Equatable {
     /// Query string (mandatory).
     public let query: String
 
-    /// Number of documents to skip.
-    public let offset: Int
-
     /// Number of documents to take.
     public let limit: Int
+
+    /// Number of documents to skip.
+    public let offset: Int
 
     /// Document attributes to show.
     public let attributesToRetrieve: [String]?
@@ -34,7 +34,6 @@ public struct SearchParameters: Codable, Equatable {
     public let filters: String?
 
     /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
-    //TODO: Migrate to FacetFilter object
     public let facetFilters: [[String]]?
 
     /// Retrieve the count of matching terms for each facets.
@@ -47,11 +46,11 @@ public struct SearchParameters: Codable, Equatable {
 
     init(
         query: String,
-        offset: Int = 0,
-        limit: Int = 20,
+        offset: Int = Default.offset.rawValue,
+        limit: Int = Default.limit.rawValue,
         attributesToRetrieve: [String]? = nil,
         attributesToCrop: [String] = [],
-        cropLength: Int = 200,
+        cropLength: Int = Default.cropLength.rawValue,
         attributesToHighlight: [String] = [],
         filters: String? = nil,
         facetFilters: [[String]]? = nil,
@@ -82,15 +81,70 @@ public struct SearchParameters: Codable, Equatable {
         SearchParameters(query: value)
     }
 
-   private func commaRepresentation(_ array: [String]) -> String {
-        array.joined(separator: ",")
+    // MARK: Codable Keys
+
+    enum CodingKeys: String, CodingKey {
+        case query = "q"
+        case offset
+        case limit
+        case attributesToRetrieve
+        case attributesToCrop
+        case cropLength
+        case attributesToHighlight
+        case filters
+        case facetFilters
+        case facetsDistribution
+        case matches
     }
 
-    private func commaRepresentationEscaped(_ array: [String]) -> String {
-        var value: String = "["
-        value += array.map({ string in "\"\(string)\"" }).joined(separator: ",")
-        value += "]"
-        return value
+    // MARK: Default value for keys
+
+    fileprivate enum Default: Int {
+        case offset = 0
+        case limit = 20
+        case cropLength = 200
+    }
+
+}
+
+extension SearchParameters {
+
+    // MARK: Codable
+
+    /// Encodes the `SearchParameters` to a JSON payload, removing any non necessary implicit parameter.
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(query, forKey: .query)
+        if limit != Default.limit.rawValue {
+            try container.encode(limit, forKey: .limit)
+        }
+        if offset != Default.offset.rawValue {
+            try container.encode(offset, forKey: .offset)
+        }
+        if let attributesToRetrieve: [String] = self.attributesToRetrieve, !attributesToRetrieve.isEmpty {
+            try container.encode(attributesToRetrieve, forKey: .attributesToRetrieve)
+        }
+        if !attributesToCrop.isEmpty {
+            try container.encode(attributesToCrop, forKey: .attributesToCrop)
+        }
+        if cropLength != Default.cropLength.rawValue {
+            try container.encode(cropLength, forKey: .cropLength)
+        }
+        if !attributesToHighlight.isEmpty {
+            try container.encode(attributesToHighlight, forKey: .attributesToHighlight)
+        }
+        if let filters: String = self.filters, !filters.isEmpty {
+            try container.encode(filters, forKey: .filters)
+        }
+        if let facetFilters: [[String]] = self.facetFilters {
+            try container.encode(facetFilters, forKey: .facetFilters)
+        }
+        if let facetsDistribution = self.facetsDistribution, !facetsDistribution.isEmpty {
+            try container.encode(facetsDistribution, forKey: .facetsDistribution)
+        }
+        if matches {
+            try container.encode(matches, forKey: .matches)
+        }
     }
 
 }

@@ -209,14 +209,7 @@ struct Documents {
         _ customDecoder: JSONDecoder? = nil,
         completion: (Result<T, Swift.Error>) -> Void) {
         do {
-
-            let decoder: JSONDecoder
-            if let customDecoder: JSONDecoder = customDecoder {
-              decoder = customDecoder
-            } else {
-              decoder = Constants.customJSONDecoder
-            }
-
+            let decoder: JSONDecoder = customDecoder ?? Constants.customJSONDecoder
             let value: T = try decoder.decode(T.self, from: data)
             completion(.success(value))
         } catch {

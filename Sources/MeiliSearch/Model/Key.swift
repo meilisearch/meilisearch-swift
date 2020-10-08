@@ -6,12 +6,12 @@ import Foundation
 */
 public struct Key: Codable, Equatable {
 
-  // MARK: Properties
+    // MARK: Properties
 
-  ///Private key used to access a determined set of API routes.
-  public let `private`: String
+    ///Private key used to access a determined set of API routes.
+    public let `private`: String
 
-  ///Public key used to access a determined set of API routes.
-  public let `public`: String
+    ///Public key used to access a determined set of API routes.
+    public let `public`: String
 
 }
