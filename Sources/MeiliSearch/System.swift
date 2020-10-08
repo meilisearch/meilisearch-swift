@@ -58,7 +58,7 @@ struct System {
 
                 do {
                     let vesion: Version = try Constants.customJSONDecoder.decode(Version.self, from: data)
-                    
+
                     completion(.success(vesion))
                 } catch {
                     completion(.failure(error))

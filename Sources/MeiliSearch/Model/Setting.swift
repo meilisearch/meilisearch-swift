@@ -23,14 +23,26 @@ public struct Setting: Codable, Equatable {
     /// List of synonyms and its values for a given `Index`.
     public let synonyms: [String: [String]]
 
+    /// Optional distinct attribute set for a given `Index`.
+    public let distinctAttribute: String?
+
+    /// List of attributes used for the faceting
+    public let attributesForFaceting: [String]
+
+}
+
+extension Setting {
+
     /// Tries to decode the JSON object to Setting object.
     public init(from decoder: Decoder) throws {
         let values = try? decoder.container(keyedBy: CodingKeys.self)
-
         rankingRules = (try? values?.decodeIfPresent([String].self, forKey: .rankingRules)) ?? []
         searchableAttributes = (try? values?.decodeIfPresent([String].self, forKey: .searchableAttributes)) ?? ["*"]
         displayedAttributes = (try? values?.decodeIfPresent([String].self, forKey: .displayedAttributes)) ?? ["*"]
         stopWords = (try? values?.decodeIfPresent([String].self, forKey: .stopWords)) ?? []
         synonyms = (try? values?.decodeIfPresent([String: [String]].self, forKey: .synonyms)) ?? [:]
+        distinctAttribute = try? values?.decodeIfPresent(String.self, forKey: .distinctAttribute)
+        attributesForFaceting = (try? values?.decodeIfPresent([String].self, forKey: .attributesForFaceting)) ?? []
     }
+
 }

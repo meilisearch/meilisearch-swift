@@ -509,7 +509,9 @@ class SettingsTests: XCTestCase {
 
         //Prepare the mock server
 
-        let stubDistinctAttribute = "movie_id"
+        let stubDistinctAttribute: String = """
+        "movie_id"
+        """
 
         session.pushData(stubDistinctAttribute)
 
@@ -522,7 +524,7 @@ class SettingsTests: XCTestCase {
         self.client.getDistinctAttribute(UID: UID) { result in
             switch result {
             case .success(let distinctAttribute):
-                XCTAssertEqual(stubDistinctAttribute, distinctAttribute)
+                XCTAssertEqual("movie_id", distinctAttribute!)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to get distinct attribute")
@@ -955,6 +957,9 @@ class SettingsTests: XCTestCase {
         ("testGetRankingRules", testGetRankingRules),
         ("testUpdateRankingRules", testUpdateRankingRules),
         ("testResetRankingRules", testResetRankingRules),
+        ("testGetDistinctAttribute", testGetDistinctAttribute),
+        ("testUpdateDistinctAttribute", testUpdateDistinctAttribute),
+        ("testResetDistinctAttribute", testResetDistinctAttribute),
         ("testGetSearchableAttributes", testGetSearchableAttributes),
         ("testUpdateSearchableAttributes", testUpdateSearchableAttributes),
         ("testResetSearchableAttributes", testResetSearchableAttributes),

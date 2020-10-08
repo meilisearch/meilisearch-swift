@@ -54,6 +54,7 @@ class SearchTests: XCTestCase {
             "offset": 0,
             "limit": 20,
             "processingTimeMs": 2,
+            "nbHits": 2,
             "query": "botman"
         }
         """
@@ -113,6 +114,7 @@ class SearchTests: XCTestCase {
             "offset": 0,
             "limit": 20,
             "processingTimeMs": 2,
+            "nbHits": 2,
             "query": "botman"
         }
         """

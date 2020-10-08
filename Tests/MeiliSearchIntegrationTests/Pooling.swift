@@ -8,7 +8,6 @@
 import Foundation
 @testable import MeiliSearch
 
-
 public func pool(_ client: MeiliSearch) {
 
     let semaphore = DispatchSemaphore(value: 1)

@@ -62,6 +62,14 @@ public struct MeiliSearch {
         self.indexes.create(UID, completion)
     }
 
+    /**
+    Get or create a new Index for the given `uid`.
+
+    - parameter UID:        The unique identifier for the `Index` to be created.
+    - parameter completion: The completion closure used to notify when the server
+    completes the write request, it returns a `Result` object that contains `Index`
+    value. If the request was sucessful or `Error` if a failure occured.
+    */
     public func getOrCreateIndex(
         UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
@@ -526,7 +534,7 @@ public struct MeiliSearch {
      */
     public func getDistinctAttribute(
         UID: String,
-        _ completion: @escaping (Result<String, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
         self.settings.getDistinctAttribute(UID, completion)
     }
 
