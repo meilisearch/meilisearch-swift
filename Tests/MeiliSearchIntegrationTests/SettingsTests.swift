@@ -963,8 +963,8 @@ class SettingsTests: XCTestCase {
             displayedAttributes: ["*"],
             stopWords: [],
             synonyms: [:],
-            distinctAttribute: nil
-        )
+            distinctAttribute: nil,
+            attributesForFaceting: [])
 
         self.client.getSetting(UID: self.uid) { result in
             switch result {
@@ -991,7 +991,8 @@ class SettingsTests: XCTestCase {
             displayedAttributes: ["*"],
             stopWords: [],
             synonyms: [:],
-            distinctAttribute: nil)
+            distinctAttribute: nil,
+            attributesForFaceting: [])
 
         self.client.updateSetting(UID: self.uid, initialSettings) { result in
 
@@ -1013,7 +1014,8 @@ class SettingsTests: XCTestCase {
                             displayedAttributes: ["*"],
                             stopWords: ["the", "a"],
                             synonyms: [:],
-                            distinctAttribute: nil)
+                            distinctAttribute: nil,
+                            attributesForFaceting: ["title"])
 
                         self.client.updateSetting(UID: self.uid, newSettings) { result in
                             switch result {
@@ -1031,6 +1033,7 @@ class SettingsTests: XCTestCase {
                                       XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
                                       XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
                                       XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
+                                      XCTAssertEqual(newSettings.attributesForFaceting, finalSetting.attributesForFaceting)
                                       XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
 
                                       expectation.fulfill()
@@ -1085,7 +1088,8 @@ class SettingsTests: XCTestCase {
                             displayedAttributes: ["*"],
                             stopWords: [],
                             synonyms: [:],
-                            distinctAttribute: nil)
+                            distinctAttribute: nil,
+                            attributesForFaceting: [])
 
                         XCTAssertEqual(expected, settings)
                         expectation.fulfill()
