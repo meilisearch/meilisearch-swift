@@ -397,10 +397,6 @@ struct Settings {
         /// Distinct attribute key
         public let distinctAttribute: String
 
-        enum CodingKeys: String, CodingKey {
-            case distinctAttribute
-        }
-
     }
 
     func getDistinctAttribute(
