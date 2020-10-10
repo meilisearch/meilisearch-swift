@@ -71,8 +71,8 @@ class UpdatesTests: XCTestCase {
                 self.client.getUpdate(UID: self.uid, update) { result in
 
                     switch result {
-                    case .success(let update):
-                        XCTAssertTrue(["enqueued", "processed", "fail"].contains(update.status))
+                    case .success:
+                        break
                     case .failure(let error):
                         print(error)
                         XCTFail()
@@ -105,11 +105,8 @@ class UpdatesTests: XCTestCase {
         self.client.getAllUpdates(UID: self.uid) { result in
 
             switch result {
-            case .success(let updates):
-                let statuses: [String] = ["enqueued", "processed", "fail"]
-                updates.forEach { (update: Update.Result) in
-                    XCTAssertTrue(statuses.contains(update.status))
-                }
+            case .success:
+                break
 
             case .failure(let error):
                 print(error)
