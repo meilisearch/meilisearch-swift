@@ -99,9 +99,10 @@ class SearchTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
-        self.client.deleteIndex(UID: uid) { _ in
-            Thread.sleep(forTimeInterval: TimeInterval(0.1))
+        self.client.deleteIndex(UID: uid) { result in
+
             self.client.getOrCreateIndex(UID: self.uid) { result in
+
                 switch result {
                 case .success:
 
@@ -112,14 +113,15 @@ class SearchTests: XCTestCase {
                     ) { result in
 
                         switch result {
-                        case .success:
-                            Thread.sleep(forTimeInterval: 0.5)
-                            break
+                        case .success(let update):
+                            waitForPendingUpdate(self.client, self.uid, update) {
+                                expectation.fulfill()
+                            }
                         case .failure(let error):
                             print(error)
                             XCTFail()
+                            expectation.fulfill()
                         }
-                        expectation.fulfill()
 
                     }
 
@@ -127,7 +129,9 @@ class SearchTests: XCTestCase {
                     print(error)
                     XCTFail()
                 }
+
             }
+
         }
 
         self.wait(for: [expectation], timeout: 10.0)
@@ -581,10 +585,11 @@ class SearchTests: XCTestCase {
         self.client.updateAttributesForFaceting(UID: self.uid, attributesForFaceting) { result in
 
             switch result {
-            case .success:
-                expectation.fulfill()
-                Thread.sleep(forTimeInterval: 0.5)
-                completion()
+            case .success(let update):
+                waitForPendingUpdate(self.client, self.uid, update) {
+                    expectation.fulfill()
+                    completion()
+                }
             case .failure:
                 XCTFail("Failed to update the settings")
             }

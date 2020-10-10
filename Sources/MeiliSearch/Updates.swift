@@ -31,8 +31,9 @@ struct Updates {
                 }
 
                 do {
-                    let result: Update.Result = try Constants.customJSONDecoder.decode(Update.Result.self, from: data)
-
+                    let result: Update.Result = try Constants.customJSONDecoder.decode(
+                        Update.Result.self,
+                        from: data)
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))
