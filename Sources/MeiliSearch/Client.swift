@@ -206,6 +206,23 @@ public struct MeiliSearch {
     }
 
     /**
+     Get the Document for the given `uid` and `identifier`.
+
+     - parameter UID:        The unique identifier for the Document's index to be found.
+     - parameter identifier: The document identifier for the Document to be found.
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Result` object that contains  `T` value.
+     If the request was sucessful or `Error` if a failure occured.
+     */
+    public func getDocument<T>(
+        UID: String,
+        identifier: Int,
+        _ completion: @escaping (Result<T, Swift.Error>) -> Void)
+        where T: Codable, T: Equatable {
+        self.documents.get(UID, String(identifier), completion)
+    }
+
+    /**
      List the all Documents.
 
      - parameter UID:        The unique identifier for the Document's index to be found.
