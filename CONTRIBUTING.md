@@ -51,7 +51,7 @@ If you do not have a MeiliSearch instance with the previous mentioned parameters
 $ ./Scripts/run_test.sh
 ```
 
-If you want to run the linter `swiftlint`:
+If you want to run the linter [`swiftlint`](https://github.com/realm/SwiftLint):
 
 ```bash
 $ swiftlint
