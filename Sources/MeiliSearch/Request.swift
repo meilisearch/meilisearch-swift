@@ -80,11 +80,16 @@ final class Request {
 
                 if 400 ... 599 ~= response.statusCode {
                     if data != nil {
-                        let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
-                        completion(.failure(
+                        //  do {
+                           let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
+                            completion(.failure(
                             MSError(
-                            data: meiliSearchApiError,
-                            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                                data: meiliSearchApiError,
+                                underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil)
+                            )))
+                        // } catch {
+                        //  Create a standard body error
+                        // }
                     }
                     else {
                         completion(.failure(
