@@ -132,6 +132,7 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
+                print(data)
                 if data != nil {
                     let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
                     completion(.failure(

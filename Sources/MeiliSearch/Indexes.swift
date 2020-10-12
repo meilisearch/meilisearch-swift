@@ -70,8 +70,11 @@ struct Indexes {
                 completion(.success(index))
 
             case .failure(let error):
+                print("ONETWOTREE")
+                print(error)
                 switch error {
-                case CreateError.indexAlreadyExists:
+
+                case CreateError.indexAlreadyExists: // "index already exists" should be used using error.errorCode
                     self.get(UID, completion)
                 default:
                     completion(.failure(error))
