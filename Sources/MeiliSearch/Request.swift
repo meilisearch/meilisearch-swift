@@ -21,8 +21,10 @@ public protocol URLSessionDataTaskProtocol {
     func resume()
 }
 
+// struct meiliSearchApiError: Codable
+
 struct MSError: Swift.Error {
-    let data: Data?
+    let data: MSErrorResponse?
     let underlying: Swift.Error
 }
 
@@ -77,10 +79,19 @@ final class Request {
                 }
 
                 if 400 ... 599 ~= response.statusCode {
-                    completion(.failure(
-                      MSError(
-                        data: data,
-                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    if data != nil {
+                        let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
+                        completion(.failure(
+                            MSError(
+                            data: meiliSearchApiError,
+                            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    }
+                    else {
+                        completion(.failure(
+                        MSError(
+                            data: nil,
+                            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    }
                     return
                 }
 
@@ -111,7 +122,7 @@ final class Request {
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
 
             if let error: Swift.Error = error {
-                let msError = MSError(data: data, underlying: error)
+                let msError = MSError(data: nil, underlying: error)
                 completion(.failure(msError))
                 return
             }
@@ -121,10 +132,20 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
-                completion(.failure(
-                  MSError(
-                    data: data,
-                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                print(data)
+                if data != nil {
+                    let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
+                    completion(.failure(
+                        MSError(
+                        data: meiliSearchApiError,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
+                else {
+                    completion(.failure(
+                    MSError(
+                        data: nil,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
                 return
             }
 
@@ -166,10 +187,19 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
-                completion(.failure(
-                  MSError(
-                    data: data,
-                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                if data != nil {
+                    let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
+                    completion(.failure(
+                        MSError(
+                        data: meiliSearchApiError,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
+                else {
+                    completion(.failure(
+                    MSError(
+                        data: nil,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
                 return
             }
 
@@ -205,10 +235,19 @@ final class Request {
             }
 
             if 400 ... 599 ~= response.statusCode {
-                completion(.failure(
-                  MSError(
-                    data: data,
-                    underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                if data != nil {
+                    let meiliSearchApiError = try! JSONDecoder().decode(MSErrorResponse.self, from: data!)
+                    completion(.failure(
+                        MSError(
+                        data: meiliSearchApiError,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
+                else {
+                    completion(.failure(
+                    MSError(
+                        data: nil,
+                        underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                }
                 return
             }
 
