@@ -66,13 +66,12 @@ class DocumentsTests: XCTestCase {
     }
 
     func testAddAndGetDocuments() {
-        let documents: Data = try! JSONEncoder().encode(movies)
 
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
         self.client.addDocuments(
             UID: self.uid,
-            documents: documents,
+            documents: movies,
             primaryKey: nil
         ) { result in
 
@@ -111,6 +110,53 @@ class DocumentsTests: XCTestCase {
         self.wait(for: [expectation], timeout: 5.0)
 
     }
+
+  func testAddDataAndGetDocuments() {
+      let documents: Data = try! JSONEncoder().encode(movies)
+
+      let expectation = XCTestExpectation(description: "Add or replace Movies document")
+
+      self.client.addDocuments(
+          UID: self.uid,
+          documents: documents,
+          primaryKey: nil
+      ) { result in
+
+          switch result {
+          case .success(let update):
+
+              XCTAssertEqual(Update(updateId: 0), update)
+
+              Thread.sleep(forTimeInterval: 1.0)
+
+              self.client.getDocuments(
+                  UID: self.uid,
+                  limit: 20
+              ) { (result: Result<[Movie], Swift.Error>) in
+
+                  switch result {
+                  case .success(let returnedMovies):
+
+                      movies.forEach { (movie: Movie) in
+                          XCTAssertTrue(returnedMovies.contains(movie))
+                      }
+
+                  case .failure(let error):
+                      print(error)
+                      XCTFail()
+                  }
+
+                  expectation.fulfill()
+              }
+
+          case .failure(let error):
+              print(error)
+              XCTFail()
+          }
+      }
+      self.wait(for: [expectation], timeout: 5.0)
+
+  }
 
     func testGetOneDocumentAndFail() {
 
@@ -194,25 +240,26 @@ class DocumentsTests: XCTestCase {
 
             case .success(let update):
 
+
                 XCTAssertEqual(Update(updateId: 0), update)
 
                 Thread.sleep(forTimeInterval: 1.0)
 
-               self.client.getDocument(
-                   UID: self.uid,
-                   identifier: "10"
-               ) { (result: Result<Movie, Swift.Error>) in
+                self.client.getDocument(
+                    UID: self.uid,
+                    identifier: "10"
+                ) { (result: Result<Movie, Swift.Error>) in
 
-                   switch result {
-                   case .success(let returnedMovie):
-                       XCTAssertEqual(movie, returnedMovie)
-                   case .failure(let error):
-                       print(error)
-                       XCTFail()
-                   }
-                   expectation.fulfill()
+                    switch result {
+                    case .success(let returnedMovie):
+                        XCTAssertEqual(movie, returnedMovie)
+                    case .failure(let error):
+                        print(error)
+                        XCTFail()
+                    }
+                    expectation.fulfill()
 
-               }
+                }
 
             case .failure(let error):
                 print(error)
@@ -439,6 +486,7 @@ class DocumentsTests: XCTestCase {
 
     static var allTests = [
         ("testAddAndGetDocuments", testAddAndGetDocuments),
+        ("testAddDataAndGetDocuments", testAddDataAndGetDocuments),
         ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
         ("testAddAndGetOneDocumentWithIntIdentifierAndSucceed", testAddAndGetOneDocumentWithIntIdentifierAndSucceed),
         ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),

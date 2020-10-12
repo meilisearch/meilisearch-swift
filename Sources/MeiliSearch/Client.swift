@@ -143,7 +143,36 @@ public struct MeiliSearch {
      For a partial update of the document see `updateDocument`.
 
      - parameter UID:        The unique identifier for the Document's index to be found.
-     - parameter documents:  The documents data (JSON) to be processed.
+     - parameter documents:  The documents to be processed.
+     - parameter completion: The completion closure used to notify when the server
+     completes the update request, it returns a `Result` object that contains `Update`
+     value. If the request was sucessful or `Error` if a failure occured.
+     */
+    public func addDocuments<T>(
+        UID: String,
+        documents: [T],
+        encoder: JSONEncoder? = nil,
+        primaryKey: String?,
+        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+        self.documents.add(
+            UID,
+            documents,
+            encoder,
+            primaryKey,
+            completion)
+    }
+
+    /**
+     Add a list of documents as data or replace them if they already exist.
+
+     If you send an already existing document (same id) the whole existing document will
+     be overwritten by the new document. Fields previously in the document not present in
+     the new document are removed.
+
+     For a partial update of the document see `updateDocument`.
+
+     - parameter UID:        The unique identifier for the Document's index to be found.
+     - parameter documents:  The  data to be processed.
      - parameter completion: The completion closure used to notify when the server
      completes the update request, it returns a `Result` object that contains `Update`
      value. If the request was sucessful or `Error` if a failure occured.

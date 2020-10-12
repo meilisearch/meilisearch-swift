@@ -47,6 +47,51 @@ class DocumentsTests: XCTestCase {
 
         let uid: String = "Movies"
 
+        let movie = Movie(
+            id: 287947,
+            title: "Shazam",
+            overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+            releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200)))
+
+        let expectation = XCTestExpectation(description: "Add or replace Movies document")
+
+        self.client.addDocuments(
+            UID: uid,
+            documents: [movie],
+            primaryKey: "") { result in
+
+            switch result {
+            case .success(let update):
+                XCTAssertEqual(stubUpdate, update)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to add or replace Movies document")
+            }
+
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testAddDataDocuments() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {"updateId":0}
+        """
+
+        let decoder: JSONDecoder = JSONDecoder()
+        let jsonData = jsonString.data(using: .utf8)!
+        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+        session.pushData(jsonString, code: 202)
+
+        // Start the test with the mocked server
+
+        let uid: String = "Movies"
+
         let documentJsonString = """
         [{
             "id": 287947,
@@ -358,6 +403,7 @@ class DocumentsTests: XCTestCase {
 
     static var allTests = [
         ("testAddDocuments", testAddDocuments),
+        ("testAddDataDocuments", testAddDataDocuments),
         ("testUpdateDocuments", testUpdateDocuments),
         ("testGetDocument", testGetDocument),
         ("testGetDocuments", testGetDocuments),
