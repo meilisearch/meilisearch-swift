@@ -40,14 +40,21 @@ swift build
 ### Tests and Linter
 
 If you have a running MeiliSearch instance at port `localhost:7700` with the following master key: `masterKey`, you will need to run the following command to test the package:
+
 ```bash
 swift test
 ```
 
-If you do not have a MeiliSearch instance with the previous mentioned parameters, you can run the test script that will automatically run a Docker container with MeiliSearch:
+If you do not have a MeiliSearch instance with the previous mentioned parameters, you can run the test script that will automatically run a Docker container with MeiliSearch and start the test:
 
 ```bash
-./run_test.sh
+$ ./Scripts/run_test.sh
+```
+
+If you want to run the linter [`swiftlint`](https://github.com/realm/SwiftLint):
+
+```bash
+$ swiftlint
 ```
 
 ### On Xcode
