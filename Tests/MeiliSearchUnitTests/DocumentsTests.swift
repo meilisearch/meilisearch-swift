@@ -123,7 +123,8 @@ class DocumentsTests: XCTestCase {
             case .success(let update):
                 XCTAssertEqual(Update(updateId: 0), update)
                 expectation.fulfill()
-            case .failure:
+            case .failure(let error):
+                print(error)
                 XCTFail("Failed to add or replace Movies document")
             }
         }
@@ -137,8 +138,6 @@ class DocumentsTests: XCTestCase {
 
             switch result {
             case .success(let returnedMovies):
-                print("HELLO")
-                print(returnedMovies)
                 XCTAssertEqual(movies, returnedMovies)
                 getExpectation.fulfill()
             case .failure(let error):
@@ -151,12 +150,6 @@ class DocumentsTests: XCTestCase {
     func testAddAndGetOneDocuments() {
         let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
         let documents: Data = try! JSONEncoder().encode([movie])
-//        print(jsonData)
-//        let documents: Data = documentJsonString.data(using: .utf8)!
-//        let jsonString = String(data: jsonData, encoding: .utf8)!
-//        print(jsonString)
-//        let documents: Data = jsonString.data(using: .utf8)!
-//        print(jsonString)
 
         let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
