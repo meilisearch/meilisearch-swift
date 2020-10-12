@@ -54,7 +54,7 @@ $ ./Scripts/run_test.sh
 If you want to run the linter `swiftlint`:
 
 ```bash
-swiftlint
+$ swiftlint
 ```
 
 ### On Xcode
