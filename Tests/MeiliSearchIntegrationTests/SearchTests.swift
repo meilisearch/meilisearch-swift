@@ -134,6 +134,55 @@ class SearchTests: XCTestCase {
         self.wait(for: [expectation], timeout: 10.0)
     }
 
+    // MARK: Basic search
+
+    func testBasicSearch() {
+
+        let expectation = XCTestExpectation(description: "Search for Books using limit")
+
+        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        // let limit = 5
+        let query = "A Moreninha"
+
+        self.client.search(UID: self.uid, SearchParameters(query: query)) { (result: MeiliResult) in
+            switch result {
+            case .success(let documents):
+                XCTAssertTrue(documents.query == query)
+                XCTAssertTrue(documents.limit == 20)
+                XCTAssertTrue(documents.hits.count == 1)
+                XCTAssertEqual(query, documents.hits[0].title)
+                XCTAssertNil(documents.hits[0].formatted)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to search with testBasicSearch")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testBasicSearchWithNoQuery() {
+
+        let expectation = XCTestExpectation(description: "Search for Books using limit")
+
+        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+
+        self.client.search(UID: self.uid, SearchParameters(query: nil)) { (result: MeiliResult) in
+            switch result {
+            case .success(let documents):
+                XCTAssertEqual("", documents.query)
+                XCTAssertEqual(20, documents.limit)
+                XCTAssertEqual(books.count, documents.hits.count)
+                XCTAssertEqual("Pride and Prejudice", documents.hits[0].title)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failed to search with testBasicSearchWithNoQuery")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+
     // MARK: Limit
 
     func testSearchLimit() {
@@ -153,7 +202,7 @@ class SearchTests: XCTestCase {
                 XCTAssertEqual(query, documents.hits[0].title)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchLimit")
             }
         }
 
@@ -176,7 +225,7 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.hits.isEmpty)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchZeroLimit")
             }
         }
 
@@ -197,9 +246,10 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.query == query)
                 XCTAssertTrue(documents.limit == limit)
                 XCTAssertTrue(documents.hits.count == limit)
+                XCTAssertNil(documents.hits[0].formatted)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchLimitBiggerThanNumberOfBooks")
             }
         }
 
@@ -220,9 +270,10 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.query == query)
                 XCTAssertTrue(documents.limit == limit)
                 XCTAssertTrue(documents.hits.count == 5)
+                XCTAssertNil(documents.hits[0].formatted)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchLimitEmptySearch")
             }
         }
 
@@ -249,7 +300,7 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.hits.count == 2)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchOffset")
             }
         }
 
@@ -274,7 +325,7 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.hits.count == 2)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchOffsetZero")
             }
         }
 
@@ -297,9 +348,10 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.limit == limit)
                 XCTAssertTrue(documents.offset == offset)
                 XCTAssertTrue(documents.hits.count == 1)
+                XCTAssertNil(documents.hits[0].formatted)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchOffsetLastPage")
             }
         }
 
@@ -328,7 +380,7 @@ class SearchTests: XCTestCase {
               XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
               expectation.fulfill()
           case .failure:
-              XCTFail("Failed to get Books documents")
+              XCTFail("Failed to search with testSearchAttributesToCrop")
           }
       }
 
@@ -363,7 +415,7 @@ class SearchTests: XCTestCase {
 
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchCropLength")
             }
         }
 
@@ -396,7 +448,7 @@ class SearchTests: XCTestCase {
                 XCTAssertEqual(1, info.length)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchMatches")
             }
         }
 
@@ -426,7 +478,7 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(book.formatted!.comment!.contains("<em>Joaquim</em> <em>Manuel</em> <em>de</em> <em>Macedo</em>"))
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchAttributesToHighlight")
             }
         }
 
@@ -457,7 +509,7 @@ class SearchTests: XCTestCase {
                 XCTAssertNil(book.comment)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchAttributesToRetrieve")
             }
         }
 
@@ -488,7 +540,7 @@ class SearchTests: XCTestCase {
                 XCTAssertEqual("A french book", book.comment)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchFilters")
             }
         }
 
@@ -513,7 +565,7 @@ class SearchTests: XCTestCase {
                 XCTAssertTrue(documents.hits.isEmpty)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to search with testSearchFiltersNotMatching")
             }
         }
 
@@ -535,7 +587,7 @@ class SearchTests: XCTestCase {
                 Thread.sleep(forTimeInterval: 0.5)
                 completion()
             case .failure:
-                XCTFail("Failed to get Books documents")
+                XCTFail("Failed to update the settings")
             }
 
         }
@@ -568,7 +620,7 @@ class SearchTests: XCTestCase {
                     XCTAssertEqual("Le Petit Prince", petitBook.title)
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to get Books documents")
+                    XCTFail("Failed to search with testSearchFacetsFilters")
                 }
             }
 
@@ -614,7 +666,7 @@ class SearchTests: XCTestCase {
 
                     expectation.fulfill()
                 case .failure:
-                    XCTFail("Failed to get Books documents")
+                    XCTFail("Failed to search with testSearchFacetsDistribution")
                 }
             }
 

@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- `SearchParameters` instances represent query setup for a search request. 
+ `SearchParameters` instances represent query setup for a search request.
  Use `SearchParameters.query` to directly create a search query with the
  default search configuration.
  */
@@ -10,25 +10,25 @@ public struct SearchParameters: Codable, Equatable {
     // MARK: Properties
 
     /// Query string (mandatory).
-    public let query: String
+    public let query: String?
 
     /// Number of documents to take.
-    public let limit: Int
+    public let limit: Int?
 
     /// Number of documents to skip.
-    public let offset: Int
+    public let offset: Int?
 
     /// Document attributes to show.
     public let attributesToRetrieve: [String]?
 
     /// Which attributes to crop.
-    public let attributesToCrop: [String]
+    public let attributesToCrop: [String]?
 
     /// Limit length at which to crop specified attributes.
-    public let cropLength: Int
+    public let cropLength: Int?
 
     /// Which attributes to highlight.
-    public let attributesToHighlight: [String]
+    public let attributesToHighlight: [String]?
 
     /// Attribute with an exact match.
     public let filters: String?
@@ -40,22 +40,22 @@ public struct SearchParameters: Codable, Equatable {
     public let facetsDistribution: [String]?
 
     /// Whether to return the raw matches or not.
-    public let matches: Bool
+    public let matches: Bool?
 
     // MARK: Initializers
 
     init(
-        query: String,
-        offset: Int = Default.offset.rawValue,
-        limit: Int = Default.limit.rawValue,
+        query: String?,
+        offset: Int? = nil,
+        limit: Int? = nil,
         attributesToRetrieve: [String]? = nil,
-        attributesToCrop: [String] = [],
-        cropLength: Int = Default.cropLength.rawValue,
-        attributesToHighlight: [String] = [],
+        attributesToCrop: [String]? = nil,
+        cropLength: Int? = nil,
+        attributesToHighlight: [String]? = nil,
         filters: String? = nil,
         facetFilters: [[String]]? = nil,
         facetsDistribution: [String]? = nil,
-        matches: Bool = false) {
+        matches: Bool? = false) {
         self.query = query
         self.offset = offset
         self.limit = limit
@@ -95,56 +95,6 @@ public struct SearchParameters: Codable, Equatable {
         case facetFilters
         case facetsDistribution
         case matches
-    }
-
-    // MARK: Default value for keys
-
-    fileprivate enum Default: Int {
-        case offset = 0
-        case limit = 20
-        case cropLength = 200
-    }
-
-}
-
-extension SearchParameters {
-
-    // MARK: Codable
-
-    /// Encodes the `SearchParameters` to a JSON payload, removing any non necessary implicit parameter.
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(query, forKey: .query)
-        if limit != Default.limit.rawValue {
-            try container.encode(limit, forKey: .limit)
-        }
-        if offset != Default.offset.rawValue {
-            try container.encode(offset, forKey: .offset)
-        }
-        if let attributesToRetrieve: [String] = self.attributesToRetrieve, !attributesToRetrieve.isEmpty {
-            try container.encode(attributesToRetrieve, forKey: .attributesToRetrieve)
-        }
-        if !attributesToCrop.isEmpty {
-            try container.encode(attributesToCrop, forKey: .attributesToCrop)
-        }
-        if cropLength != Default.cropLength.rawValue {
-            try container.encode(cropLength, forKey: .cropLength)
-        }
-        if !attributesToHighlight.isEmpty {
-            try container.encode(attributesToHighlight, forKey: .attributesToHighlight)
-        }
-        if let filters: String = self.filters, !filters.isEmpty {
-            try container.encode(filters, forKey: .filters)
-        }
-        if let facetFilters: [[String]] = self.facetFilters {
-            try container.encode(facetFilters, forKey: .facetFilters)
-        }
-        if let facetsDistribution = self.facetsDistribution, !facetsDistribution.isEmpty {
-            try container.encode(facetsDistribution, forKey: .facetsDistribution)
-        }
-        if matches {
-            try container.encode(matches, forKey: .matches)
-        }
     }
 
 }
