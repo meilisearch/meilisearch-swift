@@ -174,7 +174,7 @@ class DocumentsTests: XCTestCase {
         }
         self.wait(for: [getExpectation], timeout: 3.0)
     }
-    
+
     func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
 
         let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
@@ -239,7 +239,6 @@ class DocumentsTests: XCTestCase {
             switch result {
 
             case .success(let update):
-
 
                 XCTAssertEqual(Update(updateId: 0), update)
 

@@ -68,11 +68,12 @@ class UpdatesTests: XCTestCase {
             switch result {
             case .success(let update):
 
-                self.client.getUpdate(UID: self.uid, update) { result in
+                self.client.getUpdate(UID: self.uid, update) { (result: Result<Update.Result, Swift.Error>)  in
 
                     switch result {
-                    case .success:
-                        break
+                    case .success(let update):
+                        XCTAssertEqual("DocumentsAddition", update.type.name)
+                        XCTAssertTrue(update.type.number >= 0)
                     case .failure(let error):
                         print(error)
                         XCTFail()
@@ -102,11 +103,14 @@ class UpdatesTests: XCTestCase {
             self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { _ in }
         }
 
-        self.client.getAllUpdates(UID: self.uid) { result in
+        self.client.getAllUpdates(UID: self.uid) { (result: Result<[Update.Result], Swift.Error>)  in
 
             switch result {
-            case .success:
-                break
+            case .success(let updates):
+                updates.forEach { (update: Update.Result) in
+                  XCTAssertEqual("DocumentsAddition", update.type.name)
+                  XCTAssertTrue(update.type.number >= 0)
+                }
 
             case .failure(let error):
                 print(error)

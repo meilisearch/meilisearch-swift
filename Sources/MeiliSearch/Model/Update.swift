@@ -55,8 +55,8 @@ public struct Update: Codable, Equatable {
         case processed
         case failed
 
-        public enum CodingError: Error {
-            case unknownStatus
+        public enum StatusError: Error {
+            case unknown
         }
 
         public init(from decoder: Decoder) throws {
@@ -70,21 +70,11 @@ public struct Update: Codable, Equatable {
             case "failed":
                 self = .failed
             default:
-                throw CodingError.unknownStatus
+                throw StatusError.unknown
             }
         }
 
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            switch self {
-            case .enqueued:
-                try container.encode("enqueued")
-            case .processed:
-                try container.encode("processed")
-            case .failed:
-                try container.encode("failed")
-            }
-        }
+        public func encode(to encoder: Encoder) throws { }
 
     }
 

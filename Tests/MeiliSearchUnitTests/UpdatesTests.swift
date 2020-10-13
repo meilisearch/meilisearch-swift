@@ -11,29 +11,6 @@ class UpdatesTests: XCTestCase {
         client = try! MeiliSearch(Config(hostURL: nil, session: session))
     }
 
-    func testEncodeStatusResult() {
-
-        let updateResult = Update.Result(
-            status: Update.Status.enqueued,
-            updateId: 456,
-            type: Update.Result.UpdateType(name: "DocumentsAddition", number: 123),
-            duration: TimeInterval.zero,
-            enqueuedAt: Date(timeIntervalSince1970: 0),
-            processedAt: nil)
-
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        encoder.dateEncodingStrategy = .formatted(Formatter.iso8601)
-
-        let jsonData: Data = try! encoder.encode(updateResult)
-
-        let decoded: Update.Result = try! Constants.customJSONDecoder.decode(
-          Update.Result.self,
-          from: jsonData)
-
-        XCTAssertEqual(updateResult, decoded)
-    }
-
     func testGetUpdate() {
 
         //Prepare the mock server
@@ -84,7 +61,7 @@ class UpdatesTests: XCTestCase {
 
         //Prepare the mock server
 
-        let json = """
+        let badStatusUpdateJson = """
         {
             "status": "something",
             "updateId": 1,
@@ -98,7 +75,7 @@ class UpdatesTests: XCTestCase {
         }
         """
 
-        session.pushData(json)
+        session.pushData(badStatusUpdateJson)
 
         // Start the test with the mocked server
 
@@ -112,7 +89,7 @@ class UpdatesTests: XCTestCase {
             case .success:
                 XCTFail("The server send a invalid status and it should not succeed")
             case .failure(let error):
-                XCTAssertTrue(error is Update.Status.CodingError)
+                XCTAssertTrue(error is Update.Status.StatusError)
                 expectation.fulfill()
             }
         }
