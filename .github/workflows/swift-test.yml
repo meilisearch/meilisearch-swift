@@ -17,10 +17,16 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Download and run MeiliSearch
-      run:  brew update && brew install meilisearch
-    - name: Run MeiliSearch
-      run: meilisearch --no-analytics=true --master-key=masterKey &
-    - name: Run tests
-      run: swift test -v
+      - uses: actions/checkout@v2
+
+      - name: Download and run MeiliSearch
+        run: brew update && brew install meilisearch
+
+      - name: Run MeiliSearch
+        run: meilisearch --no-analytics=true --master-key=masterKey &
+
+      - name: Run SwiftLint
+        run: sh ./Scripts/swiftlint.sh
+
+      - name: Run tests
+        run: swift test -v
