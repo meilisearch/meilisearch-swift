@@ -18,9 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Download and run MeiliSearch
-      run:  brew update && brew install meilisearch
-    - name: Run MeiliSearch
-      run: meilisearch --no-analytics=true --master-key=masterKey &
+    - name: MeiliSearch setup with Docker
+      run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
     - name: Run tests
       run: swift test -v
