@@ -19,10 +19,6 @@ opt_in_rules: # some rules are only opt-in
   - conditional_returns_on_newline
   - empty_string
   - contains_over_first_not_nil
-  - prohibited_nan_comparison
-  - only_after_dot
-  - void_function_in_ternary
-  - return_value_from_void_function
 
 excluded:
   - Carthage
@@ -38,9 +34,4 @@ force_try: warning
 explicit_type_interface:
   severity: warning
 
-type_body_length:
-  - 800 # warning
-  - 1200 # error
-
-weak_delegate:
-  excluded: ".*Test\\.swift"
+line_length: 200
