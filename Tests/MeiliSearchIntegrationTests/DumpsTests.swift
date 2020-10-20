@@ -17,7 +17,7 @@ class DumpsTests: XCTestCase {
         pool(client)
     }
 
-    func testCreateDumpGetDumpStatus() {
+    func testCreateAndGetDump() {
 
         let expectation = XCTestExpectation(description: "Request dump status")
 
@@ -48,7 +48,7 @@ class DumpsTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testCreateDumpGetDumpStatus", testCreateDumpGetDumpStatus)
+        ("testCreateAndGetDump", testCreateAndGetDump)
     ]
 
 }
