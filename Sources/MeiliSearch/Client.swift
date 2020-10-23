@@ -25,6 +25,7 @@ public struct MeiliSearch {
     private let settings: Settings
     private let stats: Stats
     private let system: System
+    private let dumps: Dumps
 
     // MARK: Initializers
 
@@ -44,6 +45,7 @@ public struct MeiliSearch {
         self.settings = Settings(request)
         self.stats = Stats(request)
         self.system = System(request)
+        self.dumps = Dumps(request)
     }
 
     // MARK: Index
@@ -771,8 +773,8 @@ public struct MeiliSearch {
      If the request was sucessful or `Error` if a failure occured.
      */
     public func stat(
-      UID: String,
-      _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+        UID: String,
+        _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
         self.stats.stat(UID, completion)
     }
 
@@ -784,7 +786,7 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func allStats(
-      _ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
         self.stats.allStats(completion)
     }
 
@@ -810,8 +812,8 @@ public struct MeiliSearch {
      If the request was sucessful or `Error` if a failure occured.
      */
     public func updateHealth(
-      health: Bool,
-      _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+        health: Bool,
+        _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
         self.system.updateHealth(health, completion)
     }
 
@@ -823,7 +825,40 @@ public struct MeiliSearch {
      value. If the request was sucessful or `Error` if a failure occured.
      */
     public func version(
-      _ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
+        _ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
         self.system.version(completion)
     }
+
+    /**
+     Triggers a dump creation process. Once the process is complete, a dump is created in the dumps folder.
+     If the dumps folder does not exist yet, it will be created.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the dump request, it returns a `Dump` object that contains `UID`
+     value that can be used later to check the status of the dump.
+     If the request was successful or `Error` if a failure occurred.
+     */
+    public func createDump(_ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+        self.dumps.create(completion)
+    }
+
+    /**
+     Get the status of a dump creation process using the uid returned after calling the dump creation route.
+     The returned status could be:
+
+     `Dump.Status.processing`: Dump creation is in progress.
+     `Dump.Status.dumpProcessFailed`: An error occurred during the dump process, and the task was aborted.
+     `Dump.Status.done`: Dump creation is finished and was successful.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the dump request, it returns a `Dump` object that contains `UID`
+     value that can be used later to check the status of the Dump.
+     If the request was successful or `Error` if a failure occurred.
+     */
+    public func getDumpStatus(
+        UID: String,
+        _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+        self.dumps.status(UID,completion)
+    }
+
 }

@@ -42,8 +42,7 @@ class DocumentsTests: XCTestCase {
         super.setUp()
 
         if client == nil {
-            client = try! MeiliSearch(
-              Config.default(apiKey: "masterKey"))
+            client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
         }
 
         pool(client)
@@ -401,6 +400,8 @@ class DocumentsTests: XCTestCase {
             }
         }
         self.wait(for: [deleteExpectation], timeout: 3.0)
+
+        Thread.sleep(forTimeInterval: 1.0)
 
         let getExpectation = XCTestExpectation(description: "Add or update Movies document")
         self.client.getDocuments(
