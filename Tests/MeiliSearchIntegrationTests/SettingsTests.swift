@@ -20,7 +20,7 @@ class SettingsTests: XCTestCase {
     private let defaultAttributesForFaceting: [String] = []
     private let defaultStopWords: [String] = []
     private let defaultSynonyms: [String: [String]] = [:]
-    private var defaultGlobalSettings: Setting? = nil
+    private var defaultGlobalSettings: Setting?
 
     // MARK: Setup
 
