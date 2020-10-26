@@ -36,7 +36,6 @@ class SettingsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
         self.client.deleteIndex(UID: uid) { _ in
-            Thread.sleep(forTimeInterval: TimeInterval(0.1))
             self.client.getOrCreateIndex(UID: self.uid) { result in
                 switch result {
                 case .success:
@@ -93,22 +92,24 @@ class SettingsTests: XCTestCase {
 
         self.client.updateAttributesForFaceting(UID: self.uid, newAttributesForFaceting) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getAttributesForFaceting(UID: self.uid) { result in
+                    self.client.getAttributesForFaceting(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attributes):
+                        switch result {
+                        case .success(let attributes):
 
-                        XCTAssertEqual(newAttributesForFaceting, attributes)
+                            XCTAssertEqual(newAttributesForFaceting, attributes)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -129,21 +130,23 @@ class SettingsTests: XCTestCase {
         self.client.resetAttributesForFaceting(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getAttributesForFaceting(UID: self.uid) { result in
+                    self.client.getAttributesForFaceting(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attributes):
+                        switch result {
+                        case .success(let attributes):
 
-                        XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -190,22 +193,23 @@ class SettingsTests: XCTestCase {
 
         self.client.updateDisplayedAttributes(UID: self.uid, newDisplayedAttributes) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDisplayedAttributes(UID: self.uid) { result in
+                    self.client.getDisplayedAttributes(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attributes):
+                        switch result {
+                        case .success(let attributes):
 
-                        XCTAssertEqual(newDisplayedAttributes, attributes)
+                            XCTAssertEqual(newDisplayedAttributes, attributes)
+                            expectation.fulfill()
 
-                        expectation.fulfill()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
                     }
 
                 }
@@ -226,21 +230,23 @@ class SettingsTests: XCTestCase {
         self.client.resetDisplayedAttributes(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDisplayedAttributes(UID: self.uid) { result in
+                    self.client.getDisplayedAttributes(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attribute):
+                        switch result {
+                        case .success(let attribute):
 
-                        XCTAssertEqual(self.defaultDisplayedAttributes, attribute)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultDisplayedAttributes, attribute)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -287,22 +293,24 @@ class SettingsTests: XCTestCase {
 
         self.client.updateDistinctAttribute(UID: self.uid, newDistinctAttribute) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDistinctAttribute(UID: self.uid) { result in
+                    self.client.getDistinctAttribute(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attribute):
+                        switch result {
+                        case .success(let attribute):
 
-                        XCTAssertEqual(newDistinctAttribute, attribute)
+                            XCTAssertEqual(newDistinctAttribute, attribute)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -324,22 +332,24 @@ class SettingsTests: XCTestCase {
         self.client.resetDistinctAttribute(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDistinctAttribute(UID: self.uid) { result in
+                    self.client.getDistinctAttribute(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let attribute):
+                        switch result {
+                        case .success(let attribute):
 
-                        XCTAssertEqual(self.defaultDistinctAttribute, attribute)
+                            XCTAssertEqual(self.defaultDistinctAttribute, attribute)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -388,22 +398,24 @@ class SettingsTests: XCTestCase {
 
         self.client.updateRankingRules(UID: self.uid, newRankingRules) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getRankingRules(UID: self.uid) { result in
+                    self.client.getRankingRules(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let rankingRules):
+                        switch result {
+                        case .success(let rankingRules):
 
-                        XCTAssertEqual(newRankingRules, rankingRules)
+                            XCTAssertEqual(newRankingRules, rankingRules)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -424,21 +436,23 @@ class SettingsTests: XCTestCase {
         self.client.resetRankingRules(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getRankingRules(UID: self.uid) { result in
+                    self.client.getRankingRules(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let rankingRules):
+                        switch result {
+                        case .success(let rankingRules):
 
-                        XCTAssertEqual(self.defaultRankingRules, rankingRules)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultRankingRules, rankingRules)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -486,22 +500,24 @@ class SettingsTests: XCTestCase {
 
         self.client.updateSearchableAttributes(UID: self.uid, newSearchableAttributes) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSearchableAttributes(UID: self.uid) { result in
+                    self.client.getSearchableAttributes(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let searchableAttributes):
+                        switch result {
+                        case .success(let searchableAttributes):
 
-                        XCTAssertEqual(newSearchableAttributes, searchableAttributes)
+                            XCTAssertEqual(newSearchableAttributes, searchableAttributes)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -523,21 +539,23 @@ class SettingsTests: XCTestCase {
         self.client.resetSearchableAttributes(UID: self.uid) { result in
 
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSearchableAttributes(UID: self.uid) { result in
+                    self.client.getSearchableAttributes(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let searchableAttributes):
+                        switch result {
+                        case .success(let searchableAttributes):
 
-                        XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -581,22 +599,24 @@ class SettingsTests: XCTestCase {
 
         self.client.updateStopWords(UID: self.uid, newStopWords) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getStopWords(UID: self.uid) { result in
+                    self.client.getStopWords(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let finalStopWords):
+                        switch result {
+                        case .success(let finalStopWords):
 
-                        XCTAssertEqual(newStopWords, finalStopWords)
+                            XCTAssertEqual(newStopWords, finalStopWords)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -617,20 +637,22 @@ class SettingsTests: XCTestCase {
 
         self.client.resetStopWords(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getStopWords(UID: self.uid) { result in
+                    self.client.getStopWords(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let stopWords):
-                        XCTAssertEqual(self.defaultStopWords, stopWords)
-                        expectation.fulfill()
+                        switch result {
+                        case .success(let stopWords):
+                            XCTAssertEqual(self.defaultStopWords, stopWords)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -679,23 +701,25 @@ class SettingsTests: XCTestCase {
 
         self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSynonyms(UID: self.uid) { result in
+                    self.client.getSynonyms(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let updatedSynonyms):
+                        switch result {
+                        case .success(let updatedSynonyms):
 
-                        let rhs = Array(updatedSynonyms.keys).sorted(by: <)
-                        XCTAssertEqual(Array(newSynonyms.keys).sorted(by: <), rhs)
+                            let rhs = Array(updatedSynonyms.keys).sorted(by: <)
+                            XCTAssertEqual(Array(newSynonyms.keys).sorted(by: <), rhs)
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -715,21 +739,23 @@ class SettingsTests: XCTestCase {
 
         self.client.resetSynonyms(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSynonyms(UID: self.uid) { result in
+                    self.client.getSynonyms(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let synonyms):
+                        switch result {
+                        case .success(let synonyms):
 
-                        XCTAssertEqual(self.defaultSynonyms, synonyms)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultSynonyms, synonyms)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -779,27 +805,29 @@ class SettingsTests: XCTestCase {
 
         self.client.updateSetting(UID: self.uid, newSettings) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: 0.5)
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSetting(UID: self.uid) { result in
+                    self.client.getSetting(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let finalSetting):
+                        switch result {
+                        case .success(let finalSetting):
 
-                        XCTAssertEqual(newSettings.rankingRules.sorted(), finalSetting.rankingRules.sorted())
-                        XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
-                        XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
-                        XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
-                        XCTAssertEqual(newSettings.attributesForFaceting, finalSetting.attributesForFaceting)
-                        XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
+                            XCTAssertEqual(newSettings.rankingRules.sorted(), finalSetting.rankingRules.sorted())
+                            XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
+                            XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
+                            XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
+                            XCTAssertEqual(newSettings.attributesForFaceting, finalSetting.attributesForFaceting)
+                            XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
 
-                        expectation.fulfill()
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }
@@ -820,21 +848,23 @@ class SettingsTests: XCTestCase {
 
         self.client.resetSetting(UID: self.uid) { result in
             switch result {
-            case .success:
+            case .success(let update):
 
-                Thread.sleep(forTimeInterval: TimeInterval(0.5))
+                waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getSetting(UID: self.uid) { result in
+                    self.client.getSetting(UID: self.uid) { result in
 
-                    switch result {
-                    case .success(let settings):
+                        switch result {
+                        case .success(let settings):
 
-                        XCTAssertEqual(self.defaultGlobalSettings, settings)
-                        expectation.fulfill()
+                            XCTAssertEqual(self.defaultGlobalSettings, settings)
+                            expectation.fulfill()
 
-                    case .failure(let error):
-                        print(error)
-                        XCTFail()
+                        case .failure(let error):
+                            print(error)
+                            XCTFail()
+                        }
+
                     }
 
                 }

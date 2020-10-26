@@ -34,7 +34,7 @@ public struct Update: Codable, Equatable {
         ///Date when the update has been processed.
         public let processedAt: Date?
 
-        ///Type of `Update`
+        ///Type of `Update`.
         public struct UpdateType: Codable, Equatable {
 
             // MARK: Properties
@@ -43,7 +43,7 @@ public struct Update: Codable, Equatable {
             public let name: String
 
             /// ID of update type.
-            public let number: Int
+            public let number: Int?
 
         }
 
