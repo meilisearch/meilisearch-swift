@@ -22,8 +22,29 @@ import PerfectHTTPServer
 import MeiliSearch
 import Foundation
 
-private let client = try! MeiliSearch()
+private let client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
 
+private struct Movie: Codable, Equatable {
+
+    let id: Int
+    let title: String
+    let comment: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case comment
+    }
+
+    init(id: Int, title: String, comment: String? = nil) {
+        self.id = id
+        self.title = title
+        self.comment = comment
+    }
+
+}
+
+// 127.0.0.1:8181/index?uid=books_test
 func index(request: HTTPRequest, response: HTTPResponse) {
 
   guard let uid: String = request.param(name: "uid") else {
@@ -71,6 +92,7 @@ func index(request: HTTPRequest, response: HTTPResponse) {
 
 }
 
+// 127.0.0.1:8181/search?query=botman
 func search(request: HTTPRequest, response: HTTPResponse) {
 
   guard let query: String = request.param(name: "query") else {
@@ -88,7 +110,7 @@ func search(request: HTTPRequest, response: HTTPResponse) {
 
   let searchParameters = SearchParameters.query(query)
 
-  client.search(UID: "movies", searchParameters) { result in
+  client.search(UID: "books_test", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
 
     switch result {
     case .success(let searchResult):

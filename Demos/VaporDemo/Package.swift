@@ -8,8 +8,8 @@ let package = Package(
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0-rc"),
-        .package(path: "../../meilisearch-swift")
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.32.1"),
+        .package(path: "../../")
     ],
     targets: [
         .target(name: "App", dependencies: [

@@ -105,11 +105,16 @@ This package only guarantees the compatibility with the [version v0.15.0 of Meil
 
 ## Demo
 
+To try out a demo you will need to go to its directory in `Demos/`. In that directory you can either:
+
+ - Open the SwiftPM project in Xcode and press run, or
+ - Run `swift build` or `swift run` in the terminal.
+
 ### Vapor
 
 Please check the Vapor Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/VaporDemo).
 
-### Perfect
+### Perfect 
 
 Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/PerfectDemo).
 
