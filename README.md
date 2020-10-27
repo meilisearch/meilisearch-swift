@@ -12,13 +12,13 @@
   <a href="https://twitter.com/meilisearch">Twitter</a> |
   <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
-  <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </h4>
 
 <p align="center">
   <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Swift/badge.svg" alt="Build Status"></a>
   <a href="https://github.com/meilisearch/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
+  <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Swift 🍎</p>
