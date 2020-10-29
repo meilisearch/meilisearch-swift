@@ -9,7 +9,7 @@ let package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", from: "3.0.0"),
-    .package(path: "../../meilisearch-swift")
+    .package(path: "../../")
 	],
 	targets: [
 		.target(name: "PerfectTemplate", dependencies: [

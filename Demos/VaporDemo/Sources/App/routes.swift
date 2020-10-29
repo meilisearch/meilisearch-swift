@@ -1,11 +1,31 @@
 import Vapor
 import MeiliSearch
 
+private struct Movie: Codable, Equatable {
+
+    let id: Int
+    let title: String
+    let comment: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case comment
+    }
+
+    init(id: Int, title: String, comment: String? = nil) {
+        self.id = id
+        self.title = title
+        self.comment = comment
+    }
+
+}
+
 func routes(_ app: Application) throws {
 
-    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
 
-    // 127.0.0.1:8080/index?uid=Movies
+    // 127.0.0.1:8080/index?uid=books_test
     app.get("index") { req -> EventLoopFuture<String> in
 
         /// Create a new void promise
@@ -59,7 +79,7 @@ func routes(_ app: Application) throws {
 
             let searchParameters = SearchParameters.query(query)
 
-            client.search(UID: "movies", searchParameters) { result in
+            client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
 
               switch result {
               case .success(let searchResult):
