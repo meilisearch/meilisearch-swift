@@ -846,8 +846,8 @@ public struct MeiliSearch {
      Get the status of a dump creation process using the uid returned after calling the dump creation route.
      The returned status could be:
 
-     `Dump.Status.processing`: Dump creation is in progress.
-     `Dump.Status.dumpProcessFailed`: An error occurred during the dump process, and the task was aborted.
+     `Dump.Status.inProgress`: Dump creation is in progress.
+     `Dump.Status.failed`: An error occurred during the dump process, and the task was aborted.
      `Dump.Status.done`: Dump creation is finished and was successful.
 
      - parameter completion: The completion closure used to notify when the server

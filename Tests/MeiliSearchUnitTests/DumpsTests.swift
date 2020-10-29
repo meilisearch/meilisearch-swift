@@ -18,7 +18,7 @@ class DumpsTests: XCTestCase {
         let json = """
         {
           "uid": "20200929-114144097",
-          "status": "processing"
+          "status": "in_progress"
         }
         """
 
@@ -53,7 +53,7 @@ class DumpsTests: XCTestCase {
         let json = """
         {
           "uid": "20200929-114144097",
-          "status": "processing"
+          "status": "in_progress"
         }
         """
 
