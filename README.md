@@ -114,7 +114,7 @@ To try out a demo you will need to go to its directory in `Demos/`. In that dire
 
 Please check the Vapor Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/VaporDemo).
 
-### Perfect 
+### Perfect
 
 Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/PerfectDemo).
 
