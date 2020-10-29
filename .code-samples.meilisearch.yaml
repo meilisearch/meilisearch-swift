@@ -106,7 +106,7 @@ delete_one_document_1: |-
   }
 delete_documents_1: |-
   client.deleteBatchDocuments(
-    UID: "movies", 
+    UID: "movies",
     documentsUID: [23488, 153738, 437035, 363869]) { (result: Result<Update, Swift.Error>) in
         switch result {
         case .success(let update):
@@ -372,7 +372,7 @@ get_displayed_attributes_1: |-
       }
   }
 update_displayed_attributes_1: |-
-  let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]        
+  let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]
   client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -436,15 +436,6 @@ get_health_1: |-
           print(error)
       }
   }
-update_health_1: |-
-  client.updateHealth(health: "movies") { (result: Result<(), Swift.Error>) in
-      switch result {
-      case .success:
-          print("Health updated!")
-      case .failure(let error):
-          print(error)
-      }
-  }
 get_version_1: |-
   client.version { (result: Result<Version, Swift.Error>) in
       switch result {
@@ -483,14 +474,14 @@ distinct_attribute_guide_1: |-
   }
 field_properties_guide_searchable_1: |-
   let searchableAttributes: [String] = [
-      "uid", 
-      "movie_id", 
-      "title", 
-      "description", 
-      "poster", 
-      "release_date", 
+      "uid",
+      "movie_id",
+      "title",
+      "description",
+      "poster",
+      "release_date",
       "rank"
-  ]     
+  ]
   client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -501,12 +492,12 @@ field_properties_guide_searchable_1: |-
   }
 field_properties_guide_displayed_1: |-
   let displayedAttributes: [String] = [
-      "title", 
-      "description", 
-      "poster", 
-      "release_date", 
+      "title",
+      "description",
+      "poster",
+      "release_date",
       "rank"
-  ]        
+  ]
   client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -673,8 +664,8 @@ search_parameter_guide_matches_1: |-
   }
 settings_guide_stop_words_1: |-
   let stopWords: [String] = [
-      "the", 
-      "a", 
+      "the",
+      "a",
       "an"
   ]
   client.updateStopWords(UID: "movies", stopWords) { (result: Result<Update, Swift.Error>) in
@@ -715,14 +706,14 @@ settings_guide_distinct_1: |-
   }
 settings_guide_searchable_1: |-
   let searchableAttributes: [String] = [
-      "uid", 
-      "movie_id", 
-      "title", 
-      "description", 
-      "poster", 
-      "release_date", 
+      "uid",
+      "movie_id",
+      "title",
+      "description",
+      "poster",
+      "release_date",
       "rank"
-  ]     
+  ]
   client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -733,12 +724,12 @@ settings_guide_searchable_1: |-
   }
 settings_guide_displayed_1: |-
   let displayedAttributes: [String] = [
-      "title", 
-      "description", 
-      "poster", 
-      "release_date", 
+      "title",
+      "description",
+      "poster",
+      "release_date",
       "rank"
-  ]        
+  ]
   client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -785,8 +776,8 @@ documents_guide_add_movie_1: |-
   }
 search_guide_1: |-
   let parameters = SearchParameters(
-      query: "shifu", 
-      limit: 5, 
+      query: "shifu",
+      limit: 5,
       offset: 10)
   client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
@@ -798,7 +789,7 @@ search_guide_1: |-
   }
 search_guide_2: |-
   let parameters = SearchParameters(
-      query: "Avengers", 
+      query: "Avengers",
       filters: "release_date > 795484800")
   client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
@@ -809,7 +800,7 @@ search_guide_2: |-
       }
   }
 getting_started_create_index_md: |-
-  Add this in your `Package.swift`:  
+  Add this in your `Package.swift`:
   ```
     dependencies: [
       .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
@@ -828,7 +819,7 @@ getting_started_create_index_md: |-
     }
   ```
 getting_started_add_documents_md: |-
-  Add this in your `Package.swift`:  
+  Add this in your `Package.swift`:
   ```
     dependencies: [
       .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
@@ -848,7 +839,7 @@ getting_started_add_documents_md: |-
     }
   ```
 getting_started_search_md: |-
-  Add this in your `Package.swift`:  
+  Add this in your `Package.swift`:
   ```
     dependencies: [
       .package(url: "https://github.com/meilisearch/meilisearch-swift.git")

@@ -35,29 +35,6 @@ class SystemTests: XCTestCase {
 
     }
 
-    func testUpdateHealth() {
-
-        //Prepare the mock server
-
-        session.pushEmpty(code: 204)
-
-        // Start the test with the mocked server
-
-        let expectation = XCTestExpectation(description: "Check server health")
-
-        self.client.updateHealth(health: true) { result in
-            switch result {
-            case .success:
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to check server health")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
     func testVersion() {
 
         //Prepare the mock server
@@ -98,7 +75,6 @@ class SystemTests: XCTestCase {
 
     static var allTests = [
         ("testHealth", testHealth),
-        ("testUpdateHealth", testUpdateHealth),
         ("testVersion", testVersion)
     ]
 }
