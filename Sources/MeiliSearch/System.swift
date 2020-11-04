@@ -26,27 +26,6 @@ struct System {
         }
     }
 
-    func updateHealth(_ health: Bool, _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-        let data: Data
-
-        do {
-            data = try JSONEncoder().encode(CreateHealthPayload(health: health))
-        } catch {
-            completion(.failure(MeiliSearch.Error.invalidJSON))
-            return
-        }
-
-        request.put(api: "/health", data) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
     func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
         request.get(api: "/version") { result in
             switch result {

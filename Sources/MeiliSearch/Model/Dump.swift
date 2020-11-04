@@ -20,8 +20,8 @@ public struct Dump: Codable, Equatable {
 
     public enum Status: Codable, Equatable {
 
-        case processing
-        case dumpProcessFailed
+        case inProgress
+        case failed
         case done
 
         public enum CodingError: Error {
@@ -32,10 +32,10 @@ public struct Dump: Codable, Equatable {
             let container = try decoder.singleValueContainer()
             let rawStatus = try container.decode(String.self)
             switch rawStatus {
-            case "processing":
-                self = .processing
+            case "in_progress":
+                self = .inProgress
             case "dump_process_failed":
-                self = .dumpProcessFailed
+                self = .failed
             case "done":
                 self = .done
             default:
