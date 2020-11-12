@@ -1,4 +1,4 @@
-name: Swift
+name: Tests
 
 on:
   pull_request:
@@ -10,15 +10,13 @@ on:
       - master
 
 jobs:
-  tests:
-    name: swift-test
+  integeration_tests:
+    name: integration-tests
     runs-on: macos-latest
     env:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
-
     steps:
       - uses: actions/checkout@v2
-
       - name: Download and run MeiliSearch
         # The 4 following lines should be a temporary fix
         # See the related PR in meilisearch-swift: https://github.com/meilisearch/meilisearch-swift/pull/84
@@ -30,12 +28,17 @@ jobs:
            brew untap local/python2
            brew update
            brew install meilisearch
-
       - name: Run MeiliSearch
         run: meilisearch --no-analytics=true --master-key=masterKey &
-
-      - name: Run SwiftLint
-        run: sh ./Scripts/swiftlint.sh
-
       - name: Run tests
         run: swift test -v
+
+  linter:
+    name: linter-check
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run SwiftLint
+        run: sh ./Scripts/swiftlint.sh
