@@ -44,7 +44,7 @@ public struct SearchParameters: Codable, Equatable {
 
     // MARK: Initializers
 
-    init(
+    public init(
         query: String?,
         offset: Int? = nil,
         limit: Int? = nil,
