@@ -7,23 +7,23 @@
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://blog.meilisearch.com">Blog</a> |
   <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> |
-  <a href="https://twitter.com/meilisearch">Twitter</a> |
   <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
+  <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
 <p align="center">
   <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Tests/badge.svg" alt="GtiHub Workflow Status"></a>
   <a href="https://github.com/meilisearch/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
-  <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
   <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Swift 🍎</p>
 
-**MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
+**MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift.
+
+**MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
 For more information about features go to [our Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
 
 ## Features
