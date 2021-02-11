@@ -2,7 +2,7 @@ name: Swift Docs
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   docs:
