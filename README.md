@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/meilisearch/meilisearch-swift/blob/master/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
+  <img src="https://github.com/meilisearch/meilisearch-swift/blob/main/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
 </p>
 
 <h1 align="center">MeiliSearch-Swift</h1>
@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Tests/badge.svg" alt="GtiHub Workflow Status"></a>
-  <a href="https://github.com/meilisearch/meilisearch-swift/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
+  <a href="https://github.com/meilisearch/meilisearch-swift/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
@@ -113,11 +113,11 @@ To try out a demo you will need to go to its directory in `Demos/`. In that dire
 
 ### Vapor
 
-Please check the Vapor Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/VaporDemo).
+Please check the Vapor Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/main/Demos/VaporDemo).
 
 ### Perfect
 
-Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/master/Demos/PerfectDemo).
+Please check the Perfect Demo source code [here](https://github.com/meilisearch/meilisearch-swift/tree/main/Demos/PerfectDemo).
 
 ## Development Workflow and Contributing
 
