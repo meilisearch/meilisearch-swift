@@ -9,13 +9,13 @@
 <p align="center">
     <a href="https://github.com/PerfectlySoft/Perfect" target="_blank">
         <img src="http://www.perfect.org/github/Perfect_GH_button_1_Star.jpg" alt="Star Perfect On Github" />
-    </a>  
+    </a>
     <a href="http://stackoverflow.com/questions/tagged/perfect" target="_blank">
         <img src="http://www.perfect.org/github/perfect_gh_button_2_SO.jpg" alt="Stack Overflow" />
-    </a>  
+    </a>
     <a href="https://twitter.com/perfectlysoft" target="_blank">
         <img src="http://www.perfect.org/github/Perfect_GH_button_3_twit.jpg" alt="Follow Perfect on Twitter" />
-    </a>  
+    </a>
     <a href="http://perfect.ly" target="_blank">
         <img src="http://www.perfect.org/github/Perfect_GH_button_4_slack.jpg" alt="Join the Perfect Slack" />
     </a>
@@ -45,7 +45,7 @@ This repository holds a blank Perfect project which can be cloned to serve as a 
 
 ## Compatibility with Swift
 
-The master branch of this project currently compiles with **Xcode 10** and the **Swift 4.1** or higher toolchain on Ubuntu.
+The `main` branch of this project currently compiles with **Xcode 10** and the **Swift 4.1** or higher toolchain on Ubuntu.
 
 ## Building & Running
 
