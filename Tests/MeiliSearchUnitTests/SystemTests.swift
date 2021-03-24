@@ -16,7 +16,13 @@ class SystemTests: XCTestCase {
 
         //Prepare the mock server
 
-        session.pushEmpty(code: 204)
+        let jsonString = """
+        {
+            "status": "available"
+        }
+        """
+
+        session.pushData(jsonString, code: 200)
 
         // Start the test with the mocked server
 
