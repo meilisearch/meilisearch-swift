@@ -428,7 +428,7 @@ get_indexes_stats_1: |-
       }
   }
 get_health_1: |-
-  client.health { (result: Result<(), Swift.Error>) in
+  client.health { (result: Result<Health, Swift.Error>) in
       switch result {
       case .success:
           print("Healthy!")

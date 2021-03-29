@@ -14,11 +14,22 @@ struct System {
 
     // MARK: Functions
 
-    func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    func health(_ completion: @escaping (Result<Health, Swift.Error>) -> Void) {
         request.get(api: "/health") { result in
             switch result {
-            case .success:
-                completion(.success(()))
+            case .success(let data):
+                guard let data = data else {
+                    completion(.failure(MeiliSearch.Error.dataNotFound))
+                    return
+                }
+
+                do {
+                    let vesion: Health = try Constants.customJSONDecoder.decode(Health.self, from: data)
+
+                    completion(.success(vesion))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
