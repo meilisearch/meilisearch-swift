@@ -796,10 +796,10 @@ public struct MeiliSearch {
      Get health of MeiliSearch server.
 
      - parameter completion: The completion closure used to notify when the server
-     completes the query request, it returns a `Result` object that contains `()` value.
+     completes the query request, it returns a `Result` object that contains `Health` value.
      If the request was sucessful or `Error` if a failure occured.
      */
-    public func health(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    public func health(_ completion: @escaping (Result<Health, Swift.Error>) -> Void) {
         self.system.health(completion)
     }
 
