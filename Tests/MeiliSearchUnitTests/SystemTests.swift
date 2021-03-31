@@ -16,7 +16,17 @@ class SystemTests: XCTestCase {
 
         //Prepare the mock server
 
-        session.pushEmpty(code: 204)
+        let jsonString = """
+        {
+            "status": "available"
+        }
+        """
+
+        let jsonData = jsonString.data(using: .utf8)!
+
+        let expectedHealthBody: Health = try! Constants.customJSONDecoder.decode(Health.self, from: jsonData)
+
+        session.pushData(jsonString, code: 200)
 
         // Start the test with the mocked server
 
@@ -24,7 +34,8 @@ class SystemTests: XCTestCase {
 
         self.client.health { result in
             switch result {
-            case .success:
+            case .success(let body):
+                XCTAssertEqual(expectedHealthBody, body)
                 expectation.fulfill()
             case .failure:
                 XCTFail("Failed to check server health")
