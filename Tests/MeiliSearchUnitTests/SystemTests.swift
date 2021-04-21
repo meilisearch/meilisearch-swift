@@ -12,7 +12,7 @@ class SystemTests: XCTestCase {
         client = try! MeiliSearch(Config(hostURL: nil, session: session))
     }
 
-    func testHealth() {
+    func testHealthStatusAvailable() {
 
         //Prepare the mock server
 
@@ -30,7 +30,7 @@ class SystemTests: XCTestCase {
 
         // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Check server health")
+        let expectation = XCTestExpectation(description: "Check body of health server on health method")
 
         self.client.health { result in
             switch result {
@@ -38,7 +38,59 @@ class SystemTests: XCTestCase {
                 XCTAssertEqual(expectedHealthBody, body)
                 expectation.fulfill()
             case .failure:
-                XCTFail("Failed to check server health")
+                XCTFail("Failed on available status check on health method")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testIsHealthyTrue() {
+
+        //Prepare the mock server
+
+        let jsonString = """
+        {
+            "status": "available"
+        }
+        """
+
+        session.pushData(jsonString, code: 200)
+
+        // Start the test with the mocked server
+
+        let expectation = XCTestExpectation(description: "Check if is healthy is true")
+
+        self.client.isHealthy { result in
+            if (result == true) {
+                XCTAssertEqual(result, true)
+                expectation.fulfill()
+            } else {
+                XCTFail("Failed on isHealthy should be true")
+            }
+        }
+
+        self.wait(for: [expectation], timeout: 1.0)
+
+    }
+
+    func testIsHealthyFalse() {
+
+        //Prepare the mock server
+
+        session.pushData("", code: 400)
+
+        // Start the test with the mocked server
+
+        let expectation = XCTestExpectation(description: "Check if is healthy is false")
+
+        self.client.isHealthy { result in
+            if (result == false) {
+                XCTAssertEqual(result, false)
+                expectation.fulfill()
+            } else {
+                XCTFail("Failed on isHealthy should be false")
             }
         }
 
@@ -85,7 +137,9 @@ class SystemTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testHealth", testHealth),
+        ("testHealthStatusAvailable", testHealthStatusAvailable),
+        ("testIsHealthyTrue", testIsHealthyTrue),
+        ("testIsHealthyFalse", testIsHealthyFalse),
         ("testVersion", testVersion)
     ]
 }
