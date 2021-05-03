@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://github.com/meilisearch/meilisearch-swift'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Meilisearch' => 'bonjour@meilisearch.com' }
+  s.author           = { 'MeiliSearch' => 'bonjour@meilisearch.com' }
   s.source           = { :git => 'https://github.com/meilisearch/meilisearch-swift.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/meilisearch'
 
