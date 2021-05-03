@@ -804,6 +804,24 @@ public struct MeiliSearch {
     }
 
     /**
+     Get health of MeiliSearch server.
+
+     - parameter completion: The completion closure used to notify when the server
+     completes the query request, it returns a `Bool` that is `true`
+     If the request was sucessful or `false` if a failure occured.
+     */
+    public func isHealthy(_ completion: @escaping (Bool) -> Void) {
+        self.health{ result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
+    }
+
+    /**
      Get version of MeiliSearch.
 
      - parameter completion: The completion closure used to notify when the server
