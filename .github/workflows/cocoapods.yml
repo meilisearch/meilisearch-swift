@@ -11,6 +11,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Check release validity
+        run: sh .github/scripts/check-release.sh
       - name: Publish to CocoaPod register
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
