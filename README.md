@@ -19,7 +19,7 @@
   <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
-<p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Swift 🍎</p>
+<p align="center">⚡ The MeiliSearch API client written in Swift 🍎</p>
 
 **MeiliSearch-Swift** is a client for **MeiliSearch** written in Swift.
 
