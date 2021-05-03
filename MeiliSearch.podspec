@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'MeiliSearch'
   s.version          = '0.7.1'
-  s.summary          = 'Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine Client written in Swift'
+  s.summary          = 'The MeiliSearch API client written in Swift'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
