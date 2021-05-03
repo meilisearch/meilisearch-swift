@@ -113,7 +113,7 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 Make a PR modifying the file [`MeiliSearch.podspec`](/MeiliSearch.podspec) with the right version.
 
-```javascript
+```ruby
   s.version          = 'X.X.X'
 ```
 
