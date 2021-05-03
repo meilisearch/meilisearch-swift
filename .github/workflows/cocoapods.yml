@@ -1,4 +1,4 @@
-name: Publish to CocoaPod
+name: Publish to CocoaPods
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
 
 jobs:
   publish:
-    name: Publish to CocoaPod
+    name: Publish to CocoaPods
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Check release validity
         run: sh .github/scripts/check-release.sh
-      - name: Publish to CocoaPod register
+      - name: Publish to CocoaPods register
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
