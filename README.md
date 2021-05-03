@@ -36,6 +36,19 @@ For more information about features go to [our Swift documentation](https://meil
 
 ## Get started
 
+### Cocoapods
+
+[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
+
+**MeiliSearch-Swift** is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'MeiliSearch'
+```
+
+Then run `pod install` to download the latest dependency and prepare the `xcworkspace`.
+
 ### Swift Package Manager
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
