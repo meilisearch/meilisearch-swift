@@ -109,9 +109,17 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ### How to Publish the Release <!-- omit in TOC -->
 
-⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration Tool](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-release.md).
+⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-release.md).
+
+Make a PR modifying the file [`MeiliSearch.podspec`](/MeiliSearch.podspec) with the right version.
+
+```ruby
+  s.version          = 'X.X.X'
+```
 
 Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-swift/releases).
+
+GitHub Actions will be triggered and push the package to [CocoaPods](https://cocoapods.org/pods/MeiliSearch).
 
 <hr>
 
