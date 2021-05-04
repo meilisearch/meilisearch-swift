@@ -41,13 +41,19 @@ For more information about features go to [our Swift documentation](https://meil
 [CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
 **MeiliSearch-Swift** is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+it, add the following line to your Podfile:
 
 ```ruby
 pod 'MeiliSearch'
 ```
 
-Then run `pod install` to download the latest dependency and prepare the `xcworkspace`.
+Then, run the following command:
+
+```bash
+pod install
+```
+
+This will download the latest version of MeiliSearch pod and prepare the `xcworkspace`.
 
 ### Swift Package Manager
 
