@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check release validity
         run: sh .github/scripts/check-release.sh
+      - name: Check Podfile Syntax
+        run: pod lib lint
       - name: Publish to CocoaPods register
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
