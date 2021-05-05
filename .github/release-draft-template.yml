@@ -1,5 +1,5 @@
-name-template: 'v$RESOLVED_VERSION 🕊'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION 🕊'
+tag-template: '$RESOLVED_VERSION'
 exclude-labels:
   - 'skip-changelog'
 version-resolver:
