@@ -1,8 +1,8 @@
 name: Swift Docs
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   docs:
@@ -17,3 +17,4 @@ jobs:
         uses: Steven0351/publish-jazzy-docs@v1.1.1
         with:
           personal_access_token: ${{ secrets.ACCESS_TOKEN }}
+          history: true
