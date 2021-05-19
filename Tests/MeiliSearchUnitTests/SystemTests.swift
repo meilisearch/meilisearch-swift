@@ -14,7 +14,7 @@ class SystemTests: XCTestCase {
 
     func testHealthStatusAvailable() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -48,7 +48,7 @@ class SystemTests: XCTestCase {
 
     func testIsHealthyTrue() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -63,7 +63,7 @@ class SystemTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Check if is healthy is true")
 
         self.client.isHealthy { result in
-            if (result == true) {
+            if result == true {
                 XCTAssertEqual(result, true)
                 expectation.fulfill()
             } else {
@@ -77,7 +77,7 @@ class SystemTests: XCTestCase {
 
     func testIsHealthyFalse() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         session.pushData("", code: 400)
 
@@ -86,7 +86,7 @@ class SystemTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Check if is healthy is false")
 
         self.client.isHealthy { result in
-            if (result == false) {
+            if result == false {
                 XCTAssertEqual(result, false)
                 expectation.fulfill()
             } else {
@@ -100,7 +100,7 @@ class SystemTests: XCTestCase {
 
     func testVersion() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {

@@ -8,10 +8,10 @@ public struct Key: Codable, Equatable {
 
     // MARK: Properties
 
-    ///Private key used to access a determined set of API routes.
+    /// Private key used to access a determined set of API routes.
     public let `private`: String
 
-    ///Public key used to access a determined set of API routes.
+    /// Public key used to access a determined set of API routes.
     public let `public`: String
 
 }

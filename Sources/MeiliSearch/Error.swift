@@ -7,7 +7,7 @@ public extension MeiliSearch {
 
   // MARK: Error
 
-  ///Generic Error types for MeiliSearch,
+  /// Generic Error types for MeiliSearch,
   enum Error: Swift.Error {
 
     /// The client tried to contact the server but it was not found.
@@ -25,5 +25,5 @@ public extension MeiliSearch {
 
 }
 
-///Allow use of error comparasion for the MeiliSearch.Error type.
+/// Allow use of error comparasion for the MeiliSearch.Error type.
 extension MeiliSearch.Error: Equatable {}

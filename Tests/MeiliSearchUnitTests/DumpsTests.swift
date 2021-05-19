@@ -13,7 +13,7 @@ class DumpsTests: XCTestCase {
 
     func testCreateDump() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let json = """
         {
@@ -48,7 +48,7 @@ class DumpsTests: XCTestCase {
 
     func testGetDumpStatus() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let json = """
         {

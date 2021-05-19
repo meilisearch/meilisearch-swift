@@ -125,8 +125,7 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String: [String]] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String: [String]]
+                    let dictionary: [String: [String]] = try Constants.customJSONDecoder.decode([String: [String]].self, from: data)
                     completion(.success(dictionary))
                 } catch {
                     completion(.failure(error))
@@ -219,9 +218,8 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String]
-                    completion(.success(dictionary))
+                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+                    completion(.success(array))
                 } catch {
                     completion(.failure(error))
                 }
@@ -313,9 +311,8 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String]
-                    completion(.success(dictionary))
+                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+                    completion(.success(array))
                 } catch {
                     completion(.failure(error))
                 }
@@ -413,10 +410,12 @@ struct Settings {
                     return
                 }
 
-                let distinctAttribute: String? =
-                  try? Constants.customJSONDecoder.decode(String.self, from: data)
-
-                completion(.success(distinctAttribute))
+                do {
+                    let value: String? = try Constants.customJSONDecoder.decode(String?.self, from: data)
+                    completion(.success(value))
+                } catch {
+                    completion(.failure(error))
+                }
 
             case .failure(let error):
                 completion(.failure(error))
@@ -431,10 +430,9 @@ struct Settings {
         _ distinctAttribute: String,
         _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        let encoder = JSONEncoder()
         let data: Data
         do {
-            data = try encoder.encode(DistinctAttributePayload(distinctAttribute: distinctAttribute))
+            data = try Constants.customJSONEecoder.encode(DistinctAttributePayload(distinctAttribute: distinctAttribute))
         } catch {
             completion(.failure(error))
             return
@@ -506,9 +504,8 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String]
-                    completion(.success(dictionary))
+                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+                    completion(.success(array))
                 } catch {
                     completion(.failure(error))
                 }
@@ -600,9 +597,8 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String]
-                    completion(.success(dictionary))
+                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+                    completion(.success(array))
                 } catch {
                     completion(.failure(error))
                 }
@@ -694,9 +690,8 @@ struct Settings {
                 }
 
                 do {
-                    let dictionary: [String] = try JSONSerialization
-                        .jsonObject(with: data, options: []) as! [String]
-                    completion(.success(dictionary))
+                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+                    completion(.success(array))
                 } catch {
                     completion(.failure(error))
                 }

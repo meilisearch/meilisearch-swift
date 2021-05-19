@@ -14,7 +14,7 @@ class StatsTests: XCTestCase {
 
     func testStats() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -58,7 +58,7 @@ class StatsTests: XCTestCase {
 
     func testAllStats() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {

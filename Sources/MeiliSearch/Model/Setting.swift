@@ -35,7 +35,7 @@ extension Setting {
 
     /// Tries to decode the JSON object to Setting object.
     public init(from decoder: Decoder) throws {
-        let values = try? decoder.container(keyedBy: CodingKeys.self)
+        let values: KeyedDecodingContainer<CodingKeys>? = try? decoder.container(keyedBy: CodingKeys.self)
         rankingRules = (try? values?.decodeIfPresent([String].self, forKey: .rankingRules)) ?? []
         searchableAttributes = (try? values?.decodeIfPresent([String].self, forKey: .searchableAttributes)) ?? ["*"]
         displayedAttributes = (try? values?.decodeIfPresent([String].self, forKey: .displayedAttributes)) ?? ["*"]

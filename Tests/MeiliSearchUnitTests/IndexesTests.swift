@@ -13,7 +13,7 @@ class IndexesTests: XCTestCase {
 
     func testCreateIndex() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -53,7 +53,7 @@ class IndexesTests: XCTestCase {
 
     func testGetOrCreateIndex() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -93,7 +93,7 @@ class IndexesTests: XCTestCase {
 
     func testGetOrCreateIndexAlreadyExists() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let createJsonString = """
         {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
@@ -139,7 +139,7 @@ class IndexesTests: XCTestCase {
 
     func testGetIndex() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -181,7 +181,7 @@ class IndexesTests: XCTestCase {
 
     func testGetIndexes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         [{
@@ -221,7 +221,7 @@ class IndexesTests: XCTestCase {
 
     func testUpdateIndex() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -261,7 +261,7 @@ class IndexesTests: XCTestCase {
 
     func testDeleteIndex() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         session.pushEmpty(code: 204)
 

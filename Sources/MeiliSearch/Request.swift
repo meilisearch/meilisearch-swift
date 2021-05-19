@@ -8,7 +8,7 @@ public protocol URLSessionProtocol {
     /// Result for the `execute` function.
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
 
-    ///Function that will trigger the HTTP request.
+    /// Function that will trigger the HTTP request.
     func execute(
         with request: URLRequest,
         completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
@@ -17,8 +17,12 @@ public protocol URLSessionProtocol {
 
 /// URLSessionDataTaskProtocol handler.
 public protocol URLSessionDataTaskProtocol {
-    ///Trigger HTTP request.
+    /// Trigger HTTP request.
     func resume()
+}
+
+public enum MSHTTPError: Swift.Error {
+  case invalidURL
 }
 
 struct MSError: Swift.Error {
@@ -56,7 +60,12 @@ final class Request {
                 urlString += param
             }
 
-            var request: URLRequest = URLRequest(url: URL(string: urlString)!)
+            guard let url: URL = URL(string: urlString) else {
+                completion(.failure(MSHTTPError.invalidURL))
+                return
+            }
+
+            var request: URLRequest = URLRequest(url: url)
             request.httpMethod = "GET"
             headers.forEach { (key, value) in
                 request.addValue(value, forHTTPHeaderField: key)
@@ -97,8 +106,12 @@ final class Request {
         _ data: Data,
         _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
-        let urlString: String = config.url(api: api)
-        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
+        guard let url: URL = URL(string: config.url(api: api)) else {
+            completion(.failure(MSHTTPError.invalidURL))
+            return
+        }
+
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = data
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -111,7 +124,7 @@ final class Request {
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
 
             if let error: Swift.Error = error {
-                let msError = MSError(data: data, underlying: error)
+                let msError: MSError = MSError(data: data, underlying: error)
                 completion(.failure(msError))
                 return
             }
@@ -144,8 +157,12 @@ final class Request {
         _ data: Data,
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
-        let urlString: String = config.url(api: api)
-        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
+        guard let url: URL = URL(string: config.url(api: api)) else {
+            completion(.failure(MSHTTPError.invalidURL))
+            return
+        }
+
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.httpBody = data
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -184,8 +201,12 @@ final class Request {
         api: String,
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
-        let urlString: String = config.url(api: api)
-        var request: URLRequest = URLRequest(url: URL(string: urlString)!)
+        guard let url: URL = URL(string: config.url(api: api)) else {
+            completion(.failure(MSHTTPError.invalidURL))
+            return
+        }
+
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")

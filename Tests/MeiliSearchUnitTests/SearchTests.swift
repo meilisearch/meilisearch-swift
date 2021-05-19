@@ -31,7 +31,7 @@ class SearchTests: XCTestCase {
 
     func testSearchForBotmanMovie() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -91,7 +91,7 @@ class SearchTests: XCTestCase {
 
     func testSearchForBotmanMovieFacets() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {

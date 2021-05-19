@@ -29,15 +29,15 @@ public struct Dump: Codable, Equatable {
         }
 
         public init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            let rawStatus = try container.decode(String.self)
+            let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
+            let rawStatus: String = try container.decode(String.self)
             switch rawStatus {
             case "in_progress":
-                self = .inProgress
+                self = Status.inProgress
             case "dump_process_failed":
-                self = .failed
+                self = Status.failed
             case "done":
-                self = .done
+                self = Status.done
             default:
                 throw CodingError.unknownStatus
             }

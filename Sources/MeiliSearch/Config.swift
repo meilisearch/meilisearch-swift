@@ -11,8 +11,8 @@ public class Config {
 
     // MARK: Static
 
-    ///Deafault configuration for the default MeiliSearch host, do not use this in
-    ///production since it does not contains the apiKey.
+    /// Deafault configuration for the default MeiliSearch host, do not use this in
+    /// production since it does not contains the apiKey.
     public static let `default`: Config = Config(hostURL: localhost)
 
     /// Default config instance set up to use localhost and port 7700.
@@ -84,12 +84,12 @@ public class Config {
             return self
         }
 
-        guard let _ = URL(string: hostURL) else {
+        guard URL(string: hostURL) != nil else {
             throw MeiliSearch.Error.hostNotValid
         }
 
         let success: Bool = autoreleasepool {
-            let semaphore = DispatchSemaphore(value: 0)
+            let semaphore: DispatchSemaphore = DispatchSemaphore(value: 0)
             var success: Bool = false
             request.get(api: "") { result in
                 switch result {

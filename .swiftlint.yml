@@ -23,8 +23,9 @@ opt_in_rules: # some rules are only opt-in
 excluded:
   - Carthage
   - Pods
-  - VaporDemo/.build
-  - PerfectDemo/.build
+  - Demos/VaporDemo
+  - Demos/PerfectDemo
+  - Tests
   - .build
 
 force_cast: warning
