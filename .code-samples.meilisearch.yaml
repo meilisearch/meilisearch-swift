@@ -115,7 +115,7 @@ delete_documents_1: |-
             print(error)
         }
     }
-search_1: |-
+search_post_1: |-
   let searchParameters = SearchParameters.query("American ninja")
   client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
