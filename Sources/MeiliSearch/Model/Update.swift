@@ -11,30 +11,30 @@ public struct Update: Codable, Equatable {
     /// The UID of the update.
     public let updateId: Int
 
-    ///Result type for the Update.
+    /// Result type for the Update.
     public struct Result: Codable, Equatable {
 
         // MARK: Properties
 
-        ///Returns if the update has been sucessful or not.
+        /// Returns if the update has been sucessful or not.
         public let status: Status
 
-        ///Unique ID for the current `Update`.
+        /// Unique ID for the current `Update`.
         public let updateId: Int
 
-        ///Type of update.
+        /// Type of update.
         public let type: UpdateType
 
-        ///Duration of the update process.
+        /// Duration of the update process.
         public let duration: TimeInterval?
 
-        ///Date when the update has been enqueued.
+        /// Date when the update has been enqueued.
         public let enqueuedAt: Date
 
-        ///Date when the update has been processed.
+        /// Date when the update has been processed.
         public let processedAt: Date?
 
-        ///Type of `Update`.
+        /// Type of `Update`.
         public struct UpdateType: Codable, Equatable {
 
             // MARK: Properties
@@ -60,15 +60,15 @@ public struct Update: Codable, Equatable {
         }
 
         public init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            let rawStatus = try container.decode(String.self)
+            let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
+            let rawStatus: String = try container.decode(String.self)
             switch rawStatus {
             case "enqueued":
-                self = .enqueued
+                self = Status.enqueued
             case "processed":
-                self = .processed
+                self = Status.processed
             case "failed":
-                self = .failed
+                self = Status.failed
             default:
                 throw StatusError.unknown
             }

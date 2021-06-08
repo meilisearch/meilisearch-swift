@@ -52,7 +52,7 @@ class SettingsTests: XCTestCase {
 
     func testGetSetting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let stubSetting: Setting = buildStubSetting(from: json)
 
@@ -80,7 +80,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateSetting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -115,7 +115,7 @@ class SettingsTests: XCTestCase {
 
     func testResetSetting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -151,7 +151,7 @@ class SettingsTests: XCTestCase {
 
     func testGetSynonyms() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -189,7 +189,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateSynonyms() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -236,7 +236,7 @@ class SettingsTests: XCTestCase {
 
     func testResetSynonyms() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -273,7 +273,7 @@ class SettingsTests: XCTestCase {
 
     func testGetStopWords() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         ["of", "the", "to"]
@@ -307,7 +307,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateStopWords() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -349,7 +349,7 @@ class SettingsTests: XCTestCase {
 
     func testResetStopWords() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -386,7 +386,7 @@ class SettingsTests: XCTestCase {
 
     func testGetRankingRules() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         [
@@ -428,7 +428,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateRankingRules() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -470,7 +470,7 @@ class SettingsTests: XCTestCase {
 
     func testResetRankingRules() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -507,7 +507,7 @@ class SettingsTests: XCTestCase {
 
     func testGetDistinctAttribute() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let stubDistinctAttribute: String = """
         "movie_id"
@@ -537,7 +537,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateDistinctAttribute() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -573,7 +573,7 @@ class SettingsTests: XCTestCase {
 
     func testResetDistinctAttribute() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -610,7 +610,7 @@ class SettingsTests: XCTestCase {
 
     func testGetSearchableAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         ["title", "description", "uid"]
@@ -644,7 +644,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateSearchableAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -687,7 +687,7 @@ class SettingsTests: XCTestCase {
 
     func testResetSearchableAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -724,7 +724,7 @@ class SettingsTests: XCTestCase {
 
     func testGetDisplayedAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         ["title", "description", "release_date", "rank", "poster"]
@@ -758,7 +758,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateDisplayedAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -801,7 +801,7 @@ class SettingsTests: XCTestCase {
 
     func testResetDisplayedAttributes() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -838,7 +838,7 @@ class SettingsTests: XCTestCase {
 
     func testGetAttributesForFaceting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         ["genre", "director"]
@@ -868,7 +868,7 @@ class SettingsTests: XCTestCase {
 
     func testUpdateAttributesForFaceting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -904,7 +904,7 @@ class SettingsTests: XCTestCase {
 
     func testResetAttributesForFaceting() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":1}

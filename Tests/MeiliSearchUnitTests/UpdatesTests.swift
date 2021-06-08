@@ -13,7 +13,7 @@ class UpdatesTests: XCTestCase {
 
     func testGetUpdate() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let json = """
         {
@@ -59,7 +59,7 @@ class UpdatesTests: XCTestCase {
 
     func testGetUpdateInvalidStatus() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let badStatusUpdateJson = """
         {
@@ -100,7 +100,7 @@ class UpdatesTests: XCTestCase {
 
     func testGetAllUpdates() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let json = """
         [

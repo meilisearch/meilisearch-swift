@@ -31,7 +31,7 @@ class DocumentsTests: XCTestCase {
 
     func testAddDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -76,7 +76,7 @@ class DocumentsTests: XCTestCase {
 
     func testAddDataDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -129,7 +129,7 @@ class DocumentsTests: XCTestCase {
 
     func testUpdateDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -179,7 +179,7 @@ class DocumentsTests: XCTestCase {
 
     func testGetDocument() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {
@@ -223,7 +223,7 @@ class DocumentsTests: XCTestCase {
 
     func testGetDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         [{
@@ -273,7 +273,7 @@ class DocumentsTests: XCTestCase {
 
     func testDeleteDocument() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -310,7 +310,7 @@ class DocumentsTests: XCTestCase {
 
     func testDeleteAllDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}
@@ -345,7 +345,7 @@ class DocumentsTests: XCTestCase {
 
     func testDeleteBatchDocuments() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {"updateId":0}

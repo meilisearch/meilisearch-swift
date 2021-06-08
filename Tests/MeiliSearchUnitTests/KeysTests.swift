@@ -17,7 +17,7 @@ class KeysTests: XCTestCase {
 
     func testKeys() {
 
-        //Prepare the mock server
+        // Prepare the mock server
 
         let jsonString = """
         {

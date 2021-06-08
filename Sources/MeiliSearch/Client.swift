@@ -811,7 +811,7 @@ public struct MeiliSearch {
      If the request was sucessful or `false` if a failure occured.
      */
     public func isHealthy(_ completion: @escaping (Bool) -> Void) {
-        self.health{ result in
+        self.health { result in
             switch result {
             case .success:
                 completion(true)
@@ -862,7 +862,7 @@ public struct MeiliSearch {
     public func getDumpStatus(
         UID: String,
         _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
-        self.dumps.status(UID,completion)
+        self.dumps.status(UID, completion)
     }
 
 }

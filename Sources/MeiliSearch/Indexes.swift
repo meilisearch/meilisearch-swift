@@ -87,9 +87,8 @@ struct Indexes {
         _ UID: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
-        let payload = CreateIndexPayload(uid: UID)
+        let payload: CreateIndexPayload = CreateIndexPayload(uid: UID)
         let data: Data
-
         do {
             data = try JSONEncoder().encode(payload)
         } catch {
@@ -124,8 +123,14 @@ struct Indexes {
         _ primaryKey: String,
         _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
 
-        let payload = UpdateIndexPayload(primaryKey: primaryKey)
-        let data: Data = try! JSONEncoder().encode(payload)
+        let payload: UpdateIndexPayload = UpdateIndexPayload(primaryKey: primaryKey)
+        let data: Data
+        do {
+            data = try JSONEncoder().encode(payload)
+        } catch {
+            completion(.failure(MeiliSearch.Error.invalidJSON))
+            return
+        }
 
         self.request.put(api: "/indexes/\(UID)", data) { result in
 
@@ -216,7 +221,7 @@ public enum CreateError: Swift.Error, Equatable {
 
         let underlyingError: NSError = error.underlying as NSError
 
-        if let data = error.data {
+      if let data: Data = error.data {
 
             let msErrorResponse: MSErrorResponse?
             do {
