@@ -88,27 +88,7 @@ public class Config {
             throw MeiliSearch.Error.hostNotValid
         }
 
-        let success: Bool = autoreleasepool {
-            let semaphore: DispatchSemaphore = DispatchSemaphore(value: 0)
-            var success: Bool = false
-            request.get(api: "") { result in
-                switch result {
-                case .success:
-                    success = true
-                case .failure:
-                    success = false
-                }
-                semaphore.signal()
-            }
-            semaphore.wait()
-            return success
-        }
-
-        if !success {
-            throw MeiliSearch.Error.serverNotFound
-        }
         return self
-
     }
 
 }
