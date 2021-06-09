@@ -22,7 +22,7 @@ class ClientTests: XCTestCase {
 
   static var allTests = [
       ("testValidHostURL", testValidHostURL),
-      ("testWrongHostURL", testWrongHostURL)
+      ("testWrongHostURL", testWrongHostURL),
       ("testNotValidHostURL", testNotValidHostURL)
   ]
 
