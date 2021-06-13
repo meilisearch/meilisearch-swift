@@ -172,6 +172,7 @@ class DocumentsTests: XCTestCase {
             case .success:
                 XCTFail("Document has been found while it should not have")
             case .failure:
+                print(result)
                 getExpectation.fulfill()
             }
         }
@@ -372,6 +373,7 @@ class DocumentsTests: XCTestCase {
             case .success:
                 XCTFail("Movie should not exist")
             case .failure:
+                print(result)
                 getExpectation.fulfill()
             }
         }

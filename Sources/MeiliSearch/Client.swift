@@ -216,7 +216,8 @@ public struct MeiliSearch {
             UID,
             documents,
             primaryKey,
-            completion)
+            completion
+        )
     }
 
     /**
