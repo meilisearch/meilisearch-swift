@@ -29,6 +29,14 @@ struct MSError: Swift.Error {
   let underlying: Swift.Error
 }
 
+struct MeiliSearchApiError: Swift.Error {
+    let message: String
+    let errorCode: String
+    let errorType: String
+    let errorLink: String?
+    let underlying: Swift.Error
+}
+
 struct MSErrorResponse: Decodable {
   let message: String
   let errorCode: String
@@ -46,7 +54,7 @@ final class Request {
     self.session = config.session ?? URLSession.shared
   }
 
-  func get(
+    func get(
     api: String,
     param: String? = nil,
     headers: [String: String] = [:],
@@ -70,13 +78,20 @@ final class Request {
         request.addValue(value, forHTTPHeaderField: key)
       }
 
-      if let apiKey: String = config.apiKey {
+      if let apiKey = config.apiKey {
         request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
       }
 
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
         if let error: Swift.Error = error {
-          completion(.failure(error))
+          completion(
+            .failure(
+              MeiliSearch.Error.meiliSearchCommunicationError(
+                message: error.localizedDescription,
+                url: url.absoluteString
+              )
+            )
+          )
           return
         }
 
@@ -84,11 +99,36 @@ final class Request {
           fatalError("Correct handles invalid response, please create a custom error type")
         }
 
+        // Test not custom function
+        if let res: MSErrorResponse = try? Constants.customJSONDecoder.decode(MSErrorResponse.self, from: data!) {
+          completion(
+            .failure(
+              MeiliSearch.Error.meiliSearchApiError(
+                message: res.message,
+                msErrorResponse: MSErrorResponse(
+                  message: res.message,
+                  errorCode: res.errorCode,
+                  errorType: res.errorType,
+                  errorLink: res.errorLink
+                ),
+                statusCode: response.statusCode,
+                url: url.absoluteString                            )
+            )
+          )
+          return
+        }
+
         if 400 ... 599 ~= response.statusCode {
-          completion(.failure(
-            MSError(
-              data: data,
-              underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+          completion(
+            .failure(
+              MeiliSearch.Error.meiliSearchApiError(
+                message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
+                msErrorResponse: nil,
+                statusCode: response.statusCode,
+                url: url.absoluteString
+              )
+            )
+          )
           return
         }
 
@@ -96,7 +136,6 @@ final class Request {
       }
 
       task.resume()
-
     }
   }
 
