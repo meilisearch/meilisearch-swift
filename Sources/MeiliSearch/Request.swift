@@ -28,7 +28,6 @@ struct MSError: Swift.Error {
 
 // should we keep it in public ?
 
-
 final class Request {
 
   private let config: Config
@@ -39,7 +38,7 @@ final class Request {
     self.session = config.session ?? URLSession.shared
   }
 
-  func get(
+    func get(
     api: String,
     param: String? = nil,
     headers: [String: String] = [:],
