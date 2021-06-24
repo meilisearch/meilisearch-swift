@@ -33,7 +33,7 @@ class ErrorsTests: XCTestCase {
         super.setUp()
 
         if client == nil {
-            client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
+            client = try! MeiliSearch(hostURL: "http://localhost:7700", apiKey: "masterKey")
         }
 
         pool(client)
