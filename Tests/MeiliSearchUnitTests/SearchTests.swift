@@ -26,7 +26,7 @@ class SearchTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(hostURL: "http://localhost:7700", apiKey: "masterKey", session: session)
+        client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
     }
 
     func testSearchForBotmanMovie() {
