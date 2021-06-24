@@ -77,7 +77,7 @@ final class Request {
 
             let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
                 if let error: Swift.Error = error {
-                    completion(.failure(msError))
+                    completion(.failure(error))
                     return
                 }
 
