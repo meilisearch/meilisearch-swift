@@ -30,14 +30,6 @@ struct MSError: Swift.Error {
     let underlying: Swift.Error
 }
 
-struct MeiliSearchApiError: Swift.Error {
-    let message: String
-    let errorCode: String
-    let errorType: String
-    let errorLink: String?
-    let underlying: Swift.Error
-}
-
 struct MSErrorResponse: Decodable {
   let message: String
   let errorCode: String
@@ -85,28 +77,12 @@ final class Request {
 
             let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
                 if let error: Swift.Error = error {
-                    let msError: MSError = MSError(data: data, underlying: error) // questionable
                     completion(.failure(msError))
                     return
                 }
 
                 guard let response = response as? HTTPURLResponse else {
                     fatalError("Correct handles invalid response, please create a custom error type")
-                }
-                // Test not custom function
-                if let res: MSErrorResponse = try? Constants.customJSONDecoder.decode(MSErrorResponse.self, from: data!) {
-                    completion(
-                        .failure(
-                            MeiliSearchApiError(
-                                message: res.message,
-                                errorCode: res.errorCode,
-                                errorType: res.errorType,
-                                errorLink: res.errorLink,
-                                underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil)
-                            )
-                        )
-                    )
-                    return
                 }
 
                 if 400 ... 599 ~= response.statusCode {

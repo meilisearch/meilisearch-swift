@@ -33,7 +33,6 @@ struct Documents {
                 Documents.decodeJSON(data, completion: completion)
 
             case .failure(let error):
-                print(error)
                 completion(.failure(error))
             }
 
@@ -180,7 +179,6 @@ struct Documents {
                 Documents.decodeJSON(result, completion: completion)
 
             case .failure(let error):
-                print(error)
                 completion(.failure(error))
             }
 
