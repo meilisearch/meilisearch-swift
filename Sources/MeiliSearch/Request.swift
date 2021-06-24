@@ -58,12 +58,24 @@ final class Request {
 
     func get(
         api: String,
-        param: String? = nil,
+        param: String? = "",
         headers: [String: String] = [:],
         _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
         autoreleasepool {
+            var testurl: URL? {
+                var components = URLComponents()
+//                components.scheme = "http"
+                components.host = config.hostURL
+                components.path = api
+//                components.queryItems = [param]
 
+                return components.url
+            }
+            print("HELLOO")
+            print(testurl)
+            print("HELLOO")
+            
             var urlString: String = config.url(api: api)
             if let param: String = param, !param.isEmpty {
                 urlString += param
@@ -80,8 +92,8 @@ final class Request {
                 request.addValue(value, forHTTPHeaderField: key)
             }
 
-            if !config.apiKey.isEmpty {
-                request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+            if let apiKey = config.apiKey {
+                request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
             }
 
             let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
@@ -111,7 +123,7 @@ final class Request {
                     )
                     return
                 }
-                print("BALECK")
+//                print("BALECK")
                 if 400 ... 599 ~= response.statusCode {
                     completion(.failure(
                       MSError(
@@ -133,6 +145,7 @@ final class Request {
         _ data: Data,
         _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
+        
         guard let url: URL = URL(string: config.url(api: api)) else {
             completion(.failure(MSHTTPError.invalidURL))
             return
@@ -144,12 +157,11 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-
             if let error: Swift.Error = error {
                 let msError: MSError = MSError(data: data, underlying: error)
                 completion(.failure(msError))
@@ -195,8 +207,8 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
@@ -238,8 +250,8 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
