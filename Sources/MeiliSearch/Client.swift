@@ -37,7 +37,7 @@ public struct MeiliSearch {
      - parameter session:   A custom produced URLSessionProtocol.
      */
     public init(hostURL: String, apiKey: String? = nil, session: URLSessionProtocol? = nil) throws {
-        self.config = try! Config(hostURL: hostURL, apiKey: apiKey, session: session).validate()
+        self.config = try Config(hostURL: hostURL, apiKey: apiKey, session: session).validate()
         let request: Request = Request(self.config)
         self.indexes = Indexes(request)
         self.documents = Documents(request)

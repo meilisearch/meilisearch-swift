@@ -52,8 +52,6 @@ struct Documents {
 
             switch result {
             case .success(let data):
-                print("GET")
-                print(data)
                 guard let data: Data = data else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
