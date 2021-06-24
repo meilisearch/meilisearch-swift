@@ -35,7 +35,7 @@ class SettingsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(hostURL: "http://localhost:7700", session: session)
+        client = try! MeiliSearch(hostURL: "http://localhost:7700", apiKey: "masterKey", session: session)
     }
 
     // MARK: Settings

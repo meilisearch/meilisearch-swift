@@ -52,7 +52,7 @@ final class Request {
 
     init(_ config: Config) {
         self.config = config
-        self.session = URLSession.shared // TODO use session from config
+        self.session = config.session ?? URLSession.shared
     }
 
     func get(

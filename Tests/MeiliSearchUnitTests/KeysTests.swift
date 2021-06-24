@@ -8,11 +8,7 @@ class KeysTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(
-            hostURL: "http://localhost:7700",
-            apiKey: "c4dff5a196824a0704c2023916c21eaf0a13485a9d637416820bc623375f2a",
-            session: session
-        )
+        client = try! MeiliSearch(hostURL: "http://localhost:7700", apiKey: "masterKey", session: session)
     }
 
     func testKeys() {
@@ -21,8 +17,8 @@ class KeysTests: XCTestCase {
 
         let jsonString = """
         {
-            "private": "8c222193c4dff5a19689d637416820bc623375f2ad4c31a2e3a76e8f4c70440d",
-            "public": "948413b6667024a0704c2023916c21eaf0a13485a586c43e4d2df520852a4fb8"
+            "private": "8dcbb482663333d0280fa9fedf0e0c16d52185cb67db494ce4cd34da32ce2092",
+            "public": "3b3bf839485f90453acc6159ba18fbed673ca88523093def11a9b4f4320e44a5"
         }
         """
 
