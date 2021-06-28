@@ -808,7 +808,7 @@ getting_started_create_index_md: |-
   ```
   Example:
   ```swift
-    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let client = try! MeiliSearch("http://localhost:7700")
     client.createIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
         switch result {
         case .success(let index):
@@ -827,7 +827,7 @@ getting_started_add_documents_md: |-
   ```
   Example:
   ```swift
-    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let client = try! MeiliSearch("http://localhost:7700")
     let documents: Data = /...
     client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
         switch result {
@@ -847,7 +847,7 @@ getting_started_search_md: |-
   ```
   Example:
   ```swift
-    let client = try! MeiliSearch(Config(hostURL: "http://localhost:7700"))
+    let client = try! MeiliSearch("http://localhost:7700")
     let searchParameters = SearchParameters.query("botman")
     client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {

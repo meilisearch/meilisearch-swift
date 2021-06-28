@@ -28,7 +28,7 @@ class SettingsTests: XCTestCase {
         super.setUp()
 
         if client == nil {
-            client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
+            client = try! MeiliSearch("http://localhost:7700", "masterKey")
         }
 
         pool(client)

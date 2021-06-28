@@ -9,7 +9,8 @@ class StatsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        client = try! MeiliSearch(Config(hostURL: nil, session: session))
+        client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
+
     }
 
     func testStats() {

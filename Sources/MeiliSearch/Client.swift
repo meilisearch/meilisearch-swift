@@ -30,23 +30,27 @@ public struct MeiliSearch {
     // MARK: Initializers
 
     /**
-     Obtains a MeiliSearch instance for the given `config`.
+     Create an instance of MeiliSearch client.
 
-     - parameter config: Set the default configuration for the client.
+     - parameter hostURL:   The host to the MeiliSearch http server.
+     - parameter apiKey:    The authorisation key to communicate with MeiliSearch.
+     - parameter session:   A custom produced URLSessionProtocol.
      */
-    public init(_ config: Config = Config.default) throws {
-        let request: Request = Request(config)
-        self.config = try config.validate(request)
+    public init(_ hostURL: String, _ apiKey: String? = nil, _ session: URLSessionProtocol? = nil) throws {
+        self.config = try Config(hostURL: hostURL, apiKey: apiKey, session: session).validate()
+        let request: Request = Request(self.config)
         self.indexes = Indexes(request)
         self.documents = Documents(request)
         self.search = Search(request)
         self.updates = Updates(request)
-        self.keys = Keys(request, config)
+        self.keys = Keys(request, self.config)
         self.settings = Settings(request)
         self.stats = Stats(request)
         self.system = System(request)
         self.dumps = Dumps(request)
     }
+
+
 
     // MARK: Index
 
@@ -216,7 +220,8 @@ public struct MeiliSearch {
             UID,
             documents,
             primaryKey,
-            completion)
+            completion
+        )
     }
 
     /**

@@ -30,7 +30,7 @@ struct MSError: Swift.Error {
     let underlying: Swift.Error
 }
 
-struct MSErrorResponse: Codable {
+struct MSErrorResponse: Decodable {
   let message: String
   let errorCode: String
   let errorType: String
@@ -44,7 +44,7 @@ final class Request {
 
     init(_ config: Config) {
         self.config = config
-        self.session = config.session
+        self.session = config.session ?? URLSession.shared
     }
 
     func get(
@@ -71,8 +71,8 @@ final class Request {
                 request.addValue(value, forHTTPHeaderField: key)
             }
 
-            if !config.apiKey.isEmpty {
-                request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+            if let apiKey = config.apiKey {
+                request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
             }
 
             let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
@@ -117,12 +117,11 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-
             if let error: Swift.Error = error {
                 let msError: MSError = MSError(data: data, underlying: error)
                 completion(.failure(msError))
@@ -168,8 +167,8 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
@@ -211,8 +210,8 @@ final class Request {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
-        if !config.apiKey.isEmpty {
-            request.addValue(config.apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        if let apiKey = config.apiKey {
+            request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
         }
 
         let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in

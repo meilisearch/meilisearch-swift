@@ -25,7 +25,6 @@ struct Documents {
 
             switch result {
             case .success(let data):
-
                 guard let data: Data = data else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
@@ -52,7 +51,6 @@ struct Documents {
 
             switch result {
             case .success(let data):
-
                 guard let data: Data = data else {
                     completion(.failure(MeiliSearch.Error.dataNotFound))
                     return
@@ -110,11 +108,11 @@ struct Documents {
         let data: Data!
 
         switch encodeJSON(documents, encoder) {
-        case .success(let documentData):
-          data = documentData
-        case .failure(let error):
-          completion(.failure(error))
-          return
+            case .success(let documentData):
+                data = documentData
+            case .failure(let error):
+                completion(.failure(error))
+            return
         }
 
         request.post(api: query, data) { result in
