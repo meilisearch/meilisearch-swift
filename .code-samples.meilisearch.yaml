@@ -847,7 +847,7 @@ getting_started_search_md: |-
   ```
   Example:
   ```swift
-    let client = try! MeiliSearch(Config("http://localhost:7700")
+    let client = try! MeiliSearch("http://localhost:7700")
     let searchParameters = SearchParameters.query("botman")
     client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
