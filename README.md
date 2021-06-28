@@ -79,7 +79,7 @@ import MeiliSearch
 func searchForMovies() {
 
     // Create a new client instance of MeiliSearch.
-    let client = try! MeiliSearch("http://localost:7700")
+    let client = try! MeiliSearch("http://localhost:7700")
 
     // Create a new search request with "botman" as query.
     let searchParameters = SearchParameters.query("botman")
