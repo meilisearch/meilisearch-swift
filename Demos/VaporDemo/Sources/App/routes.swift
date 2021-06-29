@@ -3,105 +3,103 @@ import MeiliSearch
 
 private struct Movie: Codable, Equatable {
 
-    let id: Int
-    let title: String
-    let comment: String?
+  // swiftlint:disable identifier_name
+  let id: Int
+  // swiftlint:enable identifier_name
+  let title: String
+  let comment: String?
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case comment
-    }
+  enum CodingKeys: String, CodingKey {
+    case id
+    case title
+    case comment
+  }
 
-    init(id: Int, title: String, comment: String? = nil) {
-        self.id = id
-        self.title = title
-        self.comment = comment
-    }
+  init(id: Int, title: String, comment: String? = nil) {
+    self.id = id
+    self.title = title
+    self.comment = comment
+  }
 
 }
 
 func routes(_ app: Application) throws {
 
-    let client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
+  guard let client = try? MeiliSearch("127.0.0.1:7700", "masterKey") else {
+    throw NSError(domain: "Failed to initialize MeiliSearch", code: 123)
+  }
 
-    // 127.0.0.1:8080/index?uid=books_test
-    app.get("index") { req -> EventLoopFuture<String> in
+  // 127.0.0.1:8080/index?uid=books_test
+  app.get("index") { req -> EventLoopFuture<String> in
 
-        /// Create a new void promise
-        let promise = req.eventLoop.makePromise(of: String.self)
+    /// Create a new void promise
+    let promise = req.eventLoop.makePromise(of: String.self)
 
-        /// Dispatch some work to happen on a background thread
-        req.application.threadPool.submit { _ in
+    /// Dispatch some work to happen on a background thread
+    req.application.threadPool.submit { _ in
 
-            guard let uid: String = req.query["uid"] else {
-                promise.fail(Abort(.badRequest))
-                return
-            }
+      guard let uid: String = req.query["uid"] else {
+        promise.fail(Abort(.badRequest))
+        return
+      }
 
-            client.getIndex(UID: uid) { result in
+      client.getIndex(UID: uid) { result in
 
-              switch result {
-              case .success(let index):
+        switch result {
+        case .success(let index):
 
-                let encoder: JSONEncoder = JSONEncoder()
-                let data: Data = try! encoder.encode(index)
-                let dataString: String = String(decoding: data, as: UTF8.self)
+          let encoder: JSONEncoder = JSONEncoder()
+          if let data: Data = try? encoder.encode(index) {
+              let dataString: String = String(decoding: data, as: UTF8.self)
+              promise.succeed(dataString)
+          }
 
-                promise.succeed(dataString)
-
-              case .failure(let error):
-                promise.fail(error)
-              }
-
-            }
-
+        case .failure(let error):
+          promise.fail(error)
         }
 
-        /// Wait for the future to be completed,
-        /// then transform the result to a simple String
-        return promise.futureResult
+      }
+
     }
 
-    // 127.0.0.1:8080/search?query=botman
-    app.get("search") { req -> EventLoopFuture<String> in
+    /// Wait for the future to be completed,
+    /// then transform the result to a simple String
+    return promise.futureResult
+  }
 
-        /// Create a new void promise
-        let promise = req.eventLoop.makePromise(of: String.self)
+  // 127.0.0.1:8080/search?query=botman
+  app.get("search") { req -> EventLoopFuture<String> in
 
-        /// Dispatch some work to happen on a background thread
-        req.application.threadPool.submit { _ in
+    /// Create a new void promise
+    let promise = req.eventLoop.makePromise(of: String.self)
 
-            guard let query: String = req.query["query"] else {
-                promise.fail(Abort(.badRequest))
-                return
-            }
+    /// Dispatch some work to happen on a background thread
+    req.application.threadPool.submit { _ in
 
-            let searchParameters = SearchParameters.query(query)
+      guard let query: String = req.query["query"] else {
+        promise.fail(Abort(.badRequest))
+        return
+      }
 
-            client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      let searchParameters = SearchParameters.query(query)
 
-              switch result {
-              case .success(let searchResult):
-
-                let jsonData = try! JSONSerialization.data(
-                  withJSONObject: searchResult.hits,
-                  options: [])
-                let dataString: String = String(decoding: jsonData, as: UTF8.self)
-
-                promise.succeed(dataString)
-
-              case .failure(let error):
-                promise.fail(error)
-              }
-
-            }
-
+      client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+        switch result {
+        case .success(let searchResult):
+          if let jsonData = try? JSONSerialization.data(withJSONObject: searchResult.hits, options: []) {
+            let dataString: String = String(decoding: jsonData, as: UTF8.self)
+            promise.succeed(dataString)
+          }
+        case .failure(let error):
+          promise.fail(error)
         }
+      }
 
-        /// Wait for the future to be completed,
-        /// then transform the result to a simple String
-        return promise.futureResult
     }
+
+    /// Wait for the future to be completed,
+    /// then transform the result to a simple String
+    return promise.futureResult
+  }
 
 }

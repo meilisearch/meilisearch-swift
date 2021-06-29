@@ -2,97 +2,101 @@
 import XCTest
 import Foundation
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_cast
+// swiftlint:disable force_try
+// swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
 
-    let id: Int
-    let title: String
-    let overview: String
-    let releaseDate: Date
+  let id: Int
+  let title: String
+  let overview: String
+  let releaseDate: Date
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case overview
-        case releaseDate = "release_date"
-    }
+  enum CodingKeys: String, CodingKey {
+    case id
+    case title
+    case overview
+    case releaseDate = "release_date"
+  }
 
 }
 
 class DocumentsTests: XCTestCase {
 
-    private var client: MeiliSearch!
+  private var client: MeiliSearch!
 
-    private let session = MockURLSession()
+  private let session = MockURLSession()
 
-    override func setUp() {
-        super.setUp()
-        client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
-    }
+  override func setUp() {
+    super.setUp()
+    client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
+  }
 
-    func testAddDocuments() {
+  func testAddDocuments() {
 
-        // Prepare the mock server
+    // Prepare the mock server
 
-        let jsonString = """
+    let jsonString = """
         {"updateId":0}
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
 
-        session.pushData(jsonString, code: 202)
+    session.pushData(jsonString, code: 202)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let uid: String = "Movies"
+    let uid: String = "Movies"
 
-        let movie = Movie(
-            id: 287947,
-            title: "Shazam",
-            overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
-            releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200)))
+    let movie = Movie(
+      id: 287947,
+      title: "Shazam",
+      overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200)))
 
-        let expectation = XCTestExpectation(description: "Add or replace Movies document")
+    let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-        self.client.addDocuments(
-            UID: uid,
-            documents: [movie],
-            primaryKey: "") { result in
+    self.client.addDocuments(
+      UID: uid,
+      documents: [movie],
+      primaryKey: "") { result in
 
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to add or replace Movies document")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to add or replace Movies document")
+      }
 
     }
 
-    func testAddDataDocuments() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        // Prepare the mock server
+  }
 
-        let jsonString = """
+  func testAddDataDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
         {"updateId":0}
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
 
-        session.pushData(jsonString, code: 202)
+    session.pushData(jsonString, code: 202)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let uid: String = "Movies"
+    let uid: String = "Movies"
 
-        let documentJsonString = """
+    let documentJsonString = """
         [{
             "id": 287947,
             "title": "Shazam",
@@ -102,86 +106,86 @@ class DocumentsTests: XCTestCase {
         }]
         """
 
-        let primaryKey: String = ""
+    let primaryKey: String = ""
 
-        let documents: Data = documentJsonString.data(using: .utf8)!
+    let documents: Data = documentJsonString.data(using: .utf8)!
 
-        let expectation = XCTestExpectation(description: "Add or replace Movies document")
+    let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-        self.client.addDocuments(
-            UID: uid,
-            documents: documents,
-            primaryKey: primaryKey) { result in
+    self.client.addDocuments(
+      UID: uid,
+      documents: documents,
+      primaryKey: primaryKey) { result in
 
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to add or replace Movies document")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to add or replace Movies document")
+      }
 
     }
 
-    func testUpdateDocuments() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        // Prepare the mock server
+  }
 
-        let jsonString = """
+  func testUpdateDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
         {"updateId":0}
         """
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
 
-        session.pushData(jsonString, code: 202)
+    session.pushData(jsonString, code: 202)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let uid: String = "Movies"
+    let uid: String = "Movies"
 
-        let documentJsonString = """
+    let documentJsonString = """
         [{
             "id": 287947,
             "title": "Shazam ⚡️"
         }]
         """
 
-        let primaryKey: String = "movieskud"
+    let primaryKey: String = "movieskud"
 
-        let documents: Data = documentJsonString.data(using: .utf8)!
+    let documents: Data = documentJsonString.data(using: .utf8)!
 
-        let expectation = XCTestExpectation(description: "Add or update Movies document")
+    let expectation = XCTestExpectation(description: "Add or update Movies document")
 
-        self.client.updateDocuments(
-            UID: uid,
-            documents: documents,
-            primaryKey: primaryKey) { result in
+    self.client.updateDocuments(
+      UID: uid,
+      documents: documents,
+      primaryKey: primaryKey) { result in
 
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to add or update Movies document")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to add or update Movies document")
+      }
 
     }
 
-    func testGetDocument() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        // Prepare the mock server
+  }
 
-        let jsonString = """
+  func testGetDocument() {
+
+    // Prepare the mock server
+
+    let jsonString = """
         {
             "id": 25684,
             "title": "American Ninja 5",
@@ -191,41 +195,41 @@ class DocumentsTests: XCTestCase {
         }
         """
 
-        session.pushData(jsonString, code: 200)
+    session.pushData(jsonString, code: 200)
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let data = jsonString.data(using: .utf8)!
-        let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
+    let decoder: JSONDecoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+    let data = jsonString.data(using: .utf8)!
+    let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let uid: String = "Movies"
-        let identifier: String = "25684"
+    let uid: String = "Movies"
+    let identifier: String = "25684"
 
-        let expectation = XCTestExpectation(description: "Get Movies document")
+    let expectation = XCTestExpectation(description: "Get Movies document")
 
-      self.client.getDocument(UID: uid, identifier: identifier) { (result: Result<Movie, Swift.Error>) in
+    self.client.getDocument(UID: uid, identifier: identifier) { (result: Result<Movie, Swift.Error>) in
 
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(stubMovie, movie)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies document")
-            }
-
+      switch result {
+      case .success(let movie):
+        XCTAssertEqual(stubMovie, movie)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get Movies document")
       }
-
-        self.wait(for: [expectation], timeout: 1.0)
 
     }
 
-    func testGetDocuments() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        // Prepare the mock server
+  }
 
-        let jsonString = """
+  func testGetDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
         [{
             "id": 25684,
             "release_date": "2020-04-04T19:59:49.259572Z",
@@ -241,175 +245,179 @@ class DocumentsTests: XCTestCase {
         }]
         """
 
-        session.pushData(jsonString, code: 200)
+    session.pushData(jsonString, code: 200)
 
-        let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-        let data = jsonString.data(using: .utf8)!
-        let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
+    let decoder: JSONDecoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
+    let data = jsonString.data(using: .utf8)!
+    let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let uid: String = "Movies"
-        let limit: Int = 10
+    let uid: String = "Movies"
+    let limit: Int = 10
 
-        let expectation = XCTestExpectation(description: "Get Movies documents")
+    let expectation = XCTestExpectation(description: "Get Movies documents")
 
-        self.client.getDocuments(UID: uid, limit: limit) { (result: Result<[Movie], Swift.Error>) in
+    self.client.getDocuments(UID: uid, limit: limit) { (result: Result<[Movie], Swift.Error>) in
 
-            switch result {
-            case .success(let movies):
-                XCTAssertEqual(stubMovies, movies)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies documents")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testDeleteDocument() {
-
-        // Prepare the mock server
-
-        let jsonString = """
-        {"updateId":0}
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
-
-        session.pushData(jsonString, code: 202)
-
-        // Start the test with the mocked server
-
-        let uid = "Movies"
-        let identifier: String = "25684"
-
-        let expectation = XCTestExpectation(description: "Delete Movies document")
-
-        self.client.deleteDocument(UID: uid, identifier: identifier) { result in
-
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to delete Movies document")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testDeleteAllDocuments() {
-
-        // Prepare the mock server
-
-        let jsonString = """
-        {"updateId":0}
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
-
-        session.pushData(jsonString, code: 202)
-
-        // Start the test with the mocked server
-
-        let uid = "Movies"
-        let expectation = XCTestExpectation(description: "Delete all Movies documents")
-
-        self.client.deleteAllDocuments(UID: uid) { result in
-
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to delete all Movies documents")
-            }
-
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testDeleteBatchDocuments() {
-
-        // Prepare the mock server
-
-        let jsonString = """
-        {"updateId":0}
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
-
-        session.pushData(jsonString, code: 202)
-
-        // Start the test with the mocked server
-
-        let uid = "Movies"
-        let documentsUID: [Int] = [23488, 153738, 437035, 363869]
-        let expectation = XCTestExpectation(description: "Delete all Movies documents")
-
-      self.client.deleteBatchDocuments(UID: uid, documentsUID: documentsUID) { result in
-
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to delete all Movies documents")
-            }
-
+      switch result {
+      case .success(let movies):
+        XCTAssertEqual(stubMovies, movies)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get Movies documents")
       }
 
-        self.wait(for: [expectation], timeout: 1.0)
+    }
+
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  func testDeleteDocument() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+        {"updateId":0}
+        """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+    session.pushData(jsonString, code: 202)
+
+    // Start the test with the mocked server
+
+    let uid = "Movies"
+    let identifier: String = "25684"
+
+    let expectation = XCTestExpectation(description: "Delete Movies document")
+
+    self.client.deleteDocument(UID: uid, identifier: identifier) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to delete Movies document")
+      }
 
     }
 
-    private func convertToDictionary(_ string: String) -> [String: Any] {
-        if let data: Data = string.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
-        fatalError()
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  func testDeleteAllDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+        {"updateId":0}
+        """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+    session.pushData(jsonString, code: 202)
+
+    // Start the test with the mocked server
+
+    let uid = "Movies"
+    let expectation = XCTestExpectation(description: "Delete all Movies documents")
+
+    self.client.deleteAllDocuments(UID: uid) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to delete all Movies documents")
+      }
+
     }
 
-    private func convertToArrayDictionary(_ string: String) -> [[String: Any]] {
-        if let data: Data = string.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
-        fatalError()
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  func testDeleteBatchDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+        {"updateId":0}
+        """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+    session.pushData(jsonString, code: 202)
+
+    // Start the test with the mocked server
+
+    let uid = "Movies"
+    let documentsUID: [Int] = [23488, 153738, 437035, 363869]
+    let expectation = XCTestExpectation(description: "Delete all Movies documents")
+
+    self.client.deleteBatchDocuments(UID: uid, documentsUID: documentsUID) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to delete all Movies documents")
+      }
+
     }
 
-    static var allTests = [
-        ("testAddDocuments", testAddDocuments),
-        ("testAddDataDocuments", testAddDataDocuments),
-        ("testUpdateDocuments", testUpdateDocuments),
-        ("testGetDocument", testGetDocument),
-        ("testGetDocuments", testGetDocuments),
-        ("testDeleteDocument", testDeleteDocument),
-        ("testDeleteAllDocuments", testDeleteAllDocuments),
-        ("testDeleteBatchDocuments", testDeleteBatchDocuments)
-    ]
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  private func convertToDictionary(_ string: String) -> [String: Any] {
+    if let data: Data = string.data(using: .utf8) {
+      do {
+        return try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+      } catch {
+        fatalError(error.localizedDescription)
+      }
+    }
+    fatalError()
+  }
+
+  private func convertToArrayDictionary(_ string: String) -> [[String: Any]] {
+    if let data: Data = string.data(using: .utf8) {
+      do {
+        return try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
+      } catch {
+        fatalError(error.localizedDescription)
+      }
+    }
+    fatalError()
+  }
+
+  static var allTests = [
+    ("testAddDocuments", testAddDocuments),
+    ("testAddDataDocuments", testAddDataDocuments),
+    ("testUpdateDocuments", testUpdateDocuments),
+    ("testGetDocument", testGetDocument),
+    ("testGetDocuments", testGetDocuments),
+    ("testDeleteDocument", testDeleteDocument),
+    ("testDeleteAllDocuments", testDeleteAllDocuments),
+    ("testDeleteBatchDocuments", testDeleteBatchDocuments)
+  ]
 
 }
+// swiftlint:enable force_unwrapping
+// swiftlint:enable force_cast
+// swiftlint:enable force_try
+// swiftlint:enable line_length

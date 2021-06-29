@@ -3,8 +3,13 @@ disabled_rules:
   - type_body_length
   - file_length
   - nesting # should be re-enabled
+  - xctfail_message
 
-opt_in_rules: # some rules are only opt-in
+analyzer_rules:
+  - unused_declaration
+  - unused_import
+
+opt_in_rules:
   - explicit_type_interface
   - force_unwrapping
   - implicit_return
@@ -19,15 +24,11 @@ opt_in_rules: # some rules are only opt-in
 excluded:
   - Carthage
   - Pods
-  - Demos/VaporDemo
-  - Demos/PerfectDemo
-  - Tests
   - .build
 
 force_cast: warning
 force_try: warning
 
-# - Force explicity type for every variable on the project, this is needed to let the Swift compiler more lightweight
 explicit_type_interface:
   severity: warning
 
