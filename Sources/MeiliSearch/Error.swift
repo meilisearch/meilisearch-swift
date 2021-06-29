@@ -23,10 +23,11 @@ public extension MeiliSearch {
     case invalidJSON
 
     /// Error originating from MeiliSearch API.
-    case meiliSearchApiError(message: String, errorCode: String, errorType: String, errorLink: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
+    // case meiliSearchApiError(message: String, errorCode: String, errorType: String, errorLink: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
+    case meiliSearchApiError(message: String, msErrorResponse: MSErrorResponse?, statusCode: Int = 0, url: String = "")
 
     /// Error communicating with MeiliSearch API.
-    case meiliSearchCommunicationError
+    case meiliSearchCommunicationError(message: String, url: String)
 
     public var errorDescription: String? {
       switch self {
@@ -38,10 +39,15 @@ public extension MeiliSearch {
         return "Response decoding failed"
       case .invalidJSON:
         return "Invalid json"
-      case .meiliSearchCommunicationError:
-        return "Error communicating with MeiliSearch"
-      case .meiliSearchApiError(let message, let errorCode, let errorType, let errorLink, let underlying):
-        return "All hosts are unreachable. message: \(message) errorcode: \(errorCode) \(errorType) \(errorLink) \(underlying)"
+      case .meiliSearchCommunicationError(let message, let url):
+        return "meiliSearchCommunicationError \(message) \(url) "
+
+      // can we do let error and then error.message etc...
+      case .meiliSearchApiError(let message, let error, let statusCode, let url):
+        if let msErrorResponse = error as? MSErrorResponse {
+         return "MeiliSearchApiError: \(msErrorResponse.message) \n errorCode: \(msErrorResponse.errorCode) \n errorType: \(msErrorResponse.errorType) \n errorLink: \(String(describing:msErrorResponse.errorLink)) \n status: \(statusCode) "
+        }
+        return "MeiliSearchApiError: \(String(describing:message)) - \(String(describing:statusCode)) - \(String(describing:url))"
       }
     }
   }
