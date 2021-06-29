@@ -38,7 +38,8 @@ final class Request {
     self.session = config.session ?? URLSession.shared
   }
 
-    func get(
+
+   func get(
     api: String,
     param: String? = nil,
     headers: [String: String] = [:],
