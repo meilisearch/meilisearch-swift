@@ -20,24 +20,19 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
+// Remove this
 public enum MSHTTPError: Swift.Error {
   case invalidURL
 }
 
+// remove this
 struct MSError: Swift.Error {
   let data: Data?
   let underlying: Swift.Error
 }
 
-struct MeiliSearchApiError: Swift.Error {
-    let message: String
-    let errorCode: String
-    let errorType: String
-    let errorLink: String?
-    let underlying: Swift.Error
-}
-
-struct MSErrorResponse: Decodable {
+// should we keep it in public ?
+public struct MSErrorResponse: Decodable {
   let message: String
   let errorCode: String
   let errorType: String
@@ -54,8 +49,7 @@ final class Request {
     self.session = config.session ?? URLSession.shared
   }
 
-
-   func get(
+  func get(
     api: String,
     param: String? = nil,
     headers: [String: String] = [:],
