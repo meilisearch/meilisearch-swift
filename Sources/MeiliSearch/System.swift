@@ -2,65 +2,65 @@ import Foundation
 
 struct System {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    let request: Request
+  let request: Request
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    init(_ request: Request) {
-        self.request = request
-    }
+  init(_ request: Request) {
+    self.request = request
+  }
 
-    // MARK: Functions
+  // MARK: Functions
 
-    func health(_ completion: @escaping (Result<Health, Swift.Error>) -> Void) {
-        request.get(api: "/health") { result in
-            switch result {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let vesion: Health = try Constants.customJSONDecoder.decode(Health.self, from: data)
-
-                    completion(.success(vesion))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
+  func health(_ completion: @escaping (Result<Health, Swift.Error>) -> Void) {
+    request.get(api: "/health") { result in
+      switch result {
+      case .success(let data):
+        guard let data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
-    }
 
-    func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
-        request.get(api: "/version") { result in
-            switch result {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+        do {
+          let vesion: Health = try Constants.customJSONDecoder.decode(Health.self, from: data)
 
-                do {
-                    let vesion: Version = try Constants.customJSONDecoder.decode(Version.self, from: data)
-
-                    completion(.success(vesion))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
+          completion(.success(vesion))
+        } catch {
+          completion(.failure(error))
         }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
     }
+  }
+
+  func version(_ completion: @escaping (Result<Version, Swift.Error>) -> Void) {
+    request.get(api: "/version") { result in
+      switch result {
+      case .success(let data):
+        guard let data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let vesion: Version = try Constants.customJSONDecoder.decode(Version.self, from: data)
+
+          completion(.success(vesion))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 }
 
 private struct CreateHealthPayload: Codable {
-    let health: Bool
+  let health: Bool
 }

@@ -2,7 +2,7 @@ import Foundation
 
 /**
  Represent all error types in the client.
-*/
+ */
 public extension MeiliSearch {
 
   // MARK: Error

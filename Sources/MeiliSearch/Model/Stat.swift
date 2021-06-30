@@ -5,16 +5,16 @@ import Foundation
  */
 public struct AllStats: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Size of the whole database, in bytes.
-    public let databaseSize: Int
+  /// Size of the whole database, in bytes.
+  public let databaseSize: Int
 
-    /// Date when the server was last updated.
-    public let lastUpdate: Date?
+  /// Date when the server was last updated.
+  public let lastUpdate: Date?
 
-    /// Dictionary of all Indexes containing the stat for each Index.  
-    public let indexes: [String: Stat]
+  /// Dictionary of all Indexes containing the stat for each Index.
+  public let indexes: [String: Stat]
 
 }
 
@@ -23,15 +23,15 @@ public struct AllStats: Codable, Equatable {
  */
 public struct Stat: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Number of documents in the given index.
-    public let numberOfDocuments: Int
+  /// Number of documents in the given index.
+  public let numberOfDocuments: Int
 
-    /// Returns if the Index is currenly being indexed.
-    public let isIndexing: Bool
+  /// Returns if the Index is currenly being indexed.
+  public let isIndexing: Bool
 
-    /// Usage frequency for each Index field.
-    public let fieldsFrequency: [String: Int]
+  /// Usage frequency for each Index field.
+  public let fieldsFrequency: [String: Int]
 
 }

@@ -6,38 +6,38 @@ import Foundation
  */
 public struct Index: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// The index UID.
-    public let UID: String
+  /// The index UID.
+  public let UID: String
 
-    /// The data when the index was created.
-    public let createdAt: Date?
+  /// The data when the index was created.
+  public let createdAt: Date?
 
-    /// The data when the index was last updated.
-    public let updatedAt: Date?
+  /// The data when the index was last updated.
+  public let updatedAt: Date?
 
-    /// The primary key configured for the index.
-    public let primaryKey: String?
+  /// The primary key configured for the index.
+  public let primaryKey: String?
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    init(
-        UID: String,
-        createdAt: Date? = nil,
-        updatedAt: Date? = nil,
-        primaryKey: String? = nil) {
-        self.UID = UID
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.primaryKey = primaryKey
-    }
+  init(
+    UID: String,
+    createdAt: Date? = nil,
+    updatedAt: Date? = nil,
+    primaryKey: String? = nil) {
+    self.UID = UID
+    self.createdAt = createdAt
+    self.updatedAt = updatedAt
+    self.primaryKey = primaryKey
+  }
 
-    enum CodingKeys: String, CodingKey {
-        case UID = "uid"
-        case createdAt
-        case updatedAt
-        case primaryKey
-    }
+  enum CodingKeys: String, CodingKey {
+    case UID = "uid"
+    case createdAt
+    case updatedAt
+    case primaryKey
+  }
 
 }

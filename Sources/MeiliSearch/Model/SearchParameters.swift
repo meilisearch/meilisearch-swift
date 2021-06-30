@@ -7,94 +7,94 @@ import Foundation
  */
 public struct SearchParameters: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Query string (mandatory).
-    public let query: String?
+  /// Query string (mandatory).
+  public let query: String?
 
-    /// Number of documents to take.
-    public let limit: Int?
+  /// Number of documents to take.
+  public let limit: Int?
 
-    /// Number of documents to skip.
-    public let offset: Int?
+  /// Number of documents to skip.
+  public let offset: Int?
 
-    /// Document attributes to show.
-    public let attributesToRetrieve: [String]?
+  /// Document attributes to show.
+  public let attributesToRetrieve: [String]?
 
-    /// Which attributes to crop.
-    public let attributesToCrop: [String]?
+  /// Which attributes to crop.
+  public let attributesToCrop: [String]?
 
-    /// Limit length at which to crop specified attributes.
-    public let cropLength: Int?
+  /// Limit length at which to crop specified attributes.
+  public let cropLength: Int?
 
-    /// Which attributes to highlight.
-    public let attributesToHighlight: [String]?
+  /// Which attributes to highlight.
+  public let attributesToHighlight: [String]?
 
-    /// Attribute with an exact match.
-    public let filters: String?
+  /// Attribute with an exact match.
+  public let filters: String?
 
-    /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
-    public let facetFilters: [[String]]?
+  /// Select which attribute has to be filtered, useful when you need to narrow down the results of the filter.
+  public let facetFilters: [[String]]?
 
-    /// Retrieve the count of matching terms for each facets.
-    public let facetsDistribution: [String]?
+  /// Retrieve the count of matching terms for each facets.
+  public let facetsDistribution: [String]?
 
-    /// Whether to return the raw matches or not.
-    public let matches: Bool?
+  /// Whether to return the raw matches or not.
+  public let matches: Bool?
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    public init(
-        query: String?,
-        offset: Int? = nil,
-        limit: Int? = nil,
-        attributesToRetrieve: [String]? = nil,
-        attributesToCrop: [String]? = nil,
-        cropLength: Int? = nil,
-        attributesToHighlight: [String]? = nil,
-        filters: String? = nil,
-        facetFilters: [[String]]? = nil,
-        facetsDistribution: [String]? = nil,
-        matches: Bool? = false) {
-        self.query = query
-        self.offset = offset
-        self.limit = limit
-        self.attributesToRetrieve = attributesToRetrieve
-        self.attributesToCrop = attributesToCrop
-        self.cropLength = cropLength
-        self.attributesToHighlight = attributesToHighlight
-        self.filters = filters
-        self.facetFilters = facetFilters
-        self.facetsDistribution = facetsDistribution
-        self.matches = matches
-    }
+  public init(
+    query: String?,
+    offset: Int? = nil,
+    limit: Int? = nil,
+    attributesToRetrieve: [String]? = nil,
+    attributesToCrop: [String]? = nil,
+    cropLength: Int? = nil,
+    attributesToHighlight: [String]? = nil,
+    filters: String? = nil,
+    facetFilters: [[String]]? = nil,
+    facetsDistribution: [String]? = nil,
+    matches: Bool? = false) {
+    self.query = query
+    self.offset = offset
+    self.limit = limit
+    self.attributesToRetrieve = attributesToRetrieve
+    self.attributesToCrop = attributesToCrop
+    self.cropLength = cropLength
+    self.attributesToHighlight = attributesToHighlight
+    self.filters = filters
+    self.facetFilters = facetFilters
+    self.facetsDistribution = facetsDistribution
+    self.matches = matches
+  }
 
-    // MARK: Query Initializers
+  // MARK: Query Initializers
 
-    /**
-     Minimal static function used to easily initialize the `SearchParameters` instance with
-     the search query applied.
+  /**
+   Minimal static function used to easily initialize the `SearchParameters` instance with
+   the search query applied.
+   
+   - parameter value: Query string (mandatory).
+   */
+  public static func query(_ value: String) -> SearchParameters {
+    SearchParameters(query: value)
+  }
 
-     - parameter value: Query string (mandatory).
-     */
-    public static func query(_ value: String) -> SearchParameters {
-        SearchParameters(query: value)
-    }
+  // MARK: Codable Keys
 
-    // MARK: Codable Keys
-
-    enum CodingKeys: String, CodingKey {
-        case query = "q"
-        case offset
-        case limit
-        case attributesToRetrieve
-        case attributesToCrop
-        case cropLength
-        case attributesToHighlight
-        case filters
-        case facetFilters
-        case facetsDistribution
-        case matches
-    }
+  enum CodingKeys: String, CodingKey {
+    case query = "q"
+    case offset
+    case limit
+    case attributesToRetrieve
+    case attributesToCrop
+    case cropLength
+    case attributesToHighlight
+    case filters
+    case facetFilters
+    case facetsDistribution
+    case matches
+  }
 
 }

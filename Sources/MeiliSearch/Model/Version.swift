@@ -5,15 +5,15 @@ import Foundation
  */
 public struct Version: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Current hash from the build.
-    public let commitSha: String
+  /// Current hash from the build.
+  public let commitSha: String
 
-    /// Date when the server was compiled.
-    public let buildDate: Date
+  /// Date when the server was compiled.
+  public let buildDate: Date
 
-    /// Package version, human readable, overly documented.
-    public let pkgVersion: String
+  /// Package version, human readable, overly documented.
+  public let pkgVersion: String
 
 }

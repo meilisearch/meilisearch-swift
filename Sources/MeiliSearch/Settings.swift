@@ -5,765 +5,763 @@ import Foundation
  */
 struct Settings {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    let request: Request
+  let request: Request
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    init (_ request: Request) {
-        self.request = request
-    }
+  init (_ request: Request) {
+    self.request = request
+  }
 
-    // MARK: All Settings
+  // MARK: All Settings
 
-    func get(
-        _ UID: String,
-        _ completion: @escaping (Result<Setting, Swift.Error>) -> Void) {
+  func get(
+    _ UID: String,
+    _ completion: @escaping (Result<Setting, Swift.Error>) -> Void) {
 
-        self.request.get(api: "/indexes/\(UID)/settings") { result in
+    self.request.get(api: "/indexes/\(UID)/settings") { result in
 
-            switch result {
-            case .success(let data):
+      switch result {
+      case .success(let data):
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let settings: Setting = try Constants.customJSONDecoder.decode(Setting.self, from: data)
-                    completion(.success(settings))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
-    }
-
-    func update(
-        _ UID: String,
-        _ setting: Setting,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-            data = try JSONEncoder().encode(setting)
+          let settings: Setting = try Constants.customJSONDecoder.decode(Setting.self, from: data)
+          completion(.success(settings))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func reset(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings") { result in
+  func update(
+    _ UID: String,
+    _ setting: Setting,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(setting)
+    } catch {
+      completion(.failure(error))
+      return
     }
 
-    // MARK: Synonyms
+    self.request.post(api: "/indexes/\(UID)/settings", data) { result in
 
-    func getSynonyms(
-        _ UID: String,
-        _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
+      switch result {
+      case .success(let data):
 
-        self.request.get(api: "/indexes/\(UID)/settings/synonyms") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let dictionary: [String: [String]] = try Constants.customJSONDecoder.decode([String: [String]].self, from: data)
-                    completion(.success(dictionary))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateSynonyms(
-        _ UID: String,
-        _ synonyms: [String: [String]],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/synonyms", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
+      case .failure(let error):
+        completion(.failure(error))
+      }
     }
+  }
 
-    func resetSynonyms(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  // can this be refactor
+  func reset(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-        self.request.delete(api: "/indexes/\(UID)/settings/synonyms") { result in
+    self.request.delete(api: "/indexes/\(UID)/settings") { result in
 
-            switch result {
-            case .success(let data):
+      switch result {
+      case .success(let data):
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
-    }
-
-    // MARK: Stop Words
-
-    func getStopWords(
-        _ UID: String,
-        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/stop-words") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
-                    completion(.success(array))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateStopWords(
-        _ UID: String,
-        _ synonyms: [String],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/stop-words", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetStopWords(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/stop-words") { result in
+  // MARK: Synonyms
 
-            switch result {
-            case .success(let data):
+  func getSynonyms(
+    _ UID: String,
+    _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+    self.request.get(api: "/indexes/\(UID)/settings/synonyms") { result in
 
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
+      switch result {
+      case .success(let data):
 
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
-    }
-
-    // MARK: Ranking
-
-    func getRankingRules(
-        _ UID: String,
-        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/ranking-rules") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
-                    completion(.success(array))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateRankingRules(
-        _ UID: String,
-        _ rankingRules: [String],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-            data = try JSONSerialization.data(withJSONObject: rankingRules, options: [])
+          let dictionary: [String: [String]] = try Constants.customJSONDecoder.decode([String: [String]].self, from: data)
+          completion(.success(dictionary))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/ranking-rules", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetRankingRules(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/ranking-rules") { result in
+  func updateSynonyms(
+    _ UID: String,
+    _ synonyms: [String: [String]],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+    } catch {
+      completion(.failure(error))
+      return
     }
 
-    // MARK: Distinct attribute
+    self.request.post(api: "/indexes/\(UID)/settings/synonyms", data) { result in
 
-    struct DistinctAttributePayload: Codable, Equatable {
+      switch result {
+      case .success(let data):
 
-        /// Distinct attribute key
-        public let distinctAttribute: String
-
-    }
-
-    func getDistinctAttribute(
-        _ UID: String,
-        _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let value: String? = try Constants.customJSONDecoder.decode(String?.self, from: data)
-                    completion(.success(value))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateDistinctAttribute(
-        _ UID: String,
-        _ distinctAttribute: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-            data = try Constants.customJSONEecoder.encode(DistinctAttributePayload(distinctAttribute: distinctAttribute))
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetDistinctAttribute(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
+  func resetSynonyms(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
+    self.request.delete(api: "/indexes/\(UID)/settings/synonyms") { result in
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+      switch result {
+      case .success(let data):
 
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
-    }
-
-    // MARK: Searchable attributes
-
-    func getSearchableAttributes(
-        _ UID: String,
-        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
-                    completion(.success(array))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateSearchableAttributes(
-        _ UID: String,
-        _ searchableAttributes: [String],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: searchableAttributes, options: [])
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/searchable-attributes", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetSearchableAttributes(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
+  // MARK: Stop Words
 
-            switch result {
-            case .success(let data):
+  func getStopWords(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+    self.request.get(api: "/indexes/\(UID)/settings/stop-words") { result in
 
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
+      switch result {
+      case .success(let data):
 
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
-    }
-
-    // MARK: Displayed attributes
-
-    func getDisplayedAttributes(
-        _ UID: String,
-        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-
-        self.request.get(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
-                    completion(.success(array))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateDisplayedAttributes(
-        _ UID: String,
-        _ displayedAttributes: [String],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: displayedAttributes, options: [])
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/displayed-attributes", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetDisplayedAttributes(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+  func updateStopWords(
+    _ UID: String,
+    _ synonyms: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+    } catch {
+      completion(.failure(error))
+      return
     }
 
-    // MARK: Attributes for faceting
+    self.request.post(api: "/indexes/\(UID)/settings/stop-words", data) { result in
 
-    func getAttributesForFaceting(
-        _ UID: String,
-        _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+      switch result {
+      case .success(let data):
 
-        self.request.get(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
-
-            switch result {
-            case .success(let data):
-
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
-
-                do {
-                    let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
-                    completion(.success(array))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
-
-    }
-
-    func updateAttributesForFaceting(
-        _ UID: String,
-        _ attributes: [String],
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-
-        let data: Data
         do {
-          data = try JSONSerialization.data(withJSONObject: attributes, options: [])
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
         } catch {
-            completion(.failure(error))
-            return
+          completion(.failure(error))
         }
 
-        self.request.post(api: "/indexes/\(UID)/settings/attributes-for-faceting", data) { result in
-
-            switch result {
-            case .success(let data):
-
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
-        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    func resetAttributesForFaceting(
-        _ UID: String,
-        _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+  }
 
-        self.request.delete(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
+  func resetStopWords(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
+    self.request.delete(api: "/indexes/\(UID)/settings/stop-words") { result in
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+      switch result {
+      case .success(let data):
 
-                do {
-                    let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
-                    completion(.success(update))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
+  }
+
+  // MARK: Ranking
+
+  func getRankingRules(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/ranking-rules") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateRankingRules(
+    _ UID: String,
+    _ rankingRules: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: rankingRules, options: [])
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings/ranking-rules", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetRankingRules(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/ranking-rules") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  // MARK: Distinct attribute
+
+  struct DistinctAttributePayload: Codable, Equatable {
+
+    /// Distinct attribute key
+    public let distinctAttribute: String
+
+  }
+
+  func getDistinctAttribute(
+    _ UID: String,
+    _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let value: String? = try Constants.customJSONDecoder.decode(String?.self, from: data)
+          completion(.success(value))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateDistinctAttribute(
+    _ UID: String,
+    _ distinctAttribute: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try Constants.customJSONEecoder.encode(DistinctAttributePayload(distinctAttribute: distinctAttribute))
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetDistinctAttribute(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  // MARK: Searchable attributes
+
+  func getSearchableAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateSearchableAttributes(
+    _ UID: String,
+    _ searchableAttributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: searchableAttributes, options: [])
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings/searchable-attributes", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetSearchableAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  // MARK: Displayed attributes
+
+  func getDisplayedAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateDisplayedAttributes(
+    _ UID: String,
+    _ displayedAttributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: displayedAttributes, options: [])
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings/displayed-attributes", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetDisplayedAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  // MARK: Attributes for faceting
+
+  func getAttributesForFaceting(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateAttributesForFaceting(
+    _ UID: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: attributes, options: [])
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings/attributes-for-faceting", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetAttributesForFaceting(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
 }
