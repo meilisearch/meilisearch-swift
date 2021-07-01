@@ -90,7 +90,7 @@ public extension MeiliSearch {
       case .invalidURL:
         return "Invalid host URL"
       case .meiliSearchCommunicationError(let message, let url):
-        return "meiliSearchCommunicationError \(message) \(url) "
+        return "meiliSearchCommunicationError \(message) \(url) "s
 
       // can we do let error and then error.message etc...
       case .meiliSearchApiError(let message, let error, let statusCode, let url):
