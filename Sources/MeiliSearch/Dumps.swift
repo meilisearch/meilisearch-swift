@@ -1,74 +1,74 @@
 import Foundation
 
 /**
- The dumps route allows the creation of database dumps. Dumps are `.tar.gz` files that 
+ The dumps route allows the creation of database dumps. Dumps are `.tar.gz` files that
  can be used to launch MeiliSearch. Dumps are compatible between MeiliSearch versions.
  */
 struct Dumps {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    let request: Request
+  let request: Request
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    init (_ request: Request) {
-        self.request = request
-    }
+  init (_ request: Request) {
+    self.request = request
+  }
 
-    // MARK: Create
+  // MARK: Create
 
-    func create(_ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+  func create(_ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
 
-        self.request.post(api: "/dumps", Data()) { result in
+    self.request.post(api: "/dumps", Data()) { result in
 
-            switch result {
-            case .success(let data):
+      switch result {
+      case .success(let data):
 
-                do {
-                    let result: Dump = try Constants.customJSONDecoder.decode(Dump.self, from: data)
-                    completion(.success(result))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        do {
+          let result: Dump = try Constants.customJSONDecoder.decode(Dump.self, from: data)
+          completion(.success(result))
+        } catch {
+          completion(.failure(error))
         }
 
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
     }
 
-    // MARK: Status
+  }
 
-    func status(
-        _ UID: String,
-        _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+  // MARK: Status
 
-        self.request.get(api: "/dumps/\(UID)/status") { result in
+  func status(
+    _ UID: String,
+    _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
 
-            switch result {
-            case .success(let data):
+    self.request.get(api: "/dumps/\(UID)/status") { result in
 
-                guard let data: Data = data else {
-                    completion(.failure(MeiliSearch.Error.dataNotFound))
-                    return
-                }
+      switch result {
+      case .success(let data):
 
-                do {
-                    let result: Dump = try Constants.customJSONDecoder.decode(Dump.self, from: data)
-                    completion(.success(result))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
         }
 
+        do {
+          let result: Dump = try Constants.customJSONDecoder.decode(Dump.self, from: data)
+          completion(.success(result))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
     }
+
+  }
 
 }

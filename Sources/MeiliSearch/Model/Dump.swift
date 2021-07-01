@@ -5,46 +5,46 @@ import Foundation
  */
 public struct Dump: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Current hash from the build.
-    public let UID: String
+  /// Current hash from the build.
+  public let UID: String
 
-    /// Date when the server was compiled.
-    public let status: Status
+  /// Date when the server was compiled.
+  public let status: Status
 
-    enum CodingKeys: String, CodingKey {
-        case UID = "uid"
-        case status
+  enum CodingKeys: String, CodingKey {
+    case UID = "uid"
+    case status
+  }
+
+  public enum Status: Codable, Equatable {
+
+    case inProgress
+    case failed
+    case done
+
+    public enum CodingError: Error {
+      case unknownStatus
     }
 
-    public enum Status: Codable, Equatable {
+    public init(from decoder: Decoder) throws {
+      let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
+      let rawStatus: String = try container.decode(String.self)
+      switch rawStatus {
+      case "in_progress":
+        self = Status.inProgress
+      case "dump_process_failed":
+        self = Status.failed
+      case "done":
+        self = Status.done
+      default:
+        throw CodingError.unknownStatus
+      }
+    }
 
-        case inProgress
-        case failed
-        case done
+    public func encode(to encoder: Encoder) throws { }
 
-        public enum CodingError: Error {
-            case unknownStatus
-        }
+  }
 
-        public init(from decoder: Decoder) throws {
-            let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
-            let rawStatus: String = try container.decode(String.self)
-            switch rawStatus {
-            case "in_progress":
-                self = Status.inProgress
-            case "dump_process_failed":
-                self = Status.failed
-            case "done":
-                self = Status.done
-            default:
-                throw CodingError.unknownStatus
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws { }
-
-     }
-
- }
+}

@@ -1,81 +1,81 @@
 import Foundation
 
 /**
- `Update` instances represent the current transcation result, use the `updateId` value to 
+ `Update` instances represent the current transcation result, use the `updateId` value to
  verify the status of your transaction.
  */
 public struct Update: Codable, Equatable {
 
+  // MARK: Properties
+
+  /// The UID of the update.
+  public let updateId: Int
+
+  /// Result type for the Update.
+  public struct Result: Codable, Equatable {
+
     // MARK: Properties
 
-    /// The UID of the update.
+    /// Returns if the update has been sucessful or not.
+    public let status: Status
+
+    /// Unique ID for the current `Update`.
     public let updateId: Int
 
-    /// Result type for the Update.
-    public struct Result: Codable, Equatable {
+    /// Type of update.
+    public let type: UpdateType
 
-        // MARK: Properties
+    /// Duration of the update process.
+    public let duration: TimeInterval?
 
-        /// Returns if the update has been sucessful or not.
-        public let status: Status
+    /// Date when the update has been enqueued.
+    public let enqueuedAt: Date
 
-        /// Unique ID for the current `Update`.
-        public let updateId: Int
+    /// Date when the update has been processed.
+    public let processedAt: Date?
 
-        /// Type of update.
-        public let type: UpdateType
+    /// Type of `Update`.
+    public struct UpdateType: Codable, Equatable {
 
-        /// Duration of the update process.
-        public let duration: TimeInterval?
+      // MARK: Properties
 
-        /// Date when the update has been enqueued.
-        public let enqueuedAt: Date
+      /// Name of update type.
+      public let name: String
 
-        /// Date when the update has been processed.
-        public let processedAt: Date?
-
-        /// Type of `Update`.
-        public struct UpdateType: Codable, Equatable {
-
-            // MARK: Properties
-
-            /// Name of update type.
-            public let name: String
-
-            /// ID of update type.
-            public let number: Int?
-
-        }
+      /// ID of update type.
+      public let number: Int?
 
     }
 
-    public enum Status: Codable, Equatable {
+  }
 
-        case enqueued
-        case processed
-        case failed
+  public enum Status: Codable, Equatable {
 
-        public enum StatusError: Error {
-            case unknown
-        }
+    case enqueued
+    case processed
+    case failed
 
-        public init(from decoder: Decoder) throws {
-            let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
-            let rawStatus: String = try container.decode(String.self)
-            switch rawStatus {
-            case "enqueued":
-                self = Status.enqueued
-            case "processed":
-                self = Status.processed
-            case "failed":
-                self = Status.failed
-            default:
-                throw StatusError.unknown
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws { }
-
+    public enum StatusError: Error {
+      case unknown
     }
+
+    public init(from decoder: Decoder) throws {
+      let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
+      let rawStatus: String = try container.decode(String.self)
+      switch rawStatus {
+      case "enqueued":
+        self = Status.enqueued
+      case "processed":
+        self = Status.processed
+      case "failed":
+        self = Status.failed
+      default:
+        throw StatusError.unknown
+      }
+    }
+
+    public func encode(to encoder: Encoder) throws { }
+
+  }
 
 }

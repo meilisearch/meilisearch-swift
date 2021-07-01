@@ -54,6 +54,12 @@ If you want to run the linter [`swiftlint`](https://github.com/realm/SwiftLint):
 swiftlint
 ```
 
+If you want to fix your linting errors:
+
+```bash
+swiftlint --fix
+```
+
 ### On Xcode <!-- omit in TOC -->
 
 ### Setup <!-- omit in TOC -->

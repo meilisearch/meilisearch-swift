@@ -2,56 +2,56 @@ import Foundation
 
 struct Search {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    let request: Request
+  let request: Request
 
-    // MARK: Initializers
+  // MARK: Initializers
 
-    init (_ request: Request) {
-        self.request = request
+  init (_ request: Request) {
+    self.request = request
+  }
+
+  func search<T>(
+    _ UID: String,
+    _ searchParameters: SearchParameters,
+    _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(searchParameters)
+    } catch {
+      completion(.failure(MeiliSearch.Error.invalidJSON))
+      return
     }
 
-    func search<T>(
-        _ UID: String,
-        _ searchParameters: SearchParameters,
-        _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
-        where T: Codable, T: Equatable {
+    self.request.post(api: "/indexes/\(UID)/search", data) { result in
 
-            let data: Data
-            do {
-                data = try JSONEncoder().encode(searchParameters)
-            } catch {
-                completion(.failure(MeiliSearch.Error.invalidJSON))
-                return
-            }
+      switch result {
+      case .success(let data):
 
-            self.request.post(api: "/indexes/\(UID)/search", data) { result in
+        Search.decodeJSON(data, completion: completion)
 
-                switch result {
-                case .success(let data):
-
-                    Search.decodeJSON(data, completion: completion)
-
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-
-            }
+      case .failure(let error):
+        completion(.failure(error))
+      }
 
     }
 
-    private static func decodeJSON<T: Codable>(
-        _ data: Data,
-        _ customDecoder: JSONDecoder? = nil,
-        completion: (Result<T, Swift.Error>) -> Void) {
-        do {
-            let decoder: JSONDecoder = customDecoder ?? Constants.customJSONDecoder
-            let value: T = try decoder.decode(T.self, from: data)
-            completion(.success(value))
-        } catch {
-            completion(.failure(error))
-        }
+  }
+
+  private static func decodeJSON<T: Codable>(
+    _ data: Data,
+    _ customDecoder: JSONDecoder? = nil,
+    completion: (Result<T, Swift.Error>) -> Void) {
+    do {
+      let decoder: JSONDecoder = customDecoder ?? Constants.customJSONDecoder
+      let value: T = try decoder.decode(T.self, from: data)
+      completion(.success(value))
+    } catch {
+      completion(.failure(error))
     }
+  }
 
 }
