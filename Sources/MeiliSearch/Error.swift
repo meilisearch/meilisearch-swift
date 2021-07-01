@@ -45,9 +45,9 @@ public extension MeiliSearch {
       // can we do let error and then error.message etc...
       case .meiliSearchApiError(let message, let error, let statusCode, let url):
         if let msErrorResponse = error as? MSErrorResponse {
-         return "MeiliSearchApiError: \(msErrorResponse.message) \n errorCode: \(msErrorResponse.errorCode) \n errorType: \(msErrorResponse.errorType) \n errorLink: \(String(describing:msErrorResponse.errorLink)) \n status: \(statusCode) "
+         return "MeiliSearchApiError: \(msErrorResponse.message) \n errorCode: \(msErrorResponse.errorCode) \n errorType: \(msErrorResponse.errorType) \n errorLink: \(String(describing: msErrorResponse.errorLink)) \n status: \(statusCode) "
         }
-        return "MeiliSearchApiError: \(String(describing:message)) - \(String(describing:statusCode)) - \(String(describing:url))"
+        return "MeiliSearchApiError: \(String(describing: message)) - \(String(describing: statusCode)) - \(String(describing: url))"
       }
     }
   }

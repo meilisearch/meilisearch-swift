@@ -174,9 +174,9 @@ final class Request {
 
       if 400 ... 599 ~= response.statusCode {
         completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    MSError(
+                      data: data,
+                      underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
         return
       }
 
@@ -223,9 +223,9 @@ final class Request {
 
       if 400 ... 599 ~= response.statusCode {
         completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    MSError(
+                      data: data,
+                      underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
         return
       }
 
@@ -266,9 +266,9 @@ final class Request {
 
       if 400 ... 599 ~= response.statusCode {
         completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
+                    MSError(
+                      data: data,
+                      underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
         return
       }
 
