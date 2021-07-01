@@ -51,13 +51,13 @@ If you do not have a MeiliSearch instance with the previous mentioned parameters
 If you want to run the linter [`swiftlint`](https://github.com/realm/SwiftLint):
 
 ```bash
-swiftlint
+swift run swiftlint
 ```
 
 If you want to fix your linting errors:
 
 ```bash
-swiftlint --fix
+swift run swiftlint --fix
 ```
 
 ### On Xcode <!-- omit in TOC -->
