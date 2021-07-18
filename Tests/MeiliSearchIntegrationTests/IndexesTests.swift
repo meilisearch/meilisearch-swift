@@ -1,270 +1,272 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_try
 class IndexesTests: XCTestCase {
 
-    private var client: MeiliSearch!
-    private let uid: String = "books_test"
+  private var client: MeiliSearch!
+  private let uid: String = "books_test"
 
-    override func setUp() {
-        super.setUp()
+  override func setUp() {
+    super.setUp()
 
-        if client == nil {
-            client = try! MeiliSearch("http://localhost:7700", "masterKey")
-        }
-
-        pool(client)
-
-        let expectation = XCTestExpectation(description: "Try to delete index between tests")
-        self.client.deleteIndex(UID: self.uid) { _ in
-            expectation.fulfill()
-        }
-        self.wait(for: [expectation], timeout: 1.0)
-
+    if client == nil {
+      client = try! MeiliSearch("http://localhost:7700", "masterKey")
     }
 
-    func testCreateIndex() {
+    pool(client)
 
-        let createExpectation = XCTestExpectation(description: "Create Movies index")
+    let expectation = XCTestExpectation(description: "Try to delete index between tests")
+    self.client.deleteIndex(UID: self.uid) { _ in
+      expectation.fulfill()
+    }
+    self.wait(for: [expectation], timeout: 1.0)
 
-        self.client.createIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                createExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies index")
-            }
-        }
+  }
 
-        self.wait(for: [createExpectation], timeout: 1.0)
+  func testCreateIndex() {
+
+    let createExpectation = XCTestExpectation(description: "Create Movies index")
+
+    self.client.createIndex(UID: self.uid) { result in
+      switch result {
+      case .success(let index):
+        let stubIndex = Index(UID: self.uid)
+        XCTAssertEqual(stubIndex.UID, index.UID)
+        createExpectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get Movies index")
+      }
     }
 
-    func testGetOrCreateIndex() {
+    self.wait(for: [createExpectation], timeout: 1.0)
+  }
 
-        let expectation = XCTestExpectation(description: "Get or create Movies index")
+  func testGetOrCreateIndex() {
 
-        self.client.getOrCreateIndex(UID: uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get or create Movies index")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Get or create Movies index")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getOrCreateIndex(UID: uid) { result in
+      switch result {
+      case .success(let index):
+          let stubIndex = Index(UID: self.uid)
+          XCTAssertEqual(stubIndex.UID, index.UID)
+          expectation.fulfill()
+      case .failure:
+          XCTFail("Failed to get or create Movies index")
+      }
     }
 
-    func testGetOrCreateIndexAlreadyExists() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        let expectation = XCTestExpectation(description: "Get or create a non existing uid")
+  }
 
-        self.client.getOrCreateIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                expectation.fulfill()
-            case .failure(let error):
-                XCTFail("Failed to get or create Movies index, error: \(error)")
-            }
-        }
+  func testGetOrCreateIndexAlreadyExists() {
 
-        self.wait(for: [expectation], timeout: 1.0)
+      let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-        sleep(2)
+      self.client.getOrCreateIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              expectation.fulfill()
+          case .failure(let error):
+              XCTFail("Failed to get or create Movies index, error: \(error)")
+          }
+      }
 
-        let SecondExpectation = XCTestExpectation(description: "Get or create an existing index")
+      self.wait(for: [expectation], timeout: 1.0)
 
-        self.client.getOrCreateIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                SecondExpectation.fulfill()
-            case .failure(let error):
-                XCTFail("Failed to get or create an existing index, error: \(error)")
-            }
-        }
+      sleep(2)
 
-        self.wait(for: [SecondExpectation], timeout: 1.0)
+      let secondExpectation = XCTestExpectation(description: "Get or create an existing index")
 
-    }
+      self.client.getOrCreateIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              secondExpectation.fulfill()
+          case .failure(let error):
+              XCTFail("Failed to get or create an existing index, error: \(error)")
+          }
+      }
 
-    func testGetIndex() {
+      self.wait(for: [secondExpectation], timeout: 1.0)
 
-        let expectation = XCTestExpectation(description: "Get or create a non existing uid")
+  }
 
-        self.client.getOrCreateIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                expectation.fulfill()
-            case .failure(let error):
-                XCTFail("Failed to get or create Movies index, error: \(error)")
-            }
-        }
+  func testGetIndex() {
 
-        self.wait(for: [expectation], timeout: 1.0)
+      let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-        let getIndexExpectation = XCTestExpectation(description: "Get index")
+      self.client.getOrCreateIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              expectation.fulfill()
+          case .failure(let error):
+              XCTFail("Failed to get or create Movies index, error: \(error)")
+          }
+      }
 
-        self.client.getIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                getIndexExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get index")
-            }
+      self.wait(for: [expectation], timeout: 1.0)
 
-        }
+      let getIndexExpectation = XCTestExpectation(description: "Get index")
 
-        self.wait(for: [getIndexExpectation], timeout: 1.0)
+      self.client.getIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              getIndexExpectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get index")
+          }
 
-    }
+      }
 
-    func testGetIndexes() {
+      self.wait(for: [getIndexExpectation], timeout: 1.0)
 
-        let CreateIndexExpectation = XCTestExpectation(description: "Create Movies index")
+  }
 
-        self.client.createIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                CreateIndexExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies index")
-            }
-        }
+  func testGetIndexes() {
 
-        self.wait(for: [CreateIndexExpectation], timeout: 1.0)
+      let createIndexExpectation = XCTestExpectation(description: "Create Movies index")
 
-        sleep(1)
+      self.client.createIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              createIndexExpectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get Movies index")
+          }
+      }
 
-        let expectation = XCTestExpectation(description: "Load indexes")
+      self.wait(for: [createIndexExpectation], timeout: 1.0)
 
-        self.client.getIndexes { result in
+      sleep(1)
 
-            switch result {
-            case .success(let indexes):
-                let stubIndexes = [Index(UID: self.uid)]
-                XCTAssertEqual(stubIndexes.count, indexes.count)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get all Indexes")
-            }
+      let expectation = XCTestExpectation(description: "Load indexes")
 
-        }
+      self.client.getIndexes { result in
 
-        self.wait(for: [expectation], timeout: 1.0)
+          switch result {
+          case .success(let indexes):
+              let stubIndexes = [Index(UID: self.uid)]
+              XCTAssertEqual(stubIndexes.count, indexes.count)
+              expectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get all Indexes")
+          }
 
-    }
+      }
 
-    func testGetEmptyIndexes() {
+      self.wait(for: [expectation], timeout: 1.0)
 
-        let expectation = XCTestExpectation(description: "Load indexes")
+  }
 
-        self.client.getIndexes { result in
+  func testGetEmptyIndexes() {
 
-            switch result {
-            case .success(let indexes):
-                XCTAssertEqual([], indexes)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get all Indexes")
-            }
+      let expectation = XCTestExpectation(description: "Load indexes")
 
-        }
+      self.client.getIndexes { result in
 
-        self.wait(for: [expectation], timeout: 1.0)
+          switch result {
+          case .success(let indexes):
+              XCTAssertEqual([], indexes)
+              expectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get all Indexes")
+          }
 
-    }
+      }
 
-    func testUpdateIndexName() {
+      self.wait(for: [expectation], timeout: 1.0)
 
-        let createExpectation = XCTestExpectation(description: "Create Movies index")
+  }
 
-        self.client.createIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                createExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies index")
-            }
-        }
+  func testUpdateIndexName() {
 
-        self.wait(for: [createExpectation], timeout: 1.0)
+      let createExpectation = XCTestExpectation(description: "Create Movies index")
 
-        // This tests should tests primary key when they are added to this function
-        let updateExpectation = XCTestExpectation(description: "Update movie index")
-        self.client.updateIndex(UID: self.uid, primaryKey: "random") { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid, primaryKey: "random")
-                XCTAssertEqual(stubIndex.primaryKey, index.primaryKey)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                updateExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update movie index")
-            }
-        }
-        self.wait(for: [updateExpectation], timeout: 1.0)
-    }
+      self.client.createIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              createExpectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get Movies index")
+          }
+      }
 
-    func testDeleteIndex() {
+      self.wait(for: [createExpectation], timeout: 1.0)
 
-        let createExpectation = XCTestExpectation(description: "Create Movies index")
+      // This tests should tests primary key when they are added to this function
+      let updateExpectation = XCTestExpectation(description: "Update movie index")
+      self.client.updateIndex(UID: self.uid, primaryKey: "random") { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid, primaryKey: "random")
+              XCTAssertEqual(stubIndex.primaryKey, index.primaryKey)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              updateExpectation.fulfill()
+          case .failure:
+              XCTFail("Failed to update movie index")
+          }
+      }
+      self.wait(for: [updateExpectation], timeout: 1.0)
+  }
 
-        self.client.createIndex(UID: self.uid) { result in
-            switch result {
-            case .success(let index):
-                let stubIndex = Index(UID: self.uid)
-                XCTAssertEqual(stubIndex.UID, index.UID)
-                createExpectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get Movies index")
-            }
-        }
+  func testDeleteIndex() {
 
-        self.wait(for: [createExpectation], timeout: 1.0)
+      let createExpectation = XCTestExpectation(description: "Create Movies index")
 
-        let expectation = XCTestExpectation(description: "Delete Movies index")
+      self.client.createIndex(UID: self.uid) { result in
+          switch result {
+          case .success(let index):
+              let stubIndex = Index(UID: self.uid)
+              XCTAssertEqual(stubIndex.UID, index.UID)
+              createExpectation.fulfill()
+          case .failure:
+              XCTFail("Failed to get Movies index")
+          }
+      }
 
-        self.client.deleteIndex(UID: self.uid) { result in
+      self.wait(for: [createExpectation], timeout: 1.0)
 
-            switch result {
-            case .success:
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to delete Movies index")
-            }
+      let expectation = XCTestExpectation(description: "Delete Movies index")
 
-        }
+      self.client.deleteIndex(UID: self.uid) { result in
 
-        self.wait(for: [expectation], timeout: 1.0)
+          switch result {
+          case .success:
+              expectation.fulfill()
+          case .failure:
+              XCTFail("Failed to delete Movies index")
+          }
 
-    }
+      }
 
-    static var allTests = [
-        ("testCreateIndex", testCreateIndex),
-        ("testGetOrCreateIndex", testGetOrCreateIndex),
-        ("testGetOrCreateIndexAlreadyExists", testGetOrCreateIndexAlreadyExists),
-        ("testGetIndex", testGetIndex),
-        ("testGetIndexes", testGetIndexes),
-        ("testGetEmptyIndexes", testGetEmptyIndexes),
-        ("testUpdateIndexName", testUpdateIndexName),
-        ("testDeleteIndex", testDeleteIndex)
-    ]
+      self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  static var allTests = [
+    ("testCreateIndex", testCreateIndex),
+    ("testGetOrCreateIndex", testGetOrCreateIndex),
+    ("testGetOrCreateIndexAlreadyExists", testGetOrCreateIndexAlreadyExists),
+    ("testGetIndex", testGetIndex),
+    ("testGetIndexes", testGetIndexes),
+    ("testGetEmptyIndexes", testGetEmptyIndexes),
+    ("testUpdateIndexName", testUpdateIndexName),
+    ("testDeleteIndex", testDeleteIndex)
+  ]
 
 }
+// swiftlint:enable force_try

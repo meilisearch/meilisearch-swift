@@ -11,52 +11,52 @@ import XCTest
 
 public func pool(_ client: MeiliSearch) {
 
-    autoreleasepool {
+  autoreleasepool {
 
-        let semaphore = DispatchSemaphore(value: 0)
-        var success: Bool = false
+    let semaphore = DispatchSemaphore(value: 0)
+    var success: Bool = false
 
-        while true {
-            client.health { result in
-                switch result {
-                case .success:
-                    success = true
-                case .failure:
-                    Thread.sleep(forTimeInterval: 0.5)
-                    success = false
-                }
-                semaphore.signal()
-            }
-            if !success {
-                semaphore.wait()
-                continue
-            }
-            break
+    while true {
+      client.health { result in
+        switch result {
+        case .success:
+          success = true
+        case .failure:
+          Thread.sleep(forTimeInterval: 0.5)
+          success = false
         }
-
+        semaphore.signal()
+      }
+      if !success {
+        semaphore.wait()
+        continue
+      }
+      break
     }
+
+  }
 
 }
 
 public func waitForPendingUpdate(
-    _ client: MeiliSearch,
-    _ UID: String,
-    _ update: Update,
-    _ completion: @escaping () -> Void) {
-    func request() {
-        client.getUpdate(UID: UID, update) { result in
-            switch result {
-            case .success(let updateResult):
-                if updateResult.status == Update.Status.processed {
-                    completion()
-                    return
-                }
-                request()
-            case .failure(let error):
-                print(error)
-                XCTFail()
-            }
+  _ client: MeiliSearch,
+  _ UID: String,
+  _ update: Update,
+  _ completion: @escaping () -> Void) {
+  func request() {
+    client.getUpdate(UID: UID, update) { result in
+      switch result {
+      case .success(let updateResult):
+        if updateResult.status == Update.Status.processed {
+          completion()
+          return
         }
+        request()
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
     }
-    request()
+  }
+  request()
 }

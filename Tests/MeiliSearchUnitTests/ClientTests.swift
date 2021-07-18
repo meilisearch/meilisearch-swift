@@ -1,6 +1,7 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_cast
 class ClientTests: XCTestCase {
 
   private let session = MockURLSession()
@@ -21,9 +22,10 @@ class ClientTests: XCTestCase {
   }
 
   static var allTests = [
-      ("testValidHostURL", testValidHostURL),
-      ("testWrongHostURL", testWrongHostURL),
-      ("testNotValidHostURL", testNotValidHostURL)
+    ("testValidHostURL", testValidHostURL),
+    ("testWrongHostURL", testWrongHostURL),
+    ("testNotValidHostURL", testNotValidHostURL)
   ]
 
 }
+// swiftlint:enable force_cast

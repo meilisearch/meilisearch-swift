@@ -6,23 +6,23 @@
  
  See http://swift.org/LICENSE.txt for license information
  See http://swift.org/CONTRIBUTORS.txt for Swift project authors
-*/
+ */
 
 import XCTest
 
 #if !canImport(ObjectiveC)
 public func allTests() -> [XCTestCaseEntry] {
-    [
-        testCase(IndexesTests.allTests),
-        testCase(DocumentsTests.allTests),
-        testCase(SearchTests.allTests),
-        testCase(UpdatesTests.allTests),
-        testCase(KeysTests.allTests),
-        testCase(SettingsTests.allTests),
-        testCase(StatsTests.allTests),
-        testCase(SystemTests.allTests),
-        testCase(DumpsTests.allTests),
-        testCase(ClientTests.allTests)
-    ]
+  [
+    testCase(IndexesTests.allTests),
+    testCase(DocumentsTests.allTests),
+    testCase(SearchTests.allTests),
+    testCase(UpdatesTests.allTests),
+    testCase(KeysTests.allTests),
+    testCase(SettingsTests.allTests),
+    testCase(StatsTests.allTests),
+    testCase(SystemTests.allTests),
+    testCase(DumpsTests.allTests),
+    testCase(ClientTests.allTests)
+  ]
 }
 #endif

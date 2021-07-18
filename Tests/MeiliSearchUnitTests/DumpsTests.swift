@@ -1,91 +1,95 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_try
 class DumpsTests: XCTestCase {
 
-    private var client: MeiliSearch!
-    private let session = MockURLSession()
+  private var client: MeiliSearch!
+  private let session = MockURLSession()
 
-    override func setUp() {
-        super.setUp()
-        client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
-    }
+  override func setUp() {
+    super.setUp()
+    client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
+  }
 
-    func testCreateDump() {
+  func testCreateDump() {
 
-        // Prepare the mock server
+    // Prepare the mock server
 
-        let json = """
+    let json = """
         {
           "uid": "20200929-114144097",
           "status": "in_progress"
         }
         """
 
-        let data = json.data(using: .utf8)!
+    let data = json.data(using: .utf8)!
 
-        let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
+    let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
 
-        session.pushData(json)
+    session.pushData(json)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Create dump")
+    let expectation = XCTestExpectation(description: "Create dump")
 
-        self.client.createDump { result in
-            switch result {
-            case .success(let dump):
-                XCTAssertEqual(stubDump, dump)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to create dump")
-            }
-        }
+    self.client.createDump { result in
+      switch result {
+      case .success(let dump):
+        XCTAssertEqual(stubDump, dump)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to create dump")
+      }
+    }
 
-        self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 1.0)
 
   }
 
-    func testGetDumpStatus() {
+  func testGetDumpStatus() {
 
-        // Prepare the mock server
+    // Prepare the mock server
 
-        let json = """
+    let json = """
         {
           "uid": "20200929-114144097",
           "status": "in_progress"
         }
         """
 
-        let data = json.data(using: .utf8)!
+    let data = json.data(using: .utf8)!
 
-        let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
+    let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
 
-        session.pushData(json)
+    session.pushData(json)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let UID: String = "20200929-114144097"
+    let UID: String = "20200929-114144097"
 
-        let expectation = XCTestExpectation(description: "Get the dump status")
+    let expectation = XCTestExpectation(description: "Get the dump status")
 
-        self.client.getDumpStatus(UID: UID) { result in
-            switch result {
-            case .success(let dump):
-                XCTAssertEqual(stubDump, dump)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get the dump status")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getDumpStatus(UID: UID) { result in
+      switch result {
+      case .success(let dump):
+        XCTAssertEqual(stubDump, dump)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get the dump status")
+      }
     }
 
-    static var allTests = [
-        ("testGetDumpStatus", testGetDumpStatus),
-        ("testGetSetting", testGetDumpStatus)
-    ]
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  static var allTests = [
+    ("testGetDumpStatus", testGetDumpStatus),
+    ("testGetSetting", testGetDumpStatus)
+  ]
 
 }
+// swiftlint:enable force_unwrapping
+// swiftlint:enable force_try
