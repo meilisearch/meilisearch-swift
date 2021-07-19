@@ -246,7 +246,7 @@ struct Documents {
         .encode(documents)
       return .success(data)
     } catch {
-      return .failure(error)
+          return .failure(error)
     }
   }
 
