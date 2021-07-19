@@ -31,15 +31,8 @@ struct MSError: Swift.Error {
   let underlying: Swift.Error
 }
 
-struct MeiliSearchApiError: Swift.Error {
-    let message: String
-    let errorCode: String
-    let errorType: String
-    let errorLink: String?
-    let underlying: Swift.Error
-}
-
-struct MSErrorResponse: Decodable {
+// should we keep it in public ?
+public struct MSErrorResponse: Decodable, Equatable {
   let message: String
   let errorCode: String
   let errorType: String

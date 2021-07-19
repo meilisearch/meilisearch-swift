@@ -8,7 +8,7 @@ public extension MeiliSearch {
   // MARK: Error
 
   /// Generic Error types for MeiliSearch,
-  enum Error: Swift.Error, LocalizedError {
+  enum Error: Swift.Error, LocalizedError, Equatable {
 
     /// The client tried to contact the server but it was not found.
     case serverNotFound
