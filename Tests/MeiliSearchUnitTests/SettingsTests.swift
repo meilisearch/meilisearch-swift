@@ -162,7 +162,7 @@ class SettingsTests: XCTestCase {
         "logan": ["wolverine", "xmen"],
         "wow": ["world of warcraft"]
       }
-        """
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
     let stubSynonyms: [String: [String]] = try! JSONSerialization.jsonObject(
@@ -215,7 +215,7 @@ class SettingsTests: XCTestCase {
         "logan": ["wolverine", "xmen"],
         "wow": ["world of warcraft"]
       }
-        """
+      """
 
     let jsonData = json.data(using: .utf8)!
     let synonyms: [String: [String]] = try! JSONSerialization.jsonObject(
