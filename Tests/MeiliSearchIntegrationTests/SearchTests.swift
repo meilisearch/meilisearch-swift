@@ -22,8 +22,7 @@ private struct Book: Codable, Equatable {
     case matchesInfo = "_matchesInfo"
   }
 
-  init(id: Int, title: String, comment: String? = nil, genres: [String] = [],
-       formatted: FormattedBook? = nil, matchesInfo: MatchesInfoBook? = nil) {
+  init(id: Int, title: String, comment: String? = nil, genres: [String] = [], formatted: FormattedBook? = nil, matchesInfo: MatchesInfoBook? = nil) {
     self.id = id
     self.title = title
     self.comment = comment

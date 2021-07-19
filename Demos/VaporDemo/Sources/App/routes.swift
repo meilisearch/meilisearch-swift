@@ -50,8 +50,8 @@ func routes(_ app: Application) throws {
 
           let encoder: JSONEncoder = JSONEncoder()
           if let data: Data = try? encoder.encode(index) {
-              let dataString: String = String(decoding: data, as: UTF8.self)
-              promise.succeed(dataString)
+            let dataString: String = String(decoding: data, as: UTF8.self)
+            promise.succeed(dataString)
           }
 
         case .failure(let error):

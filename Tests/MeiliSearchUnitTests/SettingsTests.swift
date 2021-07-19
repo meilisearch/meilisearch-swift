@@ -11,28 +11,28 @@ class SettingsTests: XCTestCase {
 
   private let json = """
     {
-        "rankingRules": [
-            "typo",
-            "words",
-            "proximity",
-            "attribute",
-            "wordsPosition",
-            "exactness",
-            "desc(release_date)"
-        ],
-        "searchableAttributes": ["title", "description", "uid"],
-        "displayedAttributes": [
-            "title",
-            "description",
-            "release_date",
-            "rank",
-            "poster"
-        ],
-        "stopWords": null,
-        "synonyms": {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"]
-        }
+      "rankingRules": [
+        "typo",
+        "words",
+        "proximity",
+        "attribute",
+        "wordsPosition",
+        "exactness",
+        "desc(release_date)"
+      ],
+      "searchableAttributes": ["title", "description", "uid"],
+      "displayedAttributes": [
+        "title",
+        "description",
+        "release_date",
+        "rank",
+        "poster"
+      ],
+      "stopWords": null,
+      "synonyms": {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"]
+      }
     }
     """
 
@@ -86,8 +86,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
@@ -121,8 +121,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let data: Data = jsonString.data(using: .utf8)!
@@ -157,11 +157,11 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
-        }
+      {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"],
+        "wow": ["world of warcraft"]
+      }
         """
 
     let jsonData = jsonString.data(using: .utf8)!
@@ -195,8 +195,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -210,11 +210,11 @@ class SettingsTests: XCTestCase {
     let UID: String = "movies"
 
     let json = """
-        {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
-        }
+      {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"],
+        "wow": ["world of warcraft"]
+      }
         """
 
     let jsonData = json.data(using: .utf8)!
@@ -242,8 +242,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -279,8 +279,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        ["of", "the", "to"]
-        """
+      ["of", "the", "to"]
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
     let stubStopWords: [String] = try! JSONSerialization.jsonObject(
@@ -313,8 +313,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -328,8 +328,8 @@ class SettingsTests: XCTestCase {
     let UID: String = "movies"
 
     let json = """
-        ["of", "the", "to"]
-        """
+      ["of", "the", "to"]
+      """
 
     let stopWords: [String] = try! JSONSerialization.jsonObject(
       with: json.data(using: .utf8)!, options: []) as! [String]
@@ -355,8 +355,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -392,16 +392,16 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        [
-            "typo",
-            "words",
-            "proximity",
-            "attribute",
-            "wordsPosition",
-            "exactness",
-            "desc(release_date)"
-        ]
-        """
+      [
+        "typo",
+        "words",
+        "proximity",
+        "attribute",
+        "wordsPosition",
+        "exactness",
+        "desc(release_date)"
+      ]
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
     let stubRakingRules: [String] = try! JSONSerialization.jsonObject(
@@ -434,8 +434,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -449,8 +449,8 @@ class SettingsTests: XCTestCase {
     let UID: String = "movies"
 
     let json = """
-        ["of", "the", "to"]
-        """
+      ["of", "the", "to"]
+      """
 
     let stopWords: [String] = try! JSONSerialization.jsonObject(
       with: json.data(using: .utf8)!, options: []) as! [String]
@@ -476,8 +476,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -513,8 +513,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let stubDistinctAttribute: String = """
-        "movie_id"
-        """
+      "movie_id"
+      """
 
     session.pushData(stubDistinctAttribute)
 
@@ -543,8 +543,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -579,8 +579,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -616,8 +616,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        ["title", "description", "uid"]
-        """
+      ["title", "description", "uid"]
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
     let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
@@ -650,8 +650,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -665,8 +665,8 @@ class SettingsTests: XCTestCase {
     let UID: String = "movies"
 
     let json = """
-        ["title", "description", "uid"]
-        """
+      ["title", "description", "uid"]
+      """
 
     let jsonData = json.data(using: .utf8)!
     let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
@@ -693,8 +693,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -730,8 +730,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        ["title", "description", "release_date", "rank", "poster"]
-        """
+      ["title", "description", "release_date", "rank", "poster"]
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
     let stubDisplayedAttributes: [String] = try! JSONSerialization.jsonObject(
@@ -764,8 +764,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -779,8 +779,8 @@ class SettingsTests: XCTestCase {
     let UID: String = "movies"
 
     let json = """
-        ["title", "description", "release_date", "rank", "poster"]
-        """
+      ["title", "description", "release_date", "rank", "poster"]
+      """
 
     let jsonData = json.data(using: .utf8)!
     let displayedAttributes: [String] = try! JSONSerialization.jsonObject(
@@ -807,8 +807,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -844,8 +844,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        ["genre", "director"]
-        """
+      ["genre", "director"]
+      """
 
     session.pushData(jsonString)
 
@@ -874,8 +874,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":0}
-        """
+      {"updateId":0}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
@@ -910,8 +910,8 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {"updateId":1}
-        """
+      {"updateId":1}
+      """
 
     let decoder: JSONDecoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(

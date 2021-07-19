@@ -4,13 +4,15 @@ disabled_rules:
   - file_length
   - nesting # should be re-enabled
   - xctfail_message
+  - identifier_name
+  - function_body_length
 
 analyzer_rules:
   - unused_declaration
   - unused_import
 
 opt_in_rules:
-  - explicit_type_interface
+  # - explicit_type_interface
   - force_unwrapping
   - implicit_return
   - attributes
@@ -25,6 +27,8 @@ excluded:
   - Carthage
   - Pods
   - .build
+  - Demos/VaporDemo/.build
+  - Demos/PerfectDemo/.build
 
 force_cast: warning
 force_try: warning

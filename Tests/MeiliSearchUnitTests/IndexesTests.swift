@@ -18,14 +18,14 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
+      {
+        "name":"Movies",
+        "uid":"Movies",
+        "createdAt":"2020-04-04T19:59:49.259572Z",
+        "updatedAt":"2020-04-04T19:59:49.259579Z",
+        "primaryKey":null
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -58,14 +58,14 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
+      {
+        "name":"Movies",
+        "uid":"Movies",
+        "createdAt":"2020-04-04T19:59:49.259572Z",
+        "updatedAt":"2020-04-04T19:59:49.259579Z",
+        "primaryKey":null
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -98,20 +98,20 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let createJsonString = """
-        {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
-        """
+      {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
+      """
 
     session.pushError(createJsonString, nil, code: 400)
 
     let getJsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
+      {
+        "name":"Movies",
+        "uid":"Movies",
+        "createdAt":"2020-04-04T19:59:49.259572Z",
+        "updatedAt":"2020-04-04T19:59:49.259579Z",
+        "primaryKey":null
+      }
+      """
 
     let jsonData = getJsonString.data(using: .utf8)!
 
@@ -144,14 +144,14 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }
-        """
+      {
+        "name":"Movies",
+        "uid":"Movies",
+        "createdAt":"2020-04-04T19:59:49.259572Z",
+        "updatedAt":"2020-04-04T19:59:49.259579Z",
+        "primaryKey":null
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -186,14 +186,14 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        [{
-            "name":"Movies",
-            "uid":"Movies",
-            "createdAt":"2020-04-04T19:59:49.259572Z",
-            "updatedAt":"2020-04-04T19:59:49.259579Z",
-            "primaryKey":null
-        }]
-        """
+      [{
+        "name":"Movies",
+        "uid":"Movies",
+        "createdAt":"2020-04-04T19:59:49.259572Z",
+        "updatedAt":"2020-04-04T19:59:49.259579Z",
+        "primaryKey":null
+      }]
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -226,13 +226,13 @@ class IndexesTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-          "uid": "movie_review",
-          "primaryKey": "movie_review_id",
-          "createdAt": "2019-11-20T09:40:33.711324Z",
-          "updatedAt": "2019-11-20T10:16:42.761858Z"
-        }
-        """
+      {
+        "uid": "movie_review",
+        "primaryKey": "movie_review_id",
+        "createdAt": "2019-11-20T09:40:33.711324Z",
+        "updatedAt": "2019-11-20T10:16:42.761858Z"
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
