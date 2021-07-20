@@ -223,10 +223,10 @@ public enum CreateError: Swift.Error, Equatable {
 
     if let data: Data = error.data {
 
-      let msErrorResponse: MSErrorResponse?
+      let msErrorResponse: MeiliSearch.MSErrorResponse?
       do {
         let decoder: JSONDecoder = JSONDecoder()
-        msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
+        msErrorResponse = try decoder.decode(MeiliSearch.MSErrorResponse.self, from: data)
       } catch {
         msErrorResponse = nil
       }
