@@ -20,32 +20,14 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-// Remove this
-public enum MSHTTPError: Swift.Error {
-  case invalidURL
-}
-
 // remove this
 struct MSError: Swift.Error {
   let data: Data?
   let underlying: Swift.Error
 }
 
-struct MeiliSearchApiError: Swift.Error {
-    let message: String
-    let errorCode: String
-    let errorType: String
-    let errorLink: String?
-    let underlying: Swift.Error
-}
-
 // should we keep it in public ?
-public struct MSErrorResponse: Decodable, Equatable {
-  let message: String
-  let errorCode: String
-  let errorType: String
-  let errorLink: String?
-}
+
 
 final class Request {
 
@@ -71,7 +53,7 @@ final class Request {
       }
 
       guard let url: URL = URL(string: urlString) else {
-        completion(.failure(MSHTTPError.invalidURL))
+        completion(.failure(MeiliSearch.Error.invalidURL))
         return
       }
 
@@ -103,12 +85,12 @@ final class Request {
         }
 
         // Test not custom function
-        if let res: MSErrorResponse = try? Constants.customJSONDecoder.decode(MSErrorResponse.self, from: data!) {
+        if let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: data!) {
           completion(
             .failure(
               MeiliSearch.Error.meiliSearchApiError(
                 message: res.message,
-                msErrorResponse: MSErrorResponse(
+                msErrorResponse: MeiliSearch.MSErrorResponse(
                   message: res.message,
                   errorCode: res.errorCode,
                   errorType: res.errorType,
@@ -147,7 +129,7 @@ final class Request {
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
@@ -197,7 +179,7 @@ final class Request {
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
@@ -241,7 +223,7 @@ final class Request {
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
