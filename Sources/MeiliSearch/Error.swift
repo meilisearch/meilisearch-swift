@@ -6,9 +6,15 @@ import Foundation
 public extension MeiliSearch {
 
   // MARK: Error
+  public struct MSErrorResponse: Decodable, Equatable {
+    public let message: String
+    public let errorCode: String
+    public let errorType: String
+    public let errorLink: String?
+  }
 
   /// Generic Error types for MeiliSearch,
-  enum Error: Swift.Error, LocalizedError, Equatable {
+  public enum Error: Swift.Error, LocalizedError, Equatable {
 
     /// The client tried to contact the server but it was not found.
     case serverNotFound
@@ -21,6 +27,9 @@ public extension MeiliSearch {
 
     /// The input or output JSON is invalid.
     case invalidJSON
+
+    // URL is invalid
+    case invalidURL
 
     /// Error originating from MeiliSearch API.
     // case meiliSearchApiError(message: String, errorCode: String, errorType: String, errorLink: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
@@ -39,6 +48,8 @@ public extension MeiliSearch {
         return "Response decoding failed"
       case .invalidJSON:
         return "Invalid json"
+      case .invalidURL:
+        return "Invalid host URL"
       case .meiliSearchCommunicationError(let message, let url):
         return "meiliSearchCommunicationError \(message) \(url) "
 
