@@ -18,18 +18,18 @@ class UpdatesTests: XCTestCase {
     // Prepare the mock server
 
     let json = """
-        {
-            "status": "processed",
-            "updateId": 1,
-            "type": {
-                "name": "DocumentsAddition",
-                "number": 4
-            },
-            "duration": 0.076980613,
-            "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-            "processedAt": "2019-12-07T21:16:09.703509Z"
-        }
-        """
+      {
+        "status": "processed",
+        "updateId": 1,
+        "type": {
+          "name": "DocumentsAddition",
+          "number": 4
+        },
+        "duration": 0.076980613,
+        "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+        "processedAt": "2019-12-07T21:16:09.703509Z"
+      }
+      """
 
     let data = json.data(using: .utf8)!
 
@@ -64,18 +64,18 @@ class UpdatesTests: XCTestCase {
     // Prepare the mock server
 
     let badStatusUpdateJson = """
-        {
-            "status": "something",
-            "updateId": 1,
-            "type": {
-                "name": "DocumentsAddition",
-                "number": 4
-            },
-            "duration": 0.076980613,
-            "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-            "processedAt": "2019-12-07T21:16:09.703509Z"
-        }
-        """
+      {
+        "status": "something",
+        "updateId": 1,
+        "type": {
+          "name": "DocumentsAddition",
+          "number": 4
+        },
+        "duration": 0.076980613,
+        "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+        "processedAt": "2019-12-07T21:16:09.703509Z"
+      }
+      """
 
     session.pushData(badStatusUpdateJson)
 
@@ -105,20 +105,20 @@ class UpdatesTests: XCTestCase {
     // Prepare the mock server
 
     let json = """
-        [
-            {
-                "status": "processed",
-                "updateId": 1,
-                "type": {
-                    "name": "DocumentsAddition",
-                    "number": 4
-                },
-                "duration": 0.076980613,
-                "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-                "processedAt": "2019-12-07T21:16:09.703509Z"
-            }
-        ]
-        """
+      [
+        {
+          "status": "processed",
+          "updateId": 1,
+          "type": {
+            "name": "DocumentsAddition",
+            "number": 4
+          },
+          "duration": 0.076980613,
+          "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+          "processedAt": "2019-12-07T21:16:09.703509Z"
+        }
+      ]
+      """
 
     let data = json.data(using: .utf8)!
 

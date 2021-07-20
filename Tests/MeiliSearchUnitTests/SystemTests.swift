@@ -19,10 +19,10 @@ class SystemTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "status": "available"
-        }
-        """
+      {
+        "status": "available"
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -53,10 +53,10 @@ class SystemTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "status": "available"
-        }
-        """
+      {
+        "status": "available"
+      }
+      """
 
     session.pushData(jsonString, code: 200)
 
@@ -105,12 +105,12 @@ class SystemTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "commitSha": "b46889b5f0f2f8b91438a08a358ba8f05fc09fc1",
-            "buildDate": "2019-11-15T09:51:54.278247+00:00",
-            "pkgVersion": "0.1.1"
-        }
-        """
+      {
+        "commitSha": "b46889b5f0f2f8b91438a08a358ba8f05fc09fc1",
+        "buildDate": "2019-11-15T09:51:54.278247+00:00",
+        "pkgVersion": "0.1.1"
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 

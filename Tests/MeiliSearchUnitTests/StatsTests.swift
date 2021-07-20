@@ -20,18 +20,18 @@ class StatsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "numberOfDocuments": 19654,
-            "isIndexing": false,
-            "fieldsFrequency": {
-                "poster": 19654,
-                "release_date": 19654,
-                "title": 19654,
-                "id": 19654,
-                "overview": 19654
-            }
+      {
+        "numberOfDocuments": 19654,
+        "isIndexing": false,
+        "fieldsFrequency": {
+          "poster": 19654,
+          "release_date": 19654,
+          "title": 19654,
+          "id": 19654,
+          "overview": 19654
         }
-        """
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 
@@ -64,33 +64,33 @@ class StatsTests: XCTestCase {
     // Prepare the mock server
 
     let jsonString = """
-        {
-            "databaseSize": 447819776,
-            "lastUpdate": "2019-11-15T11:15:22.092896Z",
-            "indexes": {
-                "movies": {
-                    "numberOfDocuments": 19654,
-                    "isIndexing": false,
-                    "fieldsFrequency": {
-                        "poster": 19654,
-                        "overview": 19654,
-                        "title": 19654,
-                        "id": 19654,
-                        "release_date": 19654
-                    }
-                },
-                "rangemovies": {
-                    "numberOfDocuments": 19654,
-                    "isIndexing": false,
-                    "fieldsFrequency": {
-                        "overview": 19654,
-                        "id": 19654,
-                        "title": 19654
-                    }
-                }
+      {
+        "databaseSize": 447819776,
+        "lastUpdate": "2019-11-15T11:15:22.092896Z",
+        "indexes": {
+          "movies": {
+            "numberOfDocuments": 19654,
+            "isIndexing": false,
+            "fieldsFrequency": {
+              "poster": 19654,
+              "overview": 19654,
+              "title": 19654,
+              "id": 19654,
+              "release_date": 19654
             }
+          },
+          "rangemovies": {
+            "numberOfDocuments": 19654,
+            "isIndexing": false,
+            "fieldsFrequency": {
+              "overview": 19654,
+              "id": 19654,
+              "title": 19654
+            }
+          }
         }
-        """
+      }
+      """
 
     let jsonData = jsonString.data(using: .utf8)!
 

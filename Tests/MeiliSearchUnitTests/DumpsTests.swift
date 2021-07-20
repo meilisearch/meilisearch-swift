@@ -18,11 +18,11 @@ class DumpsTests: XCTestCase {
     // Prepare the mock server
 
     let json = """
-        {
-          "uid": "20200929-114144097",
-          "status": "in_progress"
-        }
-        """
+      {
+        "uid": "20200929-114144097",
+        "status": "in_progress"
+      }
+      """
 
     let data = json.data(using: .utf8)!
 
@@ -53,11 +53,11 @@ class DumpsTests: XCTestCase {
     // Prepare the mock server
 
     let json = """
-        {
-          "uid": "20200929-114144097",
-          "status": "in_progress"
-        }
-        """
+      {
+        "uid": "20200929-114144097",
+        "status": "in_progress"
+      }
+      """
 
     let data = json.data(using: .utf8)!
 
