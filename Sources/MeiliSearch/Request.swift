@@ -20,47 +20,39 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-// remove this
-struct MSError: Swift.Error {
-  let data: Data?
-  let underlying: Swift.Error
-}
-
-// should we keep it in public ?
-
 final class Request {
 
-    private let config: Config
-    private let session: URLSessionProtocol
+  private let config: Config
+  private let session: URLSessionProtocol
 
-    init(_ config: Config) {
-        self.config = config
-        self.session = config.session ?? URLSession.shared
-    }
+  init(_ config: Config) {
+    self.config = config
+    self.session = config.session ?? URLSession.shared
+  }
 
-    func get(
-        api: String,
-        param: String? = nil,
-        headers: [String: String] = [:],
-        _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
+  func get(
+    api: String,
+    param: String? = nil,
+    headers: [String: String] = [:],
+    _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
-        autoreleasepool {
+    autoreleasepool {
 
-            var urlString: String = config.url(api: api)
-            if let param: String = param, !param.isEmpty {
-                urlString += param
-            }
+      var urlString: String = config.url(api: api)
+      if let param: String = param, !param.isEmpty {
+        urlString += param
+      }
 
       guard let url: URL = URL(string: urlString) else {
         completion(.failure(MeiliSearch.Error.invalidURL))
         return
       }
 
-            var request: URLRequest = URLRequest(url: url)
-            request.httpMethod = "GET"
-            headers.forEach { (key, value) in
-                request.addValue(value, forHTTPHeaderField: key)
-            }
+      var request: URLRequest = URLRequest(url: url)
+      request.httpMethod = "GET"
+      headers.forEach { (key, value) in
+        request.addValue(value, forHTTPHeaderField: key)
+      }
 
       if let apiKey = config.apiKey {
         request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
@@ -181,7 +173,6 @@ final class Request {
         return
       }
     }
-
     task.resume()
 
   }
@@ -192,7 +183,7 @@ extension URLSession: URLSessionProtocol {
   public func execute(
     with request: URLRequest,
     completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
-      self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
+    self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
   }
 }
 
