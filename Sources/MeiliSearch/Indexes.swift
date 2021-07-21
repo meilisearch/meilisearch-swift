@@ -67,9 +67,9 @@ struct Indexes {
         completion(.success(index))
       case .failure(let error):
         switch error {
-        case MeiliSearch.Error.meiliSearchApiError(let message, let msErrorResponse, let statusCode, let url):
-          if let test = msErrorResponse as? MeiliSearch.MSErrorResponse {
-            if (test.errorCode == "index_already_exists") {
+        case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
+          if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
+            if msErrorBody.errorCode == "index_already_exists" {
               self.get(UID, completion)
             }
           } else {

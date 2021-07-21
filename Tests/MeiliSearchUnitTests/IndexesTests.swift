@@ -93,7 +93,6 @@ class IndexesTests: XCTestCase {
 
   }
 
-
   func testGetIndex() {
 
     // Prepare the mock server
