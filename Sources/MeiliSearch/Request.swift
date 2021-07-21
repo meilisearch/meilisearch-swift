@@ -67,55 +67,14 @@ final class Request {
       }
 
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-        if let error: Swift.Error = error {
-          completion(
-            .failure(
-              MeiliSearch.Error.meiliSearchCommunicationError(
-                message: error.localizedDescription,
-                url: url.absoluteString
-              )
-            )
-          )
+        do {
+          try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+          completion(.success(data))
+          return
+        } catch let error {
+          completion(.failure(error))
           return
         }
-
-        guard let response = response as? HTTPURLResponse else {
-          fatalError("Correct handles invalid response, please create a custom error type")
-        }
-
-        // Test not custom function
-        if data != nil, let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: data!) {
-          completion(
-            .failure(
-              MeiliSearch.Error.meiliSearchApiError(
-                message: res.message,
-                msErrorResponse: MeiliSearch.MSErrorResponse(
-                  message: res.message,
-                  errorCode: res.errorCode,
-                  errorType: res.errorType,
-                  errorLink: res.errorLink
-                ),
-                statusCode: response.statusCode,
-                url: url.absoluteString                            )
-            )
-          )
-          return
-        }
-        if 400 ... 599 ~= response.statusCode {
-          completion(
-            .failure(
-              MeiliSearch.Error.meiliSearchApiError(
-                message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
-                msErrorResponse: nil,
-                statusCode: response.statusCode,
-                url: url.absoluteString
-              )
-            )
-          )
-          return
-        }
-
-        completion(.success(data))
       }
 
       task.resume()
@@ -143,59 +102,17 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchCommunicationError(
-              message: error.localizedDescription,
-              url: url.absoluteString
-            )
-          )
-        )
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        if let unwrappedData: Data = data {
+          completion(.success(unwrappedData))
+          return
+        }
+        completion(.failure(MeiliSearch.Error.invalidJSON))
+      } catch let error {
+        completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-              // Test not custom function
-      if data != nil, let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: data!) {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: res.message,
-              msErrorResponse: MeiliSearch.MSErrorResponse(
-                message: res.message,
-                errorCode: res.errorCode,
-                errorType: res.errorType,
-                errorLink: res.errorLink
-              ),
-              statusCode: response.statusCode,
-              url: url.absoluteString                            )
-          )
-        )
-        return
-      }
-
-      if 400 ... 599 ~= response.statusCode {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
-              msErrorResponse: nil,
-              statusCode: response.statusCode,
-              url: url.absoluteString
-            )
-          )
-        )
-        return
-      }
-
-      guard let data = data else {
-        return
-      }
-
-      completion(.success(data))
     }
 
     task.resume()
@@ -223,56 +140,14 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchCommunicationError(
-              message: error.localizedDescription,
-              url: url.absoluteString
-            )
-          )
-        )
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        completion(.success(data))
+        return
+      } catch let error {
+        completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-
-      // Test not custom function
-      if data != nil, let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: data!) {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: res.message,
-              msErrorResponse: MeiliSearch.MSErrorResponse(
-                message: res.message,
-                errorCode: res.errorCode,
-                errorType: res.errorType,
-                errorLink: res.errorLink
-              ),
-              statusCode: response.statusCode,
-              url: url.absoluteString                            )
-          )
-        )
-        return
-      }
-
-      if 400 ... 599 ~= response.statusCode {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
-              msErrorResponse: nil,
-              statusCode: response.statusCode,
-              url: url.absoluteString
-            )
-          )
-        )
-        return
-      }
-
-      completion(.success(data))
     }
 
     task.resume()
@@ -282,7 +157,6 @@ final class Request {
   func delete(
     api: String,
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
-
     guard let url: URL = URL(string: config.url(api: api)) else {
       completion(.failure(MeiliSearch.Error.invalidURL))
       return
@@ -298,54 +172,14 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchCommunicationError(
-              message: error.localizedDescription,
-              url: url.absoluteString
-            )
-          )
-        )
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        completion(.success(data))
+        return
+      } catch let error {
+        completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-      // Test not custom function
-      if data != nil, let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: data!) {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: res.message,
-              msErrorResponse: MeiliSearch.MSErrorResponse(
-                message: res.message,
-                errorCode: res.errorCode,
-                errorType: res.errorType,
-                errorLink: res.errorLink
-              ),
-              statusCode: response.statusCode,
-              url: url.absoluteString                            )
-          )
-        )
-        return
-      }
-      if 400 ... 599 ~= response.statusCode {
-        completion(
-          .failure(
-            MeiliSearch.Error.meiliSearchApiError(
-              message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
-              msErrorResponse: nil,
-              statusCode: response.statusCode,
-              url: url.absoluteString
-            )
-          )
-        )
-        return
-      }
-
-      completion(.success(data))
     }
 
     task.resume()
@@ -358,7 +192,7 @@ extension URLSession: URLSessionProtocol {
   public func execute(
     with request: URLRequest,
     completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
-    self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
+      self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
   }
 }
 
