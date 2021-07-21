@@ -15,7 +15,6 @@ class DumpsTests: XCTestCase {
     if client == nil {
       client = try! MeiliSearch("http://localhost:7700", "masterKey")
     }
-    pool(client)
   }
 
   func testCreateAndGetDump() {

@@ -14,8 +14,6 @@ class IndexesTests: XCTestCase {
       client = try! MeiliSearch("http://localhost:7700", "masterKey")
     }
 
-    pool(client)
-
     let expectation = XCTestExpectation(description: "Try to delete index between tests")
     self.client.deleteIndex(UID: self.uid) { _ in
       expectation.fulfill()
