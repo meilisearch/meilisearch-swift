@@ -40,6 +40,49 @@ class IndexesTests: XCTestCase {
     self.wait(for: [createExpectation], timeout: 1.0)
   }
 
+  func testCreateIndexThatAlreadyExists() {
+
+    let createExpectation = XCTestExpectation(description: "Create Movies index")
+    self.client.createIndex(UID: self.uid) { result in
+      switch result {
+      case .success:
+        createExpectation.fulfill()
+      case .failure:
+        XCTFail("Failed to create Movies index")
+      }
+    }
+    self.wait(for: [createExpectation], timeout: 1.0)
+
+    let create2ndIndexExpectation = XCTestExpectation(description: "Create Movies index that already exists and fail")
+    self.client.createIndex(UID: self.uid) { result in
+      switch result {
+      case .success:
+        XCTFail("Movie index created when it should have not be possible")
+      case .failure(let error):
+        XCTAssertNotNil(error.localizedDescription)
+        switch error {
+          case MeiliSearch.Error.meiliSearchApiError(let message, let msErrorResponse, let statusCode, let url):
+            XCTAssertNotNil(message)
+            XCTAssertNotNil(msErrorResponse)
+            XCTAssertNotNil(statusCode)
+            XCTAssertNotNil(url)
+            if let msError = msErrorResponse as MeiliSearch.MSErrorResponse? {
+              XCTAssertEqual(msError.errorCode, "index_already_exists")
+              XCTAssertNotNil(msError.message)
+              XCTAssertNotNil(msError.errorLink)
+              XCTAssertNotNil(msError.errorType)
+            } else {
+              XCTFail("Error body should be of type msErrorResponse")
+            }
+          default:
+            XCTFail("Index already exists error should be an MeiliSearch Api Error")
+        }
+      }
+      create2ndIndexExpectation.fulfill()
+    }
+    self.wait(for: [create2ndIndexExpectation], timeout: 1.0)
+  }
+
   func testGetOrCreateIndex() {
 
     let expectation = XCTestExpectation(description: "Get or create Movies index")
@@ -257,6 +300,7 @@ class IndexesTests: XCTestCase {
 
   static var allTests = [
     ("testCreateIndex", testCreateIndex),
+    ("testCreateIndexThatAlreadyExists", testCreateIndexThatAlreadyExists),
     ("testGetOrCreateIndex", testGetOrCreateIndex),
     ("testGetOrCreateIndexAlreadyExists", testGetOrCreateIndexAlreadyExists),
     ("testGetIndex", testGetIndex),
