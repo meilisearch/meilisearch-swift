@@ -53,7 +53,7 @@ public extension MeiliSearch {
   }
 
   /// Generic Error types for MeiliSearch,
-  public enum Error: Swift.Error, LocalizedError, Equatable {
+  enum Error: Swift.Error, LocalizedError, Equatable {
 
     /// The client tried to contact the server but it was not found.
     case serverNotFound
@@ -94,7 +94,7 @@ public extension MeiliSearch {
 
       // can we do let error and then error.message etc...
       case .meiliSearchApiError(let message, let error, let statusCode, let url):
-        if let msErrorResponse = error as? MSErrorResponse {
+        if let msErrorResponse = error as MSErrorResponse? {
           return """
           MeiliSearchApiError: \(msErrorResponse.message)
           errorCode: \(msErrorResponse.errorCode)
