@@ -38,7 +38,8 @@ public extension MeiliSearch {
           errorLink: res.errorLink
         ),
         statusCode: response.statusCode,
-        url: url.absoluteString                            )
+        url: url.absoluteString
+      )
     }
 
     // HTTP error with MeiliSearch
