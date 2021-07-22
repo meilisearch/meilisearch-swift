@@ -94,8 +94,6 @@ class SearchTests: XCTestCase {
       client = try! MeiliSearch("http://localhost:7700", "masterKey")
     }
 
-    pool(client)
-
     let documents: Data = try! JSONEncoder().encode(books)
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")

@@ -20,22 +20,6 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-public enum MSHTTPError: Swift.Error {
-  case invalidURL
-}
-
-struct MSError: Swift.Error {
-  let data: Data?
-  let underlying: Swift.Error
-}
-
-struct MSErrorResponse: Decodable {
-  let message: String
-  let errorCode: String
-  let errorType: String
-  let errorLink: String?
-}
-
 final class Request {
 
   private let config: Config
@@ -60,7 +44,7 @@ final class Request {
       }
 
       guard let url: URL = URL(string: urlString) else {
-        completion(.failure(MSHTTPError.invalidURL))
+        completion(.failure(MeiliSearch.Error.invalidURL))
         return
       }
 
@@ -70,33 +54,22 @@ final class Request {
         request.addValue(value, forHTTPHeaderField: key)
       }
 
-      if let apiKey: String = config.apiKey {
+      if let apiKey = config.apiKey {
         request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
       }
 
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-        if let error: Swift.Error = error {
+        do {
+          try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+          completion(.success(data))
+          return
+        } catch let error {
           completion(.failure(error))
           return
         }
-
-        guard let response = response as? HTTPURLResponse else {
-          fatalError("Correct handles invalid response, please create a custom error type")
-        }
-
-        if 400 ... 599 ~= response.statusCode {
-          completion(.failure(
-            MSError(
-              data: data,
-              underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
-          return
-        }
-
-        completion(.success(data))
       }
 
       task.resume()
-
     }
   }
 
@@ -106,7 +79,7 @@ final class Request {
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
@@ -121,29 +94,17 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
-        let msError: MSError = MSError(data: data, underlying: error)
-        completion(.failure(msError))
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        if let unwrappedData: Data = data {
+          completion(.success(unwrappedData))
+          return
+        }
+        completion(.failure(MeiliSearch.Error.invalidJSON))
+      } catch let error {
+        completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-
-      if 400 ... 599 ~= response.statusCode {
-        completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
-        return
-      }
-
-      guard let data = data else {
-        return
-      }
-
-      completion(.success(data))
     }
 
     task.resume()
@@ -156,7 +117,7 @@ final class Request {
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
@@ -171,24 +132,14 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        completion(.success(data))
+        return
+      } catch let error {
         completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-
-      if 400 ... 599 ~= response.statusCode {
-        completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
-        return
-      }
-
-      completion(.success(data))
     }
 
     task.resume()
@@ -198,9 +149,8 @@ final class Request {
   func delete(
     api: String,
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
-
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MSHTTPError.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL))
       return
     }
 
@@ -214,26 +164,15 @@ final class Request {
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
-      if let error: Swift.Error = error {
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        completion(.success(data))
+        return
+      } catch let error {
         completion(.failure(error))
         return
       }
-
-      guard let response = response as? HTTPURLResponse else {
-        fatalError("Correct handles invalid response, please create a custom error type")
-      }
-
-      if 400 ... 599 ~= response.statusCode {
-        completion(.failure(
-          MSError(
-            data: data,
-            underlying: NSError(domain: "HttpStatus", code: response.statusCode, userInfo: nil))))
-        return
-      }
-
-      completion(.success(data))
     }
-
     task.resume()
 
   }

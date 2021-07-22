@@ -38,8 +38,6 @@ class UpdatesTests: XCTestCase {
       client = try! MeiliSearch("http://localhost:7700", "masterKey")
     }
 
-    pool(client)
-
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
     self.client.deleteIndex(UID: uid) { _ in

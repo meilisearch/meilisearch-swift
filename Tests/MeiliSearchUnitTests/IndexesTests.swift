@@ -93,52 +93,6 @@ class IndexesTests: XCTestCase {
 
   }
 
-  func testGetOrCreateIndexAlreadyExists() {
-
-    // Prepare the mock server
-
-    let createJsonString = """
-      {"message":"Impossible to create index; index already exists","errorType":"invalid_request_error","errorCode":"index_already_exists"}
-      """
-
-    session.pushError(createJsonString, nil, code: 400)
-
-    let getJsonString = """
-      {
-        "name":"Movies",
-        "uid":"Movies",
-        "createdAt":"2020-04-04T19:59:49.259572Z",
-        "updatedAt":"2020-04-04T19:59:49.259579Z",
-        "primaryKey":null
-      }
-      """
-
-    let jsonData = getJsonString.data(using: .utf8)!
-
-    let stubIndex: Index = try! Constants.customJSONDecoder.decode(Index.self, from: jsonData)
-
-    session.pushData(getJsonString)
-
-    // Start the test with the mocked server
-
-    let uid: String = "Movies"
-
-    let expectation = XCTestExpectation(description: "Get or create Movies index")
-
-    self.client.getOrCreateIndex(UID: uid) { result in
-      switch result {
-      case .success(let index):
-        XCTAssertEqual(stubIndex, index)
-        expectation.fulfill()
-      case .failure(let error):
-        XCTFail("Failed to get or create Movies index, error: \(error)")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: 1.0)
-
-  }
-
   func testGetIndex() {
 
     // Prepare the mock server

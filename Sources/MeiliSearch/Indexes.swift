@@ -61,26 +61,25 @@ struct Indexes {
   }
 
   func getOrCreate(_ UID: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-
     self.create(UID) { result in
-
       switch result {
-
       case .success(let index):
         completion(.success(index))
-
       case .failure(let error):
         switch error {
-        case CreateError.indexAlreadyExists:
-          self.get(UID, completion)
+        case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
+          if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
+            if msErrorBody.errorCode == "index_already_exists" {
+              self.get(UID, completion)
+            }
+          } else {
+            completion(.failure(error))
+          }
         default:
           completion(.failure(error))
         }
-
       }
-
     }
-
   }
 
   func create(
@@ -97,25 +96,13 @@ struct Indexes {
     }
 
     self.request.post(api: "/indexes", data) { result in
-
       switch result {
       case .success(let result):
-
         Indexes.decodeJSON(result, completion)
-
       case .failure(let error):
-
-        switch error {
-        case let msError as MSError:
-          completion(.failure(CreateError.decode(msError)))
-        default:
-          completion(.failure(error))
-        }
-
+        completion(.failure(error))
       }
-
     }
-
   }
 
   func update(
@@ -203,41 +190,4 @@ struct CreateIndexPayload: Codable {
 
 struct UpdateIndexPayload: Codable {
   let primaryKey: String
-}
-
-/**
- Error type for all functions included in the `Indexes` struct.
- */
-public enum CreateError: Swift.Error, Equatable {
-
-  // MARK: Values
-
-  /// Case the `Index` already exists in the Meilisearch instance, this error will return.
-  case indexAlreadyExists
-
-  // MARK: Codable
-
-  static func decode(_ error: MSError) -> Swift.Error {
-
-    let underlyingError: NSError = error.underlying as NSError
-
-    if let data: Data = error.data {
-
-      let msErrorResponse: MSErrorResponse?
-      do {
-        let decoder: JSONDecoder = JSONDecoder()
-        msErrorResponse = try decoder.decode(MSErrorResponse.self, from: data)
-      } catch {
-        msErrorResponse = nil
-      }
-
-      if underlyingError.code == 400 && msErrorResponse?.errorType == "invalid_request_error" && msErrorResponse?.errorCode == "index_already_exists" {
-        return CreateError.indexAlreadyExists
-      }
-      return error
-
-    }
-
-    return error
-  }
 }
