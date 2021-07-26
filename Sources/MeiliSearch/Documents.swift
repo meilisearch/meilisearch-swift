@@ -70,7 +70,7 @@ struct Documents {
   func add(
     _ UID: String,
     _ document: Data,
-    _ primaryKey: String?,
+    _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(UID)/documents"
@@ -93,7 +93,7 @@ struct Documents {
     _ UID: String,
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
-    _ primaryKey: String?,
+    _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
 
     var query: String = "/indexes/\(UID)/documents"
@@ -127,7 +127,7 @@ struct Documents {
   func update(
     _ UID: String,
     _ document: Data,
-    _ primaryKey: String?,
+    _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(UID)/documents"

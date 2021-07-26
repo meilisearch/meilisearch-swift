@@ -89,7 +89,10 @@ public extension MeiliSearch {
       case .invalidJSON:
         return "Invalid json"
       case .invalidURL(let url):
-        return "Invalid URL: \(url)"
+        if let strUrl: String = url {
+          return "Invalid URL: \(strUrl)"
+        }
+        return "Invalid URL"
       case .meiliSearchCommunicationError(let message, let url):
         return "meiliSearchCommunicationError \(message) \(url) "
 

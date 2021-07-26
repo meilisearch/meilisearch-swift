@@ -61,8 +61,8 @@ class DocumentsTests: XCTestCase {
 
     self.client.addDocuments(
       UID: uid,
-      documents: [movie],
-      primaryKey: "") { result in
+      documents: [movie]
+    ) { result in
 
       switch result {
       case .success(let update):
@@ -71,7 +71,6 @@ class DocumentsTests: XCTestCase {
       case .failure:
         XCTFail("Failed to add or replace Movies document")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 1.0)
@@ -255,7 +254,6 @@ class DocumentsTests: XCTestCase {
     // Start the test with the mocked server
 
     let uid: String = "Movies"
-    let limit: Int = 10
 
     let expectation = XCTestExpectation(description: "Get Movies documents")
 
