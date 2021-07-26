@@ -24,12 +24,10 @@ struct Documents {
     request.get(api: query) { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         Documents.decodeJSON(data, completion: completion)
 
       case .failure(let error):
@@ -40,25 +38,30 @@ struct Documents {
 
   func getAll<T>(
     _ UID: String,
-    _ limit: Int = -1,
+    _ options: GetParameters? = nil,
     _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-
-    let query: String = "/indexes/\(UID)/documents?limit=\(limit)"
-    request.get(api: query) { result in
-      switch result {
-      case .success(let data):
-
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-
-        Documents.decodeJSON(data, completion: completion)
-
-      case .failure(let error):
-        completion(.failure(error))
+    do {
+      var queryParameters = ""
+      if let parameters: GetParameters = options {
+        queryParameters = try parameters.toQueryParameters()
       }
+      let query: String = "/indexes/\(UID)/documents\(queryParameters)"
+      request.get(api: query) { result in
+        switch result {
+        case .success(let data):
+          guard let data: Data = data else {
+            completion(.failure(MeiliSearch.Error.dataNotFound))
+            return
+          }
+          Documents.decodeJSON(data, completion: completion)
+
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
+    } catch let error {
+      completion(.failure(error))
     }
   }
 

@@ -259,8 +259,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get Movies documents")
 
-    self.client.getDocuments(UID: uid, limit: limit) { (result: Result<[Movie], Swift.Error>) in
-
+    self.client.getDocuments(UID: uid) { (result: Result<[Movie], Swift.Error>) in
       switch result {
       case .success(let movies):
         XCTAssertEqual(stubMovies, movies)

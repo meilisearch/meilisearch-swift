@@ -268,10 +268,10 @@ public struct MeiliSearch {
    */
   public func getDocuments<T>(
     UID: String,
-    limit: Int,
+    options: GetParameters? = nil,
     _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    self.documents.getAll(UID, limit, completion)
+    self.documents.getAll(UID, options, completion)
   }
 
   /**
