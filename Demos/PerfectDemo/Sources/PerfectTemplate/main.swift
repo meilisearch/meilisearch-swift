@@ -23,7 +23,7 @@ import MeiliSearch
 import Foundation
 
 // swiftlint:disable force_try
-private let client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
+private let client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
 // swiftlint:disable force_try
 
 private struct Movie: Codable, Equatable {

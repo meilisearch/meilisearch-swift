@@ -32,12 +32,12 @@ public struct MeiliSearch {
   /**
    Create an instance of MeiliSearch client.
 
-   - parameter hostURL:   The host to the MeiliSearch http server.
+   - parameter host:   The host to the MeiliSearch http server.
    - parameter apiKey:    The authorisation key to communicate with MeiliSearch.
    - parameter session:   A custom produced URLSessionProtocol.
    */
-  public init(_ hostURL: String, _ apiKey: String? = nil, _ session: URLSessionProtocol? = nil) throws {
-    self.config = try Config(hostURL: hostURL, apiKey: apiKey, session: session).validate()
+  public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil) throws {
+    self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
     let request: Request = Request(self.config)
     self.indexes = Indexes(request)
     self.documents = Documents(request)

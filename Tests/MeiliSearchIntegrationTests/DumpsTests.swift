@@ -13,7 +13,7 @@ class DumpsTests: XCTestCase {
   override func setUp() {
     super.setUp()
     if client == nil {
-      client = try! MeiliSearch("http://localhost:7700", "masterKey")
+      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
     }
   }
 
