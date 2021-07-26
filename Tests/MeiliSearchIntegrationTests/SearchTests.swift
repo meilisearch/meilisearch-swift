@@ -91,7 +91,7 @@ class SearchTests: XCTestCase {
     super.setUp()
 
     if client == nil {
-      client = try! MeiliSearch("http://localhost:7700", "masterKey")
+      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
     }
 
     let documents: Data = try! JSONEncoder().encode(books)

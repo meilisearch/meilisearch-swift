@@ -10,7 +10,7 @@ class KeysTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    client = try! MeiliSearch("http://localhost:7700", "masterKey", session)
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
   }
 
   func testKeys() {

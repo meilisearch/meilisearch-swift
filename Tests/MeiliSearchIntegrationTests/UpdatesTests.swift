@@ -35,7 +35,7 @@ class UpdatesTests: XCTestCase {
     super.setUp()
 
     if client == nil {
-      client = try! MeiliSearch("http://localhost:7700", "masterKey")
+      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
     }
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")

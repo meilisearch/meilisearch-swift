@@ -11,14 +11,32 @@ class IndexesTests: XCTestCase {
     super.setUp()
 
     if client == nil {
-      client = try! MeiliSearch("http://localhost:7700", "masterKey")
+      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
     }
-
-    let expectation = XCTestExpectation(description: "Try to delete index between tests")
-    self.client.deleteIndex(UID: self.uid) { _ in
-      expectation.fulfill()
+    let getIndexesExp = XCTestExpectation(description: "Try to get all indexes")
+    self.client.getIndexes { result in
+      switch result {
+      case .success(let indexes):
+        let asyncDeletegroup = DispatchGroup()
+        for index in indexes {
+          asyncDeletegroup.enter()
+          self.client.deleteIndex(UID: index.UID) { res in
+            switch res {
+            case .success:
+              asyncDeletegroup.leave()
+            case .failure(let error):
+              print(error.localizedDescription)
+              asyncDeletegroup.leave()
+            }
+          }
+        }
+        getIndexesExp.fulfill()
+      case .failure(let error):
+        print(error.localizedDescription)
+        getIndexesExp.fulfill()
+      }
     }
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [getIndexesExp], timeout: 5.0)
 
   }
 

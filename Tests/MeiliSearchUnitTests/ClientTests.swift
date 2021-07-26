@@ -8,15 +8,15 @@ class ClientTests: XCTestCase {
 
   func testValidHostURL() {
     session.pushEmpty(code: 200)
-    XCTAssertNotNil(try? MeiliSearch("http://localhost:7700", "masterKey", session))
+    XCTAssertNotNil(try? MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session))
   }
 
   func testWrongHostURL() {
-    XCTAssertNotNil(try MeiliSearch("1234"))
+    XCTAssertNotNil(try MeiliSearch(host: "1234"))
   }
 
   func testNotValidHostURL() {
-    XCTAssertThrowsError(try MeiliSearch("Not valid host")) { error in
+    XCTAssertThrowsError(try MeiliSearch(host: "Not valid host")) { error in
       XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.hostNotValid)
     }
   }
