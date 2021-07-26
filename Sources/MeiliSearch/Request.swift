@@ -44,7 +44,7 @@ final class Request {
       }
 
       guard let url: URL = URL(string: urlString) else {
-        completion(.failure(MeiliSearch.Error.invalidURL))
+        completion(.failure(MeiliSearch.Error.invalidURL(url: urlString)))
         return
       }
 
@@ -79,7 +79,7 @@ final class Request {
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MeiliSearch.Error.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
 
@@ -117,7 +117,7 @@ final class Request {
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MeiliSearch.Error.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
 
@@ -150,7 +150,7 @@ final class Request {
     api: String,
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
     guard let url: URL = URL(string: config.url(api: api)) else {
-      completion(.failure(MeiliSearch.Error.invalidURL))
+      completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
 

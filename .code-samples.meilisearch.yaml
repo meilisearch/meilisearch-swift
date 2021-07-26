@@ -58,7 +58,7 @@ get_one_document_1: |-
       }
   }
 get_documents_1: |-
-  client.getDocuments(UID: "movies", limit: 2) { (result: Result<[Movie], Swift.Error>) in
+  client.getDocuments(UID: "movies", options: GetParameters(limit: 2)) { (result: Result<[Movie], Swift.Error>) in
       switch result {
       case .success(let movies):
           print(movies)

@@ -82,17 +82,13 @@ class DocumentsTests: XCTestCase {
         waitForPendingUpdate(self.client, self.uid, update) {
 
           self.client.getDocuments(
-            UID: self.uid,
-            limit: 20
+            UID: self.uid
           ) { (result: Result<[Movie], Swift.Error>) in
-
             switch result {
             case .success(let returnedMovies):
-
               movies.forEach { (movie: Movie) in
                 XCTAssertTrue(returnedMovies.contains(movie))
               }
-
             case .failure(let error):
               print(error)
               XCTFail()
@@ -112,46 +108,36 @@ class DocumentsTests: XCTestCase {
 
   }
 
-  func testAddDataAndGetDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
-
+  func testAddAndGetDocumentsEmptyParams() {
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
     self.client.addDocuments(
       UID: self.uid,
-      documents: documents,
+      documents: movies,
       primaryKey: nil
     ) { result in
 
       switch result {
       case .success(let update):
-
         XCTAssertEqual(Update(updateId: 0), update)
-
         waitForPendingUpdate(self.client, self.uid, update) {
-
           self.client.getDocuments(
             UID: self.uid,
-            limit: 20
+            options: GetParameters()
           ) { (result: Result<[Movie], Swift.Error>) in
-
             switch result {
             case .success(let returnedMovies):
-
               movies.forEach { (movie: Movie) in
                 XCTAssertTrue(returnedMovies.contains(movie))
               }
-
+              XCTAssertEqual(movies.count, 8)
             case .failure(let error):
               print(error)
               XCTFail()
             }
-
             expectation.fulfill()
           }
-
         }
-
       case .failure(let error):
         print(error)
         XCTFail()
@@ -161,8 +147,46 @@ class DocumentsTests: XCTestCase {
 
   }
 
-  func testGetOneDocumentAndFail() {
+  func testGetDocumentsWithParameters() {
+    let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
+    self.client.addDocuments(
+      UID: self.uid,
+      documents: movies,
+      primaryKey: nil
+    ) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getDocuments(
+            UID: self.uid,
+            options: GetParameters(offset: 1, limit: 1, attributesToRetrieve: ["id", "title"])
+          ) { (result: Result<[Movie], Swift.Error>) in
+            switch result {
+            case .success(let returnedMovies):
+              let returnedMovie = returnedMovies[0]
+              XCTAssertEqual(returnedMovies.count, 1)
+              XCTAssertEqual(returnedMovie.id, 456)
+              XCTAssertEqual(returnedMovie.title, "Le Petit Prince")
+              XCTAssertEqual(returnedMovie.comment, nil)
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+    }
+    self.wait(for: [expectation], timeout: 5.0)
+  }
+
+  func testGetOneDocumentAndFail() {
     let getExpectation = XCTestExpectation(description: "Get one document and fail")
     self.client.getDocument(
       UID: self.uid,
@@ -179,7 +203,6 @@ class DocumentsTests: XCTestCase {
   }
 
   func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
-
     let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
@@ -404,8 +427,7 @@ class DocumentsTests: XCTestCase {
               waitForPendingUpdate(self.client, self.uid, update) {
 
                 self.client.getDocuments(
-                  UID: self.uid,
-                  limit: 20
+                  UID: self.uid
                 ) { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
@@ -470,8 +492,7 @@ class DocumentsTests: XCTestCase {
               waitForPendingUpdate(self.client, self.uid, update) {
 
                 self.client.getDocuments(
-                  UID: self.uid,
-                  limit: 20
+                  UID: self.uid
                 ) { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
@@ -507,7 +528,7 @@ class DocumentsTests: XCTestCase {
 
   static var allTests = [
     ("testAddAndGetDocuments", testAddAndGetDocuments),
-    ("testAddDataAndGetDocuments", testAddDataAndGetDocuments),
+    ("testAddAndGetDocumentsEmptyParams", testAddAndGetDocumentsEmptyParams),
     ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
     ("testAddAndGetOneDocumentWithIntIdentifierAndSucceed", testAddAndGetOneDocumentWithIntIdentifierAndSucceed),
     ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),

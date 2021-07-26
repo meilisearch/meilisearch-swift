@@ -156,7 +156,7 @@ public struct MeiliSearch {
     UID: String,
     documents: [T],
     encoder: JSONEncoder? = nil,
-    primaryKey: String?,
+    primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
     self.documents.add(
       UID,
@@ -184,7 +184,7 @@ public struct MeiliSearch {
   public func addDocuments(
     UID: String,
     documents: Data,
-    primaryKey: String?,
+    primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.documents.add(
       UID,
@@ -212,7 +212,7 @@ public struct MeiliSearch {
   public func updateDocuments(
     UID: String,
     documents: Data,
-    primaryKey: String?,
+    primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.documents.update(
       UID,
@@ -268,10 +268,10 @@ public struct MeiliSearch {
    */
   public func getDocuments<T>(
     UID: String,
-    limit: Int,
+    options: GetParameters? = nil,
     _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    self.documents.getAll(UID, limit, completion)
+    self.documents.getAll(UID, options, completion)
   }
 
   /**

@@ -69,7 +69,7 @@ public extension MeiliSearch {
     case invalidJSON
 
     // URL is invalid
-    case invalidURL
+    case invalidURL(url: String? = "")
 
     /// Error originating from MeiliSearch API.
     // case meiliSearchApiError(message: String, errorCode: String, errorType: String, errorLink: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
@@ -88,8 +88,11 @@ public extension MeiliSearch {
         return "Response decoding failed"
       case .invalidJSON:
         return "Invalid json"
-      case .invalidURL:
-        return "Invalid host URL"
+      case .invalidURL(let url):
+        if let strUrl: String = url {
+          return "Invalid URL: \(strUrl)"
+        }
+        return "Invalid URL"
       case .meiliSearchCommunicationError(let message, let url):
         return "meiliSearchCommunicationError \(message) \(url) "
 
