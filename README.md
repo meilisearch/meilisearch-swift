@@ -6,15 +6,15 @@
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
-  <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://fr.linkedin.com/company/meilisearch">LinkedIn</a> |
   <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
+  <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
+  <a href="https://www.meilisearch.com">Website</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
 <p align="center">
-  <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Tests/badge.svg" alt="GtiHub Workflow Status"></a>
+  <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Tests/badge.svg" alt="GitHub Workflow Status"></a>
   <a href="https://github.com/meilisearch/meilisearch-swift/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
@@ -25,14 +25,6 @@
 
 **MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
 For more information about features go to [our Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
-
-## Features
-* Complete full API wrapper
-* Easy to install, deploy, and maintain
-* Highly customizable
-* No external dependencies
-* Thread safe
-* Uses Codable
 
 ## Get started
 
@@ -146,15 +138,9 @@ If you want to know more about the development workflow or want to contribute, p
 
 ## Contact
 
-Feel free to contact us about any questions you may have:
-* At [bonjour@meilisearch.com](mailto:bonjour@meilisearch.com): English or French is welcome! 🇬🇧 🇫🇷
-* Via the chat box available on every page of [our documentation](https://docs.meilisearch.com/) and on [our landing page](https://www.meilisearch.com/).
-* Join our [Slack community](https://slack.meilisearch.com/).
-* By opening an issue.
+Feel free to [contact us](https://docs.meilisearch.com/learn/what_is_meilisearch/contact.html#contact-us) about any questions you may have.
 
 Any suggestion or feedback is highly appreciated. Thank you for your support!
-
-Swift programming language from Apple
 
 <hr>
 
