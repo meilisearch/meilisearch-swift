@@ -5,9 +5,9 @@ import Foundation
  */
 public struct Health: Codable, Equatable {
 
-    // MARK: Properties
+  // MARK: Properties
 
-    /// Status of the MeiliSearch server
-    public let status: String
+  /// Status of the MeiliSearch server
+  public let status: String
 
 }

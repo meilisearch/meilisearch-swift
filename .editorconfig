@@ -9,6 +9,9 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[**.{js,vue,css,scss,html}]
+[*.swift]
 indent_style = space
+indent_size = 2
+
+[*.{yaml,yml}]
 indent_size = 2

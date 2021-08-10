@@ -1,974 +1,980 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_cast
+// swiftlint:disable force_try
 class SettingsTests: XCTestCase {
 
-    private var client: MeiliSearch!
-    private let session = MockURLSession()
+  private var client: MeiliSearch!
+  private let session = MockURLSession()
 
-    private let json = """
+  private let json = """
     {
-        "rankingRules": [
-            "typo",
-            "words",
-            "proximity",
-            "attribute",
-            "wordsPosition",
-            "exactness",
-            "desc(release_date)"
-        ],
-        "searchableAttributes": ["title", "description", "uid"],
-        "displayedAttributes": [
-            "title",
-            "description",
-            "release_date",
-            "rank",
-            "poster"
-        ],
-        "stopWords": null,
-        "synonyms": {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"]
-        }
+      "rankingRules": [
+        "typo",
+        "words",
+        "proximity",
+        "attribute",
+        "wordsPosition",
+        "exactness",
+        "desc(release_date)"
+      ],
+      "searchableAttributes": ["title", "description", "uid"],
+      "displayedAttributes": [
+        "title",
+        "description",
+        "release_date",
+        "rank",
+        "poster"
+      ],
+      "stopWords": null,
+      "synonyms": {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"]
+      }
     }
     """
 
-    override func setUp() {
-        super.setUp()
-        client = try! MeiliSearch(Config(hostURL: nil, session: session))
+  override func setUp() {
+    super.setUp()
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  }
+
+  // MARK: Settings
+
+  func testShouldInstantiateFromEmptyData() {
+    let stubSetting: Setting = buildStubSetting(from: "{}")
+
+    XCTAssertTrue(stubSetting.rankingRules.isEmpty)
+    XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
+    XCTAssertEqual(stubSetting.displayedAttributes, ["*"])
+    XCTAssertTrue(stubSetting.stopWords.isEmpty)
+    XCTAssertTrue(stubSetting.synonyms.isEmpty)
+  }
+
+  func testGetSetting() {
+
+    // Prepare the mock server
+
+    let stubSetting: Setting = buildStubSetting(from: json)
+
+    session.pushData(json)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+
+    let expectation = XCTestExpectation(description: "Get settings")
+
+    self.client.getSetting(UID: UID) { result in
+      switch result {
+      case .success(let setting):
+        XCTAssertEqual(stubSetting, setting)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get settings")
+      }
     }
 
-    // MARK: Settings
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testShouldInstantiateFromEmptyData() {
-        let stubSetting: Setting = buildStubSetting(from: "{}")
+  }
 
-        XCTAssertTrue(stubSetting.rankingRules.isEmpty)
-        XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
-        XCTAssertEqual(stubSetting.displayedAttributes, ["*"])
-        XCTAssertTrue(stubSetting.stopWords.isEmpty)
-        XCTAssertTrue(stubSetting.synonyms.isEmpty)
+  func testUpdateSetting() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      {"updateId":0}
+      """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+    let setting: Setting = buildStubSetting(from: json)
+
+    let expectation = XCTestExpectation(description: "Update settings")
+
+    self.client.updateSetting(UID: UID, setting) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update settings")
+      }
     }
 
-    func testGetSetting() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let stubSetting: Setting = buildStubSetting(from: json)
+  func testResetSetting() {
 
-        session.pushData(json)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        let UID: String = "movies"
+    let decoder: JSONDecoder = JSONDecoder()
+    let data: Data = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: data)
 
-        let expectation = XCTestExpectation(description: "Get settings")
+    session.pushData(jsonString)
 
-        self.client.getSetting(UID: UID) { result in
-            switch result {
-            case .success(let setting):
-                XCTAssertEqual(stubSetting, setting)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get settings")
-            }
-        }
+    // Start the test with the mocked server
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let UID: String = "movies"
 
+    let expectation = XCTestExpectation(description: "Reset settings")
+
+    self.client.resetSetting(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset settings")
+      }
     }
 
-    func testUpdateSetting() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Synonyms
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+  func testGetSynonyms() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"],
+        "wow": ["world of warcraft"]
+      }
+      """
 
-        let UID: String = "movies"
-        let setting: Setting = buildStubSetting(from: json)
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubSynonyms: [String: [String]] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String: [String]]
 
-        let expectation = XCTestExpectation(description: "Update settings")
+    session.pushData(jsonString)
 
-        self.client.updateSetting(UID: UID, setting) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update settings")
-            }
-        }
+    // Start the test with the mocked server
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let UID: String = "movies"
 
+    let expectation = XCTestExpectation(description: "Get synonyms")
+
+    self.client.getSynonyms(UID: UID) { result in
+      switch result {
+      case .success(let synonyms):
+        XCTAssertEqual(stubSynonyms, synonyms)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get synonyms")
+      }
     }
 
-    func testResetSetting() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateSynonyms() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let data: Data = jsonString.data(using: .utf8)!
-        let stubUpdate: Update = try! decoder.decode(Update.self, from: data)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset settings")
+    // Start the test with the mocked server
 
-        self.client.resetSetting(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset settings")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let json = """
+      {
+        "wolverine": ["xmen", "logan"],
+        "logan": ["wolverine", "xmen"],
+        "wow": ["world of warcraft"]
+      }
+      """
 
+    let jsonData = json.data(using: .utf8)!
+    let synonyms: [String: [String]] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String: [String]]
+
+    let expectation = XCTestExpectation(description: "Update synonyms")
+
+    self.client.updateSynonyms(UID: UID, synonyms) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update synonyms")
+      }
     }
 
-    // MARK: Synonyms
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetSynonyms() {
+  }
 
-        //Prepare the mock server
+  func testResetSynonyms() {
 
-        let jsonString = """
-        {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
-        }
-        """
+    // Prepare the mock server
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubSynonyms: [String: [String]] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String: [String]]
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        session.pushData(jsonString)
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        // Start the test with the mocked server
+    session.pushData(jsonString)
 
-        let UID: String = "movies"
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Get synonyms")
+    let UID: String = "movies"
 
-        self.client.getSynonyms(UID: UID) { result in
-            switch result {
-            case .success(let synonyms):
-                XCTAssertEqual(stubSynonyms, synonyms)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get synonyms")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Reset synonyms")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.resetSynonyms(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset synonyms")
+      }
     }
 
-    func testUpdateSynonyms() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Stop words
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetStopWords() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      ["of", "the", "to"]
+      """
 
-        let UID: String = "movies"
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubStopWords: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
 
-        let json = """
-        {
-            "wolverine": ["xmen", "logan"],
-            "logan": ["wolverine", "xmen"],
-            "wow": ["world of warcraft"]
-        }
-        """
+    session.pushData(jsonString)
 
-        let jsonData = json.data(using: .utf8)!
-        let synonyms: [String: [String]] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String: [String]]
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Update synonyms")
+    let UID: String = "movies"
 
-        self.client.updateSynonyms(UID: UID, synonyms) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update synonyms")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Get stop-words")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getStopWords(UID: UID) { result in
+      switch result {
+      case .success(let stopWords):
+        XCTAssertEqual(stubStopWords, stopWords)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get stop-words")
+      }
     }
 
-    func testResetSynonyms() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateStopWords() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset synonyms")
+    // Start the test with the mocked server
 
-        self.client.resetSynonyms(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset synonyms")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let json = """
+      ["of", "the", "to"]
+      """
 
+    let stopWords: [String] = try! JSONSerialization.jsonObject(
+      with: json.data(using: .utf8)!, options: []) as! [String]
+
+    let expectation = XCTestExpectation(description: "Update stop-words")
+
+    self.client.updateStopWords(UID: UID, stopWords) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update stop-words")
+      }
     }
 
-    // MARK: Stop words
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetStopWords() {
+  }
 
-        //Prepare the mock server
+  func testResetStopWords() {
 
-        let jsonString = """
-        ["of", "the", "to"]
-        """
+    // Prepare the mock server
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubStopWords: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        session.pushData(jsonString)
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        // Start the test with the mocked server
+    session.pushData(jsonString)
 
-        let UID: String = "movies"
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Get stop-words")
+    let UID: String = "movies"
 
-        self.client.getStopWords(UID: UID) { result in
-            switch result {
-            case .success(let stopWords):
-                XCTAssertEqual(stubStopWords, stopWords)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get stop-words")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Reset stop-words")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.resetStopWords(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset stop-words")
+      }
     }
 
-    func testUpdateStopWords() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Ranking rules
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetRankingRules() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      [
+        "typo",
+        "words",
+        "proximity",
+        "attribute",
+        "wordsPosition",
+        "exactness",
+        "desc(release_date)"
+      ]
+      """
 
-        let UID: String = "movies"
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubRakingRules: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
 
-        let json = """
-        ["of", "the", "to"]
-        """
+    session.pushData(jsonString)
 
-        let stopWords: [String] = try! JSONSerialization.jsonObject(
-          with: json.data(using: .utf8)!, options: []) as! [String]
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Update stop-words")
+    let UID: String = "movies"
 
-        self.client.updateStopWords(UID: UID, stopWords) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update stop-words")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Get ranking rules")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getRankingRules(UID: UID) { result in
+      switch result {
+      case .success(let rankingRules):
+        XCTAssertEqual(stubRakingRules, rankingRules)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get ranking rules")
+      }
     }
 
-    func testResetStopWords() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateRankingRules() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset stop-words")
+    // Start the test with the mocked server
 
-        self.client.resetStopWords(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset stop-words")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let json = """
+      ["of", "the", "to"]
+      """
 
+    let stopWords: [String] = try! JSONSerialization.jsonObject(
+      with: json.data(using: .utf8)!, options: []) as! [String]
+
+    let expectation = XCTestExpectation(description: "Update ranking rules")
+
+    self.client.updateRankingRules(UID: UID, stopWords) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update ranking rules")
+      }
     }
 
-    // MARK: Ranking rules
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetRankingRules() {
+  }
 
-        //Prepare the mock server
+  func testResetRankingRules() {
 
-        let jsonString = """
-        [
-            "typo",
-            "words",
-            "proximity",
-            "attribute",
-            "wordsPosition",
-            "exactness",
-            "desc(release_date)"
-        ]
-        """
+    // Prepare the mock server
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubRakingRules: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        session.pushData(jsonString)
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        // Start the test with the mocked server
+    session.pushData(jsonString)
 
-        let UID: String = "movies"
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Get ranking rules")
+    let UID: String = "movies"
 
-        self.client.getRankingRules(UID: UID) { result in
-            switch result {
-            case .success(let rankingRules):
-                XCTAssertEqual(stubRakingRules, rankingRules)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get ranking rules")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Reset ranking rules")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.resetRankingRules(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset ranking rules")
+      }
     }
 
-    func testUpdateRankingRules() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Distinct Attribute
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetDistinctAttribute() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let stubDistinctAttribute: String = """
+      "movie_id"
+      """
 
-        let UID: String = "movies"
+    session.pushData(stubDistinctAttribute)
 
-        let json = """
-        ["of", "the", "to"]
-        """
+    // Start the test with the mocked server
 
-        let stopWords: [String] = try! JSONSerialization.jsonObject(
-          with: json.data(using: .utf8)!, options: []) as! [String]
+    let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Update ranking rules")
+    let expectation = XCTestExpectation(description: "Get distinct attribute")
 
-        self.client.updateRankingRules(UID: UID, stopWords) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update ranking rules")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getDistinctAttribute(UID: UID) { result in
+      switch result {
+      case .success(let distinctAttribute):
+        XCTAssertEqual("movie_id", distinctAttribute!)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get distinct attribute")
+      }
     }
 
-    func testResetRankingRules() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateDistinctAttribute() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset ranking rules")
+    // Start the test with the mocked server
 
-        self.client.resetRankingRules(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset ranking rules")
-            }
-        }
+    let UID: String = "movies"
+    let distinctAttribute = "movie_id"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let expectation = XCTestExpectation(description: "Update distinct attribute")
 
+    self.client.updateDistinctAttribute(UID: UID, distinctAttribute) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update distinct attribute")
+      }
     }
 
-    // MARK: Distinct Attribute
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetDistinctAttribute() {
+  }
 
-        //Prepare the mock server
+  func testResetDistinctAttribute() {
 
-        let stubDistinctAttribute: String = """
-        "movie_id"
-        """
+    // Prepare the mock server
 
-        session.pushData(stubDistinctAttribute)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Get distinct attribute")
+    // Start the test with the mocked server
 
-        self.client.getDistinctAttribute(UID: UID) { result in
-            switch result {
-            case .success(let distinctAttribute):
-                XCTAssertEqual("movie_id", distinctAttribute!)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get distinct attribute")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let expectation = XCTestExpectation(description: "Reset distinct attribute")
 
+    self.client.resetDistinctAttribute(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset distinct attribute")
+      }
     }
 
-    func testUpdateDistinctAttribute() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Searchable Attribute
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetSearchableAttributes() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      ["title", "description", "uid"]
+      """
 
-        let UID: String = "movies"
-        let distinctAttribute = "movie_id"
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
 
-        let expectation = XCTestExpectation(description: "Update distinct attribute")
+    session.pushData(jsonString)
 
-        self.client.updateDistinctAttribute(UID: UID, distinctAttribute) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update distinct attribute")
-            }
-        }
+    // Start the test with the mocked server
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let UID: String = "movies"
 
+    let expectation = XCTestExpectation(description: "Get searchable attribute")
+
+    self.client.getSearchableAttributes(UID: UID) { result in
+      switch result {
+      case .success(let searchableAttribute):
+        XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get searchable attribute")
+      }
     }
 
-    func testResetDistinctAttribute() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateSearchableAttributes() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset distinct attribute")
+    // Start the test with the mocked server
 
-        self.client.resetDistinctAttribute(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset distinct attribute")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let json = """
+      ["title", "description", "uid"]
+      """
 
+    let jsonData = json.data(using: .utf8)!
+    let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
+
+    let expectation = XCTestExpectation(description: "Update searchable attribute")
+
+    self.client.updateSearchableAttributes(UID: UID, searchableAttribute) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update searchable attribute")
+      }
     }
 
-    // MARK: Searchable Attribute
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetSearchableAttributes() {
+  }
 
-        //Prepare the mock server
+  func testResetSearchableAttributes() {
 
-        let jsonString = """
-        ["title", "description", "uid"]
-        """
+    // Prepare the mock server
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        session.pushData(jsonString)
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        // Start the test with the mocked server
+    session.pushData(jsonString)
 
-        let UID: String = "movies"
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Get searchable attribute")
+    let UID: String = "movies"
 
-        self.client.getSearchableAttributes(UID: UID) { result in
-            switch result {
-            case .success(let searchableAttribute):
-                XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get searchable attribute")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Reset searchable attribute")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.resetSearchableAttributes(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset searchable attribute")
+      }
     }
 
-    func testUpdateSearchableAttributes() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Displayed Attributes
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetDisplayedAttributes() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      ["title", "description", "release_date", "rank", "poster"]
+      """
 
-        let UID: String = "movies"
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubDisplayedAttributes: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
 
-        let json = """
-        ["title", "description", "uid"]
-        """
+    session.pushData(jsonString)
 
-        let jsonData = json.data(using: .utf8)!
-        let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Update searchable attribute")
+    let UID: String = "movies"
 
-        self.client.updateSearchableAttributes(UID: UID, searchableAttribute) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update searchable attribute")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getDisplayedAttributes(UID: UID) { result in
+      switch result {
+      case .success(let displayedAttributes):
+        XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get displayed attribute")
+      }
     }
 
-    func testResetSearchableAttributes() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateDisplayedAttributes() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset searchable attribute")
+    // Start the test with the mocked server
 
-        self.client.resetSearchableAttributes(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset searchable attribute")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let json = """
+      ["title", "description", "release_date", "rank", "poster"]
+      """
 
+    let jsonData = json.data(using: .utf8)!
+    let displayedAttributes: [String] = try! JSONSerialization.jsonObject(
+      with: jsonData, options: []) as! [String]
+
+    let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+    self.client.updateDisplayedAttributes(UID: UID, displayedAttributes) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update displayed attribute")
+      }
     }
 
-    // MARK: Displayed Attributes
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetDisplayedAttributes() {
+  }
 
-        //Prepare the mock server
+  func testResetDisplayedAttributes() {
 
-        let jsonString = """
-        ["title", "description", "release_date", "rank", "poster"]
-        """
+    // Prepare the mock server
 
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubDisplayedAttributes: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        session.pushData(jsonString)
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        // Start the test with the mocked server
+    session.pushData(jsonString)
 
-        let UID: String = "movies"
+    // Start the test with the mocked server
 
-        let expectation = XCTestExpectation(description: "Get displayed attribute")
+    let UID: String = "movies"
 
-        self.client.getDisplayedAttributes(UID: UID) { result in
-            switch result {
-            case .success(let displayedAttributes):
-                XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get displayed attribute")
-            }
-        }
+    let expectation = XCTestExpectation(description: "Reset displayed attribute")
 
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.resetDisplayedAttributes(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to reset displayed attribute")
+      }
     }
 
-    func testUpdateDisplayedAttributes() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  // MARK: Attributes for faceting
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+  func testGetAttributesForFaceting() {
 
-        session.pushData(jsonString)
+    // Prepare the mock server
 
-        // Start the test with the mocked server
+    let jsonString = """
+      ["genre", "director"]
+      """
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let json = """
-        ["title", "description", "release_date", "rank", "poster"]
-        """
+    // Start the test with the mocked server
 
-        let jsonData = json.data(using: .utf8)!
-        let displayedAttributes: [String] = try! JSONSerialization.jsonObject(
-          with: jsonData, options: []) as! [String]
+    let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Update displayed attribute")
+    let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-        self.client.updateDisplayedAttributes(UID: UID, displayedAttributes) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update displayed attribute")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getAttributesForFaceting(UID: UID) { result in
+      switch result {
+      case .success(let attributesForFaceting):
+        XCTAssertFalse(attributesForFaceting.isEmpty)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get displayed attribute")
+      }
     }
 
-    func testResetDisplayedAttributes() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  func testUpdateAttributesForFaceting() {
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":0}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Reset displayed attribute")
+    // Start the test with the mocked server
 
-        self.client.resetDisplayedAttributes(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to reset displayed attribute")
-            }
-        }
+    let UID: String = "movies"
+    let attributes: [String] = ["genre", "director"]
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let expectation = XCTestExpectation(description: "Update displayed attribute")
 
+    self.client.updateAttributesForFaceting(UID: UID, attributes) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update displayed attribute")
+      }
     }
 
-    // MARK: Attributes for faceting
+    self.wait(for: [expectation], timeout: 1.0)
 
-    func testGetAttributesForFaceting() {
+  }
 
-        //Prepare the mock server
+  func testResetAttributesForFaceting() {
 
-        let jsonString = """
-        ["genre", "director"]
-        """
+    // Prepare the mock server
 
-        session.pushData(jsonString)
+    let jsonString = """
+      {"updateId":1}
+      """
 
-        // Start the test with the mocked server
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
 
-        let UID: String = "movies"
+    session.pushData(jsonString)
 
-        let expectation = XCTestExpectation(description: "Get displayed attribute")
+    // Start the test with the mocked server
 
-        self.client.getAttributesForFaceting(UID: UID) { result in
-            switch result {
-            case .success(let attributesForFaceting):
-                XCTAssertFalse(attributesForFaceting.isEmpty)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get displayed attribute")
-            }
-        }
+    let UID: String = "movies"
 
-        self.wait(for: [expectation], timeout: 1.0)
+    let expectation = XCTestExpectation(description: "Update displayed attribute")
 
+    self.client.resetAttributesForFaceting(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update displayed attribute")
+      }
     }
 
-    func testUpdateAttributesForFaceting() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let jsonString = """
-        {"updateId":0}
-        """
+  private func buildStubSetting(from json: String) -> Setting {
+    let data = json.data(using: .utf8)!
+    let decoder: JSONDecoder = JSONDecoder()
+    return try! decoder.decode(Setting.self, from: data)
+  }
 
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-        let attributes: [String] = ["genre", "director"]
-
-        let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-        self.client.updateAttributesForFaceting(UID: UID, attributes) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update displayed attribute")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testResetAttributesForFaceting() {
-
-        //Prepare the mock server
-
-        let jsonString = """
-        {"updateId":1}
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let stubUpdate: Update = try! decoder.decode(
-          Update.self,
-          from: jsonString.data(using: .utf8)!)
-
-        session.pushData(jsonString)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-
-        let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-        self.client.resetAttributesForFaceting(UID: UID) { result in
-            switch result {
-            case .success(let update):
-                XCTAssertEqual(stubUpdate, update)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to update displayed attribute")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    private func buildStubSetting(from json: String) -> Setting {
-        let data = json.data(using: .utf8)!
-        let decoder: JSONDecoder = JSONDecoder()
-        return try! decoder.decode(Setting.self, from: data)
-    }
-
-    static var allTests = [
-        ("testShouldInstantiateFromEmptyData", testShouldInstantiateFromEmptyData),
-        ("testGetSetting", testGetSetting),
-        ("testUpdateSetting", testUpdateSetting),
-        ("testResetSetting", testResetSetting),
-        ("testGetSynonyms", testGetSynonyms),
-        ("testUpdateSynonyms", testUpdateSynonyms),
-        ("testResetSynonyms", testResetSynonyms),
-        ("testGetStopWords", testGetStopWords),
-        ("testUpdateStopWords", testUpdateStopWords),
-        ("testResetStopWords", testResetStopWords),
-        ("testGetRankingRules", testGetRankingRules),
-        ("testUpdateRankingRules", testUpdateRankingRules),
-        ("testResetRankingRules", testResetRankingRules),
-        ("testGetDistinctAttribute", testGetDistinctAttribute),
-        ("testUpdateDistinctAttribute", testUpdateDistinctAttribute),
-        ("testResetDistinctAttribute", testResetDistinctAttribute),
-        ("testGetSearchableAttributes", testGetSearchableAttributes),
-        ("testUpdateSearchableAttributes", testUpdateSearchableAttributes),
-        ("testResetSearchableAttributes", testResetSearchableAttributes),
-        ("testGetDisplayedAttributes", testGetDisplayedAttributes),
-        ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
-        ("testResetDisplayedAttributes", testResetDisplayedAttributes),
-        ("testGetAttributesForFaceting", testGetAttributesForFaceting),
-        ("testUpdateAttributesForFaceting", testUpdateAttributesForFaceting),
-        ("testResetAttributesForFaceting", testResetAttributesForFaceting)
-    ]
+  static var allTests = [
+    ("testShouldInstantiateFromEmptyData", testShouldInstantiateFromEmptyData),
+    ("testGetSetting", testGetSetting),
+    ("testUpdateSetting", testUpdateSetting),
+    ("testResetSetting", testResetSetting),
+    ("testGetSynonyms", testGetSynonyms),
+    ("testUpdateSynonyms", testUpdateSynonyms),
+    ("testResetSynonyms", testResetSynonyms),
+    ("testGetStopWords", testGetStopWords),
+    ("testUpdateStopWords", testUpdateStopWords),
+    ("testResetStopWords", testResetStopWords),
+    ("testGetRankingRules", testGetRankingRules),
+    ("testUpdateRankingRules", testUpdateRankingRules),
+    ("testResetRankingRules", testResetRankingRules),
+    ("testGetDistinctAttribute", testGetDistinctAttribute),
+    ("testUpdateDistinctAttribute", testUpdateDistinctAttribute),
+    ("testResetDistinctAttribute", testResetDistinctAttribute),
+    ("testGetSearchableAttributes", testGetSearchableAttributes),
+    ("testUpdateSearchableAttributes", testUpdateSearchableAttributes),
+    ("testResetSearchableAttributes", testResetSearchableAttributes),
+    ("testGetDisplayedAttributes", testGetDisplayedAttributes),
+    ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
+    ("testResetDisplayedAttributes", testResetDisplayedAttributes),
+    ("testGetAttributesForFaceting", testGetAttributesForFaceting),
+    ("testUpdateAttributesForFaceting", testUpdateAttributesForFaceting),
+    ("testResetAttributesForFaceting", testResetAttributesForFaceting)
+  ]
 
 }
+// swiftlint:enable force_unwrapping
+// swiftlint:enable force_cast
+// swiftlint:enable force_try

@@ -5,7 +5,7 @@
 //  Created by Kyle Jessup on 2015-11-05.
 //	Copyright (C) 2015 PerfectlySoft, Inc.
 //
-//===----------------------------------------------------------------------===//
+// ===----------------------------------------------------------------------===//
 //
 // This source file is part of the Perfect.org open source project
 //
@@ -14,7 +14,7 @@
 //
 // See http://perfect.org/licensing.html for license information
 //
-//===----------------------------------------------------------------------===//
+// ===----------------------------------------------------------------------===//
 //
 
 import PerfectHTTP
@@ -22,25 +22,27 @@ import PerfectHTTPServer
 import MeiliSearch
 import Foundation
 
-private let client = try! MeiliSearch(Config.default(apiKey: "masterKey"))
+// swiftlint:disable force_try
+private let client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+// swiftlint:disable force_try
 
 private struct Movie: Codable, Equatable {
 
-    let id: Int
-    let title: String
-    let comment: String?
+  let id: Int
+  let title: String
+  let comment: String?
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case comment
-    }
+  enum CodingKeys: String, CodingKey {
+    case id
+    case title
+    case comment
+  }
 
-    init(id: Int, title: String, comment: String? = nil) {
-        self.id = id
-        self.title = title
-        self.comment = comment
-    }
+  init(id: Int, title: String, comment: String? = nil) {
+    self.id = id
+    self.title = title
+    self.comment = comment
+  }
 
 }
 
@@ -146,8 +148,9 @@ func search(request: HTTPRequest, response: HTTPResponse) {
 var routes = Routes()
 routes.add(method: .get, uri: "/index", handler: index)
 routes.add(method: .get, uri: "/search", handler: search)
-try HTTPServer.launch(name: "localhost",
-					  port: 8181,
-					  routes: routes,
-					  responseFilters: [
-						(PerfectHTTPServer.HTTPFilter.contentCompression(data: [:]), HTTPFilterPriority.high)])
+try HTTPServer.launch(
+  name: "localhost",
+  port: 8181,
+  routes: routes,
+  responseFilters: [
+  (PerfectHTTPServer.HTTPFilter.contentCompression(data: [:]), HTTPFilterPriority.high)])

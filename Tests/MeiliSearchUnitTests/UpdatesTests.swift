@@ -1,152 +1,156 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_try
 class UpdatesTests: XCTestCase {
 
-    private var client: MeiliSearch!
-    private let session = MockURLSession()
+  private var client: MeiliSearch!
+  private let session = MockURLSession()
 
-    override func setUp() {
-        super.setUp()
-        client = try! MeiliSearch(Config(hostURL: nil, session: session))
+  override func setUp() {
+    super.setUp()
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  }
+
+  func testGetUpdate() {
+
+    // Prepare the mock server
+
+    let json = """
+      {
+        "status": "processed",
+        "updateId": 1,
+        "type": {
+          "name": "DocumentsAddition",
+          "number": 4
+        },
+        "duration": 0.076980613,
+        "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+        "processedAt": "2019-12-07T21:16:09.703509Z"
+      }
+      """
+
+    let data = json.data(using: .utf8)!
+
+    let stubResult: Update.Result = try! Constants.customJSONDecoder.decode(
+      Update.Result.self, from: data)
+
+    session.pushData(json)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+    let update = Update(updateId: 1)
+
+    let expectation = XCTestExpectation(description: "Get settings")
+
+    self.client.getUpdate(UID: UID, update) { result in
+      switch result {
+      case .success(let result):
+        XCTAssertEqual(stubResult, result)
+      case .failure:
+        XCTFail("Failed to get settings")
+      }
+      expectation.fulfill()
     }
 
-    func testGetUpdate() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let json = """
+  func testGetUpdateInvalidStatus() {
+
+    // Prepare the mock server
+
+    let badStatusUpdateJson = """
+      {
+        "status": "something",
+        "updateId": 1,
+        "type": {
+          "name": "DocumentsAddition",
+          "number": 4
+        },
+        "duration": 0.076980613,
+        "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+        "processedAt": "2019-12-07T21:16:09.703509Z"
+      }
+      """
+
+    session.pushData(badStatusUpdateJson)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+    let update = Update(updateId: 1)
+
+    let expectation = XCTestExpectation(description: "Get settings")
+
+    self.client.getUpdate(UID: UID, update) { result in
+      switch result {
+      case .success:
+        XCTFail("The server send a invalid status and it should not succeed")
+      case .failure(let error):
+        XCTAssertTrue(error is Update.Status.StatusError)
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 1.0)
+
+  }
+
+  func testGetAllUpdates() {
+
+    // Prepare the mock server
+
+    let json = """
+      [
         {
-            "status": "processed",
-            "updateId": 1,
-            "type": {
-                "name": "DocumentsAddition",
-                "number": 4
-            },
-            "duration": 0.076980613,
-            "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-            "processedAt": "2019-12-07T21:16:09.703509Z"
+          "status": "processed",
+          "updateId": 1,
+          "type": {
+            "name": "DocumentsAddition",
+            "number": 4
+          },
+          "duration": 0.076980613,
+          "enqueuedAt": "2019-12-07T21:16:09.623944Z",
+          "processedAt": "2019-12-07T21:16:09.703509Z"
         }
-        """
+      ]
+      """
 
-        let data = json.data(using: .utf8)!
+    let data = json.data(using: .utf8)!
 
-        let stubResult: Update.Result = try! Constants.customJSONDecoder.decode(
-          Update.Result.self, from: data)
+    let stubResults: [Update.Result] = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
 
-        session.pushData(json)
+    session.pushData(json)
 
-        // Start the test with the mocked server
+    // Start the test with the mocked server
 
-        let UID: String = "movies"
-        let update = Update(updateId: 1)
+    let UID: String = "movies"
 
-        let expectation = XCTestExpectation(description: "Get settings")
+    let expectation = XCTestExpectation(description: "Get settings")
 
-        self.client.getUpdate(UID: UID, update) { result in
-            switch result {
-            case .success(let result):
-                XCTAssertEqual(stubResult, result)
-            case .failure:
-                XCTFail("Failed to get settings")
-            }
-            expectation.fulfill()
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
+    self.client.getAllUpdates(UID: UID) { result in
+      switch result {
+      case .success(let results):
+        XCTAssertEqual(stubResults, results)
+      case .failure:
+        XCTFail("Failed to get settings")
+      }
+      expectation.fulfill()
     }
 
-    func testGetUpdateInvalidStatus() {
+    self.wait(for: [expectation], timeout: 1.0)
 
-        //Prepare the mock server
+  }
 
-        let badStatusUpdateJson = """
-        {
-            "status": "something",
-            "updateId": 1,
-            "type": {
-                "name": "DocumentsAddition",
-                "number": 4
-            },
-            "duration": 0.076980613,
-            "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-            "processedAt": "2019-12-07T21:16:09.703509Z"
-        }
-        """
-
-        session.pushData(badStatusUpdateJson)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-        let update = Update(updateId: 1)
-
-        let expectation = XCTestExpectation(description: "Get settings")
-
-        self.client.getUpdate(UID: UID, update) { result in
-            switch result {
-            case .success:
-                XCTFail("The server send a invalid status and it should not succeed")
-            case .failure(let error):
-                XCTAssertTrue(error is Update.Status.StatusError)
-                expectation.fulfill()
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    func testGetAllUpdates() {
-
-        //Prepare the mock server
-
-        let json = """
-        [
-            {
-                "status": "processed",
-                "updateId": 1,
-                "type": {
-                    "name": "DocumentsAddition",
-                    "number": 4
-                },
-                "duration": 0.076980613,
-                "enqueuedAt": "2019-12-07T21:16:09.623944Z",
-                "processedAt": "2019-12-07T21:16:09.703509Z"
-            }
-        ]
-        """
-
-        let data = json.data(using: .utf8)!
-
-        let stubResults: [Update.Result] = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
-
-        session.pushData(json)
-
-        // Start the test with the mocked server
-
-        let UID: String = "movies"
-
-        let expectation = XCTestExpectation(description: "Get settings")
-
-        self.client.getAllUpdates(UID: UID) { result in
-            switch result {
-            case .success(let results):
-                XCTAssertEqual(stubResults, results)
-            case .failure:
-                XCTFail("Failed to get settings")
-            }
-            expectation.fulfill()
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-
-    }
-
-    static var allTests = [
-        ("testGetSetting", testGetUpdate),
-        ("testGetAllUpdates", testGetAllUpdates)
-    ]
+  static var allTests = [
+    ("testGetSetting", testGetUpdate),
+    ("testGetAllUpdates", testGetAllUpdates)
+  ]
 
 }
+// swiftlint:enable force_unwrapping
+// swiftlint:enable force_try

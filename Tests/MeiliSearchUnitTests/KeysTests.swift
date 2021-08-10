@@ -1,54 +1,54 @@
 @testable import MeiliSearch
 import XCTest
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_try
 class KeysTests: XCTestCase {
 
-    private var client: MeiliSearch!
-    private let session = MockURLSession()
+  private var client: MeiliSearch!
+  private let session = MockURLSession()
 
-    override func setUp() {
-        super.setUp()
-        let config = Config(
-          hostURL: "http://localhost:7700",
-          apiKey: "c4dff5a196824a0704c2023916c21eaf0a13485a9d637416820bc623375f2a",
-          session: session)
-        client = try! MeiliSearch(config)
+  override func setUp() {
+    super.setUp()
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  }
+
+  func testKeys() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      {
+        "private": "8dcbb482663333d0280fa9fedf0e0c16d52185cb67db494ce4cd34da32ce2092",
+        "public": "3b3bf839485f90453acc6159ba18fbed673ca88523093def11a9b4f4320e44a5"
+      }
+      """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubKey: Key = try! decoder.decode(Key.self, from: jsonData)
+
+    session.pushData(jsonString)
+
+    let expectation = XCTestExpectation(description: "Get public and private key")
+
+    self.client.keys { result in
+      switch result {
+      case .success(let key):
+        XCTAssertEqual(stubKey, key)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get public and private key")
+      }
     }
 
-    func testKeys() {
+    self.wait(for: [expectation], timeout: 1.0)
+  }
 
-        //Prepare the mock server
-
-        let jsonString = """
-        {
-            "private": "8c222193c4dff5a19689d637416820bc623375f2ad4c31a2e3a76e8f4c70440d",
-            "public": "948413b6667024a0704c2023916c21eaf0a13485a586c43e4d2df520852a4fb8"
-        }
-        """
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let jsonData = jsonString.data(using: .utf8)!
-        let stubKey: Key = try! decoder.decode(Key.self, from: jsonData)
-
-        session.pushData(jsonString)
-
-        let expectation = XCTestExpectation(description: "Get public and private key")
-
-        self.client.keys { result in
-            switch result {
-            case .success(let key):
-                XCTAssertEqual(stubKey, key)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Failed to get public and private key")
-            }
-        }
-
-        self.wait(for: [expectation], timeout: 1.0)
-    }
-
-    static var allTests = [
-        ("testKeys", testKeys)
-    ]
+  static var allTests = [
+    ("testKeys", testKeys)
+  ]
 
 }
+// swiftlint:enable force_unwrapping
+// swiftlint:enable force_try

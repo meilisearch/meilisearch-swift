@@ -1,16 +1,18 @@
 disabled_rules:
-  - identifier_name
   - todo
-  - cyclomatic_complexity
   - type_body_length
   - file_length
+  - nesting # should be re-enabled
+  - xctfail_message # should be re-enabled
+  - identifier_name
   - function_body_length
-  - function_parameter_count
-  - nesting
-  - block_based_kvo
 
-opt_in_rules: # some rules are only opt-in
-  - explicit_type_interface
+analyzer_rules:
+  - unused_declaration
+  - unused_import
+
+opt_in_rules:
+  # - explicit_type_interface should be uncommented
   - force_unwrapping
   - implicit_return
   - attributes
@@ -19,19 +21,23 @@ opt_in_rules: # some rules are only opt-in
   - conditional_returns_on_newline
   - empty_string
   - contains_over_first_not_nil
+  - indentation_width
 
 excluded:
   - Carthage
   - Pods
-  - VaporDemo/.build
-  - PerfectDemo/.build
   - .build
+  - Demos/VaporDemo/.build
+  - Demos/PerfectDemo/.build
 
 force_cast: warning
 force_try: warning
 
-# - Force explicity type for every variable on the project, this is needed to let the Swift compiler more lightweight
 explicit_type_interface:
   severity: warning
 
 line_length: 200
+
+indentation_width:
+  indentation_width: 2
+  include_comments: false
