@@ -17,7 +17,7 @@ class SettingsTests: XCTestCase {
   private let defaultDistinctAttribute: String? = nil
   private let defaultDisplayedAttributes: [String] = ["*"]
   private let defaultSearchableAttributes: [String] = ["*"]
-  private let defaultAttributesForFaceting: [String] = []
+  private let defaultFilterableAttributes: [String] = []
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private var defaultGlobalSettings: Setting?
@@ -54,22 +54,22 @@ class SettingsTests: XCTestCase {
       stopWords: self.defaultStopWords,
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
-      attributesForFaceting: self.defaultAttributesForFaceting
+      filterableAttributes: self.defaultFilterableAttributes
     )
 
   }
 
-  // MARK: Attributes for faceting
+  // MARK: Filterable Attributes
 
-  func testGetAttributesForFaceting() {
+  func testGetFilterableAttributes() {
 
-    let expectation = XCTestExpectation(description: "Get current attributes for faceting")
+    let expectation = XCTestExpectation(description: "Get current filterable attributes")
 
-    self.client.getAttributesForFaceting(UID: self.uid) { result in
+    self.client.getFilterableAttributes(UID: self.uid) { result in
       switch result {
       case .success(let attributes):
 
-        XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
+        XCTAssertEqual(self.defaultFilterableAttributes, attributes)
 
         expectation.fulfill()
 
@@ -82,24 +82,24 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 1.0)
   }
 
-  func testUpdateAttributesForFaceting() {
+  func testUpdateFilterableAttributes() {
 
-    let expectation = XCTestExpectation(description: "Update settings for attributes for faceting")
+    let expectation = XCTestExpectation(description: "Update settings for filterable attributes")
 
-    let newAttributesForFaceting: [String] = ["title"]
+    let newFilterableAttributes: [String] = ["title"]
 
-    self.client.updateAttributesForFaceting(UID: self.uid, newAttributesForFaceting) { result in
+    self.client.updateFilterableAttributes(UID: self.uid, newFilterableAttributes) { result in
       switch result {
       case .success(let update):
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getAttributesForFaceting(UID: self.uid) { result in
+          self.client.getFilterableAttributes(UID: self.uid) { result in
 
             switch result {
             case .success(let attributes):
 
-              XCTAssertEqual(newAttributesForFaceting, attributes)
+              XCTAssertEqual(newFilterableAttributes, attributes)
 
               expectation.fulfill()
 
@@ -121,23 +121,23 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 2.0)
   }
 
-  func testResetAttributesForFaceting() {
+  func testResetFilterableAttributes() {
 
-    let expectation = XCTestExpectation(description: "Reset settings for attributes for faceting")
+    let expectation = XCTestExpectation(description: "Reset settings for filterable attributes")
 
-    self.client.resetAttributesForFaceting(UID: self.uid) { result in
+    self.client.resetFilterableAttributes(UID: self.uid) { result in
 
       switch result {
       case .success(let update):
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getAttributesForFaceting(UID: self.uid) { result in
+          self.client.getFilterableAttributes(UID: self.uid) { result in
 
             switch result {
             case .success(let attributes):
 
-              XCTAssertEqual(self.defaultAttributesForFaceting, attributes)
+              XCTAssertEqual(self.defaultFilterableAttributes, attributes)
               expectation.fulfill()
 
             case .failure(let error):
@@ -799,7 +799,7 @@ class SettingsTests: XCTestCase {
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      attributesForFaceting: ["title"])
+      filterableAttributes: ["title"])
 
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
@@ -816,7 +816,7 @@ class SettingsTests: XCTestCase {
               XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
               XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
               XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
-              XCTAssertEqual(newSettings.attributesForFaceting, finalSetting.attributesForFaceting)
+              XCTAssertEqual(newSettings.filterableAttributes, finalSetting.filterableAttributes)
               XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
 
               expectation.fulfill()
