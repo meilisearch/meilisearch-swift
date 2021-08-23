@@ -27,7 +27,8 @@ class SettingsTests: XCTestCase {
         "rank",
         "poster"
       ],
-      "stopWords": null,
+      "filterableAttributes": [],
+      "stopWords": [],
       "synonyms": {
         "wolverine": ["xmen", "logan"],
         "logan": ["wolverine", "xmen"]
@@ -48,15 +49,15 @@ class SettingsTests: XCTestCase {
     XCTAssertTrue(stubSetting.rankingRules.isEmpty)
     XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
     XCTAssertEqual(stubSetting.displayedAttributes, ["*"])
-    XCTAssertTrue(stubSetting.stopWords.isEmpty)
-    XCTAssertTrue(stubSetting.synonyms.isEmpty)
+    XCTAssertEqual(stubSetting.stopWords, nil)
+    XCTAssertEqual(stubSetting.synonyms, nil)
   }
 
   func testGetSetting() {
 
     // Prepare the mock server
 
-    let stubSetting: Setting = buildStubSetting(from: json)
+    let stubSetting: SettingResult = buildStubSettingResult(from: json)
 
     session.pushData(json)
 
@@ -942,6 +943,12 @@ class SettingsTests: XCTestCase {
     let data = json.data(using: .utf8)!
     let decoder: JSONDecoder = JSONDecoder()
     return try! decoder.decode(Setting.self, from: data)
+  }
+
+  private func buildStubSettingResult(from json: String) -> SettingResult {
+    let data = json.data(using: .utf8)!
+    let decoder: JSONDecoder = JSONDecoder()
+    return try! decoder.decode(SettingResult.self, from: data)
   }
 
   static var allTests = [

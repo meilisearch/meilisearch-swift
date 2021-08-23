@@ -401,7 +401,7 @@ public struct MeiliSearch {
    */
   public func getSetting(
     UID: String,
-    _ completion: @escaping (Result<Setting, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
     self.settings.get(UID, completion)
   }
 
@@ -462,7 +462,7 @@ public struct MeiliSearch {
    */
   public func updateSynonyms(
     UID: String,
-    _ synonyms: [String: [String]],
+    _ synonyms: [String: [String]]?,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.settings.updateSynonyms(UID, synonyms, completion)
   }
@@ -508,7 +508,7 @@ public struct MeiliSearch {
    */
   public func updateStopWords(
     UID: String,
-    _ stopWords: [String],
+    _ stopWords: [String]?,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.settings.updateStopWords(UID, stopWords, completion)
   }
