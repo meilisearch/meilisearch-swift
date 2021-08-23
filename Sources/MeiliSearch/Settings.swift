@@ -672,13 +672,13 @@ struct Settings {
 
   }
 
-  // MARK: Attributes for faceting
+  // MARK: Filterable Attributes
 
-  func getAttributesForFaceting(
+  func getFilterableAttributes(
     _ UID: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
+    self.request.get(api: "/indexes/\(UID)/settings/filterable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -703,7 +703,7 @@ struct Settings {
 
   }
 
-  func updateAttributesForFaceting(
+  func updateFilterableAttributes(
     _ UID: String,
     _ attributes: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
@@ -716,7 +716,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/attributes-for-faceting", data) { result in
+    self.request.post(api: "/indexes/\(UID)/settings/filterable-attributes", data) { result in
 
       switch result {
       case .success(let data):
@@ -736,11 +736,11 @@ struct Settings {
 
   }
 
-  func resetAttributesForFaceting(
+  func resetFilterableAttributes(
     _ UID: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/attributes-for-faceting") { result in
+    self.request.delete(api: "/indexes/\(UID)/settings/filterable-attributes") { result in
 
       switch result {
       case .success(let data):
