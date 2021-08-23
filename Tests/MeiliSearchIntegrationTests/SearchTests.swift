@@ -143,12 +143,14 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
-    // let limit = 5
+
     let query = "A Moreninha"
 
     self.client.search(UID: self.uid, SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        dump(documents)
+        dump(query)
         XCTAssertTrue(documents.query == query)
         XCTAssertTrue(documents.limit == 20)
         XCTAssertTrue(documents.hits.count == 1)
@@ -432,7 +434,6 @@ class SearchTests: XCTestCase {
     self.client.search(UID: self.uid, searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-
         XCTAssertTrue(documents.limit == limit)
         XCTAssertTrue(documents.hits.count == 2)
 
@@ -549,13 +550,13 @@ class SearchTests: XCTestCase {
 
   func testSearchFilters() {
 
-    let expectation = XCTestExpectation(description: "Search for Books using filters")
+    let expectation = XCTestExpectation(description: "Search for Books using filter")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let limit = 5
     let query = "french book"
-    let filters = "id = 456"
-    let parameters = SearchParameters(query: query, limit: limit, filters: filters)
+    let filter = "id = 456"
+    let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
     self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
       switch result {
@@ -583,8 +584,8 @@ class SearchTests: XCTestCase {
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let limit = 5
     let query = "Joaquim Manuel de Macedo"
-    let filters = "id = 456"
-    let parameters = SearchParameters(query: query, limit: limit, filters: filters)
+    let filter = "id = 456"
+    let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
     self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
       switch result {
@@ -601,14 +602,14 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: 1.0)
   }
 
-  // MARK: Facets filters
+  // MARK: Filters
 
-  private func configureFacets(_ completion: @escaping () -> Void) {
+  private func configureFilters(_ completion: @escaping () -> Void) {
 
-    let expectation = XCTestExpectation(description: "Configure attributes for faceting")
-    let attributesForFaceting = ["genres", "author"]
+    let expectation = XCTestExpectation(description: "Configure filterable attributes")
+    let filterableAttributes = ["genres", "author"]
 
-    self.client.updateAttributesForFaceting(UID: self.uid, attributesForFaceting) { result in
+    self.client.updateFilterableAttributes(UID: self.uid, filterableAttributes) { result in
 
       switch result {
       case .success(let update):
@@ -630,13 +631,13 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Search for Books using facets filters")
 
-    configureFacets {
+    configureFilters {
 
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
       let query = "A"
-      let facetsFilters = [["genres:Novel"]]
-      let parameters = SearchParameters(query: query, limit: limit, facetFilters: facetsFilters)
+      let filter = "genres = Novel"
+      let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
       self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
         switch result {
@@ -665,7 +666,7 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Search for Books using facets distribution")
 
-    configureFacets {
+    configureFilters {
 
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
