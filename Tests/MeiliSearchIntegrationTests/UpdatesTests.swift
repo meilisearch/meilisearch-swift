@@ -2,7 +2,6 @@
 import XCTest
 import Foundation
 
-// swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 private struct Movie: Codable, Equatable {
 

@@ -601,14 +601,14 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: 1.0)
   }
 
-  // MARK: Facets filters
+  // MARK: Filters
 
-  private func configureFacets(_ completion: @escaping () -> Void) {
+  private func configureFilters(_ completion: @escaping () -> Void) {
 
-    let expectation = XCTestExpectation(description: "Configure attributes for faceting")
-    let attributesForFaceting = ["genres", "author"]
+    let expectation = XCTestExpectation(description: "Configure filterable attributes")
+    let filterableAttributes = ["genres", "author"]
 
-    self.client.updateAttributesForFaceting(UID: self.uid, attributesForFaceting) { result in
+    self.client.updateFilterableAttributes(UID: self.uid, filterableAttributes) { result in
 
       switch result {
       case .success(let update):
@@ -630,7 +630,7 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Search for Books using facets filters")
 
-    configureFacets {
+    configureFilters {
 
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
@@ -665,7 +665,7 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Search for Books using facets distribution")
 
-    configureFacets {
+    configureFilters {
 
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
