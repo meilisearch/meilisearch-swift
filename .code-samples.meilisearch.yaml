@@ -855,8 +855,8 @@ getting_started_search_md: |-
         }
     }
   ```
-get_attributes_for_faceting_1: |-
-  client.getAttributesForFaceting(UID: "movies") { (result: Result<[String], Swift.Error>) in
+get_filterable_attributes_1: |-
+  client.getFilterableAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let attributes):
           print(attributes)
@@ -864,8 +864,8 @@ get_attributes_for_faceting_1: |-
           print(error)
       }
   }
-update_attributes_for_faceting_1: |-
-  client.updateAttributesForFaceting(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+update_filterable_attributes_1: |-
+  client.updateFilterableAttributes(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -873,8 +873,8 @@ update_attributes_for_faceting_1: |-
           print(error)
       }
   }
-reset_attributes_for_faceting_1: |-
-  client.resetAttributesForFaceting(UID: "movies") { (result: Result<Update, Swift.Error>) in
+reset_filterable_attributes_1: |-
+  client.resetFilterableAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let attributes):
           print(attributes)
@@ -883,7 +883,7 @@ reset_attributes_for_faceting_1: |-
       }
   }
 faceted_search_update_settings_1: |-
-  client.updateAttributesForFaceting(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+  client.updateFilterableAttributes(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -915,8 +915,8 @@ faceted_search_facets_distribution_1: |-
           print(error)
       }
   }
-faceted_search_walkthrough_attributes_for_faceting_1: |-
-  client.updateAttributesForFaceting(UID: "movies", [
+faceted_search_walkthrough_filterable_attributes_1: |-
+  client.updateFilterableAttributes(UID: "movies", [
       "director",
       "producer",
       "genres",
