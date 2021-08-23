@@ -835,9 +835,9 @@ class SettingsTests: XCTestCase {
 
   }
 
-  // MARK: Attributes for faceting
+  // MARK: Filterable Attributes
 
-  func testGetAttributesForFaceting() {
+  func testGetFilterableAttributes() {
 
     // Prepare the mock server
 
@@ -853,10 +853,10 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-    self.client.getAttributesForFaceting(UID: UID) { result in
+    self.client.getFilterableAttributes(UID: UID) { result in
       switch result {
-      case .success(let attributesForFaceting):
-        XCTAssertFalse(attributesForFaceting.isEmpty)
+      case .success(let filterableAttributes):
+        XCTAssertFalse(filterableAttributes.isEmpty)
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to get displayed attribute")
@@ -867,7 +867,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testUpdateAttributesForFaceting() {
+  func testUpdateFilterableAttributes() {
 
     // Prepare the mock server
 
@@ -889,7 +889,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Update displayed attribute")
 
-    self.client.updateAttributesForFaceting(UID: UID, attributes) { result in
+    self.client.updateFilterableAttributes(UID: UID, attributes) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -903,7 +903,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testResetAttributesForFaceting() {
+  func testResetFilterableAttributes() {
 
     // Prepare the mock server
 
@@ -924,7 +924,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Update displayed attribute")
 
-    self.client.resetAttributesForFaceting(UID: UID) { result in
+    self.client.resetFilterableAttributes(UID: UID) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -967,9 +967,9 @@ class SettingsTests: XCTestCase {
     ("testGetDisplayedAttributes", testGetDisplayedAttributes),
     ("testUpdateDisplayedAttributes", testUpdateDisplayedAttributes),
     ("testResetDisplayedAttributes", testResetDisplayedAttributes),
-    ("testGetAttributesForFaceting", testGetAttributesForFaceting),
-    ("testUpdateAttributesForFaceting", testUpdateAttributesForFaceting),
-    ("testResetAttributesForFaceting", testResetAttributesForFaceting)
+    ("testGetFilterableAttributes", testGetFilterableAttributes),
+    ("testUpdateFilterableAttributes", testUpdateFilterableAttributes),
+    ("testResetFilterableAttributes", testResetFilterableAttributes)
   ]
 
 }
