@@ -19,7 +19,7 @@ struct Settings {
 
   func get(
     _ UID: String,
-    _ completion: @escaping (Result<Setting, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
 
     self.request.get(api: "/indexes/\(UID)/settings") { result in
 
@@ -32,7 +32,7 @@ struct Settings {
         }
 
         do {
-          let settings: Setting = try Constants.customJSONDecoder.decode(Setting.self, from: data)
+          let settings: SettingResult = try Constants.customJSONDecoder.decode(SettingResult.self, from: data)
           completion(.success(settings))
         } catch {
           completion(.failure(error))
@@ -140,12 +140,13 @@ struct Settings {
 
   func updateSynonyms(
     _ UID: String,
-    _ synonyms: [String: [String]],
+    _ synonyms: [String: [String]]? = [:],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
     let data: Data
     do {
-      data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+      // data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+      data = try JSONEncoder().encode(synonyms)
     } catch {
       completion(.failure(error))
       return
@@ -233,12 +234,12 @@ struct Settings {
 
   func updateStopWords(
     _ UID: String,
-    _ synonyms: [String],
+    _ stopWords: [String]? = [],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
     let data: Data
     do {
-      data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
+      data = try JSONEncoder().encode(stopWords)
     } catch {
       completion(.failure(error))
       return

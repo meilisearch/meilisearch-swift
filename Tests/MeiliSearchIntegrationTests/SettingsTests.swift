@@ -21,6 +21,7 @@ class SettingsTests: XCTestCase {
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private var defaultGlobalSettings: Setting?
+  private var defaultGlobalReturnedSettings: SettingResult?
 
   // MARK: Setup
 
@@ -48,6 +49,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
 
     self.defaultGlobalSettings = Setting(
+      rankingRules: self.defaultRankingRules,
+      searchableAttributes: self.defaultSearchableAttributes,
+      displayedAttributes: self.defaultDisplayedAttributes,
+      stopWords: self.defaultStopWords,
+      synonyms: self.defaultSynonyms,
+      distinctAttribute: self.defaultDistinctAttribute,
+      filterableAttributes: self.defaultFilterableAttributes
+    )
+
+    self.defaultGlobalReturnedSettings = SettingResult(
       rankingRules: self.defaultRankingRules,
       searchableAttributes: self.defaultSearchableAttributes,
       displayedAttributes: self.defaultDisplayedAttributes,
@@ -629,6 +640,82 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
+  func testUpdateStopWordsWithEmptyArray() {
+
+    let expectation = XCTestExpectation(description: "Update stop words")
+
+    let nilStopWords: [String]? = [String]()
+
+    self.client.updateStopWords(UID: self.uid, nilStopWords) { result in
+      switch result {
+      case .success(let update):
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getStopWords(UID: self.uid) { result in
+
+            switch result {
+            case .success(let finalStopWords):
+
+              XCTAssertEqual(finalStopWords, [])
+
+              expectation.fulfill()
+
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+
+          }
+
+        }
+
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
+
+  func testUpdateStopWordsWithNullValue() {
+
+    let expectation = XCTestExpectation(description: "Update stop words")
+
+    let nilStopWords: [String]? = nil
+
+    self.client.updateStopWords(UID: self.uid, nilStopWords) { result in
+      switch result {
+      case .success(let update):
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getStopWords(UID: self.uid) { result in
+
+            switch result {
+            case .success(let finalStopWords):
+
+              XCTAssertEqual(finalStopWords, [])
+
+              expectation.fulfill()
+
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+
+          }
+
+        }
+
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
+
   func testResetStopWords() {
 
     let expectation = XCTestExpectation(description: "Reset stop words")
@@ -707,9 +794,78 @@ class SettingsTests: XCTestCase {
 
             switch result {
             case .success(let updatedSynonyms):
-
               let rhs = Array(updatedSynonyms.keys).sorted(by: <)
               XCTAssertEqual(Array(newSynonyms.keys).sorted(by: <), rhs)
+
+              expectation.fulfill()
+
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+
+          }
+
+        }
+
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 2.0)
+  }
+
+  func testUpdateSynonymsEmptyString() {
+
+    let expectation = XCTestExpectation(description: "Update synonyms")
+    let newSynonyms = [String: [String]]()
+
+    self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
+      switch result {
+      case .success(let update):
+
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getSynonyms(UID: self.uid) { result in
+            switch result {
+            case .success(let updatedSynonyms):
+
+              XCTAssertEqual(updatedSynonyms, [:])
+              expectation.fulfill()
+
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+          }
+        }
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 2.0)
+  }
+
+  func testUpdateSynonymsNil() {
+
+    let expectation = XCTestExpectation(description: "Update synonyms")
+
+    let newSynonyms: [String: [String]]? = nil
+
+    self.client.updateSynonyms(UID: self.uid, newSynonyms) { result in
+      switch result {
+      case .success(let update):
+
+        waitForPendingUpdate(self.client, self.uid, update) {
+
+          self.client.getSynonyms(UID: self.uid) { result in
+
+            switch result {
+            case .success(let updatedSynonyms):
+              XCTAssertEqual(updatedSynonyms, [:])
 
               expectation.fulfill()
 
@@ -776,7 +932,7 @@ class SettingsTests: XCTestCase {
     self.client.getSetting(UID: self.uid) { result in
       switch result {
       case .success(let settings):
-        XCTAssertEqual(self.defaultGlobalSettings, settings)
+        XCTAssertEqual(self.defaultGlobalReturnedSettings, settings)
         expectation.fulfill()
 
       case .failure(let error):
@@ -792,11 +948,75 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Update settings")
 
-    let newSettings: Setting = Setting(
+    let newSettings = Setting(
       rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
+      synonyms: [:],
+      distinctAttribute: nil,
+      filterableAttributes: ["title"])
+
+    let expectedSettingResult = SettingResult(
+      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      searchableAttributes: ["id", "title"],
+      displayedAttributes: ["*"],
+      stopWords: ["the", "a"],
+      synonyms: [:],
+      distinctAttribute: nil,
+      filterableAttributes: ["title"])
+
+    self.client.updateSetting(UID: self.uid, newSettings) { result in
+      switch result {
+      case .success(let update):
+
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getSetting(UID: self.uid) { result in
+            switch result {
+            case .success(let settingResult):
+
+              XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
+              XCTAssertEqual(expectedSettingResult.searchableAttributes.sorted(), settingResult.searchableAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.displayedAttributes.sorted(), settingResult.displayedAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.stopWords.sorted(), settingResult.stopWords.sorted())
+              XCTAssertEqual(expectedSettingResult.filterableAttributes, settingResult.filterableAttributes)
+              XCTAssertEqual(Array(expectedSettingResult.synonyms.keys).sorted(by: <), Array(settingResult.synonyms.keys).sorted(by: <))
+
+              expectation.fulfill()
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+          }
+        }
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
+
+  func testUpdateSettingsWithSynonymsAndStopWordsNil() {
+
+    let expectation = XCTestExpectation(description: "Update settings")
+
+    let newSettings = Setting(
+      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      searchableAttributes: ["id", "title"],
+      displayedAttributes: ["*"],
+      stopWords: nil,
+      synonyms: nil,
+      distinctAttribute: nil,
+      filterableAttributes: ["title"])
+
+    let expectedSettingResult = SettingResult(
+      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      searchableAttributes: ["id", "title"],
+      displayedAttributes: ["*"],
+      stopWords: [],
       synonyms: [:],
       distinctAttribute: nil,
       filterableAttributes: ["title"])
@@ -812,12 +1032,12 @@ class SettingsTests: XCTestCase {
             switch result {
             case .success(let finalSetting):
 
-              XCTAssertEqual(newSettings.rankingRules.sorted(), finalSetting.rankingRules.sorted())
-              XCTAssertEqual(newSettings.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
-              XCTAssertEqual(newSettings.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
-              XCTAssertEqual(newSettings.stopWords.sorted(), finalSetting.stopWords.sorted())
-              XCTAssertEqual(newSettings.filterableAttributes, finalSetting.filterableAttributes)
-              XCTAssertEqual(Array(newSettings.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
+              XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), finalSetting.rankingRules.sorted())
+              XCTAssertEqual(expectedSettingResult.searchableAttributes.sorted(), finalSetting.searchableAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.displayedAttributes.sorted(), finalSetting.displayedAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.stopWords.sorted(), finalSetting.stopWords.sorted())
+              XCTAssertEqual(expectedSettingResult.filterableAttributes, finalSetting.filterableAttributes)
+              XCTAssertEqual(Array(expectedSettingResult.synonyms.keys).sorted(by: <), Array(finalSetting.synonyms.keys).sorted(by: <))
 
               expectation.fulfill()
 
@@ -855,7 +1075,7 @@ class SettingsTests: XCTestCase {
             switch result {
             case .success(let settings):
 
-              XCTAssertEqual(self.defaultGlobalSettings, settings)
+              XCTAssertEqual(self.defaultGlobalReturnedSettings, settings)
               expectation.fulfill()
 
             case .failure(let error):
