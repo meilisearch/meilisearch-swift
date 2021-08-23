@@ -140,7 +140,7 @@ class SearchTests: XCTestCase {
 
   func testBasicSearch() {
 
-    let expectation = XCTestExpectation(description: "Search for Books using limit")
+    let expectation = XCTestExpectation(description: "Search for Books with query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     // let limit = 5
@@ -165,7 +165,7 @@ class SearchTests: XCTestCase {
 
   func testBasicSearchWithNoQuery() {
 
-    let expectation = XCTestExpectation(description: "Search for Books using limit")
+    let expectation = XCTestExpectation(description: "Search for Books without query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
 
@@ -179,6 +179,33 @@ class SearchTests: XCTestCase {
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to search with testBasicSearchWithNoQuery")
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 1.0)
+  }
+
+  // MARK: Phrase search
+
+  func testPhraseSearch() {
+
+    let expectation = XCTestExpectation(description: "Search for Books using phrase search")
+
+    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    // let limit = 5
+    let query = "A \"great book\""
+
+    self.client.search(UID: self.uid, SearchParameters(query: query)) { (result: MeiliResult) in
+      switch result {
+      case .success(let documents):
+        XCTAssertTrue(documents.query == query)
+        XCTAssertTrue(documents.limit == 20)
+        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual("Pride and Prejudice", documents.hits[0].title)
+        XCTAssertNil(documents.hits[0].formatted)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to search with testPhraseSearch")
       }
     }
 
