@@ -14,7 +14,7 @@ public struct Dump: Codable, Equatable {
   public let status: Status
 
   // Time when the creation of the dump started
-  public let startedAt: String
+  public let startedAt: String?
 
   // Time when the creation of the dump completed
   public let finishedAt: String?
