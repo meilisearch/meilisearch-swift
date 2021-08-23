@@ -8,11 +8,10 @@ class SettingsTests: XCTestCase {
   private var client: MeiliSearch!
   private let uid: String = "books_test"
   private let defaultRankingRules: [String] = [
-    "typo",
     "words",
+    "typo",
     "proximity",
     "attribute",
-    "wordsPosition",
     "exactness"
   ]
   private let defaultDistinctAttribute: String? = nil
@@ -794,7 +793,7 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings: Setting = Setting(
-      rankingRules: ["words", "typo", "proximity", "attribute", "wordsPosition", "exactness"],
+      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],

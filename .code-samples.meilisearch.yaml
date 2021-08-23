@@ -163,11 +163,10 @@ get_settings_1: |-
   }
 update_settings_1: |-
   let settings = Setting(rankingRules: [
-      "typo",
       "words",
+      "typo",
       "proximity",
       "attribute",
-      "wordsPosition",
       "exactness",
       "desc(release_date)",
       "desc(rank)"
@@ -281,11 +280,10 @@ get_ranking_rules_1: |-
   }
 update_ranking_rules_1: |-
   let rankingRules: [String] = [
-      "typo",
       "words",
+      "typo",
       "proximity",
       "attribute",
-      "wordsPosition",
       "exactness",
       "asc(release_date)",
       "desc(rank)"
@@ -678,11 +676,10 @@ settings_guide_stop_words_1: |-
   }
 settings_guide_ranking_rules_1: |-
   let rankingRules: [String] = [
-      "typo",
       "words",
+      "typo",
       "proximity",
       "attribute",
-      "wordsPosition",
       "exactness",
       "asc(release_date)",
       "desc(rank)"

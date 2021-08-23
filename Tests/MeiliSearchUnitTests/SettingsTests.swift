@@ -12,11 +12,10 @@ class SettingsTests: XCTestCase {
   private let json = """
     {
       "rankingRules": [
-        "typo",
         "words",
+        "typo",
         "proximity",
         "attribute",
-        "wordsPosition",
         "exactness",
         "desc(release_date)"
       ],
@@ -393,11 +392,10 @@ class SettingsTests: XCTestCase {
 
     let jsonString = """
       [
-        "typo",
         "words",
+        "typo",
         "proximity",
         "attribute",
-        "wordsPosition",
         "exactness",
         "desc(release_date)"
       ]
