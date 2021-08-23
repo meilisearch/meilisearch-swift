@@ -698,6 +698,37 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: 2.0)
   }
 
+  func testSearchFacetsDistributionNullValue() {
+
+    let expectation = XCTestExpectation(description: "Search for Books using facets distribution with 0 value")
+
+    configureFilters {
+      typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+      let limit = 5
+      let query = "Petit Prince"
+      let facetsDistribution = ["genres"]
+      let filter = "genres = comedy"
+      let parameters = SearchParameters(query: query, limit: limit, filter: filter, facetsDistribution: facetsDistribution)
+
+      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+        switch result {
+        case .success(let documents):
+          XCTAssertTrue(documents.query == query)
+          XCTAssertTrue(documents.limit == limit)
+          XCTAssertTrue(documents.hits.count == 0)
+
+          let facetsDistribution = documents.facetsDistribution!
+          XCTAssertEqual(["genres": [:]], facetsDistribution)
+
+          expectation.fulfill()
+        case .failure:
+          XCTFail("Failed to search with testSearchFacetsDistribution")
+        }
+      }
+    }
+    self.wait(for: [expectation], timeout: 2.0)
+  }
+
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try
