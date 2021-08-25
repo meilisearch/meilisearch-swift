@@ -49,7 +49,7 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual(stubSetting.searchableAttributes, ["*"])
     XCTAssertEqual(stubSetting.displayedAttributes, ["*"])
     XCTAssertEqual(stubSetting.stopWords, [])
-    XCTAssertEqual(stubSetting.synonyms, [String : [String]]())
+    XCTAssertEqual(stubSetting.synonyms, [String: [String]]())
   }
 
   func testGetSetting() {
