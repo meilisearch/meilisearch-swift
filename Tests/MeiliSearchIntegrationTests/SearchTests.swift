@@ -54,9 +54,11 @@ private struct FormattedBook: Codable, Equatable {
 }
 
 private struct MatchesInfoBook: Codable, Equatable {
-  let comment: [Info]
+  let comment: [Info]?
+  let title: [Info]?
   enum CodingKeys: String, CodingKey {
     case comment
+    case title
   }
 }
 
@@ -391,7 +393,7 @@ class SearchTests: XCTestCase {
     let limit = 2
     let query = "de Macedo"
     let attributesToCrop = ["comment"]
-    let cropLength = 10
+    let cropLength = 5
     let searchParameters = SearchParameters(query: query, limit: limit, attributesToCrop: attributesToCrop, cropLength: cropLength)
 
     self.client.search(UID: self.uid, searchParameters) { (result: MeiliResult) in
@@ -420,7 +422,7 @@ class SearchTests: XCTestCase {
     let limit = 2
     let query = "book"
     let attributesToCrop = ["comment"]
-    let cropLength = 10
+    let cropLength = 5
     let searchParameters = SearchParameters(query: query, limit: limit, attributesToCrop: attributesToCrop, cropLength: cropLength)
 
     self.client.search(UID: self.uid, searchParameters) { (result: MeiliResult) in
@@ -430,11 +432,7 @@ class SearchTests: XCTestCase {
         XCTAssertTrue(documents.hits.count == 2)
 
         let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
-        let prideBook: Book = documents.hits.first(where: { book in book.id == 123 })!
-
         XCTAssertEqual("A Book from", moreninhaBook.formatted!.comment!)
-        XCTAssertEqual("A great book", prideBook.formatted!.comment!)
-
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to search with testSearchCropLength")
@@ -452,7 +450,7 @@ class SearchTests: XCTestCase {
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let limit = 5
-    let query = "A Moreninha"
+    let query = "Moreninha"
     let parameters = SearchParameters(query: query, limit: limit, matches: true)
 
     self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
@@ -462,14 +460,19 @@ class SearchTests: XCTestCase {
         XCTAssertTrue(documents.limit == limit)
         XCTAssertTrue(documents.hits.count == 1)
         let book = documents.hits[0]
-        XCTAssertEqual(query, book.title)
+        XCTAssertEqual("A Moreninha", book.title)
+
         let matchesInfo = book.matchesInfo!
-        XCTAssertFalse(matchesInfo.comment.isEmpty)
-        let info = matchesInfo.comment[0]
-        XCTAssertEqual(0, info.start)
-        XCTAssertEqual(1, info.length)
-        expectation.fulfill()
-      case .failure:
+        if let titleMatches = matchesInfo.title {
+          let firstMatch = titleMatches[0]
+          XCTAssertEqual(2, firstMatch.start)
+          XCTAssertEqual(9, firstMatch.length)
+          expectation.fulfill()
+        } else {
+          XCTFail("Comment is not as expected in _matchesInfo")
+        }
+      case .failure(let error):
+        print(error)
         XCTFail("Failed to search with testSearchMatches")
       }
     }
@@ -584,7 +587,7 @@ class SearchTests: XCTestCase {
           XCTAssertEqual("A french book", book.comment)
           expectation.fulfill()
         case .failure(let error):
-          dump(error)
+          print(error)
           XCTFail("Failed to search with testSearchFilters")
         }
       }
