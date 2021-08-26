@@ -10,6 +10,7 @@ on:
       - main
 
 jobs:
+
   integeration_tests:
     name: integration-tests
     runs-on: macos-latest
@@ -17,14 +18,14 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
-      - name: Download and run MeiliSearch
-        run: |
-           brew update
-           brew install meilisearch
+      - run: |  # In the case it fails:
+          curl -L https://install.meilisearch.com | sh # downloading MS with the script
+          chmod +x meilisearch
       - name: Run MeiliSearch
-        run: meilisearch --no-analytics=true --master-key=masterKey &
+        run: |
+           ./meilisearch --master-key=masterKey --no-analytics true &
       - name: Run tests
-        run: swift test -v
+        run: swift test
 
   linter:
     name: linter-check
