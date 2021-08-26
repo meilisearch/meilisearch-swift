@@ -17,17 +17,9 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
-      - name: Test step
-        run: |
-          echo "test echo"
-      - name: Fetch latest version of MeiliSearch
-        run: |
-          echo "Before"
-          echo "MEILISEARCH_LATEST=$(sh .github/scripts/latest_release_meilisearch.sh)" >> $GITHUB_ENV
-          echo "After"
       - name: Download MeiliSearch
         run: |
-          curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
+          curl https://github.com/meilisearch/MeiliSearch/releases/download/v0.21.0/meilisearch-macos-amd64 --output meilisearch --location
           chmod +x meilisearch
       - name: Run MeiliSearch
         run: |
