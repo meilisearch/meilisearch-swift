@@ -19,8 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download MeiliSearch
-        run: |  # In the case it fails:
-          curl -L https://install.meilisearch.com | sh # downloading MS with the script
+        run: |
+          curl https://github.com/meilisearch/MeiliSearch/releases/download/v0.21.0/meilisearch-macos-amd64 --output meilisearch --location
           chmod +x meilisearch
       - name: Run MeiliSearch
         run: |
