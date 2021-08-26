@@ -4,6 +4,7 @@
 # The MeiliSearch RC is needed when maintainers are developing features during the pre-release week because the final MeiliSearch release is not out yet.
 # Verifier que c'est PAS rc
 
+echo "Enter the script"
 temp_file='temp_file' # temp_file needed because `grep` would start before the download is over
 curl -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
 latest_ms_release=$(cat "$temp_file" \
