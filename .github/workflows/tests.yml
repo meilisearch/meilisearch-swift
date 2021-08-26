@@ -18,12 +18,15 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
-      - run: |  # In the case it fails:
+      - name: Download MeiliSearch
+        run: |  # In the case it fails:
           curl -L https://install.meilisearch.com | sh # downloading MS with the script
           chmod +x meilisearch
       - name: Run MeiliSearch
         run: |
-           ./meilisearch --master-key=masterKey --no-analytics true &
+          ls
+          pwd
+          ./meilisearch --master-key=masterKey --no-analytics true &
       - name: Run tests
         run: swift test
 
