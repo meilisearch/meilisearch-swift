@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Grep latest version of MeiliSearch
         run: |
-          echo "MEILISEARCH_LATEST=$(sh .github/scripts/latest_release_meilisearch.sh ${{ secrets.API_GITHUB_TOKEN_SWIFT }}")" >> $GITHUB_ENV
+          echo "MEILISEARCH_LATEST=$(sh .github/scripts/latest_release_meilisearch.sh ${{ secrets.API_GITHUB_TOKEN_SWIFT }})" >> $GITHUB_ENV
       - name: Download MeiliSearch
         run: |
           curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
