@@ -16,6 +16,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
+      - uses: actions/checkout@v2
       - name: Grep latest version of MeiliSearch
         run: |
           curl -H "Authorization:  ${{ secrets.API_GITHUB_TOKEN_SWIFT }}" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' | \
