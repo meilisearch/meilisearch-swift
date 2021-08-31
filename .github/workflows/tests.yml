@@ -19,11 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Grep latest version of MeiliSearch
         run: |
-          curl -H "Authorization:  ${{ secrets.API_GITHUB_TOKEN_SWIFT }}" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' | \
-          grep -E 'tag_name' | grep 'v0' | head -1 \
-          | tr -d ',"' | cut -d ':' -f2 | tr -d ' ' > temp_file
-          cat temp_file
-          echo "MEILISEARCH_LATEST=$(cat temp_file)" >> $GITHUB_ENV
+          echo "MEILISEARCH_LATEST=$(sh .github/scripts/latest_release_meilisearch.sh ${{ secrets.API_GITHUB_TOKEN_SWIFT }}")" >> $GITHUB_ENV
       - name: Download MeiliSearch
         run: |
           curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
