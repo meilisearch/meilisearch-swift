@@ -391,7 +391,6 @@ public struct MeiliSearch {
     options: WaitOptions? = nil,
     _ completion: @escaping (Result<Update.Result, Swift.Error>
   ) -> Void) {
-    print("et merde")
     self.updates.waitForPendingUpdate(UID, update, options, completion)
   }
 
