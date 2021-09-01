@@ -146,7 +146,34 @@ class UpdatesTests: XCTestCase {
             XCTFail(error.localizedDescription)
           }
           expectation.fulfill()
+        }
+      case .failure(let error):
+        XCTFail(error.localizedDescription)
+      }
+    }
+    self.wait(for: [expectation], timeout: 10.0)
+  }
 
+  func testWaitForPendingUpdateSuccessEmptyOptions () {
+    let expectation = XCTestExpectation(description: "Wait for pending update with default options")
+
+    self.client.addDocuments(
+      UID: self.uid,
+      documents: movies,
+      primaryKey: nil
+    ) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions()) { result in
+          switch result {
+          case .success(let update):
+            XCTAssertEqual(update.status, Update.Status.processed)
+          case .failure(let error):
+            XCTFail(error.localizedDescription)
+          }
+          expectation.fulfill()
         }
       case .failure(let error):
         print(error)
@@ -156,16 +183,96 @@ class UpdatesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
   }
 
-  func testWaitForPendingUpdateSuccessEmptyOptions () {
-
-  }
-
   func testWaitForPendingUpdateSuccessWithOptions () {
+    let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
+    self.client.addDocuments(
+      UID: self.uid,
+      documents: movies,
+      primaryKey: nil
+    ) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 5, interval: 2)) { result in
+          switch result {
+          case .success(let update):
+            XCTAssertEqual(update.status, Update.Status.processed)
+          case .failure(let error):
+            XCTFail(error.localizedDescription)
+          }
+          expectation.fulfill()
+        }
+      case .failure(let error):
+        XCTFail(error.localizedDescription)
+      }
+    }
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
-  func testWaitForPendingUpdateFailure () {
+  func testWaitForPendingUpdateSuccessWithIntervalZero () {
+    let expectation = XCTestExpectation(description: "Wait for pending update with default options")
+    
+    self.client.addDocuments(
+      UID: self.uid,
+      documents: movies,
+      primaryKey: nil
+    ) { result in
+      
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 5, interval: 0)) { result in
+          switch result {
+          case .success(let update):
+            XCTAssertEqual(update.status, Update.Status.processed)
+          case .failure(let error):
+            XCTFail(error.localizedDescription)
+          }
+          expectation.fulfill()
+        }
+      case .failure(let error):
+        XCTFail(error.localizedDescription)
+      }
+    }
+    self.wait(for: [expectation], timeout: 5.0)
+  }
 
+  
+  func testWaitForPendingUpdateTimeOut () {
+    let expectation = XCTestExpectation(description: "Wait for pending update with default options")
+
+    self.client.addDocuments(
+      UID: self.uid,
+      documents: movies,
+      primaryKey: nil
+    ) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 0, interval: 2)) { result in
+          switch result {
+          case .success:
+            XCTFail("waitForPendingUpdate should not have had the time for a second call")
+          case .failure(let error):
+            print(error.localizedDescription)
+            switch error {
+            case MeiliSearch.Error.timeOut(let double):
+                XCTAssertEqual(double, 0.0)
+            default:
+              XCTFail("MeiliSearch TimeOut error should have been thrown")
+            }
+          }
+          expectation.fulfill()
+        }
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+    }
+    self.wait(for: [expectation], timeout: 5.0)
   }
 }
 // swiftlint:enable force_unwrapping
