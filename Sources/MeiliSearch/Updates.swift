@@ -81,8 +81,7 @@ struct Updates {
         case .success(let status):
           if status.status == Update.Status.processed || status.status == Update.Status.failed {
             completion(.success(status))
-          }
-          else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
+          } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
           } else {
             usleep(useconds_t(options.interval * 1000000))
@@ -105,10 +104,10 @@ struct Updates {
 
       self.checkStatus(UID, update, waitOptions, currentDate) { result in
         switch result {
-          case .success(let status):
-            completion(.success(status))
-          case .failure(let error):
-            completion(.failure(error))
+        case .success(let status):
+          completion(.success(status))
+        case .failure(let error):
+          completion(.failure(error))
         }
       }
   }

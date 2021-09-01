@@ -213,13 +213,11 @@ class UpdatesTests: XCTestCase {
 
   func testWaitForPendingUpdateSuccessWithIntervalZero () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
-    
     self.client.addDocuments(
       UID: self.uid,
       documents: movies,
       primaryKey: nil
     ) { result in
-      
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
@@ -239,7 +237,6 @@ class UpdatesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
   }
 
-  
   func testWaitForPendingUpdateTimeOut () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
@@ -248,7 +245,6 @@ class UpdatesTests: XCTestCase {
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
@@ -260,7 +256,7 @@ class UpdatesTests: XCTestCase {
             print(error.localizedDescription)
             switch error {
             case MeiliSearch.Error.timeOut(let double):
-                XCTAssertEqual(double, 0.0)
+              XCTAssertEqual(double, 0.0)
             default:
               XCTFail("MeiliSearch TimeOut error should have been thrown")
             }
