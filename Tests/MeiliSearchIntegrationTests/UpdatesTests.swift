@@ -75,8 +75,6 @@ class UpdatesTests: XCTestCase {
     self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { result in
       switch result {
       case .success(let update):
-        print("YOUHOU")
-        print(update)
         self.client.getUpdate(UID: self.uid, update) { (result: Result<Update.Result, Swift.Error>)  in
           switch result {
           case .success(let update):
