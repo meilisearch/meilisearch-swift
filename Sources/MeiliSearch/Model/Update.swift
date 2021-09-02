@@ -14,6 +14,7 @@ public struct Update: Codable, Equatable {
   public init(updateId: Int) {
     self.updateId = updateId
   }
+
   /// Result type for the Update.
   public struct Result: Codable, Equatable {
 

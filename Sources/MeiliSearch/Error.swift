@@ -70,6 +70,7 @@ public extension MeiliSearch {
 
     // TimeOut is reached in a waiting function
     case timeOut(timeOut: Double)
+
     // URL is invalid
     case invalidURL(url: String? = "")
 

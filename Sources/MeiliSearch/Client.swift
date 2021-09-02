@@ -384,7 +384,6 @@ public struct MeiliSearch {
     - parameter: options             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/
-
   public func waitForPendingUpdate(
     UID: String,
     update: Update,
