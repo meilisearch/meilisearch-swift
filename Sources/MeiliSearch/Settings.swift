@@ -765,4 +765,97 @@ struct Settings {
     }
 
   }
+
+  // MARK: Sortable Attributes
+
+  func getSortableAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(UID)/settings/sortable-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
+          completion(.success(array))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func updateSortableAttributes(
+    _ UID: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONSerialization.data(withJSONObject: attributes, options: [])
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.post(api: "/indexes/\(UID)/settings/sortable-attributes", data) { result in
+
+      switch result {
+      case .success(let data):
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
+
+  func resetSortableAttributes(
+    _ UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(UID)/settings/sortable-attributes") { result in
+
+      switch result {
+      case .success(let data):
+
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+
+        do {
+          let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
+          completion(.success(update))
+        } catch {
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+
+    }
+
+  }
 }

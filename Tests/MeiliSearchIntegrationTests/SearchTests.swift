@@ -544,12 +544,21 @@ class SearchTests: XCTestCase {
   // MARK: Filters
 
   private func configureFilters(_ completion: @escaping () -> Void) {
+    let filterableAttributes = ["genres", "author", "id"]
+    let settings = Setting(
+      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      searchableAttributes: ["*"],
+      displayedAttributes: ["*"],
+      stopWords: ["the", "a"],
+      synonyms: [:],
+      distinctAttribute: nil,
+      filterableAttributes: filterableAttributes,
+      sortableAttributes: ["id"]
+      )
 
     let expectation = XCTestExpectation(description: "Configure filterable attributes")
-    let filterableAttributes = ["genres", "author", "id"]
 
-    self.client.updateFilterableAttributes(UID: self.uid, filterableAttributes) { result in
-
+    self.client.updateSetting(UID: self.uid, settings) { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
@@ -561,8 +570,6 @@ class SearchTests: XCTestCase {
       }
 
     }
-
-    self.wait(for: [expectation], timeout: 1.0)
   }
 
   func testSearchFilters() {
@@ -589,6 +596,33 @@ class SearchTests: XCTestCase {
         case .failure(let error):
           print(error)
           XCTFail("Failed to search with testSearchFilters")
+        }
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 1.0)
+  }
+
+  func testSearchSorting() {
+
+    let expectation = XCTestExpectation(description: "Search for Books using sort on id")
+    configureFilters {
+      typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+      let query = ""
+      let sort = ["id:asc"]
+      let parameters = SearchParameters(query: query, sort: sort)
+
+      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+        switch result {
+        case .success(let documents):
+          XCTAssertTrue(documents.query == query)
+          let book = documents.hits[0]
+          XCTAssertEqual(1, book.id)
+          XCTAssertEqual("Alice In Wonderland", book.title)
+          expectation.fulfill()
+        case .failure(let error):
+          print(error)
+          XCTFail("Failed to search with sorting parameter")
         }
       }
     }

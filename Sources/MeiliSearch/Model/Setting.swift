@@ -28,6 +28,9 @@ public struct Setting: Codable, Equatable {
   /// List of attributes used for filtering
   public let filterableAttributes: [String]
 
+  /// List of attributes used for sorting
+  public let sortableAttributes: [String]
+
 }
 
 /**
@@ -58,6 +61,9 @@ public struct SettingResult: Codable, Equatable {
   /// List of attributes used for filtering
   public let filterableAttributes: [String]
 
+  /// List of attributes used for sorting
+  public let sortableAttributes: [String]
+
 }
 
 extension Setting {
@@ -72,6 +78,7 @@ extension Setting {
     synonyms = (try? values?.decodeIfPresent([String: [String]].self, forKey: .synonyms)) ?? [:]
     distinctAttribute = try? values?.decodeIfPresent(String.self, forKey: .distinctAttribute)
     filterableAttributes = (try? values?.decodeIfPresent([String].self, forKey: .filterableAttributes)) ?? []
+    sortableAttributes = (try? values?.decodeIfPresent([String].self, forKey: .sortableAttributes)) ?? []
   }
 
 }
