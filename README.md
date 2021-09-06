@@ -37,7 +37,7 @@
 
 ## 📖 Documentation
 
-For more information about this API see [our Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
+For more information about this API see our [Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
 
 For more information about MeiliSearch see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
 
