@@ -10,6 +10,7 @@ class SettingsTests: XCTestCase {
   private let defaultRankingRules: [String] = [
     "words",
     "typo",
+    "sort",
     "proximity",
     "attribute",
     "exactness"
@@ -18,6 +19,7 @@ class SettingsTests: XCTestCase {
   private let defaultDisplayedAttributes: [String] = ["*"]
   private let defaultSearchableAttributes: [String] = ["*"]
   private let defaultFilterableAttributes: [String] = []
+  private let defaultSortableAttributes: [String] = []
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private var defaultGlobalSettings: Setting?
@@ -55,7 +57,8 @@ class SettingsTests: XCTestCase {
       stopWords: self.defaultStopWords,
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
-      filterableAttributes: self.defaultFilterableAttributes
+      filterableAttributes: self.defaultFilterableAttributes,
+      sortableAttributes: self.defaultFilterableAttributes
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -65,7 +68,8 @@ class SettingsTests: XCTestCase {
       stopWords: self.defaultStopWords,
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
-      filterableAttributes: self.defaultFilterableAttributes
+      filterableAttributes: self.defaultFilterableAttributes,
+      sortableAttributes: self.defaultSortableAttributes
     )
 
   }
@@ -949,22 +953,25 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"]
+      )
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
@@ -1004,22 +1011,24 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: nil,
       synonyms: nil,
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: [],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
