@@ -144,14 +144,14 @@ get_all_updates_1: |-
       }
   }
 get_keys_1: |-
-    client.keys { (result: Result<Key, Swift.Error>) in
-        switch result {
-        case .success(let key):
-            print(key)
-        case .failure(let error):
-            print(error)
-        }
-    }
+  client.keys { (result: Result<Key, Swift.Error>) in
+      switch result {
+      case .success(let key):
+          print(key)
+      case .failure(let error):
+          print(error)
+      }
+  }
 get_settings_1: |-
   client.getSetting(UID: "movies") { (result: Result<Setting, Swift.Error>) in
       switch result {
@@ -855,6 +855,7 @@ getting_started_search_md: |-
         }
     }
   ```
+
 get_filterable_attributes_1: |-
   client.getFilterableAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
       switch result {
@@ -963,4 +964,96 @@ phrase_search_1: |-
       case .failure(let error):
           print(error)
       }
+  }
+sorting_guide_update_sortable_attributes_1: |-
+  client.updateSortableAttributes(UID: "books", ["price", "author"]) { (result: Result<Update, Swift.Error>) in
+    switch result {
+    case .success(let update):
+      print(update)
+    case .failure(let error):
+      print(error)
+    }
+  }
+sorting_guide_update_ranking_rules_1: |-
+  let rankingRules: [String] = [
+    "words",
+    "sort",
+    "typo",
+    "proximity",
+    "attribute",
+    "exactness"
+  ]
+  client.updateRankingRules(UID: "books", rankingRules) { (result: Result<Update, Swift.Error>) in
+    switch result {
+    case .success(let update):
+      print(update)
+    case .failure(let error):
+      print(error)
+    }
+  }
+sorting_guide_sort_parameter_1: |-
+  let searchParameters = SearchParameters(
+    query: "science fiction",
+    "sort": ["price:asc"]
+  )
+  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+      print(searchResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+sorting_guide_sort_parameter_2: |-
+  let searchParameters = SearchParameters(
+    query: "butler",
+    "sort": ["author:desc"]
+  )
+  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+      print(searchResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+get_sortable_attributes_1: |-
+  client.getSortableAttributes(UID: "books") { (result: Result<[String], Swift.Error>) in
+    switch result {
+    case .success(let attributes):
+      print(attributes)
+    case .failure(let error):
+      print(error)
+    }
+  }
+update_sortable_attributes_1: |-
+  client.updateSortableAttributes(UID: "books", ["price", "author"]) { (result: Result<Update, Swift.Error>) in
+    switch result {
+    case .success(let update):
+      print(update)
+    case .failure(let error):
+      print(error)
+    }
+  }
+reset_sortable_attributes_1: |-
+  client.resetSortableAttributes(UID: "books") { (result: Result<Update, Swift.Error>) in
+    switch result {
+    case .success(let attributes):
+      print(attributes)
+    case .failure(let error):
+      print(error)
+    }
+  }
+search_parameter_guide_sort_1: |-
+  let searchParameters = SearchParameters(
+    query: "science fiction",
+    "sort": ["price:asc"]
+  )
+  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+      print(searchResult)
+    case .failure(let error):
+      print(error)
+    }
   }
