@@ -189,6 +189,9 @@ update_settings_1: |-
       "the",
       "a",
       "an"
+  ], sortableAttributes: [
+      "title",
+      "release_date"
   ], synonyms: [
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
