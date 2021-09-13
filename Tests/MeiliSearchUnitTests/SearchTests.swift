@@ -87,7 +87,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -133,7 +133,8 @@ class SearchTests: XCTestCase {
 
     let searchParameters = SearchParameters(
       query: "botman",
-      filter: "genre = romance OR genre = Science Fiction)"
+      filter: "genre = romance OR genre = Science Fiction",
+      sort: ["id:asc"]
     )
 
     let expectation = XCTestExpectation(description: "Searching for botman")
@@ -150,7 +151,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 

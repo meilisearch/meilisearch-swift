@@ -373,6 +373,26 @@ public struct MeiliSearch {
     self.updates.getAll(UID, completion)
   }
 
+  /**
+    Wait for an update to be processed or failed.
+
+    Providing an update id, returned by asynchronous MeiliSearch options, call are made
+    to MeiliSearch to check if the update has been processed or if it has failed.
+
+    - parameter UID:                 The unique identifier of the `Index`.
+    - parameter updateId:            The id of the update.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForPendingUpdate(
+    UID: String,
+    update: Update,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Update.Result, Swift.Error>
+  ) -> Void) {
+    self.updates.waitForPendingUpdate(UID, update, options, completion)
+  }
+
   // MARK: Keys
 
   /**
@@ -723,7 +743,7 @@ public struct MeiliSearch {
   // MARK: Filterable attributes
 
   /**
-   Get the attributes selected to be faceted of an `Index`.
+   Get the attributes that are filterable of an `Index`.
 
    - parameter UID:             The unique identifier for the `Index` to be found.
    - parameter completion:      The completion closure used to notify when the server
@@ -737,10 +757,10 @@ public struct MeiliSearch {
   }
 
   /**
-   Update the faceted attributes of an `Index`.
+   Update the attributes that are filterable of an `Index`.
 
    - parameter UID:             The unique identifier for the `Index` to be found.
-   - parameter attributes:   The faceted attributes to be applied into `Index`.
+   - parameter attributes:   The attributes that are filterable on an `Index`.
    - parameter completion:      The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Update`
    value if the request was successful, or `Error` if a failure occurred.
@@ -753,7 +773,7 @@ public struct MeiliSearch {
   }
 
   /**
-   Reset the faceted attributes of an `Index`.
+   Reset the attributes that are filterable of an `Index`.
 
    - parameter UID:        The unique identifier for the `Index` to be reset.
    - parameter completion: The completion closure used to notify when the server
@@ -764,6 +784,52 @@ public struct MeiliSearch {
     UID: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.settings.resetFilterableAttributes(UID, completion)
+  }
+
+  // MARK: Sortable attributes
+
+  /**
+   Get the attributes that are sortable of an `Index`.
+
+   - parameter UID:             The unique identifier for the `Index` to be found.
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getSortableAttributes(
+    UID: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getSortableAttributes(UID, completion)
+  }
+
+  /**
+   Update the attributes that are sortable of an `Index`.
+
+   - parameter UID:             The unique identifier for the `Index` to be found.
+   - parameter attributes:      The attributes that are sortable on an `Index`.
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateSortableAttributes(
+    UID: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateSortableAttributes(UID, attributes, completion)
+  }
+
+  /**
+   Reset the attributes that are sortable of an `Index`.
+
+   - parameter UID:        The unique identifier for the `Index` to be reset.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetSortableAttributes(
+    UID: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetSortableAttributes(UID, completion)
   }
 
   // MARK: Stats
@@ -867,5 +933,4 @@ public struct MeiliSearch {
     _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
     self.dumps.status(UID, completion)
   }
-
 }

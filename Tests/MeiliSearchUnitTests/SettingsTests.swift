@@ -16,8 +16,9 @@ class SettingsTests: XCTestCase {
         "typo",
         "proximity",
         "attribute",
+        "sort",
         "exactness",
-        "desc(release_date)"
+        "release_date:desc"
       ],
       "searchableAttributes": ["title", "description", "uid"],
       "displayedAttributes": [
@@ -28,6 +29,7 @@ class SettingsTests: XCTestCase {
         "poster"
       ],
       "filterableAttributes": [],
+      "sortableAttributes": [],
       "stopWords": [],
       "synonyms": {
         "wolverine": ["xmen", "logan"],
@@ -76,7 +78,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -111,7 +113,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -145,7 +147,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -185,7 +187,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -232,7 +234,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -267,7 +269,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -303,7 +305,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -345,7 +347,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -380,7 +382,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -396,8 +398,9 @@ class SettingsTests: XCTestCase {
         "typo",
         "proximity",
         "attribute",
+        "sort",
         "exactness",
-        "desc(release_date)"
+        "release_date:desc"
       ]
       """
 
@@ -423,7 +426,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -465,7 +468,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -500,7 +503,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -532,7 +535,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -568,7 +571,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -603,7 +606,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -639,7 +642,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -682,7 +685,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -717,7 +720,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -753,7 +756,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -796,7 +799,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -831,7 +834,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -863,7 +866,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -899,7 +902,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -934,7 +937,110 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
+
+  }
+
+  // MARK: Filterable Attributes
+
+  func testGetSortableAttributes() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      ["genre", "director"]
+      """
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+
+    let expectation = XCTestExpectation(description: "Get displayed attribute")
+
+    self.client.getSortableAttributes(UID: UID) { result in
+      switch result {
+      case .success(let sortableAttributes):
+        XCTAssertFalse(sortableAttributes.isEmpty)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to get displayed attribute")
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 5.0)
+
+  }
+
+  func testUpdateSortableAttributes() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      {"updateId":0}
+      """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+    let attributes: [String] = ["genre", "director"]
+
+    let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+    self.client.updateSortableAttributes(UID: UID, attributes) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update displayed attribute")
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 5.0)
+
+  }
+
+  func testResetSortableAttributes() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      {"updateId":1}
+      """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let stubUpdate: Update = try! decoder.decode(
+      Update.self,
+      from: jsonString.data(using: .utf8)!)
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+
+    let UID: String = "movies"
+
+    let expectation = XCTestExpectation(description: "Update displayed attribute")
+
+    self.client.resetSortableAttributes(UID: UID) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to update displayed attribute")
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 

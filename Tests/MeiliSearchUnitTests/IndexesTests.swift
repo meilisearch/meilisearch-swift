@@ -49,7 +49,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -89,7 +89,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -131,7 +131,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -171,7 +171,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -211,7 +211,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -238,7 +238,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
