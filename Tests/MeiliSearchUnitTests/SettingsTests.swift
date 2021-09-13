@@ -943,7 +943,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Filterable Attributes
 
-  func testgetSortableAttributes() {
+  func testGetSortableAttributes() {
 
     // Prepare the mock server
 
@@ -973,7 +973,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testUpSortableAttributes() {
+  func testUpdateSortableAttributes() {
 
     // Prepare the mock server
 
@@ -1009,7 +1009,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testresetSortableAttributes() {
+  func testResetSortableAttributes() {
 
     // Prepare the mock server
 
