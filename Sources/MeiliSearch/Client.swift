@@ -147,8 +147,8 @@ public struct MeiliSearch {
    For a partial update of the document see `updateDocuments`.
 
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:  The document data (JSON) to be processed.
-   - parameter Encoder:    The encoder for your documents data Structure.
+   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter Encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
@@ -178,7 +178,7 @@ public struct MeiliSearch {
    For a partial update of the document see `updateDocuments`.
 
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter documents:  The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
@@ -205,17 +205,9 @@ public struct MeiliSearch {
 
     To completely overwrite a document, `addDocuments`
 
-   Add a list of documents or replace them if they already exist.
-
-   If you send an already existing document (same id) the whole existing document will
-   be overwritten by the new document. Fields previously in the document not present in
-   the new document are removed.
-
-   For a partial update of the document see `updateDocuments`.
-
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:  The document data (JSON) to be processed.
-   - parameter Encoder:    The encoder for your documents data Structure.
+   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter Encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
@@ -236,14 +228,13 @@ public struct MeiliSearch {
   }
 
   /**
-   Add a list of documents and update them if they already.
+    Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.
 
-   If you send an already existing document (same id) the old document
-   will be only partially updated according to the fields of the new
-   document. Thus, any fields not present in the new document are kept
-   and remained unchanged.
+    If you send an already existing document (same documentId) the old document will be only partially
+    updated according to the fields of the new document.
+    Thus, any fields not present in the new document are kept and remained unchanged.
 
-   To completely overwrite a document see `addDocument`.
+    To completely overwrite a document, `addDocuments`
 
    - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter documents:  The document data (JSON) to be processed.
