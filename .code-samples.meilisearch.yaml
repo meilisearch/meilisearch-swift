@@ -981,10 +981,10 @@ sorting_guide_update_sortable_attributes_1: |-
 sorting_guide_update_ranking_rules_1: |-
   let rankingRules: [String] = [
     "words",
+    "sort",
     "typo",
     "proximity",
     "attribute",
-    "sort",
     "exactness"
   ]
   client.updateRankingRules(UID: "books", rankingRules) { (result: Result<Update, Swift.Error>) in
