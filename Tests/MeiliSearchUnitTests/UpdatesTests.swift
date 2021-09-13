@@ -55,7 +55,7 @@ class UpdatesTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -96,7 +96,7 @@ class UpdatesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -142,7 +142,7 @@ class UpdatesTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 

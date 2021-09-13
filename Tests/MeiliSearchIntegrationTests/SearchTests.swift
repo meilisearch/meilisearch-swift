@@ -156,7 +156,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testBasicSearchWithNoQuery() {
@@ -178,7 +178,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Phrase search
@@ -205,7 +205,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Limit
@@ -231,7 +231,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchZeroLimit() {
@@ -254,7 +254,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchLimitBiggerThanNumberOfBooks() {
@@ -278,7 +278,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchLimitEmptySearch() {
@@ -302,7 +302,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Offset
@@ -329,7 +329,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchOffsetZero() {
@@ -354,7 +354,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchOffsetLastPage() {
@@ -380,7 +380,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to crop
@@ -409,7 +409,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Crop length
@@ -439,7 +439,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Matches tests
@@ -477,7 +477,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to highlight
@@ -507,7 +507,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to retrieve
@@ -538,7 +538,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Filters
@@ -600,7 +600,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchSorting() {
@@ -627,7 +627,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchFiltersNotMatching() {
@@ -653,7 +653,7 @@ class SearchTests: XCTestCase {
         }
       }
     }
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchFacetsFilters() {

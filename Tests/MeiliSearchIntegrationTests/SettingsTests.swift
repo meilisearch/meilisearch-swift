@@ -94,7 +94,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateFilterableAttributes() {
@@ -170,7 +170,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Displayed attributes
@@ -195,7 +195,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateDisplayedAttributes() {
@@ -270,7 +270,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Distinct attributes
@@ -295,7 +295,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateDistinctAttribute() {
@@ -373,7 +373,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Ranking rules
@@ -396,7 +396,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateRankingRules() {
@@ -476,7 +476,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Searchable attributes
@@ -499,7 +499,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSearchableAttributes() {
@@ -579,7 +579,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // // MARK: Stop words
@@ -601,7 +601,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateStopWords() {
@@ -752,7 +752,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Synonyms
@@ -774,7 +774,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSynonyms() {
@@ -924,7 +924,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Global Settings
@@ -945,7 +945,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSettings() {
@@ -1102,7 +1102,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
 }
