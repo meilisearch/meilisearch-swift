@@ -10,9 +10,9 @@ class SettingsTests: XCTestCase {
   private let defaultRankingRules: [String] = [
     "words",
     "typo",
-    "sort",
     "proximity",
     "attribute",
+    "sort",
     "exactness"
   ]
   private let defaultDistinctAttribute: String? = nil
@@ -953,7 +953,7 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
@@ -964,7 +964,7 @@ class SettingsTests: XCTestCase {
       )
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
@@ -1011,7 +1011,7 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: nil,
@@ -1021,7 +1021,7 @@ class SettingsTests: XCTestCase {
       sortableAttributes: ["title"])
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: [],

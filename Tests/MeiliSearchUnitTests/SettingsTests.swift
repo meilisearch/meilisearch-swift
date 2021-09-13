@@ -14,9 +14,9 @@ class SettingsTests: XCTestCase {
       "rankingRules": [
         "words",
         "typo",
-        "sort",
         "proximity",
         "attribute",
+        "sort",
         "exactness",
         "release_date:desc"
       ],
@@ -396,9 +396,9 @@ class SettingsTests: XCTestCase {
       [
         "words",
         "typo",
-        "sort",
         "proximity",
         "attribute",
+        "sort",
         "exactness",
         "release_date:desc"
       ]
