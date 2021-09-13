@@ -82,7 +82,6 @@ struct Documents {
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -102,7 +101,6 @@ struct Documents {
     }
 
     let data: Data!
-
     switch encodeJSON(documents, encoder) {
     case .success(let documentData):
       data = documentData
@@ -112,15 +110,12 @@ struct Documents {
     }
 
     request.post(api: query, data) { result in
-
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
-
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
   }
 
@@ -136,16 +131,40 @@ struct Documents {
     }
 
     request.put(api: query, document) { result in
-
       switch result {
       case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-
         Documents.decodeJSON(data, completion: completion)
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 
+  func update<T>(
+    _ UID: String,
+    _ documents: [T],
+    _ encoder: JSONEncoder? = nil,
+    _ primaryKey: String? =  nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+
+    var query: String = "/indexes/\(UID)/documents"
+    if let primaryKey: String = primaryKey {
+      query += "?primaryKey=\(primaryKey)"
+    }
+
+    let data: Data!
+    switch encodeJSON(documents, encoder) {
+    case .success(let documentData):
+      data = documentData
+    case .failure(let error):
+      completion(.failure(error))
+      return
+    }
+
+    request.put(api: query, data) { result in
+      switch result {
+      case .success(let data):
+        Documents.decodeJSON(data, completion: completion)
       case .failure(let error):
         completion(.failure(error))
       }

@@ -61,7 +61,8 @@ class DocumentsTests: XCTestCase {
 
     self.client.addDocuments(
       UID: uid,
-      documents: [movie]
+      documents: [movie],
+      primaryKey: "id"
     ) { result in
 
       switch result {
@@ -130,7 +131,7 @@ class DocumentsTests: XCTestCase {
 
   }
 
-  func testUpdateDocuments() {
+  func testUpdateDataDocuments() {
 
     // Prepare the mock server
 
@@ -157,13 +158,13 @@ class DocumentsTests: XCTestCase {
 
     let primaryKey: String = "movieskud"
 
-    let documents: Data = documentJsonString.data(using: .utf8)!
+    let JsonDocuments: Data = documentJsonString.data(using: .utf8)!
 
     let expectation = XCTestExpectation(description: "Add or update Movies document")
 
     self.client.updateDocuments(
       UID: uid,
-      documents: documents,
+      documents: JsonDocuments,
       primaryKey: primaryKey) { result in
 
       switch result {
@@ -174,6 +175,50 @@ class DocumentsTests: XCTestCase {
         XCTFail("Failed to add or update Movies document")
       }
 
+    }
+
+    self.wait(for: [expectation], timeout: 5.0)
+  }
+
+  func testUpdateDocuments() {
+
+    // Prepare the mock server
+
+    let jsonString = """
+      {"updateId":0}
+      """
+
+    let decoder: JSONDecoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+
+    session.pushData(jsonString, code: 202)
+
+    // Start the test with the mocked server
+
+    let uid: String = "Movies"
+
+    let movie = Movie(
+      id: 287947,
+      title: "Shazam",
+      overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200)))
+
+    let expectation = XCTestExpectation(description: "add or update Movies document")
+
+    self.client.updateDocuments(
+      UID: uid,
+      documents: [movie],
+      primaryKey: "id"
+    ) { result in
+
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubUpdate, update)
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to add or update Movies document")
+      }
     }
 
     self.wait(for: [expectation], timeout: 5.0)

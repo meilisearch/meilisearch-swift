@@ -144,10 +144,12 @@ public struct MeiliSearch {
    be overwritten by the new document. Fields previously in the document not present in
    the new document are removed.
 
-   For a partial update of the document see `updateDocument`.
+   For a partial update of the document see `updateDocuments`.
 
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:  The documents to be processed.
+   - parameter documents:  The document data (JSON) to be processed.
+   - parameter Encoder:    The encoder for your documents data Structure.
+   - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -173,10 +175,11 @@ public struct MeiliSearch {
    be overwritten by the new document. Fields previously in the document not present in
    the new document are removed.
 
-   For a partial update of the document see `updateDocument`.
+   For a partial update of the document see `updateDocuments`.
 
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:  The  data to be processed.
+   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -194,17 +197,57 @@ public struct MeiliSearch {
   }
 
   /**
+    Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.
+
+    If you send an already existing document (same documentId) the old document will be only partially
+    updated according to the fields of the new document.
+    Thus, any fields not present in the new document are kept and remained unchanged.
+
+    To completely overwrite a document, `addDocuments`
+
+   Add a list of documents or replace them if they already exist.
+
+   If you send an already existing document (same id) the whole existing document will
+   be overwritten by the new document. Fields previously in the document not present in
+   the new document are removed.
+
+   For a partial update of the document see `updateDocuments`.
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter documents:  The document data (JSON) to be processed.
+   - parameter Encoder:    The encoder for your documents data Structure.
+   - parameter primaryKey: The primary key of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateDocuments<T>(
+    UID: String,
+    documents: [T],
+    encoder: JSONEncoder? = nil,
+    primaryKey: String? = nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    self.documents.update(
+      UID,
+      documents,
+      encoder,
+      primaryKey,
+      completion)
+  }
+
+  /**
    Add a list of documents and update them if they already.
 
    If you send an already existing document (same id) the old document
-   will be only  partially updated according to the fields of the new
+   will be only partially updated according to the fields of the new
    document. Thus, any fields not present in the new document are kept
    and remained unchanged.
 
    To completely overwrite a document see `addDocument`.
 
    - parameter UID:        The unique identifier for the Document's index to be found.
-   - parameter documents:   The document data (JSON) to be processed.
+   - parameter documents:  The document data (JSON) to be processed.
+   - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
