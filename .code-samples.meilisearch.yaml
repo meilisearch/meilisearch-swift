@@ -165,9 +165,9 @@ update_settings_1: |-
   let settings = Setting(rankingRules: [
       "words",
       "typo",
-      "sort",
       "proximity",
       "attribute",
+      "sort",
       "exactness",
       "release_date:desc",
       "rank:desc"
@@ -286,9 +286,9 @@ update_ranking_rules_1: |-
   let rankingRules: [String] = [
       "words",
       "typo",
-      "sort",
       "proximity",
       "attribute",
+      "sort",
       "exactness",
       "release_date:asc",
       "rank:desc"
@@ -981,10 +981,10 @@ sorting_guide_update_sortable_attributes_1: |-
 sorting_guide_update_ranking_rules_1: |-
   let rankingRules: [String] = [
     "words",
-    "sort",
     "typo",
     "proximity",
     "attribute",
+    "sort",
     "exactness"
   ]
   client.updateRankingRules(UID: "books", rankingRules) { (result: Result<Update, Swift.Error>) in

@@ -546,7 +546,7 @@ class SearchTests: XCTestCase {
   private func configureFilters(_ completion: @escaping () -> Void) {
     let filterableAttributes = ["genres", "author", "id"]
     let settings = Setting(
-      rankingRules: ["words", "typo", "sort", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["*"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
