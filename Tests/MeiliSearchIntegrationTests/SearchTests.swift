@@ -156,7 +156,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testBasicSearchWithNoQuery() {
@@ -178,7 +178,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Phrase search
@@ -205,7 +205,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Limit
@@ -231,7 +231,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchZeroLimit() {
@@ -254,7 +254,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchLimitBiggerThanNumberOfBooks() {
@@ -278,7 +278,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchLimitEmptySearch() {
@@ -302,7 +302,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Offset
@@ -329,7 +329,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchOffsetZero() {
@@ -354,7 +354,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchOffsetLastPage() {
@@ -380,7 +380,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to crop
@@ -409,7 +409,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Crop length
@@ -439,7 +439,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Matches tests
@@ -477,7 +477,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to highlight
@@ -507,7 +507,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Attributes to retrieve
@@ -538,18 +538,27 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Filters
 
   private func configureFilters(_ completion: @escaping () -> Void) {
+    let filterableAttributes = ["genres", "author", "id"]
+    let settings = Setting(
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      searchableAttributes: ["*"],
+      displayedAttributes: ["*"],
+      stopWords: ["the", "a"],
+      synonyms: [:],
+      distinctAttribute: nil,
+      filterableAttributes: filterableAttributes,
+      sortableAttributes: ["id"]
+      )
 
     let expectation = XCTestExpectation(description: "Configure filterable attributes")
-    let filterableAttributes = ["genres", "author", "id"]
 
-    self.client.updateFilterableAttributes(UID: self.uid, filterableAttributes) { result in
-
+    self.client.updateSetting(UID: self.uid, settings) { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
@@ -561,8 +570,6 @@ class SearchTests: XCTestCase {
       }
 
     }
-
-    self.wait(for: [expectation], timeout: 1.0)
   }
 
   func testSearchFilters() {
@@ -593,7 +600,34 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
+  }
+
+  func testSearchSorting() {
+
+    let expectation = XCTestExpectation(description: "Search for Books using sort on id")
+    configureFilters {
+      typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+      let query = ""
+      let sort = ["id:asc"]
+      let parameters = SearchParameters(query: query, sort: sort)
+
+      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+        switch result {
+        case .success(let documents):
+          XCTAssertTrue(documents.query == query)
+          let book = documents.hits[0]
+          XCTAssertEqual(1, book.id)
+          XCTAssertEqual("Alice In Wonderland", book.title)
+          expectation.fulfill()
+        case .failure(let error):
+          print(error)
+          XCTFail("Failed to search with sorting parameter")
+        }
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchFiltersNotMatching() {
@@ -619,7 +653,7 @@ class SearchTests: XCTestCase {
         }
       }
     }
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchFacetsFilters() {

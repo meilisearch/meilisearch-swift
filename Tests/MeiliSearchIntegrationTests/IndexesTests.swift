@@ -55,7 +55,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [createExpectation], timeout: 1.0)
+    self.wait(for: [createExpectation], timeout: 5.0)
   }
 
   func testCreateIndexThatAlreadyExists() {
@@ -69,7 +69,7 @@ class IndexesTests: XCTestCase {
         XCTFail("Failed to create Movies index")
       }
     }
-    self.wait(for: [createExpectation], timeout: 1.0)
+    self.wait(for: [createExpectation], timeout: 5.0)
 
     let create2ndIndexExpectation = XCTestExpectation(description: "Create Movies index that already exists and fail")
     self.client.createIndex(UID: self.uid) { result in
@@ -98,7 +98,7 @@ class IndexesTests: XCTestCase {
       }
       create2ndIndexExpectation.fulfill()
     }
-    self.wait(for: [create2ndIndexExpectation], timeout: 1.0)
+    self.wait(for: [create2ndIndexExpectation], timeout: 5.0)
   }
 
   func testGetOrCreateIndex() {
@@ -116,7 +116,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -135,7 +135,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
     sleep(2)
 
@@ -152,7 +152,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [secondExpectation], timeout: 1.0)
+    self.wait(for: [secondExpectation], timeout: 5.0)
 
   }
 
@@ -171,7 +171,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
     let getIndexExpectation = XCTestExpectation(description: "Get index")
 
@@ -187,7 +187,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [getIndexExpectation], timeout: 1.0)
+    self.wait(for: [getIndexExpectation], timeout: 5.0)
 
   }
 
@@ -206,7 +206,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [createIndexExpectation], timeout: 1.0)
+    self.wait(for: [createIndexExpectation], timeout: 5.0)
 
     sleep(1)
 
@@ -225,7 +225,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -245,7 +245,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 
@@ -264,7 +264,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [createExpectation], timeout: 1.0)
+    self.wait(for: [createExpectation], timeout: 5.0)
 
     // This tests should tests primary key when they are added to this function
     let updateExpectation = XCTestExpectation(description: "Update movie index")
@@ -279,7 +279,7 @@ class IndexesTests: XCTestCase {
         XCTFail("Failed to update movie index")
       }
     }
-    self.wait(for: [updateExpectation], timeout: 1.0)
+    self.wait(for: [updateExpectation], timeout: 5.0)
   }
 
   func testDeleteIndex() {
@@ -297,7 +297,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [createExpectation], timeout: 1.0)
+    self.wait(for: [createExpectation], timeout: 5.0)
 
     let expectation = XCTestExpectation(description: "Delete Movies index")
 
@@ -312,7 +312,7 @@ class IndexesTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
   }
 

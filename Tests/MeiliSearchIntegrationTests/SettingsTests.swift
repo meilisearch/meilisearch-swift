@@ -12,12 +12,14 @@ class SettingsTests: XCTestCase {
     "typo",
     "proximity",
     "attribute",
+    "sort",
     "exactness"
   ]
   private let defaultDistinctAttribute: String? = nil
   private let defaultDisplayedAttributes: [String] = ["*"]
   private let defaultSearchableAttributes: [String] = ["*"]
   private let defaultFilterableAttributes: [String] = []
+  private let defaultSortableAttributes: [String] = []
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private var defaultGlobalSettings: Setting?
@@ -55,7 +57,8 @@ class SettingsTests: XCTestCase {
       stopWords: self.defaultStopWords,
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
-      filterableAttributes: self.defaultFilterableAttributes
+      filterableAttributes: self.defaultFilterableAttributes,
+      sortableAttributes: self.defaultFilterableAttributes
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -65,7 +68,8 @@ class SettingsTests: XCTestCase {
       stopWords: self.defaultStopWords,
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
-      filterableAttributes: self.defaultFilterableAttributes
+      filterableAttributes: self.defaultFilterableAttributes,
+      sortableAttributes: self.defaultSortableAttributes
     )
 
   }
@@ -90,7 +94,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateFilterableAttributes() {
@@ -166,7 +170,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Displayed attributes
@@ -191,7 +195,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateDisplayedAttributes() {
@@ -266,7 +270,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Distinct attributes
@@ -291,7 +295,7 @@ class SettingsTests: XCTestCase {
 
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateDistinctAttribute() {
@@ -369,7 +373,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Ranking rules
@@ -392,7 +396,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateRankingRules() {
@@ -472,7 +476,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Searchable attributes
@@ -495,7 +499,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSearchableAttributes() {
@@ -575,7 +579,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // // MARK: Stop words
@@ -597,7 +601,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateStopWords() {
@@ -748,7 +752,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Synonyms
@@ -770,7 +774,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSynonyms() {
@@ -920,7 +924,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Global Settings
@@ -941,7 +945,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateSettings() {
@@ -949,22 +953,25 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"]
+      )
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
@@ -1004,22 +1011,24 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: nil,
       synonyms: nil,
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["typo", "words", "proximity", "attribute", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: [],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"])
+      filterableAttributes: ["title"],
+      sortableAttributes: ["title"])
 
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
@@ -1093,7 +1102,7 @@ class SettingsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
 }

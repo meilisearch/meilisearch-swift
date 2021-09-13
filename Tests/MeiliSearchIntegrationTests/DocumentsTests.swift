@@ -367,7 +367,7 @@ class DocumentsTests: XCTestCase {
         XCTFail("Failed to add or replace Movies document")
       }
     }
-    self.wait(for: [expectation], timeout: 1.0)
+    self.wait(for: [expectation], timeout: 5.0)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
     self.client.deleteDocument(UID: self.uid, identifier: "42") { (result: Result<Update, Swift.Error>) in

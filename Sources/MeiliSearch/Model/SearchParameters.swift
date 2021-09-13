@@ -33,6 +33,9 @@ public struct SearchParameters: Codable, Equatable {
   /// Filter on attributes values.
   public let filter: String?
 
+  /// Filter on attributes values.
+  public let sort: [String]?
+
   /// Retrieve the count of matching terms for each facets.
   public let facetsDistribution: [String]?
 
@@ -50,6 +53,7 @@ public struct SearchParameters: Codable, Equatable {
     cropLength: Int? = nil,
     attributesToHighlight: [String]? = nil,
     filter: String? = nil,
+    sort: [String]? = nil,
     facetsDistribution: [String]? = nil,
     matches: Bool? = false) {
     self.query = query
@@ -60,6 +64,7 @@ public struct SearchParameters: Codable, Equatable {
     self.cropLength = cropLength
     self.attributesToHighlight = attributesToHighlight
     self.filter = filter
+    self.sort = sort
     self.facetsDistribution = facetsDistribution
     self.matches = matches
   }
@@ -87,6 +92,7 @@ public struct SearchParameters: Codable, Equatable {
     case cropLength
     case attributesToHighlight
     case filter
+    case sort
     case facetsDistribution
     case matches
   }
