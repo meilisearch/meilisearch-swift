@@ -87,7 +87,6 @@ class DumpsTests: XCTestCase {
 
   }
 
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try
