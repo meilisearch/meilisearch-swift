@@ -114,7 +114,7 @@ final class Request {
   func put(
     api: String,
     _ data: Data,
-    _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
 
     guard let url: URL = URL(string: config.url(api: api)) else {
       completion(.failure(MeiliSearch.Error.invalidURL()))
@@ -134,7 +134,11 @@ final class Request {
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { (data, response, error) in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
-        completion(.success(data))
+        if let unwrappedData: Data = data {
+          completion(.success(unwrappedData))
+          return
+        }
+        completion(.failure(MeiliSearch.Error.invalidJSON))
         return
       } catch let error {
         completion(.failure(error))

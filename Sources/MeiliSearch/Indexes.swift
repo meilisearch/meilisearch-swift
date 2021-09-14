@@ -120,23 +120,14 @@ struct Indexes {
     }
 
     self.request.put(api: "/indexes/\(UID)", data) { result in
-
       switch result {
       case .success(let result):
-
-        guard let result: Data = result else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-
         Indexes.decodeJSON(result, completion)
 
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   func delete(
