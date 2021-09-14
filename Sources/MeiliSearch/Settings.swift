@@ -142,32 +142,25 @@ struct Settings {
 
     let data: Data
     do {
-      // data = try JSONSerialization.data(withJSONObject: synonyms, options: [])
       data = try JSONEncoder().encode(synonyms)
     } catch {
       completion(.failure(error))
       return
     }
 
-
     self.request.post(api: "/indexes/\(UID)/settings/synonyms", data) { result in
-
       switch result {
       case .success(let data):
-
         do {
           let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
           completion(.success(update))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   func resetSynonyms(

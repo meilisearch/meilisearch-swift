@@ -1031,9 +1031,6 @@ class SettingsTests: XCTestCase {
     self.wait(for: [overrideSettingsExpectation], timeout: 10.0)
   }
 
-
-
-
   func testUpdateSettingsWithSynonymsAndStopWordsNil() {
 
     let expectation = XCTestExpectation(description: "Update settings")
