@@ -20,7 +20,6 @@ struct Settings {
   func get(
     _ UID: String,
     _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
-
     self.request.get(api: "/indexes/\(UID)/settings") { result in
 
       switch result {
@@ -60,10 +59,8 @@ struct Settings {
     }
 
     self.request.post(api: "/indexes/\(UID)/settings", data) { result in
-
       switch result {
       case .success(let data):
-
         do {
           let update: Update = try Constants.customJSONDecoder.decode(Update.self, from: data)
           completion(.success(update))
@@ -151,6 +148,7 @@ struct Settings {
       completion(.failure(error))
       return
     }
+
 
     self.request.post(api: "/indexes/\(UID)/settings/synonyms", data) { result in
 

@@ -949,19 +949,15 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSettings() {
-
-    let expectation = XCTestExpectation(description: "Update settings")
-
     let newSettings = Setting(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
-      displayedAttributes: ["*"],
-      stopWords: ["the", "a"],
-      synonyms: [:],
-      distinctAttribute: nil,
-      filterableAttributes: ["title"],
-      sortableAttributes: ["title"]
-      )
+      stopWords: ["the", "a"]
+    )
+
+    let overrideSettings = Setting(
+      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"]
+    )
 
     let expectedSettingResult = SettingResult(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
@@ -970,23 +966,23 @@ class SettingsTests: XCTestCase {
       stopWords: ["the", "a"],
       synonyms: [:],
       distinctAttribute: nil,
-      filterableAttributes: ["title"],
-      sortableAttributes: ["title"])
+      filterableAttributes: [],
+      sortableAttributes: ["title"]
+    )
 
+    let expectation = XCTestExpectation(description: "Update settings")
     self.client.updateSetting(UID: self.uid, newSettings) { result in
       switch result {
       case .success(let update):
-
         waitForPendingUpdate(self.client, self.uid, update) {
           self.client.getSetting(UID: self.uid) { result in
             switch result {
             case .success(let settingResult):
-
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
               XCTAssertEqual(expectedSettingResult.searchableAttributes.sorted(), settingResult.searchableAttributes.sorted())
               XCTAssertEqual(expectedSettingResult.displayedAttributes.sorted(), settingResult.displayedAttributes.sorted())
               XCTAssertEqual(expectedSettingResult.stopWords.sorted(), settingResult.stopWords.sorted())
-              XCTAssertEqual(expectedSettingResult.filterableAttributes, settingResult.filterableAttributes)
+              XCTAssertEqual([], settingResult.filterableAttributes)
               XCTAssertEqual(Array(expectedSettingResult.synonyms.keys).sorted(by: <), Array(settingResult.synonyms.keys).sorted(by: <))
 
               expectation.fulfill()
@@ -1000,11 +996,43 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
-
     self.wait(for: [expectation], timeout: 10.0)
+
+    let overrideSettingsExpectation = XCTestExpectation(description: "Update settings")
+
+    // Test if absents settings are sent to MeiliSearch with a nil value.
+    self.client.updateSetting(UID: self.uid, overrideSettings) { result in
+      switch result {
+      case .success(let update):
+
+        waitForPendingUpdate(self.client, self.uid, update) {
+          self.client.getSetting(UID: self.uid) { result in
+            switch result {
+            case .success(let settingResult):
+              XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
+              XCTAssertEqual(expectedSettingResult.searchableAttributes.sorted(), settingResult.searchableAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.displayedAttributes.sorted(), settingResult.displayedAttributes.sorted())
+              XCTAssertEqual(expectedSettingResult.stopWords.sorted(), settingResult.stopWords.sorted())
+              XCTAssertEqual(expectedSettingResult.filterableAttributes, [])
+              XCTAssertEqual(Array(expectedSettingResult.synonyms.keys).sorted(by: <), Array(settingResult.synonyms.keys).sorted(by: <))
+            case .failure(let error):
+              print(error)
+              XCTFail()
+            }
+            overrideSettingsExpectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        print(error)
+        XCTFail()
+      }
+    }
+    self.wait(for: [overrideSettingsExpectation], timeout: 10.0)
   }
+
+
+
 
   func testUpdateSettingsWithSynonymsAndStopWordsNil() {
 
