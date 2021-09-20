@@ -58,21 +58,22 @@ public struct MeiliSearch {
   /**
    Create a new Index for the given `uid`.
 
-   - parameter UID:        The unique identifier for the `Index` to be created.
+   - parameter uid:        The unique identifier for the `Index` to be created.
    - parameter completion: The completion closure used to notify when the server
    completes the write request, it returns a `Result` object that contains `Index`
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func createIndex(
-    UID: String,
+    _ uid: String,
+    primaryKey: String? = nil,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.create2(UID, self.config, completion)
+    Indexes.create(uid, primaryKey: primaryKey, self.config, completion)
   }
 
   /**
    Get or create a new Index for the given `uid`.
 
-   - parameter UID:        The unique identifier for the `Index` to be created.
+   - parameter uid:        The unique identifier for the `Index` to be created.
    - parameter completion: The completion closure used to notify when the server
    completes the write request, it returns a `Result` object that contains `Index`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -80,23 +81,24 @@ public struct MeiliSearch {
 
   // DONE
   public func getOrCreateIndex(
-    UID: String,
+    _ uid: String,
+    primaryKey: String? = nil,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.getOrCreate2(UID, self.config, completion)
+    Indexes.getOrCreate(uid, primaryKey: primaryKey, self.config, completion)
   }
 
   /**
    Get the Index for the given `uid`.
 
-   - parameter UID:        The unique identifier for the `Index` to be found.
+   - parameter uid:        The unique identifier for the `Index` to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Index`
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndex(
-    UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    self.index(UID).get2(completion)
+    self.index(uid).get(completion)
   }
 
   /**
@@ -114,17 +116,17 @@ public struct MeiliSearch {
   /**
    Update index name.
 
-   - parameter UID:        The unique identifier for the `Index` to be found.
+   - parameter uid:        The unique identifier for the `Index` to be found.
    - parameter name:       New index name.
    - parameter completion: The completion closure used to notify when the server
    completes the update request, it returns a `Result` object that contains `()`
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func updateIndex(
-    UID: String,
+    _ uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-    self.index(UID).update(UID, primaryKey, completion)
+    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
   /**
@@ -135,9 +137,9 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func deleteIndex(
-    UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-    self.index(UID).delete(UID, completion)
+    self.index(uid).delete(completion)
   }
 
   // MARK: Document

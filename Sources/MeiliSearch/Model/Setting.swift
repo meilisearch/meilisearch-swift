@@ -53,15 +53,15 @@ public struct Setting: Codable, Equatable {
     self.sortableAttributes = sortableAttributes
   }
 
-  enum CodingKeys: String, CodingKey {
-    case rankingRules
-    case searchableAttributes
-    case displayedAttributes
-    case stopWords
-    case synonyms
-    case distinctAttribute
-    case filterableAttributes
-    case sortableAttributes
-  }
+  // enum CodingKeys: String, CodingKey {
+  //   case rankingRules
+  //   case searchableAttributes
+  //   case displayedAttributes
+  //   case stopWords
+  //   case synonyms
+  //   case distinctAttribute
+  //   case filterableAttributes
+  //   case sortableAttributes
+  // }
 
 }
