@@ -100,9 +100,9 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add documents to index")
 
-    self.client.deleteIndex(UID: uid) { result in
+    self.client.deleteIndex(uid) { result in
 
-      self.client.getOrCreateIndex(UID: self.uid) { result in
+      self.client.getOrCreateIndex(self.uid) { result in
 
         switch result {
         case .success:

@@ -8,7 +8,7 @@ public struct Indexes {
   let config: Config
   // let uid: String?
 
-  /// The index UID.
+  /// The index uid.
   public let uid: String
 
   /// The data when the index was created.
@@ -25,46 +25,28 @@ public struct Indexes {
   init (
     _ config: Config,
     _ uid: String,
+    primaryKey: String? = nil,
     _ createdAt: Date? = nil,
-    _ updatedAt: Date? = nil,
-    _ primaryKey: String? = nil) {
+    _ updatedAt: Date? = nil
+    ) {
     self.config = config
     self.request = Request(self.config)
     self.uid = uid
+    self.primaryKey = primaryKey
     self.createdAt = createdAt
     self.updatedAt = updatedAt
-    self.primaryKey = primaryKey
   }
 
   enum CodingKeys: String, CodingKey {
-    case UID = "uid"
+    case uid = "uid"
+    case primaryKey
     case createdAt
     case updatedAt
-    case primaryKey
   }
 
   // MARK: Functions
 
-  func get(
-    _ UID: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-
-    self.request.get(api: "/indexes/\(UID)") { result in
-
-      switch result {
-      case .success(let result):
-        guard let result: Data = result else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        Indexes.decodeJSON(result, completion, self.config)
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
-  }
-
-  public func get2(_ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+  public func get(_ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(self.uid)") { result in
       switch result {
       case .success(let result):
@@ -72,7 +54,7 @@ public struct Indexes {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-        Indexes.decodeJSON2(result, self.config, completion)
+        Indexes.decodeJSON(result, self.config, completion)
       case .failure(let error):
         completion(.failure(error))
       }
@@ -80,12 +62,9 @@ public struct Indexes {
   }
 
   public static func getAll(_ config: Config, _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
-
     Request(config).get(api: "/indexes") { result in
-
       switch result {
       case .success(let result):
-
         guard let result: Data = result else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
@@ -99,33 +78,12 @@ public struct Indexes {
 
   }
 
-  // func getOrCreate(_ UID: String, _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-  //   self.create(UID) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       completion(.success(index))
-  //     case .failure(let error):
-  //       switch error {
-  //       case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
-  //         if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
-  //           if msErrorBody.errorCode == "index_already_exists" {
-  //             self.get(UID, completion)
-  //           }
-  //         } else {
-  //           completion(.failure(error))
-  //         }
-  //       default:
-  //         completion(.failure(error))
-  //       }
-  //     }
-  //   }
-  // }
-
-  public static func getOrCreate2(
-    _ UID: String,
+  public static func getOrCreate(
+    _ uid: String,
+    primaryKey: String? = nil,
     _ config: Config,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.create2(UID, config) { result in
+    Indexes.create(uid, primaryKey: primaryKey, config) { result in
       switch result {
       case .success(let index):
         completion(.success(index))
@@ -134,7 +92,7 @@ public struct Indexes {
         case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
           if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
             if msErrorBody.errorCode == "index_already_exists" {
-              Indexes(config, UID).get2(completion)
+              Indexes(config, uid).get(completion)
             }
           } else {
             completion(.failure(error))
@@ -146,35 +104,13 @@ public struct Indexes {
     }
   }
 
-  func create(
-    _ UID: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-
-    let payload: CreateIndexPayload = CreateIndexPayload(uid: UID)
-    let data: Data
-    do {
-      data = try JSONEncoder().encode(payload)
-    } catch {
-      completion(.failure(MeiliSearch.Error.invalidJSON))
-      return
-    }
-
-    self.request.post(api: "/indexes", data) { result in
-      switch result {
-      case .success(let result):
-        Indexes.decodeJSON(result, completion, self.config)
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
-  }
-
-  public static func create2(
-    _ UID: String,
+  public static func create(
+    _ uid: String,
+    primaryKey: String? = nil,
     _ config: Config,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
 
-    let payload: CreateIndexPayload = CreateIndexPayload(uid: UID)
+    let payload = CreateIndexPayload(uid: uid, primaryKey: primaryKey)
     let data: Data
     do {
       data = try JSONEncoder().encode(payload)
@@ -186,17 +122,16 @@ public struct Indexes {
     Request(config).post(api: "/indexes", data) { result in
       switch result {
       case .success(let result):
-        Indexes.decodeJSON2(result, config, completion)
+        Indexes.decodeJSON(result, config, completion)
       case .failure(let error):
         completion(.failure(error))
       }
     }
   }
 
-  func update(
-    _ UID: String,
-    _ primaryKey: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+  public func update(
+    primaryKey: String,
+    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
 
     let payload: UpdateIndexPayload = UpdateIndexPayload(primaryKey: primaryKey)
     let data: Data
@@ -207,10 +142,10 @@ public struct Indexes {
       return
     }
 
-    self.request.put(api: "/indexes/\(UID)", data) { result in
+    self.request.put(api: "/indexes/\(self.uid)", data) { result in
       switch result {
       case .success(let result):
-        Indexes.decodeJSON(result, completion, self.config)
+        Indexes.decodeJSON(result, self.config, completion)
 
       case .failure(let error):
         completion(.failure(error))
@@ -218,46 +153,27 @@ public struct Indexes {
     }
   }
 
-  func delete(
-    _ UID: String,
+  public func delete(
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-
-    self.request.delete(api: "/indexes/\(UID)") { result in
-
+    self.request.delete(api: "/indexes/\(self.uid)") { result in
       switch result {
       case .success:
         completion(.success(()))
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   // MARK: Codable
 
   private static func decodeJSON(
     _ data: Data,
-    _ completion: (Result<Index, Swift.Error>) -> Void,
-    _ config: Config) {
-    do {
-      let index: Index = try Constants.customJSONDecoder.decode(Index.self, from: data)
-      // let indexes: Indexes = try Indexes(config, index.UID, index.createdAt, index.updatedAt, index.primaryKey)
-
-      completion(.success(index))
-    } catch {
-      completion(.failure(error))
-    }
-  }
-
-  private static func decodeJSON2(
-    _ data: Data,
     _ config: Config,
     _ completion: (Result<Indexes, Swift.Error>) -> Void) {
     do {
       let index: Index = try Constants.customJSONDecoder.decode(Index.self, from: data)
-      let indexes: Indexes = Indexes(config, index.UID, index.createdAt, index.updatedAt, index.primaryKey)
+      let indexes: Indexes = Indexes(config, index.uid, primaryKey: index.primaryKey, index.createdAt, index.updatedAt)
 
       completion(.success(indexes))
     } catch {
@@ -273,7 +189,7 @@ public struct Indexes {
       let rawIndexes: [Index] = try Constants.customJSONDecoder.decode([Index].self, from: data)
       var indexes: [Indexes] = []
       for rawIndex in rawIndexes {
-          indexes.append(Indexes(config, rawIndex.UID, rawIndex.createdAt, rawIndex.updatedAt, rawIndex.primaryKey))
+          indexes.append(Indexes(config, rawIndex.uid, primaryKey: rawIndex.primaryKey, rawIndex.createdAt, rawIndex.updatedAt))
       }
 
       completion(.success(indexes))
@@ -284,10 +200,19 @@ public struct Indexes {
 
 }
 
-struct CreateIndexPayload: Codable {
-  let uid: String
-}
-
 struct UpdateIndexPayload: Codable {
   let primaryKey: String
+}
+
+struct CreateIndexPayload: Codable {
+  public let uid: String
+  public let primaryKey: String?
+
+  public init(
+    uid: String,
+    primaryKey: String? = nil
+  ) {
+    self.uid = uid
+    self.primaryKey = primaryKey
+  }
 }

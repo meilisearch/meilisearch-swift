@@ -62,7 +62,7 @@ func index(request: HTTPRequest, response: HTTPResponse) {
     return
   }
 
-  client.getIndex(UID: uid) { result in
+  client.getIndex(uid) { result in
 
     switch result {
     case .success(let index):
