@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- Settings is a list of all the customization possible for an index.
+  Updates contains information related to asynchronous tasks in MeiliSearch
  */
 struct Updates {
 

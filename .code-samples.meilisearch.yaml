@@ -153,7 +153,7 @@ get_keys_1: |-
       }
   }
 get_settings_1: |-
-  client.getSetting(UID: "movies") { (result: Result<Setting, Swift.Error>) in
+  client.getSettings(UID: "movies") { (result: Result<Setting, Swift.Error>) in
       switch result {
       case .success(let setting):
           print(setting)
@@ -196,7 +196,7 @@ update_settings_1: |-
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
   ], acceptNewFields: false)
-  client.updateSetting(UID: "movies", settings) { (result: Result<Update, Swift.Error>) in
+  client.updateSettings(UID: "movies", settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -205,7 +205,7 @@ update_settings_1: |-
       }
   }
 reset_settings_1: |-
-  client.resetSetting(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.resetSettings(UID: "movies") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)

@@ -45,7 +45,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Settings
 
-  func testGetSetting() {
+  func testgetSettings() {
 
     // Prepare the mock server
 
@@ -59,7 +59,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get settings")
 
-    self.client.getSetting(UID: UID) { result in
+    self.client.getSettings(UID: UID) { result in
       switch result {
       case .success(let setting):
         XCTAssertEqual(stubSetting, setting)
@@ -73,7 +73,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testUpdateSetting() {
+  func testupdateSettings() {
 
     // Prepare the mock server
 
@@ -94,7 +94,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Update settings")
 
-    self.client.updateSetting(UID: UID, setting) { result in
+    self.client.updateSettings(UID: UID, setting) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -108,7 +108,7 @@ class SettingsTests: XCTestCase {
 
   }
 
-  func testResetSetting() {
+  func testresetSettings() {
 
     // Prepare the mock server
 
@@ -128,7 +128,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings")
 
-    self.client.resetSetting(UID: UID) { result in
+    self.client.resetSettings(UID: UID) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -1048,9 +1048,9 @@ class SettingsTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testGetSetting", testGetSetting),
-    ("testUpdateSetting", testUpdateSetting),
-    ("testResetSetting", testResetSetting),
+    ("testgetSettings", testgetSettings),
+    ("testupdateSettings", testupdateSettings),
+    ("testresetSettings", testresetSettings),
     ("testGetSynonyms", testGetSynonyms),
     ("testUpdateSynonyms", testUpdateSynonyms),
     ("testResetSynonyms", testResetSynonyms),

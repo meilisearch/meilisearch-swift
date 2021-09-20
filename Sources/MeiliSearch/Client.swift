@@ -453,7 +453,7 @@ public struct MeiliSearch {
    completes the query request, it returns a `Result` object that contains `Setting`
    value. If the request was sucessful or `Error` if a failure occured.
    */
-  public func getSetting(
+  public func getSettings(
     UID: String,
     _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
     self.settings.get(UID, completion)
@@ -463,12 +463,12 @@ public struct MeiliSearch {
    Update the settings for a given `Index`.
 
    - parameter UID:        The unique identifier for the `Index` to be found.
-   - parameter setting:    Setting to be applied into `Index`.
+   - parameter setting:    Settings to be applied into `Index`.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
    */
-  public func updateSetting(
+  public func updateSettings(
     UID: String,
     _ setting: Setting,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
@@ -483,7 +483,7 @@ public struct MeiliSearch {
    completes the query request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
    */
-  public func resetSetting(
+  public func resetSettings(
     UID: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.settings.reset(UID, completion)
@@ -509,7 +509,7 @@ public struct MeiliSearch {
    Update the synonyms for a given `Index`.
 
    - parameter UID:        The unique identifier for the `Index` to be found.
-   - parameter setting:    Setting to be applied into `Index`.
+   - parameter setting:    Settings to be applied into `Index`.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.

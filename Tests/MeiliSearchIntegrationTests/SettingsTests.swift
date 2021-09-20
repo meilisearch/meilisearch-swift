@@ -929,11 +929,11 @@ class SettingsTests: XCTestCase {
 
   // MARK: Global Settings
 
-  func testGetSettings() {
+  func testgetSettingss() {
 
     let expectation = XCTestExpectation(description: "Get current settings")
 
-    self.client.getSetting(UID: self.uid) { result in
+    self.client.getSettings(UID: self.uid) { result in
       switch result {
       case .success(let settings):
         XCTAssertEqual(self.defaultGlobalReturnedSettings, settings)
@@ -948,7 +948,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
   }
 
-  func testUpdateSettings() {
+  func testupdateSettingss() {
     let newSettings = Setting(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
@@ -971,11 +971,11 @@ class SettingsTests: XCTestCase {
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
-    self.client.updateSetting(UID: self.uid, newSettings) { result in
+    self.client.updateSettings(UID: self.uid, newSettings) { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.client.getSetting(UID: self.uid) { result in
+          self.client.getSettings(UID: self.uid) { result in
             switch result {
             case .success(let settingResult):
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
@@ -1002,12 +1002,12 @@ class SettingsTests: XCTestCase {
     let overrideSettingsExpectation = XCTestExpectation(description: "Update settings")
 
     // Test if absents settings are sent to MeiliSearch with a nil value.
-    self.client.updateSetting(UID: self.uid, overrideSettings) { result in
+    self.client.updateSettings(UID: self.uid, overrideSettings) { result in
       switch result {
       case .success(let update):
 
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.client.getSetting(UID: self.uid) { result in
+          self.client.getSettings(UID: self.uid) { result in
             switch result {
             case .success(let settingResult):
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
@@ -1031,7 +1031,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [overrideSettingsExpectation], timeout: 10.0)
   }
 
-  func testUpdateSettingsWithSynonymsAndStopWordsNil() {
+  func testupdateSettingssWithSynonymsAndStopWordsNil() {
 
     let expectation = XCTestExpectation(description: "Update settings")
 
@@ -1055,13 +1055,13 @@ class SettingsTests: XCTestCase {
       filterableAttributes: ["title"],
       sortableAttributes: ["title"])
 
-    self.client.updateSetting(UID: self.uid, newSettings) { result in
+    self.client.updateSettings(UID: self.uid, newSettings) { result in
       switch result {
       case .success(let update):
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getSetting(UID: self.uid) { result in
+          self.client.getSettings(UID: self.uid) { result in
 
             switch result {
             case .success(let finalSetting):
@@ -1094,17 +1094,17 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
-  func testResetSettings() {
+  func testresetSettingss() {
 
     let expectation = XCTestExpectation(description: "Reset settings")
 
-    self.client.resetSetting(UID: self.uid) { result in
+    self.client.resetSettings(UID: self.uid) { result in
       switch result {
       case .success(let update):
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getSetting(UID: self.uid) { result in
+          self.client.getSettings(UID: self.uid) { result in
 
             switch result {
             case .success(let settings):

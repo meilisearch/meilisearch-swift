@@ -558,7 +558,7 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Configure filterable attributes")
 
-    self.client.updateSetting(UID: self.uid, settings) { result in
+    self.client.updateSettings(UID: self.uid, settings) { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
