@@ -17,7 +17,7 @@ public struct MeiliSearch {
    */
   private(set) var config: Config
 
-  private let indexes: Indexes
+  // private let indexes: Indexes
   private let documents: Documents
   private let search: Search
   private let updates: Updates
@@ -39,7 +39,7 @@ public struct MeiliSearch {
   public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil) throws {
     self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
     let request: Request = Request(self.config)
-    self.indexes = Indexes(request)
+    // self.indexes = Indexes(self.config)
     self.documents = Documents(request)
     self.search = Search(request)
     self.updates = Updates(request)
@@ -52,6 +52,9 @@ public struct MeiliSearch {
 
   // MARK: Index
 
+  public func index(_ uid: String) -> Indexes {
+    return Indexes(self.config, uid)
+  }
   /**
    Create a new Index for the given `uid`.
 
@@ -62,8 +65,8 @@ public struct MeiliSearch {
    */
   public func createIndex(
     UID: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-    self.indexes.create(UID, completion)
+    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    Indexes.create2(UID, self.config, completion)
   }
 
   /**
@@ -74,10 +77,12 @@ public struct MeiliSearch {
    completes the write request, it returns a `Result` object that contains `Index`
    value. If the request was sucessful or `Error` if a failure occured.
    */
+
+  // DONE
   public func getOrCreateIndex(
     UID: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-    self.indexes.getOrCreate(UID, completion)
+    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    Indexes.getOrCreate2(UID, self.config, completion)
   }
 
   /**
@@ -90,8 +95,8 @@ public struct MeiliSearch {
    */
   public func getIndex(
     UID: String,
-    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-    self.indexes.get(UID, completion)
+    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    self.index(UID).get2(completion)
   }
 
   /**
@@ -102,8 +107,8 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndexes(
-    _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
-    self.indexes.getAll(completion)
+    _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
+    Indexes.getAll(self.config, completion)
   }
 
   /**
@@ -119,7 +124,7 @@ public struct MeiliSearch {
     UID: String,
     primaryKey: String,
     _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-    self.indexes.update(UID, primaryKey, completion)
+    self.index(UID).update(UID, primaryKey, completion)
   }
 
   /**
@@ -132,7 +137,7 @@ public struct MeiliSearch {
   public func deleteIndex(
     UID: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-    self.indexes.delete(UID, completion)
+    self.index(UID).delete(UID, completion)
   }
 
   // MARK: Document
