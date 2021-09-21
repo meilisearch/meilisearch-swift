@@ -18,9 +18,6 @@ public struct MeiliSearch {
   private(set) var config: Config
 
   // private let indexes: Indexes
-  private let documents: Documents
-  private let search: Search
-  private let updates: Updates
   private let keys: Keys
   private let settings: Settings
   private let stats: Stats
@@ -40,7 +37,6 @@ public struct MeiliSearch {
     self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
     let request: Request = Request(self.config)
     // self.indexes = Indexes(self.config)
-    self.updates = Updates(request)
     self.keys = Keys(request, self.config)
     self.settings = Settings(request)
     self.stats = Stats(request)
@@ -138,61 +134,6 @@ public struct MeiliSearch {
     _ uid: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
-  }
-
-  // MARK: Updates
-
-  /**
-   Get the status of an update in a given `Index`.
-
-   - parameter UID:       The unique identifier for the Document's index to
-   be found.
-   - parameter update:    The update value.
-   - parameter completion:The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Key` value.
-   If the request was sucessful or `Error` if a failure occured.
-   */
-  public func getUpdate(
-    UID: String,
-    _ update: Update,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-    self.updates.get(UID, update, completion)
-  }
-
-  /**
-   Get the status of an update in a given `Index`.
-
-   - parameter UID:       The unique identifier for the Document's index to
-   be found.
-   - parameter update:    The update value.
-   - parameter completion:The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Key` value.
-   If the request was sucessful or `Error` if a failure occured.
-   */
-  public func getAllUpdates(
-    UID: String,
-    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
-    self.updates.getAll(UID, completion)
-  }
-
-  /**
-    Wait for an update to be processed or failed.
-
-    Providing an update id, returned by asynchronous MeiliSearch options, call are made
-    to MeiliSearch to check if the update has been processed or if it has failed.
-
-    - parameter UID:                 The unique identifier of the `Index`.
-    - parameter updateId:            The id of the update.
-    - parameter: options             Optionnal configuration for timeout and interval
-    - parameter completion:          The completion closure used to notify when the server
-  **/
-  public func waitForPendingUpdate(
-    UID: String,
-    update: Update,
-    options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>
-  ) -> Void) {
-    self.updates.waitForPendingUpdate(UID, update, options, completion)
   }
 
   // MARK: Keys

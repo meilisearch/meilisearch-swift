@@ -6,17 +6,17 @@ import XCTest
 class UpdatesTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
+  private var uid: String = "movies_test"
   private let session = MockURLSession()
 
   override func setUp() {
     super.setUp()
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    index = self.client.index(self.uid)
   }
 
   func testGetUpdate() {
-
-    // Prepare the mock server
-
     let json = """
       {
         "status": "processed",
@@ -30,22 +30,16 @@ class UpdatesTests: XCTestCase {
         "processedAt": "2019-12-07T21:16:09.703509Z"
       }
       """
-
+    // Prepare the mock server
     let data = json.data(using: .utf8)!
-
     let stubResult: Update.Result = try! Constants.customJSONDecoder.decode(
       Update.Result.self, from: data)
-
     session.pushData(json)
 
     // Start the test with the mocked server
-
-    let UID: String = "movies"
     let update = Update(updateId: 1)
-
     let expectation = XCTestExpectation(description: "Get settings")
-
-    self.client.getUpdate(UID: UID, update) { result in
+    self.index.getUpdate(update) { result in
       switch result {
       case .success(let result):
         XCTAssertEqual(stubResult, result)
@@ -54,14 +48,10 @@ class UpdatesTests: XCTestCase {
       }
       expectation.fulfill()
     }
-
-    self.wait(for: [expectation], timeout: 5.0)
-
+    self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testGetUpdateInvalidStatus() {
-
-    // Prepare the mock server
 
     let badStatusUpdateJson = """
       {
@@ -76,17 +66,13 @@ class UpdatesTests: XCTestCase {
         "processedAt": "2019-12-07T21:16:09.703509Z"
       }
       """
-
+    // Prepare the mock server
     session.pushData(badStatusUpdateJson)
 
     // Start the test with the mocked server
-
-    let UID: String = "movies"
     let update = Update(updateId: 1)
-
     let expectation = XCTestExpectation(description: "Get settings")
-
-    self.client.getUpdate(UID: UID, update) { result in
+    self.index.getUpdate(update) { result in
       switch result {
       case .success:
         XCTFail("The server send a invalid status and it should not succeed")
@@ -97,12 +83,9 @@ class UpdatesTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testGetAllUpdates() {
-
-    // Prepare the mock server
 
     let json = """
       [
@@ -119,20 +102,15 @@ class UpdatesTests: XCTestCase {
         }
       ]
       """
-
+    // Prepare the mock server
     let data = json.data(using: .utf8)!
-
     let stubResults: [Update.Result] = try! Constants.customJSONDecoder.decode([Update.Result].self, from: data)
-
     session.pushData(json)
 
     // Start the test with the mocked server
-
-    let UID: String = "movies"
-
     let expectation = XCTestExpectation(description: "Get settings")
 
-    self.client.getAllUpdates(UID: UID) { result in
+    self.index.getAllUpdates { result in
       switch result {
       case .success(let results):
         XCTAssertEqual(stubResults, results)
@@ -142,15 +120,8 @@ class UpdatesTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
-
+    self.wait(for: [expectation], timeout: 10.0)
   }
-
-  static var allTests = [
-    ("testGetSetting", testGetUpdate),
-    ("testGetAllUpdates", testGetAllUpdates)
-  ]
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

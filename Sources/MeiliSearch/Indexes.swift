@@ -26,6 +26,9 @@ public struct Indexes {
   // Search methods
   private let search: Search
 
+  // Updates methods
+  private let updates: Updates
+
   // MARK: Initializers
 
   init (
@@ -43,6 +46,7 @@ public struct Indexes {
     self.updatedAt = updatedAt
     self.documents = Documents(Request(config))
     self.search = Search(Request(config))
+    self.updates = Updates(Request(config))
   }
 
   // MARK: Functions
@@ -388,7 +392,52 @@ public struct Indexes {
     self.search.search(self.uid, searchParameters, completion)
   }
 
+  // MARK: Updates
 
+  /**
+   Get the status of an update of the index.
+
+   - parameter update:    The update value.
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getUpdate(
+    _ update: Update,
+    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    self.updates.get(self.uid, update, completion)
+  }
+
+  /**
+   Get the status of an update of the index.
+
+   - parameter update:    The update value.
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getAllUpdates(
+    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+    self.updates.getAll(self.uid, completion)
+  }
+
+  /**
+    Wait for an update to be processed or failed.
+
+    Providing an update id, returned by asynchronous MeiliSearch options, call are made
+    to MeiliSearch to check if the update has been processed or if it has failed.
+
+    - parameter updateId:            The id of the update.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForPendingUpdate(
+    update: Update,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Update.Result, Swift.Error>
+  ) -> Void) {
+    self.updates.waitForPendingUpdate(self.uid, update, options, completion)
+  }
 
   // MARK: Codable
 

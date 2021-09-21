@@ -35,8 +35,6 @@ class SearchTests: XCTestCase {
 
   func testSearchForBotmanMovie() {
 
-    // Prepare the mock server
-
     let jsonString = """
       {
         "hits": [
@@ -63,39 +61,30 @@ class SearchTests: XCTestCase {
       }
       """
 
+    // Prepare the mock server
     let data = jsonString.data(using: .utf8)!
-
     let stubSearchResult: SearchResult<Movie> = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
-
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-
-    let uid: String = "Movies"
-
     let searchParameters = SearchParameters.query("botman")
-
     let expectation = XCTestExpectation(description: "Searching for botman")
-
     typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
-        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
       }
+      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testSearchForBotmanMovieFacets() {
-
-    // Prepare the mock server
 
     let jsonString = """
       {
@@ -123,16 +112,12 @@ class SearchTests: XCTestCase {
       }
       """
 
+    // Prepare the mock server
     let data = jsonString.data(using: .utf8)!
-
     let stubSearchResult: SearchResult<Movie> = try! Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data)
-
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-
-    let uid: String = "Movies"
-
     let searchParameters = SearchParameters(
       query: "botman",
       filter: "genre = romance OR genre = Science Fiction",
@@ -140,28 +125,20 @@ class SearchTests: XCTestCase {
     )
 
     let expectation = XCTestExpectation(description: "Searching for botman")
-
     typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
-        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
       }
+      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
-
-  static var allTests = [
-    ("testSearchForBotmanMovie", testSearchForBotmanMovie),
-    ("testSearchForBotmanMovieFacets", testSearchForBotmanMovieFacets)
-  ]
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try
