@@ -33,11 +33,4 @@ public struct Index: Codable, Equatable {
     self.primaryKey = primaryKey
   }
 
-  enum CodingKeys: String, CodingKey {
-    case uid
-    case createdAt
-    case updatedAt
-    case primaryKey
-  }
-
 }
