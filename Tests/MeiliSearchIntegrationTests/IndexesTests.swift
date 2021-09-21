@@ -14,7 +14,7 @@ class IndexesTests: XCTestCase {
       client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
     }
     let getIndexesExp = XCTestExpectation(description: "Try to get all indexes")
-    self.client.getIndexes() { result in
+    self.client.getIndexes { result in
       switch result {
       case .success(let indexes):
         let asyncDeletegroup = DispatchGroup()

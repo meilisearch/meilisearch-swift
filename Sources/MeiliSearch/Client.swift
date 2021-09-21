@@ -53,7 +53,7 @@ public struct MeiliSearch {
   // MARK: Index
 
   public func index(_ uid: String) -> Indexes {
-    return Indexes(self.config, uid)
+    Indexes(self.config, uid)
   }
   /**
    Create a new Index for the given `uid`.

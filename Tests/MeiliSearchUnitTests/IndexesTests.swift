@@ -192,7 +192,6 @@ class IndexesTests: XCTestCase {
         XCTFail("Failed to update Movies index")
       }
     }
-
     self.wait(for: [expectation], timeout: 5.0)
 
   }

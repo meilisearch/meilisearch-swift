@@ -191,7 +191,6 @@ public struct Indexes {
       for rawIndex in rawIndexes {
           indexes.append(Indexes(config, rawIndex.uid, primaryKey: rawIndex.primaryKey, rawIndex.createdAt, rawIndex.updatedAt))
       }
-
       completion(.success(indexes))
     } catch {
       completion(.failure(error))

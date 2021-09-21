@@ -140,7 +140,6 @@ class DocumentsTests: XCTestCase {
       }
     }
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testGetDocumentsWithParameters() {

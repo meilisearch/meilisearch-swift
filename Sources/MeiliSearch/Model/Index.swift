@@ -34,7 +34,7 @@ public struct Index: Codable, Equatable {
   }
 
   enum CodingKeys: String, CodingKey {
-    case uid = "uid"
+    case uid
     case createdAt
     case updatedAt
     case primaryKey
