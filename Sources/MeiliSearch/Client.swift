@@ -40,8 +40,6 @@ public struct MeiliSearch {
     self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
     let request: Request = Request(self.config)
     // self.indexes = Indexes(self.config)
-    self.documents = Documents(request)
-    self.search = Search(request)
     self.updates = Updates(request)
     self.keys = Keys(request, self.config)
     self.settings = Settings(request)
@@ -140,26 +138,6 @@ public struct MeiliSearch {
     _ uid: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
-  }
-
-  // MARK: Search
-
-  /**
-   Search for a document in the `uid` and `searchParameters`
-
-   - parameter UID:              The unique identifier for the Document's index to
-   be found.
-   - parameter searchParameters: The document identifier for the Document to be found.
-   - parameter completion:       The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains  `SearchResult<T>`
-   value. If the request was sucessful or `Error` if a failure occured.
-   */
-  public func search<T>(
-    UID: String,
-    _ searchParameters: SearchParameters,
-    _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
-  where T: Codable, T: Equatable {
-    self.search.search(UID, searchParameters, completion)
   }
 
   // MARK: Updates
