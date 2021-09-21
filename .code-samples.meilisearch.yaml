@@ -394,7 +394,7 @@ reset_displayed_attributes_1: |-
   }
 
 get_index_stats_1: |-
-  client.stat(UID: "movies") { (result: Result<Stat, Swift.Error>) in
+  client.index("movies").stats { (result: Result<Stat, Swift.Error>) in
       switch result {
       case .success(let stat):
           print(update)

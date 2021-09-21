@@ -19,7 +19,6 @@ public struct MeiliSearch {
 
   // private let indexes: Indexes
   private let keys: Keys
-  private let settings: Settings
   private let stats: Stats
   private let system: System
   private let dumps: Dumps
@@ -36,9 +35,7 @@ public struct MeiliSearch {
   public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil) throws {
     self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
     let request: Request = Request(self.config)
-    // self.indexes = Indexes(self.config)
     self.keys = Keys(request, self.config)
-    self.settings = Settings(request)
     self.stats = Stats(request)
     self.system = System(request)
     self.dumps = Dumps(request)
@@ -46,7 +43,7 @@ public struct MeiliSearch {
 
   // MARK: Index
   /**
-  Create an instance of Index`.
+  Create an instance of Index.
 
   - parameter uid:        The unique identifier for the `Index` to be created.
    */
@@ -159,19 +156,6 @@ public struct MeiliSearch {
   }
 
   // MARK: Stats
-
-  /**
-   Get stats of an index.
-
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Stat` value.
-   If the request was sucessful or `Error` if a failure occured.
-   */
-  public func stat(
-    UID: String,
-    _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-    self.stats.stat(UID, completion)
-  }
 
   /**
    Get stats of all indexes.
