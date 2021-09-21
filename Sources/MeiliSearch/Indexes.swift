@@ -23,6 +23,9 @@ public struct Indexes {
   // Document methods
   private let documents: Documents
 
+  // Search methods
+  private let search: Search
+
   // MARK: Initializers
 
   init (
@@ -39,6 +42,7 @@ public struct Indexes {
     self.createdAt = createdAt
     self.updatedAt = updatedAt
     self.documents = Documents(Request(config))
+    self.search = Search(Request(config))
   }
 
   // MARK: Functions
@@ -361,10 +365,30 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func deleteBatchDocuments(
-    documentsIdentifiers: [Int],
+    _ documentsIdentifiers: [Int],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentsIdentifiers, completion)
   }
+
+
+  // MARK: Search
+
+  /**
+   Search in the index.
+
+   - parameter searchParameters: Options on search.
+   - parameter completion:       The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains  `SearchResult<T>`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func search<T>(
+    _ searchParameters: SearchParameters,
+    _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+    self.search.search(self.uid, searchParameters, completion)
+  }
+
+
 
   // MARK: Codable
 
