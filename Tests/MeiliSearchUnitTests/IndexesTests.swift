@@ -132,8 +132,8 @@ class IndexesTests: XCTestCase {
 
     let jsonString = """
       [{
-        "name":"Movies",
-        "uid":"Movies",
+        "name":"movies",
+        "uid":"movies",
         "createdAt":"2020-04-04T19:59:49.259572Z",
         "updatedAt":"2020-04-04T19:59:49.259579Z",
         "primaryKey":null
@@ -147,7 +147,6 @@ class IndexesTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Load indexes")
 
     self.client.getIndexes { result in
-
       switch result {
       case .success(let indexes):
         XCTAssertEqual("movies", indexes[0].uid)
@@ -179,7 +178,7 @@ class IndexesTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let uid: String = "movies"
+    let uid: String = "movie_review"
     let primaryKey: String = "movie_review_id"
 
     let expectation = XCTestExpectation(description: "Update Movies index")
