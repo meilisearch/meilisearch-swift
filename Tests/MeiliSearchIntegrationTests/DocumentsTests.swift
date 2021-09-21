@@ -452,7 +452,7 @@ class DocumentsTests: XCTestCase {
 
           let idsToDelete: [Int] = [2, 1, 4]
 
-          self.index.deleteBatchDocuments(documentsUID: idsToDelete) { (result: Result<Update, Swift.Error>) in
+          self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Update, Swift.Error>) in
             switch result {
 
             case .success(let update):

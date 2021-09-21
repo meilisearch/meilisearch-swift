@@ -24,11 +24,13 @@ private struct Movie: Codable, Equatable {
 class SearchTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let session = MockURLSession()
 
   override func setUp() {
     super.setUp()
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    index = client.index("movies_test")
   }
 
   func testSearchForBotmanMovie() {
@@ -77,7 +79,7 @@ class SearchTests: XCTestCase {
 
     typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
-    self.client.search(UID: uid, searchParameters) { (result: MeiliResult) in
+    self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
@@ -141,7 +143,7 @@ class SearchTests: XCTestCase {
 
     typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
-    self.client.search(UID: uid, searchParameters) { (result: MeiliResult) in
+    self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
