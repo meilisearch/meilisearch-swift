@@ -384,10 +384,10 @@ class DocumentsTests: XCTestCase {
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
-    let documentsUID: [Int] = [23488, 153738, 437035, 363869]
+    let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
     let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
-    self.index.deleteBatchDocuments(documentsUID: documentsUID) { result in
+    self.index.deleteBatchDocuments(documentsIdentifiers) { result in
 
       switch result {
       case .success(let update):
