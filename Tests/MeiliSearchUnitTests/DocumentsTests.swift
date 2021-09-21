@@ -25,12 +25,15 @@ private struct Movie: Codable, Equatable {
 class DocumentsTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
+  private var uid: String = "movies_test"
 
   private let session = MockURLSession()
 
   override func setUp() {
     super.setUp()
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    index = self.client.index(self.uid)
   }
 
   func testAddDocuments() {
@@ -48,9 +51,6 @@ class DocumentsTests: XCTestCase {
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
-
-    let uid: String = "Movies"
-
     let movie = Movie(
       id: 287947,
       title: "Shazam",
@@ -59,8 +59,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: uid,
+    self.index.addDocuments(
       documents: [movie],
       primaryKey: "id"
     ) { result in
@@ -94,8 +93,6 @@ class DocumentsTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let uid: String = "Movies"
-
     let documentJsonString = """
       [{
         "id": 287947,
@@ -112,10 +109,10 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: uid,
+    self.index.addDocuments(
       documents: documents,
-      primaryKey: primaryKey) { result in
+      primaryKey: primaryKey
+    ) { result in
 
       switch result {
       case .success(let update):
@@ -143,11 +140,8 @@ class DocumentsTests: XCTestCase {
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
 
-    session.pushData(jsonString, code: 202)
-
     // Start the test with the mocked server
-
-    let uid: String = "Movies"
+    session.pushData(jsonString, code: 202)
 
     let documentJsonString = """
       [{
@@ -162,8 +156,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or update Movies document")
 
-    self.client.updateDocuments(
-      UID: uid,
+    self.index.updateDocuments(
       documents: JsonDocuments,
       primaryKey: primaryKey) { result in
 
@@ -196,8 +189,6 @@ class DocumentsTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let uid: String = "Movies"
-
     let movie = Movie(
       id: 287947,
       title: "Shazam",
@@ -206,8 +197,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "add or update Movies document")
 
-    self.client.updateDocuments(
-      UID: uid,
+    self.index.updateDocuments(
       documents: [movie],
       primaryKey: "id"
     ) { result in
@@ -247,13 +237,11 @@ class DocumentsTests: XCTestCase {
     let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
 
     // Start the test with the mocked server
-
-    let uid: String = "Movies"
     let identifier: String = "25684"
 
     let expectation = XCTestExpectation(description: "Get Movies document")
 
-    self.client.getDocument(UID: uid, identifier: identifier) { (result: Result<Movie, Swift.Error>) in
+    self.index.getDocument(identifier: identifier) { (result: Result<Movie, Swift.Error>) in
 
       switch result {
       case .success(let movie):
@@ -289,6 +277,7 @@ class DocumentsTests: XCTestCase {
       }]
       """
 
+    // Start the test with the mocked server
     session.pushData(jsonString, code: 200)
 
     let decoder: JSONDecoder = JSONDecoder()
@@ -296,13 +285,9 @@ class DocumentsTests: XCTestCase {
     let data = jsonString.data(using: .utf8)!
     let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
 
-    // Start the test with the mocked server
-
-    let uid: String = "Movies"
-
     let expectation = XCTestExpectation(description: "Get Movies documents")
 
-    self.client.getDocuments(UID: uid) { (result: Result<[Movie], Swift.Error>) in
+    self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
       switch result {
       case .success(let movies):
         XCTAssertEqual(stubMovies, movies)
@@ -310,11 +295,8 @@ class DocumentsTests: XCTestCase {
       case .failure:
         XCTFail("Failed to get Movies documents")
       }
-
     }
-
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testDeleteDocument() {
@@ -333,12 +315,11 @@ class DocumentsTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let uid = "Movies"
     let identifier: String = "25684"
 
     let expectation = XCTestExpectation(description: "Delete Movies document")
 
-    self.client.deleteDocument(UID: uid, identifier: identifier) { result in
+    self.index.deleteDocument(identifier: identifier) { result in
 
       switch result {
       case .success(let update):
@@ -370,10 +351,9 @@ class DocumentsTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let uid = "Movies"
     let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
-    self.client.deleteAllDocuments(UID: uid) { result in
+    self.index.deleteAllDocuments { result in
 
       switch result {
       case .success(let update):
@@ -404,12 +384,10 @@ class DocumentsTests: XCTestCase {
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
-
-    let uid = "Movies"
     let documentsUID: [Int] = [23488, 153738, 437035, 363869]
     let expectation = XCTestExpectation(description: "Delete all Movies documents")
 
-    self.client.deleteBatchDocuments(UID: uid, documentsUID: documentsUID) { result in
+    self.index.deleteBatchDocuments(documentsUID: documentsUID) { result in
 
       switch result {
       case .success(let update):

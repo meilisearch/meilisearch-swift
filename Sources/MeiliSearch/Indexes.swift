@@ -20,6 +20,9 @@ public struct Indexes {
   /// The primary key configured for the index.
   public let primaryKey: String?
 
+  // Document methods
+  private let documents: Documents
+
   // MARK: Initializers
 
   init (
@@ -35,13 +38,7 @@ public struct Indexes {
     self.primaryKey = primaryKey
     self.createdAt = createdAt
     self.updatedAt = updatedAt
-  }
-
-  enum CodingKeys: String, CodingKey {
-    case uid = "uid"
-    case primaryKey
-    case createdAt
-    case updatedAt
+    self.documents = Documents(Request(config))
   }
 
   // MARK: Functions
@@ -165,6 +162,210 @@ public struct Indexes {
     }
   }
 
+    // MARK: Document
+
+  /**
+   Add a list of documents or replace them if they already exist.
+
+   If you send an already existing document (same id) the whole existing document will
+   be overwritten by the new document. Fields previously in the document not present in
+   the new document are removed.
+
+   For a partial update of the document see `updateDocuments`.
+
+   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter Encoder:    The data structure of your documents.
+   - parameter primaryKey: The primary key of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func addDocuments<T>(
+    documents: [T],
+    encoder: JSONEncoder? = nil,
+    primaryKey: String? = nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    self.documents.add(
+      self.uid,
+      documents,
+      encoder,
+      primaryKey,
+      completion)
+  }
+
+  /**
+   Add a list of documents as data or replace them if they already exist.
+
+   If you send an already existing document (same id) the whole existing document will
+   be overwritten by the new document. Fields previously in the document not present in
+   the new document are removed.
+
+   For a partial update of the document see `updateDocuments`.
+
+   - parameter documents:  The document data (JSON) to be processed.
+   - parameter primaryKey: The primary key of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func addDocuments(
+    documents: Data,
+    primaryKey: String? = nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.documents.add(
+      self.uid,
+      documents,
+      primaryKey,
+      completion)
+  }
+
+  /**
+    Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.
+
+    If you send an already existing document (same documentId) the old document will be only partially
+    updated according to the fields of the new document.
+    Thus, any fields not present in the new document are kept and remained unchanged.
+
+    To completely overwrite a document, `addDocuments`
+
+   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter Encoder:    The data structure of your documents.
+   - parameter primaryKey: The primary key of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateDocuments<T>(
+    documents: [T],
+    encoder: JSONEncoder? = nil,
+    primaryKey: String? = nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    self.documents.update(
+      self.uid,
+      documents,
+      encoder,
+      primaryKey,
+      completion)
+  }
+
+  /**
+    Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.
+
+    If you send an already existing document (same documentId) the old document will be only partially
+    updated according to the fields of the new document.
+    Thus, any fields not present in the new document are kept and remained unchanged.
+
+    To completely overwrite a document, `addDocuments`
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter documents:  The document data (JSON) to be processed.
+   - parameter primaryKey: The primary key of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateDocuments(
+    documents: Data,
+    primaryKey: String? = nil,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.documents.update(
+      self.uid,
+      documents,
+      primaryKey,
+      completion
+    )
+  }
+
+  /**
+   Get the Document on the index based on the provided document identifier.
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter identifier: The document identifier for the Document to be found.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains  `T` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getDocument<T>(
+    identifier: String,
+    _ completion: @escaping (Result<T, Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+    self.documents.get(self.uid, identifier, completion)
+  }
+
+  /**
+   Get the Document on the index based on the provided document identifier.
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter identifier: The document identifier for the Document to be found.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains  `T` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getDocument<T>(
+    identifier: Int,
+    _ completion: @escaping (Result<T, Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+    self.documents.get(self.uid, String(identifier), completion)
+  }
+
+  /**
+   List the all Documents.
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter limit:      Limit the size of the query.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains
+   `[T]` value. If the request was sucessful or `Error` if a
+   failure occured.
+   */
+  public func getDocuments<T>(
+    options: GetParameters? = nil,
+    _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+    self.documents.getAll(self.uid, options, completion)
+  }
+
+  /**
+   Delete a Document on the index based on the provided document identifier.
+
+   - parameter UID:        The unique identifier for the Document's index to be found.
+   - parameter identifier: The document identifier for the Document to be found.
+   - parameter completion: The completion closure used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func deleteDocument(
+    identifier: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.documents.delete(self.uid, identifier, completion)
+  }
+
+  /**
+   Delete all Documents on the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func deleteAllDocuments(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.documents.deleteAll(self.uid, completion)
+  }
+
+  /**
+   Delete a selection of documents based on array of document `identifiers`'s.
+
+   - parameter documentsUID: The array of unique identifier for the Document to be deleted.
+   - parameter completion:   The completion closure used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func deleteBatchDocuments(
+    documentsIdentifiers: [Int],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.documents.deleteBatch(self.uid, documentsIdentifiers, completion)
+  }
+
   // MARK: Codable
 
   private static func decodeJSON(
@@ -189,7 +390,7 @@ public struct Indexes {
       let rawIndexes: [Index] = try Constants.customJSONDecoder.decode([Index].self, from: data)
       var indexes: [Indexes] = []
       for rawIndex in rawIndexes {
-          indexes.append(Indexes(config, rawIndex.uid, primaryKey: rawIndex.primaryKey, rawIndex.createdAt, rawIndex.updatedAt))
+        indexes.append(Indexes(config, rawIndex.uid, primaryKey: rawIndex.primaryKey, rawIndex.createdAt, rawIndex.updatedAt))
       }
       completion(.success(indexes))
     } catch {

@@ -37,6 +37,7 @@ private let movies: [Movie] = [
 class UpdatesTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let uid: String = "books_test"
 
   // MARK: Setup
@@ -44,10 +45,8 @@ class UpdatesTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-    }
-
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+    index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
     self.client.deleteIndex(uid) { _ in
@@ -72,7 +71,7 @@ class UpdatesTests: XCTestCase {
     let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
-    self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { result in
+    self.index.addDocuments(documents: documents, primaryKey: nil) { result in
       switch result {
       case .success(let update):
         self.client.getUpdate(UID: self.uid, update) { (result: Result<Update.Result, Swift.Error>)  in
@@ -103,7 +102,7 @@ class UpdatesTests: XCTestCase {
     for index in 0...10 {
       let movie: Movie = Movie(id: index, title: "test\(index)", comment: "test movie\(index)")
       let documents: Data = try! jsonEncoder.encode([movie])
-      self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { _ in }
+      self.index.addDocuments(documents: documents, primaryKey: nil) { _ in }
     }
 
     self.client.getAllUpdates(UID: self.uid) { (result: Result<[Update.Result], Swift.Error>)  in
@@ -127,8 +126,7 @@ class UpdatesTests: XCTestCase {
   func testWaitForPendingUpdateSuccessDefault () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -155,8 +153,7 @@ class UpdatesTests: XCTestCase {
   func testWaitForPendingUpdateSuccessEmptyOptions () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -184,8 +181,7 @@ class UpdatesTests: XCTestCase {
   func testWaitForPendingUpdateSuccessWithOptions () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -211,8 +207,7 @@ class UpdatesTests: XCTestCase {
 
   func testWaitForPendingUpdateSuccessWithIntervalZero () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -238,8 +233,7 @@ class UpdatesTests: XCTestCase {
   func testWaitForPendingUpdateTimeOut () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
