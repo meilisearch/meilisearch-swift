@@ -85,6 +85,7 @@ private let books: [Book] = [
 class SearchTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let uid: String = "books_test"
 
   // MARK: Setup
@@ -92,9 +93,8 @@ class SearchTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-    }
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+    index = self.client.index(self.uid)
 
     let documents: Data = try! JSONEncoder().encode(books)
 
@@ -106,9 +106,7 @@ class SearchTests: XCTestCase {
 
         switch result {
         case .success:
-
-          self.client.addDocuments(
-            UID: self.uid,
+          self.index.addDocuments(
             documents: documents,
             primaryKey: nil
           ) { result in

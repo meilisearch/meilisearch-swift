@@ -38,14 +38,14 @@ private let movies: [Movie] = [
 class DocumentsTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let uid: String = "books_test"
 
   override func setUp() {
     super.setUp()
 
-    if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-    }
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+    index = self.client.index(self.uid)
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
@@ -67,23 +67,15 @@ class DocumentsTests: XCTestCase {
   func testAddAndGetDocuments() {
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
-
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
-
         XCTAssertEqual(Update(updateId: 0), update)
-
         waitForPendingUpdate(self.client, self.uid, update) {
-
-          self.client.getDocuments(
-            UID: self.uid
-          ) { (result: Result<[Movie], Swift.Error>) in
+          self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
             switch result {
             case .success(let returnedMovies):
               movies.forEach { (movie: Movie) in
@@ -107,8 +99,7 @@ class DocumentsTests: XCTestCase {
   func testAddAndGetDocumentsEmptyParams() {
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -117,8 +108,7 @@ class DocumentsTests: XCTestCase {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.client.getDocuments(
-            UID: self.uid,
+          self.index.getDocuments(
             options: GetParameters()
           ) { (result: Result<[Movie], Swift.Error>) in
             switch result {
@@ -145,8 +135,7 @@ class DocumentsTests: XCTestCase {
   func testGetDocumentsWithParameters() {
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
@@ -155,8 +144,7 @@ class DocumentsTests: XCTestCase {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.client.getDocuments(
-            UID: self.uid,
+          self.index.getDocuments(
             options: GetParameters(offset: 1, limit: 1, attributesToRetrieve: ["id", "title"])
           ) { (result: Result<[Movie], Swift.Error>) in
             switch result {
@@ -183,8 +171,7 @@ class DocumentsTests: XCTestCase {
 
   func testGetOneDocumentAndFail() {
     let getExpectation = XCTestExpectation(description: "Get one document and fail")
-    self.client.getDocument(
-      UID: self.uid,
+    self.index.getDocument(
       identifier: "123456"
     ) { (result: Result<Movie, Swift.Error>) in
       switch result {
@@ -203,8 +190,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -217,8 +203,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getDocument(
-            UID: self.uid,
+          self.index.getDocument(
             identifier: 10
           ) { (result: Result<Movie, Swift.Error>) in
 
@@ -253,8 +238,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -267,8 +251,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getDocument(
-            UID: self.uid,
+          self.index.getDocument(
             identifier: "10"
           ) { (result: Result<Movie, Swift.Error>) in
 
@@ -305,8 +288,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Add or update Movies document")
 
-    self.client.updateDocuments(
-      UID: self.uid,
+    self.index.updateDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -319,8 +301,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.getDocument(
-            UID: self.uid,
+          self.index.getDocument(
             identifier: "\(identifier)"
           ) { (result: Result<Movie, Swift.Error>) in
 
@@ -353,8 +334,7 @@ class DocumentsTests: XCTestCase {
     let documents: Data = try! JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete one Movie")
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -369,7 +349,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-    self.client.deleteDocument(UID: self.uid, identifier: "42") { (result: Result<Update, Swift.Error>) in
+    self.index.deleteDocument(identifier: "42") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 1), update)
@@ -382,8 +362,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: 3.0)
 
     let getExpectation = XCTestExpectation(description: "Add or update Movies document")
-    self.client.getDocument(
-      UID: self.uid,
+    self.index.getDocument(
       identifier: "10"
     ) { (result: Result<Movie, Swift.Error>) in
       switch result {
@@ -401,8 +380,7 @@ class DocumentsTests: XCTestCase {
     let documents: Data = try! JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete one Movie")
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -413,7 +391,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.client.deleteAllDocuments(UID: self.uid) { (result: Result<Update, Swift.Error>) in
+          self.index.deleteAllDocuments { (result: Result<Update, Swift.Error>) in
             switch result {
             case .success(let update):
 
@@ -421,9 +399,7 @@ class DocumentsTests: XCTestCase {
 
               waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDocuments(
-                  UID: self.uid
-                ) { (result: Result<[Movie], Swift.Error>) in
+                self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
                     XCTAssertEqual([], results)
@@ -461,8 +437,7 @@ class DocumentsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Delete batch movies")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: documents,
       primaryKey: nil
     ) { result in
@@ -477,7 +452,7 @@ class DocumentsTests: XCTestCase {
 
           let idsToDelete: [Int] = [2, 1, 4]
 
-          self.client.deleteBatchDocuments(UID: self.uid, documentsUID: idsToDelete) { (result: Result<Update, Swift.Error>) in
+          self.index.deleteBatchDocuments(documentsUID: idsToDelete) { (result: Result<Update, Swift.Error>) in
             switch result {
 
             case .success(let update):
@@ -486,9 +461,7 @@ class DocumentsTests: XCTestCase {
 
               waitForPendingUpdate(self.client, self.uid, update) {
 
-                self.client.getDocuments(
-                  UID: self.uid
-                ) { (result: Result<[Movie], Swift.Error>) in
+                self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
                     let filteredMovies: [Movie] = movies.filter { (movie: Movie) in !idsToDelete.contains(movie.id) }
