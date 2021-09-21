@@ -4,11 +4,11 @@ import XCTest
 
 public func waitForPendingUpdate(
   _ client: MeiliSearch,
-  _ UID: String,
+  _ uid: String,
   _ update: Update,
   _ completion: @escaping () -> Void) {
   func request() {
-    client.getUpdate(UID: UID, update) { result in
+    client.index(uid).getUpdate(update) { result in
       switch result {
       case .success(let updateResult):
         if updateResult.status == Update.Status.processed {
