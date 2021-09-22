@@ -1042,3 +1042,34 @@ search_parameter_guide_sort_1: |-
       print(error)
     }
   }
+settings_guide_synonyms_1: |-
+  let synonyms: [String: [String]] = [
+      "sweater": ["jumper"],
+      "jumper": ["sweater"]
+  ]
+  client.index("tops").updateSynonyms(synonyms) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+post_dump_1: |-
+  self.client.createDump { result in
+      switch result {
+      case .success(let dumpStatus):
+          print(dumpStatus)
+      case .failure:
+          print(error)
+      }
+  }
+get_dump_status_1: |-
+  self.client.getDumpStatus(uid) { result in
+      switch result {
+      case .success(let dumpStatus):
+          print(dumpStatus)
+      case .failure:
+          print(error)
+      }
+  }
