@@ -8,7 +8,7 @@ public struct Index: Codable, Equatable {
 
   // MARK: Properties
 
-  /// The index UID.
+  /// The index uid.
   public let uid: String
 
   /// The data when the index was created.

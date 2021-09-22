@@ -17,7 +17,6 @@ struct Keys {
   func get(_ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
 
     self.request.get(api: "/keys") { result in
-
       switch result {
       case .success(let data):
 
@@ -25,7 +24,6 @@ struct Keys {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let decoder: JSONDecoder = JSONDecoder()
           let key: Key = try decoder.decode(Key.self, from: data)
@@ -33,13 +31,9 @@ struct Keys {
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
-
 }

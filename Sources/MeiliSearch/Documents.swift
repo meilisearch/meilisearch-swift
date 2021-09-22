@@ -15,12 +15,12 @@ struct Documents {
   // MARK: Query
 
   func get<T>(
-    _ UID: String,
+    _ uid: String,
     _ identifier: String,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
 
-    let query: String = "/indexes/\(UID)/documents/\(identifier)"
+    let query: String = "/indexes/\(uid)/documents/\(identifier)"
     request.get(api: query) { result in
       switch result {
       case .success(let data):
@@ -37,7 +37,7 @@ struct Documents {
   }
 
   func getAll<T>(
-    _ UID: String,
+    _ uid: String,
     _ options: GetParameters? = nil,
     _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
@@ -46,7 +46,7 @@ struct Documents {
       if let parameters: GetParameters = options {
         queryParameters = try parameters.toQueryParameters()
       }
-      let query: String = "/indexes/\(UID)/documents\(queryParameters)"
+      let query: String = "/indexes/\(uid)/documents\(queryParameters)"
       request.get(api: query) { result in
         switch result {
         case .success(let data):
@@ -68,12 +68,12 @@ struct Documents {
   // MARK: Write
 
   func add(
-    _ UID: String,
+    _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    var query: String = "/indexes/\(UID)/documents"
+    var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -89,13 +89,13 @@ struct Documents {
   }
 
   func add<T>(
-    _ UID: String,
+    _ uid: String,
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
 
-    var query: String = "/indexes/\(UID)/documents"
+    var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -120,12 +120,12 @@ struct Documents {
   }
 
   func update(
-    _ UID: String,
+    _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    var query: String = "/indexes/\(UID)/documents"
+    var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -141,13 +141,13 @@ struct Documents {
   }
 
   func update<T>(
-    _ UID: String,
+    _ uid: String,
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
 
-    var query: String = "/indexes/\(UID)/documents"
+    var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -174,11 +174,11 @@ struct Documents {
   // MARK: Delete
 
   func delete(
-    _ UID: String,
+    _ uid: String,
     _ identifier: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/documents/\(identifier)") { result in
+    self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
 
       switch result {
       case .success(let result):
@@ -197,10 +197,10 @@ struct Documents {
   }
 
   func deleteAll(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/documents") { result in
+    self.request.delete(api: "/indexes/\(uid)/documents") { result in
 
       switch result {
       case .success(let data):
@@ -219,20 +219,20 @@ struct Documents {
   }
 
   func deleteBatch(
-    _ UID: String,
-    _ documentsUID: [Int],
+    _ uid: String,
+    _ documentsIdentifiers: [Int],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
     let data: Data
 
     do {
-      data = try JSONSerialization.data(withJSONObject: documentsUID, options: [])
+      data = try JSONSerialization.data(withJSONObject: documentsIdentifiers, options: [])
     } catch {
       completion(.failure(MeiliSearch.Error.invalidJSON))
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/documents/delete-batch", data) { result in
+    self.request.post(api: "/indexes/\(uid)/documents/delete-batch", data) { result in
 
       switch result {
       case .success(let data):

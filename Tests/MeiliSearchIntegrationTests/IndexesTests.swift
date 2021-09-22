@@ -314,18 +314,5 @@ class IndexesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
 
   }
-
-  static var allTests = [
-    ("testCreateIndex", testCreateIndex),
-    ("testCreateIndexThatAlreadyExists", testCreateIndexThatAlreadyExists),
-    ("testGetOrCreateIndex", testGetOrCreateIndex),
-    ("testGetOrCreateIndexAlreadyExists", testGetOrCreateIndexAlreadyExists),
-    ("testGetIndex", testGetIndex),
-    ("testGetIndexes", testGetIndexes),
-    ("testGetEmptyIndexes", testGetEmptyIndexes),
-    ("testUpdateIndexName", testUpdateIndexName),
-    ("testDeleteIndex", testDeleteIndex)
-  ]
-
 }
 // swiftlint:enable force_try

@@ -13,7 +13,7 @@ struct Search {
   }
 
   func search<T>(
-    _ UID: String,
+    _ uid: String,
     _ searchParameters: SearchParameters,
     _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
@@ -26,7 +26,7 @@ struct Search {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/search", data) { result in
+    self.request.post(api: "/indexes/\(uid)/search", data) { result in
 
       switch result {
       case .success(let data):

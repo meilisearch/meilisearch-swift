@@ -219,7 +219,7 @@ public struct MeiliSearch {
    If the dumps folder does not exist yet, it will be created.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the dump request, it returns a `Dump` object that contains `UID`
+   completes the dump request, it returns a `Dump` object that contains `uid`
    value that can be used later to check the status of the dump.
    If the request was successful or `Error` if a failure occurred.
    */
@@ -236,13 +236,13 @@ public struct MeiliSearch {
    `Dump.Status.done`: Dump creation is finished and was successful.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the dump request, it returns a `Dump` object that contains `UID`
+   completes the dump request, it returns a `Dump` object that contains `uid`
    value that can be used later to check the status of the Dump.
    If the request was successful or `Error` if a failure occurred.
    */
   public func getDumpStatus(
-    UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
-    self.dumps.status(UID, completion)
+    self.dumps.status(uid, completion)
   }
 }

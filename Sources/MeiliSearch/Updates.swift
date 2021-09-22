@@ -16,10 +16,10 @@ struct Updates {
   }
 
   func get(
-    _ UID: String,
+    _ uid: String,
     _ update: Update,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(UID)/updates/\(update.updateId)") { result in
+    self.request.get(api: "/indexes/\(uid)/updates/\(update.updateId)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -42,10 +42,10 @@ struct Updates {
   }
 
   func getAll(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/updates") { result in
+    self.request.get(api: "/indexes/\(uid)/updates") { result in
 
       switch result {
       case .success(let data):
@@ -71,12 +71,12 @@ struct Updates {
   }
 
   private func checkStatus(
-    _ UID: String,
+    _ uid: String,
     _ update: Update,
     _ options: WaitOptions,
     _ startingDate: Date,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-      self.get(UID, update) { result in
+      self.get(uid, update) { result in
         switch result {
         case .success(let status):
           if status.status == Update.Status.processed || status.status == Update.Status.failed {
@@ -85,7 +85,7 @@ struct Updates {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
           } else {
             usleep(useconds_t(options.interval * 1000000))
-            self.checkStatus(UID, update, options, startingDate, completion)
+            self.checkStatus(uid, update, options, startingDate, completion)
           }
         case .failure(let error):
           completion(.failure(error))
@@ -95,14 +95,14 @@ struct Updates {
   }
 
   func waitForPendingUpdate(
-    _ UID: String,
+    _ uid: String,
     _ update: Update,
     _ options: WaitOptions? = nil,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
       let currentDate = Date()
       let waitOptions: WaitOptions = options ?? WaitOptions()
 
-      self.checkStatus(UID, update, waitOptions, currentDate) { result in
+      self.checkStatus(uid, update, waitOptions, currentDate) { result in
         switch result {
         case .success(let status):
           completion(.success(status))

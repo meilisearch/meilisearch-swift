@@ -8,7 +8,7 @@ public struct Update: Codable, Equatable {
 
   // MARK: Properties
 
-  /// The UID of the update.
+  /// The uid of the update.
   public let updateId: Int
 
   public init(updateId: Int) {

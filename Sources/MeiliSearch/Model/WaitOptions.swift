@@ -21,12 +21,4 @@ public struct WaitOptions: Codable, Equatable {
     self.timeOut = timeOut ?? 5
     self.interval = interval ?? 0.5
   }
-
-  // MARK: Codable Keys
-
-  enum CodingKeys: String, CodingKey {
-    case timeOut
-    case interval
-  }
-
 }

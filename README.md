@@ -117,11 +117,10 @@ To do a simply search using the client, you can create a Swift script like this:
 
     // An index is where the documents are stored.
     // The uid is the unique identifier to that index.
-    let indexUid = "movies"
+    let index = client.index("movies")
 
     // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
-    client.addDocuments(
-        UID: indexUid,
+    client.index.addDocuments(
         documents: movies,
         primaryKey: nil
     ) { result in
@@ -139,6 +138,7 @@ To do a simply search using the client, you can create a Swift script like this:
 With the `updateId`, you can check the status (`enqueued`, `processing`, `processed` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
 
 #### Basic Search <!-- omit in toc -->
+
 ```swift
 
 let semaphore = DispatchSemaphore(value: 0)
@@ -147,7 +147,7 @@ let semaphore = DispatchSemaphore(value: 0)
 typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
 // Call the function search and wait for the closure result.
-client.search(UID: "movies", SearchParameters( query: "philoudelphia" )) { (result: MeiliResult) in
+client.index("movies").search(SearchParameters( query: "philoudelphia" )) { (result: MeiliResult) in
     switch result {
     case .success(let searchResult):
         dump(searchResult)
@@ -208,8 +208,8 @@ If you want to know more about the development workflow or want to contribute, p
 
 To try out a demo you will need to go to its directory in `Demos/`. In that directory you can either:
 
- - Open the SwiftPM project in Xcode and press run, or
- - Run `swift build` or `swift run` in the terminal.
+- Open the SwiftPM project in Xcode and press run, or
+- Run `swift build` or `swift run` in the terminal.
 
 ### Vapor <!-- omit in toc -->
 

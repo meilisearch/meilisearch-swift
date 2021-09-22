@@ -77,7 +77,7 @@ func routes(_ app: Application) throws {
 
       let searchParameters = SearchParameters.query(query)
 
-      client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
           if let jsonData = try? JSONSerialization.data(withJSONObject: searchResult.hits, options: []) {

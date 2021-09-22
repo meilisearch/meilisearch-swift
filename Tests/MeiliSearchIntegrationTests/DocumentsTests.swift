@@ -10,12 +10,6 @@ private struct Movie: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -492,19 +486,6 @@ class DocumentsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 5.0)
   }
-
-  static var allTests = [
-    ("testAddAndGetDocuments", testAddAndGetDocuments),
-    ("testAddAndGetDocumentsEmptyParams", testAddAndGetDocumentsEmptyParams),
-    ("testGetOneDocumentAndFail", testGetOneDocumentAndFail),
-    ("testAddAndGetOneDocumentWithIntIdentifierAndSucceed", testAddAndGetOneDocumentWithIntIdentifierAndSucceed),
-    ("testAddAndGetOneDocuments", testAddAndGetOneDocuments),
-    ("testUpdateAndGetDocuments", testUpdateAndGetDocuments),
-    ("testDeleteOneDocument", testDeleteOneDocument),
-    ("testDeleteAllDocuments", testDeleteAllDocuments),
-    ("testDeleteBatchDocuments", testDeleteBatchDocuments)
-  ]
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

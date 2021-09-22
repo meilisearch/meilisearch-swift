@@ -199,7 +199,6 @@ public struct Indexes {
       switch result {
       case .success(let result):
         Indexes.decodeJSON(result, self.config, completion)
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -414,7 +413,7 @@ public struct Indexes {
   /**
    Delete a selection of documents based on array of document `identifiers`'s.
 
-   - parameter documentsUID: The array of unique identifier for the Document to be deleted.
+   - parameter documentsIdentifiers: The array of unique identifier for the Document to be deleted.
    - parameter completion:   The completion closure used to notify when the server
    completes the delete request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -627,7 +626,6 @@ public struct Indexes {
   /**
    Update the ranking rules of the index.
 
-   - parameter UID:          The unique identifier for the `Index` to be found.
    - parameter rankingRules: Array of ranking rules to be applied into `Index`.
    - parameter completion:   The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Update`
@@ -754,7 +752,6 @@ public struct Indexes {
   /**
    Update the displayed attribute field of the index.
 
-   - parameter UID:                The unique identifier for the `Index` to be found.
    - parameter displayedAttribute: The displayed attribute to be applied into `Index`.
    - parameter completion:         The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Update`

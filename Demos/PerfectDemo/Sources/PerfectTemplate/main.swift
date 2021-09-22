@@ -106,7 +106,7 @@ func search(request: HTTPRequest, response: HTTPResponse) {
 
   let searchParameters = SearchParameters.query(query)
 
-  client.search(UID: "books_test", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books_test").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
 
     switch result {
     case .success(let searchResult):
