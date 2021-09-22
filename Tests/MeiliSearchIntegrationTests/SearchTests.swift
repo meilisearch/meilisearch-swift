@@ -39,12 +39,6 @@ private struct FormattedBook: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -56,19 +50,11 @@ private struct FormattedBook: Codable, Equatable {
 private struct MatchesInfoBook: Codable, Equatable {
   let comment: [Info]?
   let title: [Info]?
-  enum CodingKeys: String, CodingKey {
-    case comment
-    case title
-  }
 }
 
 private struct Info: Codable, Equatable {
   let start: Int
   let length: Int
-  enum CodingKeys: String, CodingKey {
-    case start
-    case length
-  }
 }
 
 private let books: [Book] = [
