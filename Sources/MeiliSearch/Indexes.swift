@@ -23,6 +23,18 @@ public struct Indexes {
   // Document methods
   private let documents: Documents
 
+  // Search methods
+  private let search: Search
+
+  // Updates methods
+  private let updates: Updates
+
+  // Settings methods
+  private let settings: Settings
+
+  // Stats methods
+  private let stats: Stats
+
   // MARK: Initializers
 
   init (
@@ -39,10 +51,21 @@ public struct Indexes {
     self.createdAt = createdAt
     self.updatedAt = updatedAt
     self.documents = Documents(Request(config))
+    self.search = Search(Request(config))
+    self.updates = Updates(Request(config))
+    self.settings = Settings(Request(config))
+    self.stats = Stats(Request(config))
   }
 
   // MARK: Functions
 
+  /**
+   Get the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Index`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public func get(_ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(self.uid)") { result in
       switch result {
@@ -58,6 +81,13 @@ public struct Indexes {
     }
   }
 
+  /**
+   List all indexes.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[Index]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public static func getAll(_ config: Config, _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
     Request(config).get(api: "/indexes") { result in
       switch result {
@@ -75,6 +105,15 @@ public struct Indexes {
 
   }
 
+  /**
+   Get or create an index.
+
+  - parameter uid:        The unique identifier for the `Index` to be created.
+  - parameter primaryKey: the unique field of a document.
+  - parameter completion: The completion closure used to notify when the server
+   completes the write request, it returns a `Result` object that contains `Index`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public static func getOrCreate(
     _ uid: String,
     primaryKey: String? = nil,
@@ -101,6 +140,15 @@ public struct Indexes {
     }
   }
 
+  /**
+   Create a new Index for the given `uid`.
+
+   - parameter uid:        The unique identifier for the `Index` to be created.
+   - parameter primaryKey: the unique field of a document.
+   - parameter completion: The completion closure used to notify when the server
+   completes the write request, it returns a `Result` object that contains `Index`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public static func create(
     _ uid: String,
     primaryKey: String? = nil,
@@ -126,6 +174,15 @@ public struct Indexes {
     }
   }
 
+  /**
+   Update the index primaryKey.
+
+  - parameter uid:        The unique identifier for the `Index` to be found.
+  - parameter primaryKey: the unique field of a document.
+  - parameter completion: The completion closure used to notify when the server
+   completes the update request, it returns a `Result` object that contains `()`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public func update(
     primaryKey: String,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
@@ -150,6 +207,14 @@ public struct Indexes {
     }
   }
 
+
+  /**
+   Delete the index.
+
+  - parameter completion: The completion closure used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `()`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
   public func delete(
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
     self.request.delete(api: "/indexes/\(self.uid)") { result in
@@ -257,7 +322,6 @@ public struct Indexes {
 
     To completely overwrite a document, `addDocuments`
 
-   - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter documents:  The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
@@ -279,7 +343,6 @@ public struct Indexes {
   /**
    Get the Document on the index based on the provided document identifier.
 
-   - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter identifier: The document identifier for the Document to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
@@ -295,7 +358,6 @@ public struct Indexes {
   /**
    Get the Document on the index based on the provided document identifier.
 
-   - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter identifier: The document identifier for the Document to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
@@ -311,7 +373,6 @@ public struct Indexes {
   /**
    List the all Documents.
 
-   - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter limit:      Limit the size of the query.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains
@@ -328,7 +389,6 @@ public struct Indexes {
   /**
    Delete a Document on the index based on the provided document identifier.
 
-   - parameter UID:        The unique identifier for the Document's index to be found.
    - parameter identifier: The document identifier for the Document to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the delete request, it returns a `Result` object that contains `Update`
@@ -361,9 +421,458 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func deleteBatchDocuments(
-    documentsIdentifiers: [Int],
+    _ documentsIdentifiers: [Int],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentsIdentifiers, completion)
+  }
+
+
+  // MARK: Search
+
+  /**
+   Search in the index.
+
+   - parameter searchParameters: Options on search.
+   - parameter completion:       The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains  `SearchResult<T>`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func search<T>(
+    _ searchParameters: SearchParameters,
+    _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
+  where T: Codable, T: Equatable {
+    self.search.search(self.uid, searchParameters, completion)
+  }
+
+  // MARK: Updates
+
+  /**
+   Get the status of an update of the index.
+
+   - parameter update:    The update value.
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getUpdate(
+    _ update: Update,
+    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    self.updates.get(self.uid, update, completion)
+  }
+
+  /**
+   Get the status of an update of the index.
+
+   - parameter update:    The update value.
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getAllUpdates(
+    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+    self.updates.getAll(self.uid, completion)
+  }
+
+  /**
+    Wait for an update to be processed or failed.
+
+    Providing an update id, returned by asynchronous MeiliSearch options, call are made
+    to MeiliSearch to check if the update has been processed or if it has failed.
+
+    - parameter updateId:            The id of the update.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForPendingUpdate(
+    update: Update,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Update.Result, Swift.Error>
+  ) -> Void) {
+    self.updates.waitForPendingUpdate(self.uid, update, options, completion)
+  }
+
+  // MARK: Settings
+
+  /**
+   Get a list of all the customization possible of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Setting`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getSettings(
+    _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
+    self.settings.get(self.uid, completion)
+  }
+
+  /**
+   Update the settings of the index.
+
+   - parameter setting:    Settings to change.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateSettings(
+    _ setting: Setting,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.update(self.uid, setting, completion)
+  }
+
+  /**
+   Reset the settings of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetSettings(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.reset(self.uid, completion)
+  }
+
+  // MARK: Synonyms
+
+  /**
+   Get a list of all synonyms possible of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String: [String]]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getSynonyms(
+    _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
+    self.settings.getSynonyms(self.uid, completion)
+  }
+
+  /**
+   Update the synonyms of the index.
+
+   - parameter setting:    Settings to be applied into `Index`.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateSynonyms(
+    _ synonyms: [String: [String]]?,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateSynonyms(self.uid, synonyms, completion)
+  }
+
+  /**
+   Reset the synonyms of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetSynonyms(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetSynonyms(self.uid, completion)
+  }
+
+  // MARK: Stop words
+
+  /**
+   Get a list of all stop-words possible of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getStopWords(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getStopWords(self.uid, completion)
+  }
+
+  /**
+   Update the stop-words of the index.
+
+   - parameter stopWords:  Array of stop-word to be applied into `Index`.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateStopWords(
+    _ stopWords: [String]?,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateStopWords(self.uid, stopWords, completion)
+  }
+
+  /**
+   Reset the stop-words of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetStopWords(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetStopWords(self.uid, completion)
+  }
+
+  // MARK: Ranking rules
+
+  /**
+   Get a list of all ranking rules possible of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getRankingRules(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getRankingRules(self.uid, completion)
+  }
+
+  /**
+   Update the ranking rules of the index.
+
+   - parameter UID:          The unique identifier for the `Index` to be found.
+   - parameter rankingRules: Array of ranking rules to be applied into `Index`.
+   - parameter completion:   The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateRankingRules(
+    _ rankingRules: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateRankingRules(self.uid, rankingRules, completion)
+  }
+
+  /**
+   Reset the ranking rules of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetRankingRules(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetRankingRules(self.uid, completion)
+  }
+
+  // MARK: Distinct Attribute
+
+  /**
+   Get the distinct attribute field of an `Index`.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getDistinctAttribute(
+    _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
+    self.settings.getDistinctAttribute(self.uid, completion)
+  }
+
+  /**
+   Update the distinct attribute field of the index.
+
+   - parameter distinctAttribute: The distinct attribute to be applied into `Index`.
+   - parameter completion:        The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateDistinctAttribute(
+    _ distinctAttribute: String,
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateDistinctAttribute(
+      self.uid,
+      distinctAttribute,
+      completion)
+  }
+
+  /**
+   Reset the distinct attribute field of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetDistinctAttribute(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetDistinctAttribute(self.uid, completion)
+  }
+
+  // MARK: Searchable Attribute
+
+  /**
+   Get the searchable attribute field of an `Index`.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getSearchableAttributes(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getSearchableAttributes(self.uid, completion)
+  }
+
+  /**
+   Update the searchable attribute field of the index.
+
+   - parameter searchableAttribute: The searchable attribute to be applied into `Index`.
+   - parameter completion:          The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateSearchableAttributes(
+    _ searchableAttribute: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateSearchableAttributes(
+      self.uid,
+      searchableAttribute,
+      completion)
+  }
+
+  /**
+   Reset the searchable attribute field of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetSearchableAttributes(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetSearchableAttributes(self.uid, completion)
+  }
+
+  // MARK: Displayed Attribute
+
+  /**
+   Get the displayed attribute field of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[String]`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getDisplayedAttributes(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getDisplayedAttributes(self.uid, completion)
+  }
+
+  /**
+   Update the displayed attribute field of the index.
+
+   - parameter UID:                The unique identifier for the `Index` to be found.
+   - parameter displayedAttribute: The displayed attribute to be applied into `Index`.
+   - parameter completion:         The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateDisplayedAttributes(
+    _ displayedAttribute: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateDisplayedAttributes(
+      self.uid,
+      displayedAttribute,
+      completion)
+  }
+
+  /**
+   Reset the displayed attribute field of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value. If the request was sucessful or `Error` if a failure occured.
+   */
+  public func resetDisplayedAttributes(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetDisplayedAttributes(self.uid, completion)
+  }
+
+  // MARK: Filterable attributes
+
+  /**
+   Get the attributes that are filterable of the index.
+
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getFilterableAttributes(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getFilterableAttributes(self.uid, completion)
+  }
+
+  /**
+   Update the attributes that are filterable of the index.
+
+   - parameter attributes:   The attributes that are filterable on an `Index`.
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateFilterableAttributes(
+    _ attributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateFilterableAttributes(self.uid, attributes, completion)
+  }
+
+  /**
+   Reset the attributes that are filterable of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetFilterableAttributes(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetFilterableAttributes(self.uid, completion)
+  }
+
+  // MARK: Sortable attributes
+
+  /**
+   Get the attributes that are sortable of the index.
+
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getSortableAttributes(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getSortableAttributes(self.uid, completion)
+  }
+
+  /**
+   Update the attributes that are sortable of the index.
+
+   - parameter attributes:      The attributes that are sortable on an `Index`.
+   - parameter completion:      The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateSortableAttributes(
+    _ attributes: [String],
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.updateSortableAttributes(self.uid, attributes, completion)
+  }
+
+  /**
+   Reset the attributes that are sortable of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Update`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetSortableAttributes(
+    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    self.settings.resetSortableAttributes(self.uid, completion)
+  }
+  // MARK: Stats
+
+  /**
+   Get stats of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Stat` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func stats(
+    _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+    self.stats.stats(self.uid, completion)
   }
 
   // MARK: Codable
