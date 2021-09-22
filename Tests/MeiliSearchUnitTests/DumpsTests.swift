@@ -87,11 +87,6 @@ class DumpsTests: XCTestCase {
 
   }
 
-  static var allTests = [
-    ("testGetDumpStatus", testGetDumpStatus),
-    ("testGetSetting", testGetDumpStatus)
-  ]
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

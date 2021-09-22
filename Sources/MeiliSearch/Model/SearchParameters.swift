@@ -55,7 +55,7 @@ public struct SearchParameters: Codable, Equatable {
     filter: String? = nil,
     sort: [String]? = nil,
     facetsDistribution: [String]? = nil,
-    matches: Bool? = false) {
+    matches: Bool? = nil) {
     self.query = query
     self.offset = offset
     self.limit = limit
