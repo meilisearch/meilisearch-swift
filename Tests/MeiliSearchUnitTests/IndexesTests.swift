@@ -1,7 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class IndexesTests: XCTestCase {
 
@@ -29,7 +28,6 @@ class IndexesTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
     session.pushData(jsonString)
 
     // Start the test with the mocked server

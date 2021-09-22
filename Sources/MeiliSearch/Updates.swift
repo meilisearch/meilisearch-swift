@@ -19,7 +19,7 @@ struct Updates {
     _ uid: String,
     _ updateId: Int,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(uid)/updates/\(update.updateId)") { result in
+    self.request.get(api: "/indexes/\(uid)/updates/\(updateId)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -70,7 +70,7 @@ struct Updates {
     _ options: WaitOptions,
     _ startingDate: Date,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-      self.get(uid, update) { result in
+      self.get(uid, update.updateId) { result in
         switch result {
         case .success(let status):
           if status.status == Update.Status.processed || status.status == Update.Status.failed {
