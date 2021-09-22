@@ -211,7 +211,6 @@ public struct Indexes {
     }
   }
 
-
   /**
    Delete the index.
 
@@ -429,7 +428,6 @@ public struct Indexes {
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }
-
 
   // MARK: Search
 

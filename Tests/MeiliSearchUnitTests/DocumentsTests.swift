@@ -3,7 +3,6 @@ import XCTest
 import Foundation
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
 // swiftlint:disable force_try
 // swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
@@ -307,7 +306,6 @@ class DocumentsTests: XCTestCase {
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
-
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Delete all Movies documents")

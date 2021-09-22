@@ -230,8 +230,7 @@ class UpdatesTests: XCTestCase {
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 0, interval: 2))
-        { result in
+        self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 0, interval: 2)) { result in
           switch result {
           case .success:
             XCTFail("waitForPendingUpdate should not have had the time for a second call")

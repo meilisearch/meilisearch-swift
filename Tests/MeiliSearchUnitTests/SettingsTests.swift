@@ -40,7 +40,6 @@ class SettingsTests: XCTestCase {
     }
     """
 
-
   override func setUp() {
     super.setUp()
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
@@ -51,14 +50,13 @@ class SettingsTests: XCTestCase {
 
   func testgetSettings() {
 
-
     // Prepare the mock server
     let stubSetting: SettingResult = buildStubSettingResult(from: json)
     session.pushData(json)
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get settings")
-    self.index.getSettings() { result in
+    self.index.getSettings { result in
       switch result {
       case .success(let setting):
         XCTAssertEqual(stubSetting, setting)
@@ -116,7 +114,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset settings")
 
-    self.index.resetSettings() { result in
+    self.index.resetSettings { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -151,7 +149,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get synonyms")
 
-    self.index.getSynonyms() { result in
+    self.index.getSynonyms { result in
       switch result {
       case .success(let synonyms):
         XCTAssertEqual(stubSynonyms, synonyms)
@@ -219,7 +217,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset synonyms")
 
-    self.index.resetSynonyms() { result in
+    self.index.resetSynonyms { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -249,7 +247,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get stop-words")
 
-    self.index.getStopWords() { result in
+    self.index.getStopWords { result in
       switch result {
       case .success(let stopWords):
         XCTAssertEqual(stubStopWords, stopWords)
@@ -313,7 +311,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset stop-words")
 
-    self.index.resetStopWords() { result in
+    self.index.resetStopWords { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -351,7 +349,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get ranking rules")
 
-    self.index.getRankingRules() { result in
+    self.index.getRankingRules { result in
       switch result {
       case .success(let rankingRules):
         XCTAssertEqual(stubRakingRules, rankingRules)
@@ -415,7 +413,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset ranking rules")
 
-    self.index.resetRankingRules() { result in
+    self.index.resetRankingRules { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -442,7 +440,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get distinct attribute")
 
-    self.index.getDistinctAttribute() { result in
+    self.index.getDistinctAttribute { result in
       switch result {
       case .success(let distinctAttribute):
         XCTAssertEqual("movie_id", distinctAttribute!)
@@ -501,7 +499,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset distinct attribute")
 
-    self.index.resetDistinctAttribute() { result in
+    self.index.resetDistinctAttribute { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -531,7 +529,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get searchable attribute")
 
-    self.index.getSearchableAttributes() { result in
+    self.index.getSearchableAttributes { result in
       switch result {
       case .success(let searchableAttribute):
         XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
@@ -594,7 +592,7 @@ class SettingsTests: XCTestCase {
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset searchable attribute")
-    self.index.resetSearchableAttributes() { result in
+    self.index.resetSearchableAttributes { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -624,7 +622,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-    self.index.getDisplayedAttributes() { result in
+    self.index.getDisplayedAttributes { result in
       switch result {
       case .success(let displayedAttributes):
         XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
@@ -691,7 +689,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Reset displayed attribute")
 
-    self.index.resetDisplayedAttributes() { result in
+    self.index.resetDisplayedAttributes { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -718,7 +716,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-    self.index.getFilterableAttributes() { result in
+    self.index.getFilterableAttributes { result in
       switch result {
       case .success(let filterableAttributes):
         XCTAssertFalse(filterableAttributes.isEmpty)
@@ -779,7 +777,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update displayed attribute")
 
-    self.index.resetFilterableAttributes() { result in
+    self.index.resetFilterableAttributes { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -806,7 +804,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get displayed attribute")
 
-    self.index.getSortableAttributes() { result in
+    self.index.getSortableAttributes { result in
       switch result {
       case .success(let sortableAttributes):
         XCTAssertFalse(sortableAttributes.isEmpty)
@@ -866,7 +864,7 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update displayed attribute")
 
-    self.index.resetSortableAttributes() { result in
+    self.index.resetSortableAttributes { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)

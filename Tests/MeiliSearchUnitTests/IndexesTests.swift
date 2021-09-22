@@ -173,7 +173,7 @@ class IndexesTests: XCTestCase {
 
   }
 
-func testUpdateIndexWithClient() {
+  func testUpdateIndexWithClient() {
 
     let jsonString = """
       {

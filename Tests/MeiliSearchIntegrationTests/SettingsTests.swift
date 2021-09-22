@@ -37,7 +37,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
-    self.index.delete() { _ in
+    self.index.delete { _ in
       self.client.getOrCreateIndex(uid: self.uid) { result in
         switch result {
         case .success:
@@ -82,7 +82,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current filterable attributes")
 
-    self.index.getFilterableAttributes() { result in
+    self.index.getFilterableAttributes { result in
       switch result {
       case .success(let attributes):
         XCTAssertEqual(self.defaultFilterableAttributes, attributes)
@@ -105,7 +105,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getFilterableAttributes() { result in
+          self.index.getFilterableAttributes { result in
             switch result {
             case .success(let attributes):
               XCTAssertEqual(newFilterableAttributes, attributes)
@@ -129,11 +129,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings for filterable attributes")
 
-    self.index.resetFilterableAttributes() { result in
+    self.index.resetFilterableAttributes { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getFilterableAttributes() { result in
+          self.index.getFilterableAttributes { result in
             switch result {
             case .success(let attributes):
               XCTAssertEqual(self.defaultFilterableAttributes, attributes)
@@ -158,7 +158,7 @@ class SettingsTests: XCTestCase {
   func testGetDisplayedAttributes() {
     let expectation = XCTestExpectation(description: "Get current displayed attributes")
 
-    self.index.getDisplayedAttributes() { result in
+    self.index.getDisplayedAttributes { result in
       switch result {
       case .success(let attributes):
         XCTAssertEqual(self.defaultDisplayedAttributes, attributes)
@@ -181,7 +181,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getDisplayedAttributes() { result in
+          self.index.getDisplayedAttributes { result in
             switch result {
             case .success(let attributes):
               XCTAssertEqual(newDisplayedAttributes, attributes)
@@ -205,11 +205,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings for displayed attributes")
 
-    self.index.resetDisplayedAttributes() { result in
+    self.index.resetDisplayedAttributes { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getDisplayedAttributes() { result in
+          self.index.getDisplayedAttributes { result in
             switch result {
             case .success(let attribute):
               XCTAssertEqual(self.defaultDisplayedAttributes, attribute)
@@ -235,7 +235,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current distinct attribute")
 
-    self.index.getDistinctAttribute() { result in
+    self.index.getDistinctAttribute { result in
       switch result {
       case .success(let attribute):
         XCTAssertEqual(self.defaultDistinctAttribute, attribute)
@@ -258,7 +258,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getDistinctAttribute() { result in
+          self.index.getDistinctAttribute { result in
             switch result {
             case .success(let attribute):
               XCTAssertEqual(newDistinctAttribute, attribute)
@@ -282,11 +282,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings for distinct attributes")
 
-    self.index.resetDistinctAttribute() { result in
+    self.index.resetDistinctAttribute { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getDistinctAttribute() { result in
+          self.index.getDistinctAttribute { result in
             switch result {
             case .success(let attribute):
               XCTAssertEqual(self.defaultDistinctAttribute, attribute)
@@ -312,7 +312,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current ranking rules")
 
-    self.index.getRankingRules() { result in
+    self.index.getRankingRules { result in
       switch result {
       case .success(let rankingRules):
         XCTAssertEqual(self.defaultRankingRules, rankingRules)
@@ -340,7 +340,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getRankingRules() { result in
+          self.index.getRankingRules { result in
             switch result {
             case .success(let rankingRules):
               XCTAssertEqual(newRankingRules, rankingRules)
@@ -364,11 +364,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings for ranking rules")
 
-    self.index.resetRankingRules() { result in
+    self.index.resetRankingRules { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getRankingRules() { result in
+          self.index.getRankingRules { result in
             switch result {
             case .success(let rankingRules):
               XCTAssertEqual(self.defaultRankingRules, rankingRules)
@@ -394,7 +394,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current searchable attributes")
 
-    self.index.getSearchableAttributes() { result in
+    self.index.getSearchableAttributes { result in
       switch result {
       case .success(let searchableAttributes):
         XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
@@ -421,7 +421,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSearchableAttributes() { result in
+          self.index.getSearchableAttributes { result in
             switch result {
             case .success(let searchableAttributes):
               XCTAssertEqual(newSearchableAttributes, searchableAttributes)
@@ -446,11 +446,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings for searchable attributes")
 
-    self.index.resetSearchableAttributes() { result in
+    self.index.resetSearchableAttributes { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSearchableAttributes() { result in
+          self.index.getSearchableAttributes { result in
             switch result {
             case .success(let searchableAttributes):
               XCTAssertEqual(self.defaultSearchableAttributes, searchableAttributes)
@@ -476,7 +476,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current stop words")
 
-    self.index.getStopWords() { result in
+    self.index.getStopWords { result in
       switch result {
 
       case .success(let stopWords):
@@ -501,7 +501,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getStopWords() { result in
+          self.index.getStopWords { result in
             switch result {
             case .success(let finalStopWords):
               XCTAssertEqual(newStopWords, finalStopWords)
@@ -532,7 +532,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getStopWords() { result in
+          self.index.getStopWords { result in
 
             switch result {
             case .success(let finalStopWords):
@@ -564,7 +564,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getStopWords() { result in
+          self.index.getStopWords { result in
 
             switch result {
             case .success(let finalStopWords):
@@ -590,11 +590,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset stop words")
 
-    self.index.resetStopWords() { result in
+    self.index.resetStopWords { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getStopWords() { result in
+          self.index.getStopWords { result in
             switch result {
             case .success(let stopWords):
               XCTAssertEqual(self.defaultStopWords, stopWords)
@@ -620,7 +620,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current synonyms")
 
-    self.index.getSynonyms() { result in
+    self.index.getSynonyms { result in
       switch result {
       case .success(let synonyms):
         XCTAssertEqual(self.defaultSynonyms, synonyms)
@@ -649,7 +649,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSynonyms() { result in
+          self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
               let rhs = Array(updatedSynonyms.keys).sorted(by: <)
@@ -679,7 +679,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSynonyms() { result in
+          self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
               XCTAssertEqual(updatedSynonyms, [:])
@@ -709,7 +709,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSynonyms() { result in
+          self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
               XCTAssertEqual(updatedSynonyms, [:])
@@ -733,11 +733,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset synonyms")
 
-    self.index.resetSynonyms() { result in
+    self.index.resetSynonyms { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSynonyms() { result in
+          self.index.getSynonyms { result in
             switch result {
             case .success(let synonyms):
               XCTAssertEqual(self.defaultSynonyms, synonyms)
@@ -763,7 +763,7 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get current settings")
 
-    self.index.getSettings() { result in
+    self.index.getSettings { result in
       switch result {
       case .success(let settings):
         XCTAssertEqual(self.defaultGlobalReturnedSettings, settings)
@@ -804,7 +804,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSettings() { result in
+          self.index.getSettings { result in
             switch result {
             case .success(let settingResult):
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
@@ -834,7 +834,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSettings() { result in
+          self.index.getSettings { result in
             switch result {
             case .success(let settingResult):
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), settingResult.rankingRules.sorted())
@@ -886,7 +886,7 @@ class SettingsTests: XCTestCase {
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSettings() { result in
+          self.index.getSettings { result in
             switch result {
             case .success(let finalSetting):
               XCTAssertEqual(expectedSettingResult.rankingRules.sorted(), finalSetting.rankingRules.sorted())
@@ -916,11 +916,11 @@ class SettingsTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Reset settings")
 
-    self.index.resetSettings() { result in
+    self.index.resetSettings { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
-          self.index.getSettings() { result in
+          self.index.getSettings { result in
             switch result {
             case .success(let settings):
               XCTAssertEqual(self.defaultGlobalReturnedSettings, settings)
