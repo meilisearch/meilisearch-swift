@@ -822,10 +822,10 @@ struct Settings {
   }
 
   func resetSortableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/sortable-attributes") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
 
       switch result {
       case .success(let data):
