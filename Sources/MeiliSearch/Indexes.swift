@@ -5,6 +5,7 @@ public struct Indexes {
   // MARK: Properties
 
   let request: Request
+
   let config: Config
   // let uid: String?
 
@@ -42,10 +43,15 @@ public struct Indexes {
     _ uid: String,
     primaryKey: String? = nil,
     _ createdAt: Date? = nil,
-    _ updatedAt: Date? = nil
+    _ updatedAt: Date? = nil,
+    _ request: Request? = nil
     ) {
     self.config = config
-    self.request = Request(self.config)
+    if let request: Request = request {
+      self.request = request
+    } else {
+      self.request = Request(self.config)
+    }
     self.uid = uid
     self.primaryKey = primaryKey
     self.createdAt = createdAt
