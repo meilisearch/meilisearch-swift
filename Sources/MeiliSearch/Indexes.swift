@@ -32,6 +32,9 @@ public struct Indexes {
   // Settings methods
   private let settings: Settings
 
+  // Stats methods
+  private let stats: Stats
+
   // MARK: Initializers
 
   init (
@@ -51,6 +54,7 @@ public struct Indexes {
     self.search = Search(Request(config))
     self.updates = Updates(Request(config))
     self.settings = Settings(Request(config))
+    self.stats = Stats(Request(config))
   }
 
   // MARK: Functions
@@ -857,7 +861,19 @@ public struct Indexes {
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
+  // MARK: Stats
 
+  /**
+   Get stats of the index.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Stat` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func stats(
+    _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
+    self.stats.stats(self.uid, completion)
+  }
 
   // MARK: Codable
 

@@ -394,7 +394,7 @@ reset_displayed_attributes_1: |-
   }
 
 get_index_stats_1: |-
-  client.stat(UID: "movies") { (result: Result<Stat, Swift.Error>) in
+  client.index("movies").stats { (result: Result<Stat, Swift.Error>) in
       switch result {
       case .success(let stat):
           print(update)
@@ -494,7 +494,7 @@ filtering_guide_1: |-
   let searchParameters = SearchParameters(
       query: "Avengers",
       filter: "release_date > 795484800")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -506,7 +506,7 @@ filtering_guide_2: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       filter: "release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -518,7 +518,7 @@ filtering_guide_3: |-
   let searchParameters = SearchParameters(
       query: "horror",
       filter: "director = \"Jordan Peele\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -530,7 +530,7 @@ filtering_guide_4: |-
   let searchParameters = SearchParameters(
       query: "Planet of the Apes",
       filter: "rating >= 3 AND (NOT director = \"Tim Burton\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -539,7 +539,7 @@ filtering_guide_4: |-
       }
   }
 search_parameter_guide_query_1: |-
-  client.search(UID: "movies", .query("shifu")) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters(query: "shifu")) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -551,7 +551,7 @@ search_parameter_guide_offset_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       offset: 1)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -563,7 +563,7 @@ search_parameter_guide_limit_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       limit: 2)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -575,7 +575,7 @@ search_parameter_guide_retrieve_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       attributesToRetrieve: ["overview", "title"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -588,7 +588,7 @@ search_parameter_guide_crop_1: |-
       query: "shifu",
       attributesToCrop: "overview",
       cropLength: 10)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -600,7 +600,7 @@ search_parameter_guide_highlight_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       attributesToHighlight: ["overview"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -612,7 +612,7 @@ search_parameter_guide_filter_1: |-
   let searchParameters = SearchParameters(
       query: "n",
       filter: "title = Nightshift")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -624,7 +624,7 @@ search_parameter_guide_filter_2: |-
   let searchParameters = SearchParameters(
       query: "n",
       filter: "title=\"Kung Fu Panda\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -636,7 +636,7 @@ search_parameter_guide_matches_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       matches: true)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -732,7 +732,7 @@ settings_guide_accept_new_fields_1: |-
 add_movies_json_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
-  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -748,7 +748,7 @@ documents_guide_add_movie_1: |-
   }]
   """
   let documents: Data = documentJsonString.data(using: .utf8)!
-  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -761,7 +761,7 @@ search_guide_1: |-
       query: "shifu",
       limit: 5,
       offset: 10)
-  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -773,7 +773,7 @@ search_guide_2: |-
   let parameters = SearchParameters(
       query: "Avengers",
       filter: "release_date > 795484800")
-  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -811,7 +811,7 @@ getting_started_add_documents_md: |-
   ```swift
     let client = try! MeiliSearch(host: "http://localhost:7700")
     let documents: Data = /...
-    client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+    client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
         switch result {
         case .success(let update):
             print(update)
@@ -831,7 +831,7 @@ getting_started_search_md: |-
   ```swift
     let client = try! MeiliSearch(host: "http://localhost:7700")
     let searchParameters = SearchParameters.query("botman")
-    client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
             print(searchResult)
@@ -881,7 +881,7 @@ faceted_search_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
       filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -893,7 +893,7 @@ faceted_search_facets_distribution_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       facetsDistribution: ["genres"]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -918,7 +918,7 @@ faceted_search_walkthrough_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
       filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -930,7 +930,7 @@ faceted_search_walkthrough_facets_distribution_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       facetsDistribution: ["genres"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -942,7 +942,7 @@ faceted_search_walkthrough_facets_distribution_1: |-
 phrase_search_1: |-
   let searchParameters = SearchParameters(
       query: "\"african american\" horror")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -981,7 +981,7 @@ sorting_guide_sort_parameter_1: |-
     query: "science fiction",
     "sort": ["price:asc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -994,7 +994,7 @@ sorting_guide_sort_parameter_2: |-
     query: "butler",
     "sort": ["author:desc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
