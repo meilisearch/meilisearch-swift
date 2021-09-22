@@ -88,7 +88,7 @@ class SearchTests: XCTestCase {
 
     self.client.deleteIndex(uid) { result in
 
-      self.client.getOrCreateIndex(self.uid) { result in
+      self.client.getOrCreateIndex(uid: self.uid) { result in
 
         switch result {
         case .success:

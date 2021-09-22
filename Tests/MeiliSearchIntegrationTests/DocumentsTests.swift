@@ -44,7 +44,7 @@ class DocumentsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
     self.client.deleteIndex(uid) { _ in
-      self.client.getOrCreateIndex(self.uid) { result in
+      self.client.getOrCreateIndex(uid: self.uid) { result in
         switch result {
         case .success:
           break
@@ -165,9 +165,7 @@ class DocumentsTests: XCTestCase {
 
   func testGetOneDocumentAndFail() {
     let getExpectation = XCTestExpectation(description: "Get one document and fail")
-    self.index.getDocument(
-      identifier: "123456"
-    ) { (result: Result<Movie, Swift.Error>) in
+    self.index.getDocument("123456") { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success:
         XCTFail("Document has been found while it should not have")
@@ -197,8 +195,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.index.getDocument(
-            identifier: 10
+          self.index.getDocument(10
           ) { (result: Result<Movie, Swift.Error>) in
 
             switch result {
@@ -245,8 +242,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.index.getDocument(
-            identifier: "10"
+          self.index.getDocument("10"
           ) { (result: Result<Movie, Swift.Error>) in
 
             switch result {
@@ -295,8 +291,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.index.getDocument(
-            identifier: "\(identifier)"
+          self.index.getDocument("\(identifier)"
           ) { (result: Result<Movie, Swift.Error>) in
 
             switch result {
@@ -343,7 +338,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-    self.index.deleteDocument(identifier: "42") { (result: Result<Update, Swift.Error>) in
+    self.index.deleteDocument("42") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 1), update)
@@ -356,8 +351,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: 3.0)
 
     let getExpectation = XCTestExpectation(description: "Add or update Movies document")
-    self.index.getDocument(
-      identifier: "10"
+    self.index.getDocument("10"
     ) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success:

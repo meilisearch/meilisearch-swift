@@ -20,7 +20,7 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-final class Request {
+public final class Request {
   private let config: Config
   private let session: URLSessionProtocol
 

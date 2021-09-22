@@ -38,7 +38,7 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
     self.index.delete() { _ in
-      self.client.getOrCreateIndex(self.uid) { result in
+      self.client.getOrCreateIndex(uid: self.uid) { result in
         switch result {
         case .success:
           expectation.fulfill()

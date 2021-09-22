@@ -15,9 +15,8 @@ public struct MeiliSearch {
    Current and immutable MeiliSearch configuration. To change this configuration please
    create a new MeiliSearch instance.
    */
+  private let request: Request
   private(set) var config: Config
-
-  // private let indexes: Indexes
   private let keys: Keys
   private let stats: Stats
   private let system: System
@@ -32,13 +31,17 @@ public struct MeiliSearch {
    - parameter apiKey:    The authorisation key to communicate with MeiliSearch.
    - parameter session:   A custom produced URLSessionProtocol.
    */
-  public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil) throws {
+  public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil, request: Request? = nil) throws {
     self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
-    let request: Request = Request(self.config)
-    self.keys = Keys(request, self.config)
-    self.stats = Stats(request)
-    self.system = System(request)
-    self.dumps = Dumps(request)
+    if let request: Request = request {
+      self.request = request
+    } else {
+      self.request = Request(self.config)
+    }
+    self.keys = Keys(self.request)
+    self.stats = Stats(self.request)
+    self.system = System(self.request)
+    self.dumps = Dumps(self.request)
   }
 
   // MARK: Index
@@ -48,7 +51,7 @@ public struct MeiliSearch {
   - parameter uid:        The unique identifier for the `Index` to be created.
    */
   public func index(_ uid: String) -> Indexes {
-    Indexes(self.config, uid)
+    Indexes(config: self.config, uid: uid)
   }
 
   /**
@@ -61,10 +64,10 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func createIndex(
-    _ uid: String,
+    uid: String,
     primaryKey: String? = nil,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.create(uid, primaryKey: primaryKey, self.config, completion)
+    Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
   /**
@@ -79,10 +82,10 @@ public struct MeiliSearch {
 
   // DONE
   public func getOrCreateIndex(
-    _ uid: String,
+    uid: String,
     primaryKey: String? = nil,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.getOrCreate(uid, primaryKey: primaryKey, self.config, completion)
+    Indexes.getOrCreate(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
   /**
@@ -108,7 +111,7 @@ public struct MeiliSearch {
    */
   public func getIndexes(
     _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
-    Indexes.getAll(self.config, completion)
+    Indexes.getAll(config: self.config, completion)
   }
 
   /**
@@ -121,7 +124,7 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func updateIndex(
-    _ uid: String,
+    uid: String,
     primaryKey: String,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)

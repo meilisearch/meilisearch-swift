@@ -5,13 +5,11 @@ struct Keys {
   // MARK: Properties
 
   let request: Request
-  let config: Config
 
   // MARK: Initializers
 
-  init (_ request: Request, _ config: Config) {
+  init (_ request: Request) {
     self.request = request
-    self.config = config
   }
 
   func get(_ completion: @escaping (Result<Key, Swift.Error>) -> Void) {

@@ -213,7 +213,7 @@ class DocumentsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get Movies document")
 
-    self.index.getDocument(identifier: identifier) { (result: Result<Movie, Swift.Error>) in
+    self.index.getDocument(identifier) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success(let movie):
         XCTAssertEqual(stubMovie, movie)
@@ -282,7 +282,7 @@ class DocumentsTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Delete Movies document")
 
-    self.index.deleteDocument(identifier: identifier) { result in
+    self.index.deleteDocument(identifier) { result in
 
       switch result {
       case .success(let update):

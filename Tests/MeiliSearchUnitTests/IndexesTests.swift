@@ -35,7 +35,7 @@ class IndexesTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Create Movies index")
 
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
@@ -65,7 +65,7 @@ class IndexesTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get or create Movies index")
 
-    self.client.getOrCreateIndex(self.uid) { result in
+    self.client.getOrCreateIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
@@ -191,7 +191,7 @@ func testUpdateIndexWithClient() {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update Movies index")
 
-    self.client.updateIndex(self.uid, primaryKey: primaryKey) { result in
+    self.client.updateIndex(uid: self.uid, primaryKey: primaryKey) { result in
       switch result {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)

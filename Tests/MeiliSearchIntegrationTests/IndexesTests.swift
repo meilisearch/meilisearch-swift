@@ -44,7 +44,7 @@ class IndexesTests: XCTestCase {
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -61,7 +61,7 @@ class IndexesTests: XCTestCase {
   func testCreateIndexThatAlreadyExists() {
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success:
         createExpectation.fulfill()
@@ -72,7 +72,7 @@ class IndexesTests: XCTestCase {
     self.wait(for: [createExpectation], timeout: 5.0)
 
     let create2ndIndexExpectation = XCTestExpectation(description: "Create Movies index that already exists and fail")
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success:
         XCTFail("Movie index created when it should have not be possible")
@@ -105,7 +105,7 @@ class IndexesTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get or create Movies index")
 
-    self.client.getOrCreateIndex(uid) { result in
+    self.client.getOrCreateIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -124,7 +124,7 @@ class IndexesTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-    self.client.getOrCreateIndex(self.uid) { result in
+    self.client.getOrCreateIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -141,7 +141,7 @@ class IndexesTests: XCTestCase {
 
     let secondExpectation = XCTestExpectation(description: "Get or create an existing index")
 
-    self.client.getOrCreateIndex(self.uid) { result in
+    self.client.getOrCreateIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -160,7 +160,7 @@ class IndexesTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
-    self.client.getOrCreateIndex(self.uid) { result in
+    self.client.getOrCreateIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -195,7 +195,7 @@ class IndexesTests: XCTestCase {
 
     let createIndexExpectation = XCTestExpectation(description: "Create Movies index")
 
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -253,7 +253,7 @@ class IndexesTests: XCTestCase {
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
@@ -268,7 +268,7 @@ class IndexesTests: XCTestCase {
 
     // This tests should tests primary key when they are added to this function
     let updateExpectation = XCTestExpectation(description: "Update movie index")
-    self.client.updateIndex(self.uid, primaryKey: "random") { result in
+    self.client.updateIndex(uid: self.uid, primaryKey: "random") { result in
       switch result {
       case .success(let index):
         XCTAssertEqual("random", index.primaryKey)
@@ -285,7 +285,7 @@ class IndexesTests: XCTestCase {
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
-    self.client.createIndex(self.uid) { result in
+    self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let index):
         let stubIndex = self.client.index(self.uid)
