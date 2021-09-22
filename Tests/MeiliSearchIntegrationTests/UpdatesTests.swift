@@ -67,7 +67,7 @@ class UpdatesTests: XCTestCase {
     self.index.addDocuments(documents: documents, primaryKey: nil) { result in
       switch result {
       case .success(let update):
-        self.index.getUpdate(update) { (result: Result<Update.Result, Swift.Error>)  in
+        self.index.getUpdate(update.updateId) { (result: Result<Update.Result, Swift.Error>)  in
           switch result {
           case .success(let update):
             XCTAssertEqual("DocumentsAddition", update.type.name)

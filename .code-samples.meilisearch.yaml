@@ -22,7 +22,7 @@ list_all_indexes_1: |-
       }
   }
 create_an_index_1: |-
-  client.createIndex("movies") { (result: Result<Index, Swift.Error>) in
+  client.createIndex(uid: "movies") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -49,7 +49,7 @@ delete_an_index_1: |-
       }
   }
 get_one_document_1: |-
-  client.index("movies").getDocument(identifier: 25684) { (result: Result<Movie, Swift.Error>) in
+  client.index("movies").getDocument(25684) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success(let movie):
           print(movie)
@@ -96,7 +96,7 @@ delete_all_documents_1: |-
       }
   }
 delete_one_document_1: |-
-  client.index("movies").deleteDocument(identifier: 25684) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteDocument(25684) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -152,7 +152,7 @@ get_keys_1: |-
       }
   }
 get_settings_1: |-
-  client.getSettings(UID: "movies") { (result: Result<Setting, Swift.Error>) in
+  client.index("movies").getSettings { (result: Result<Setting, Swift.Error>) in
       switch result {
       case .success(let setting):
           print(setting)
@@ -356,7 +356,7 @@ update_searchable_attributes_1: |-
       }
   }
 reset_searchable_attributes_1: |-
-  client.index("movies")resetSearchableAttributes { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSearchableAttributes { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -365,7 +365,7 @@ reset_searchable_attributes_1: |-
       }
   }
 get_displayed_attributes_1: |-
-  client.index("movies")getDisplayedAttributes { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getDisplayedAttributes { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let displayedAttributes):
           print(displayedAttributes)
@@ -375,7 +375,7 @@ get_displayed_attributes_1: |-
   }
 update_displayed_attributes_1: |-
   let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]
-  client.index("movies")updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -384,7 +384,7 @@ update_displayed_attributes_1: |-
       }
   }
 reset_displayed_attributes_1: |-
-  client.index("movies")resetDisplayedAttributes { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetDisplayedAttributes { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -1034,7 +1034,7 @@ search_parameter_guide_sort_1: |-
     query: "science fiction",
     "sort": ["price:asc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)

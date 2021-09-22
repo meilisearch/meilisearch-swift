@@ -39,7 +39,7 @@ class UpdatesTests: XCTestCase {
     // Start the test with the mocked server
     let update = Update(updateId: 1)
     let expectation = XCTestExpectation(description: "Get settings")
-    self.index.getUpdate(update) { result in
+    self.index.getUpdate(update.updateId) { result in
       switch result {
       case .success(let result):
         XCTAssertEqual(stubResult, result)
@@ -72,7 +72,7 @@ class UpdatesTests: XCTestCase {
     // Start the test with the mocked server
     let update = Update(updateId: 1)
     let expectation = XCTestExpectation(description: "Get settings")
-    self.index.getUpdate(update) { result in
+    self.index.getUpdate(update.updateId) { result in
       switch result {
       case .success:
         XCTFail("The server send a invalid status and it should not succeed")

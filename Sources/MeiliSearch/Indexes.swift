@@ -459,9 +459,9 @@ public struct Indexes {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getUpdate(
-    _ update: Update,
+    _ updateId: Int,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-    self.updates.get(self.uid, update, completion)
+    self.updates.get(self.uid, updateId, completion)
   }
 
   /**

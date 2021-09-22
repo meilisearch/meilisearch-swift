@@ -17,7 +17,7 @@ struct Updates {
 
   func get(
     _ uid: String,
-    _ update: Update,
+    _ updateId: Int,
     _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(uid)/updates/\(update.updateId)") { result in
       switch result {
@@ -46,27 +46,21 @@ struct Updates {
     _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
 
     self.request.get(api: "/indexes/\(uid)/updates") { result in
-
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let result: [Update.Result] = try Constants.customJSONDecoder.decode([Update.Result].self, from: data)
-
           completion(.success(result))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
   }
 
