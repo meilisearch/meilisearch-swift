@@ -67,7 +67,8 @@ get_documents_1: |-
       }
   }
 add_or_replace_documents_1: |-
-  let documents: Data = //...
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
   client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -77,7 +78,8 @@ add_or_replace_documents_1: |-
       }
   }
 add_or_update_documents_1: |-
-  let documents: Data = //...
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
   client.index("movies").updateDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
@@ -782,7 +784,7 @@ getting_started_create_index_md: |-
   Example:
   ```swift
     let client = try! MeiliSearch(host: "http://localhost:7700")
-    client.createIndex("movies") { (result: Result<Indexes, Swift.Error>) in
+    client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
         switch result {
         case .success(let index):
             print(index)
@@ -800,8 +802,10 @@ getting_started_add_documents_md: |-
   ```
   Example:
   ```swift
+    let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+    let documents: Data = Data(contentsOf: path)
+
     let client = try! MeiliSearch(host: "http://localhost:7700")
-    let documents: Data = /...
     client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
         switch result {
         case .success(let update):
