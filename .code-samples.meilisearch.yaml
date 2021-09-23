@@ -4,7 +4,7 @@
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
 get_one_index_1: |-
-  client.getIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+  client.getIndex("movies") { (result: Result<Indexes, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -13,7 +13,7 @@ get_one_index_1: |-
       }
   }
 list_all_indexes_1: |-
-  client.getIndexes { (result: Result<[Index], Swift.Error>) in
+  client.getIndexes { (result: Result<[Indexes], Swift.Error>) in
       switch result {
       case .success(let indexes):
           print(indexes)
@@ -22,7 +22,7 @@ list_all_indexes_1: |-
       }
   }
 create_an_index_1: |-
-  client.createIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+  client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -31,7 +31,7 @@ create_an_index_1: |-
       }
   }
 update_an_index_1: |-
-  client.updateIndex(UID: "movies", primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
+  client.index("movies").update(primaryKey: "movie_review_id") { (result: Result<Indexes, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -40,7 +40,7 @@ update_an_index_1: |-
       }
   }
 delete_an_index_1: |-
-  client.deleteIndex(UID: "movies") { (result: Result<(), Swift.Error>) in
+  client.index("movies").delete { (result: Result<(), Swift.Error>) in
       switch result {
       case .success:
           print("Index deleted")
@@ -49,7 +49,7 @@ delete_an_index_1: |-
       }
   }
 get_one_document_1: |-
-  client.getDocument(UID: "movies", identifier: 25684) { (result: Result<Movie, Swift.Error>) in
+  client.index("movies").getDocument(25684) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success(let movie):
           print(movie)
@@ -58,7 +58,7 @@ get_one_document_1: |-
       }
   }
 get_documents_1: |-
-  client.getDocuments(UID: "movies", options: GetParameters(limit: 2)) { (result: Result<[Movie], Swift.Error>) in
+  client.index("movies").getDocuments(options: GetParameters(limit: 2)) { (result: Result<[Movie], Swift.Error>) in
       switch result {
       case .success(let movies):
           print(movies)
@@ -67,8 +67,9 @@ get_documents_1: |-
       }
   }
 add_or_replace_documents_1: |-
-  let documents: Data = //...
-  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -77,8 +78,9 @@ add_or_replace_documents_1: |-
       }
   }
 add_or_update_documents_1: |-
-  let documents: Data = //...
-  client.updateDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
+  client.index("movies").updateDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -87,7 +89,7 @@ add_or_update_documents_1: |-
       }
   }
 delete_all_documents_1: |-
-  client.deleteAllDocuments(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteAllDocuments() { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -96,7 +98,7 @@ delete_all_documents_1: |-
       }
   }
 delete_one_document_1: |-
-  client.deleteDocument(UID: "movies", identifier: 25684) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteDocument(25684) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -105,9 +107,8 @@ delete_one_document_1: |-
       }
   }
 delete_documents_1: |-
-  client.deleteBatchDocuments(
-    UID: "movies",
-    documentsUID: [23488, 153738, 437035, 363869]) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteBatchDocuments([23488, 153738, 437035, 363869]) {
+  (result: Result<Update, Swift.Error>) in
         switch result {
         case .success(let update):
             print(update)
@@ -117,7 +118,7 @@ delete_documents_1: |-
     }
 search_post_1: |-
   let searchParameters = SearchParameters.query("American ninja")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -126,7 +127,7 @@ search_post_1: |-
       }
   }
 get_update_1: |-
-  client.getUpdate(UID: "movies", 1) { (result: Result<Update.Result, Swift.Error>) in
+  client.index("movies").getUpdate(1) { (result: Result<Update.Result, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -135,7 +136,7 @@ get_update_1: |-
       }
   }
 get_all_updates_1: |-
-  client.getAllUpdates(UID: "movies") { (result: Result<[Update.Result], Swift.Error>) in
+  client.index("movies").getAllUpdates() { (result: Result<[Update.Result], Swift.Error>) in
       switch result {
       case .success(let updates):
           print(updates)
@@ -153,7 +154,7 @@ get_keys_1: |-
       }
   }
 get_settings_1: |-
-  client.getSettings(UID: "movies") { (result: Result<Setting, Swift.Error>) in
+  client.index("movies").getSettings { (result: Result<Setting, Swift.Error>) in
       switch result {
       case .success(let setting):
           print(setting)
@@ -195,8 +196,8 @@ update_settings_1: |-
   ], synonyms: [
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
-  ], acceptNewFields: false)
-  client.updateSettings(UID: "movies", settings) { (result: Result<Update, Swift.Error>) in
+  ])
+  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -205,7 +206,7 @@ update_settings_1: |-
       }
   }
 reset_settings_1: |-
-  client.resetSettings(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSettings { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -214,7 +215,7 @@ reset_settings_1: |-
       }
   }
 get_synonyms_1: |-
-  client.getSynonyms(UID: "movies") { (result: Result<[String: [String]], Swift.Error>) in
+  client.index("movies").getSynonyms { (result: Result<[String: [String]], Swift.Error>) in
       switch result {
       case .success(let synonyms):
           print(update)
@@ -228,7 +229,7 @@ update_synonyms_1: |-
       "logan": ["wolverine", "xmen"],
       "wow": ["world of warcraft"]
   ]
-  client.updateSynonyms(UID: "movies", synonyms) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSynonyms(synonyms) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -237,7 +238,7 @@ update_synonyms_1: |-
       }
   }
 reset_synonyms_1: |-
-  client.resetSynonyms(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSynonyms { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -246,7 +247,7 @@ reset_synonyms_1: |-
       }
   }
 get_stop_words_1: |-
-  client.getStopWords(UID: "movies") { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getStopWords { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let stopWords):
           print(stopWords)
@@ -256,7 +257,7 @@ get_stop_words_1: |-
   }
 update_stop_words_1: |-
   let stopWords: [String] = ["of", "the", "to"]
-  client.updateStopWords(UID: "movies", stopWords) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateStopWords(stopWords) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -265,7 +266,7 @@ update_stop_words_1: |-
       }
   }
 reset_stop_words_1: |-
-  client.resetStopWords(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetStopWords { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -274,7 +275,7 @@ reset_stop_words_1: |-
       }
   }
 get_ranking_rules_1: |-
-  client.getRankingRules(UID: "movies") { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getRankingRules { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let rankingRules):
           print(rankingRules)
@@ -293,7 +294,7 @@ update_ranking_rules_1: |-
       "release_date:asc",
       "rank:desc"
   ]
-  client.updateRankingRules(UID: "movies", rankingRules) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -302,7 +303,7 @@ update_ranking_rules_1: |-
       }
   }
 reset_ranking_rules_1: |-
-  client.resetRankingRules(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetRankingRules { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -311,7 +312,7 @@ reset_ranking_rules_1: |-
       }
   }
 get_distinct_attribute_1: |-
-  client.getDistinctAttribute(UID: "movies") { (result: Result<String, Swift.Error>) in
+  client.index("movies").getDistinctAttribute { (result: Result<String, Swift.Error>) in
       switch result {
       case .success(let distinctAttribute):
           print(distinctAttribute)
@@ -320,7 +321,7 @@ get_distinct_attribute_1: |-
       }
   }
 update_distinct_attribute_1: |-
-  client.updateDistinctAttribute(UID: "movies", "movie_id") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDistinctAttribute("movie_id") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -329,7 +330,7 @@ update_distinct_attribute_1: |-
       }
   }
 reset_distinct_attribute_1: |-
-  client.resetDistinctAttribute(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetDistinctAttribute { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -338,7 +339,7 @@ reset_distinct_attribute_1: |-
       }
   }
 get_searchable_attributes_1: |-
-  client.getSearchableAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getSearchableAttributes { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let searchableAttributes):
           print(searchableAttributes)
@@ -348,7 +349,7 @@ get_searchable_attributes_1: |-
   }
 update_searchable_attributes_1: |-
   let searchableAttributes: [String] = ["title", "description", "uid"]
-  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -357,7 +358,7 @@ update_searchable_attributes_1: |-
       }
   }
 reset_searchable_attributes_1: |-
-  client.resetSearchableAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSearchableAttributes { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -366,7 +367,7 @@ reset_searchable_attributes_1: |-
       }
   }
 get_displayed_attributes_1: |-
-  client.getDisplayedAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getDisplayedAttributes { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let displayedAttributes):
           print(displayedAttributes)
@@ -376,7 +377,7 @@ get_displayed_attributes_1: |-
   }
 update_displayed_attributes_1: |-
   let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]
-  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -385,7 +386,7 @@ update_displayed_attributes_1: |-
       }
   }
 reset_displayed_attributes_1: |-
-  client.resetDisplayedAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetDisplayedAttributes { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -393,27 +394,9 @@ reset_displayed_attributes_1: |-
           print(error)
       }
   }
-get_accept_new_fields_1: |-
-  client.getAcceptNewFields(UID: "movies") { (result: Result<Bool, Swift.Error>) in
-      switch result {
-      case .success(let acceptNewFields):
-          print(acceptNewFields)
-      case .failure(let error):
-          print(error)
-      }
-  }
-update_accept_new_fields_1: |-
-  let acceptNewFields = true
-  client.updateAcceptNewFields(UID: "movies", acceptNewFields) { (result: Result<Update, Swift.Error>) in
-      switch result {
-      case .success(let update):
-          print(update)
-      case .failure(let error):
-          print(error)
-      }
-  }
+
 get_index_stats_1: |-
-  client.stat(UID: "movies") { (result: Result<Stat, Swift.Error>) in
+  client.index("movies").stats { (result: Result<Stat, Swift.Error>) in
       switch result {
       case .success(let stat):
           print(update)
@@ -467,7 +450,7 @@ get_sys_info_1: |-
       }
   }
 distinct_attribute_guide_1: |-
-  client.updateDistinctAttribute(UID: "movies", "product_id") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -485,7 +468,7 @@ field_properties_guide_searchable_1: |-
       "release_date",
       "rank"
   ]
-  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -501,7 +484,7 @@ field_properties_guide_displayed_1: |-
       "release_date",
       "rank"
   ]
-  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -513,7 +496,7 @@ filtering_guide_1: |-
   let searchParameters = SearchParameters(
       query: "Avengers",
       filter: "release_date > 795484800")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -525,7 +508,7 @@ filtering_guide_2: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       filter: "release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -537,7 +520,7 @@ filtering_guide_3: |-
   let searchParameters = SearchParameters(
       query: "horror",
       filter: "director = \"Jordan Peele\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -549,7 +532,7 @@ filtering_guide_4: |-
   let searchParameters = SearchParameters(
       query: "Planet of the Apes",
       filter: "rating >= 3 AND (NOT director = \"Tim Burton\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -558,7 +541,7 @@ filtering_guide_4: |-
       }
   }
 search_parameter_guide_query_1: |-
-  client.search(UID: "movies", .query("shifu")) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters(query: "shifu")) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -570,7 +553,7 @@ search_parameter_guide_offset_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       offset: 1)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -582,7 +565,7 @@ search_parameter_guide_limit_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       limit: 2)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -594,7 +577,7 @@ search_parameter_guide_retrieve_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       attributesToRetrieve: ["overview", "title"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -607,7 +590,7 @@ search_parameter_guide_crop_1: |-
       query: "shifu",
       attributesToCrop: "overview",
       cropLength: 10)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -619,7 +602,7 @@ search_parameter_guide_highlight_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       attributesToHighlight: ["overview"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -631,7 +614,7 @@ search_parameter_guide_filter_1: |-
   let searchParameters = SearchParameters(
       query: "n",
       filter: "title = Nightshift")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -643,7 +626,7 @@ search_parameter_guide_filter_2: |-
   let searchParameters = SearchParameters(
       query: "n",
       filter: "title=\"Kung Fu Panda\"")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -655,7 +638,7 @@ search_parameter_guide_matches_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       matches: true)
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -669,7 +652,7 @@ settings_guide_stop_words_1: |-
       "a",
       "an"
   ]
-  client.updateStopWords(UID: "movies", stopWords) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateStopWords(stopWords) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -688,7 +671,7 @@ settings_guide_ranking_rules_1: |-
       "release_date:asc",
       "rank:desc"
   ]
-  client.updateRankingRules(UID: "movies", rankingRules) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -697,7 +680,7 @@ settings_guide_ranking_rules_1: |-
       }
   }
 settings_guide_distinct_1: |-
-  client.updateDistinctAttribute(UID: "movies", "product_id") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -715,7 +698,7 @@ settings_guide_searchable_1: |-
       "release_date",
       "rank"
   ]
-  client.updateSearchableAttributes(UID: "movies", searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -731,16 +714,7 @@ settings_guide_displayed_1: |-
       "release_date",
       "rank"
   ]
-  client.updateDisplayedAttributes(UID: "movies", displayedAttributes) { (result: Result<Update, Swift.Error>) in
-      switch result {
-      case .success(let update):
-          print(update)
-      case .failure(let error):
-          print(error)
-      }
-  }
-settings_guide_accept_new_fields_1: |-
-  client.updateAcceptNewFields(UID: "movies", false) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -751,7 +725,7 @@ settings_guide_accept_new_fields_1: |-
 add_movies_json_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
-  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -767,7 +741,7 @@ documents_guide_add_movie_1: |-
   }]
   """
   let documents: Data = documentJsonString.data(using: .utf8)!
-  client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -780,7 +754,7 @@ search_guide_1: |-
       query: "shifu",
       limit: 5,
       offset: 10)
-  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -792,7 +766,7 @@ search_guide_2: |-
   let parameters = SearchParameters(
       query: "Avengers",
       filter: "release_date > 795484800")
-  client.search(UID: "movies", parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -810,7 +784,7 @@ getting_started_create_index_md: |-
   Example:
   ```swift
     let client = try! MeiliSearch(host: "http://localhost:7700")
-    client.createIndex(UID: "movies") { (result: Result<Index, Swift.Error>) in
+    client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
         switch result {
         case .success(let index):
             print(index)
@@ -828,9 +802,11 @@ getting_started_add_documents_md: |-
   ```
   Example:
   ```swift
+    let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+    let documents: Data = Data(contentsOf: path)
+
     let client = try! MeiliSearch(host: "http://localhost:7700")
-    let documents: Data = /...
-    client.addDocuments(UID: "movies", documents: documents) { (result: Result<Update, Swift.Error>) in
+    client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
         switch result {
         case .success(let update):
             print(update)
@@ -850,7 +826,7 @@ getting_started_search_md: |-
   ```swift
     let client = try! MeiliSearch(host: "http://localhost:7700")
     let searchParameters = SearchParameters.query("botman")
-    client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+    client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
             print(searchResult)
@@ -861,7 +837,7 @@ getting_started_search_md: |-
   ```
 
 get_filterable_attributes_1: |-
-  client.getFilterableAttributes(UID: "movies") { (result: Result<[String], Swift.Error>) in
+  client.index("movies").getFilterableAttributes { (result: Result<[String], Swift.Error>) in
       switch result {
       case .success(let attributes):
           print(attributes)
@@ -870,7 +846,7 @@ get_filterable_attributes_1: |-
       }
   }
 update_filterable_attributes_1: |-
-  client.updateFilterableAttributes(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -879,7 +855,7 @@ update_filterable_attributes_1: |-
       }
   }
 reset_filterable_attributes_1: |-
-  client.resetFilterableAttributes(UID: "movies") { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetFilterableAttributes { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let attributes):
           print(attributes)
@@ -888,7 +864,7 @@ reset_filterable_attributes_1: |-
       }
   }
 faceted_search_update_settings_1: |-
-  client.updateFilterableAttributes(UID: "movies", ["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -900,7 +876,7 @@ faceted_search_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
       filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -912,7 +888,7 @@ faceted_search_facets_distribution_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       facetsDistribution: ["genres"]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -921,7 +897,7 @@ faceted_search_facets_distribution_1: |-
       }
   }
 faceted_search_walkthrough_filterable_attributes_1: |-
-  client.updateFilterableAttributes(UID: "movies", [
+  client.index("movies").updateFilterableAttributes([
       "director",
       "producer",
       "genres",
@@ -937,7 +913,7 @@ faceted_search_walkthrough_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
       filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -949,7 +925,7 @@ faceted_search_walkthrough_facets_distribution_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       facetsDistribution: ["genres"])
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -961,7 +937,7 @@ faceted_search_walkthrough_facets_distribution_1: |-
 phrase_search_1: |-
   let searchParameters = SearchParameters(
       query: "\"african american\" horror")
-  client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -970,7 +946,7 @@ phrase_search_1: |-
       }
   }
 sorting_guide_update_sortable_attributes_1: |-
-  client.updateSortableAttributes(UID: "books", ["price", "author"]) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Update, Swift.Error>) in
     switch result {
     case .success(let update):
       print(update)
@@ -987,7 +963,7 @@ sorting_guide_update_ranking_rules_1: |-
     "attribute",
     "exactness"
   ]
-  client.updateRankingRules(UID: "books", rankingRules) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
     switch result {
     case .success(let update):
       print(update)
@@ -1000,7 +976,7 @@ sorting_guide_sort_parameter_1: |-
     query: "science fiction",
     "sort": ["price:asc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -1013,7 +989,7 @@ sorting_guide_sort_parameter_2: |-
     query: "butler",
     "sort": ["author:desc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -1022,7 +998,7 @@ sorting_guide_sort_parameter_2: |-
     }
   }
 get_sortable_attributes_1: |-
-  client.getSortableAttributes(UID: "books") { (result: Result<[String], Swift.Error>) in
+  client.index("books").getSortableAttributes { (result: Result<[String], Swift.Error>) in
     switch result {
     case .success(let attributes):
       print(attributes)
@@ -1031,7 +1007,7 @@ get_sortable_attributes_1: |-
     }
   }
 update_sortable_attributes_1: |-
-  client.updateSortableAttributes(UID: "books", ["price", "author"]) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Update, Swift.Error>) in
     switch result {
     case .success(let update):
       print(update)
@@ -1040,7 +1016,7 @@ update_sortable_attributes_1: |-
     }
   }
 reset_sortable_attributes_1: |-
-  client.resetSortableAttributes(UID: "books") { (result: Result<Update, Swift.Error>) in
+  client.index("books").resetSortableAttributes() { (result: Result<Update, Swift.Error>) in
     switch result {
     case .success(let attributes):
       print(attributes)
@@ -1053,11 +1029,42 @@ search_parameter_guide_sort_1: |-
     query: "science fiction",
     "sort": ["price:asc"]
   )
-  client.search(UID: "books", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
     case .failure(let error):
       print(error)
     }
+  }
+settings_guide_synonyms_1: |-
+  let synonyms: [String: [String]] = [
+      "sweater": ["jumper"],
+      "jumper": ["sweater"]
+  ]
+  client.index("tops").updateSynonyms(synonyms) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+post_dump_1: |-
+  self.client.createDump { result in
+      switch result {
+      case .success(let dumpStatus):
+          print(dumpStatus)
+      case .failure:
+          print(error)
+      }
+  }
+get_dump_status_1: |-
+  self.client.getDumpStatus(uid) { result in
+      switch result {
+      case .success(let dumpStatus):
+          print(dumpStatus)
+      case .failure:
+          print(error)
+      }
   }

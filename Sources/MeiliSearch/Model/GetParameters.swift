@@ -58,10 +58,4 @@ public struct GetParameters: Codable, Equatable {
   }
   // MARK: Codable Keys
 
-  enum CodingKeys: String, CodingKey {
-    case offset
-    case limit
-    case attributesToRetrieve
-  }
-
 }

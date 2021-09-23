@@ -9,12 +9,6 @@ private struct Movie: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -43,7 +37,7 @@ func routes(_ app: Application) throws {
         return
       }
 
-      client.getIndex(UID: uid) { result in
+      client.getIndex(uid) { result in
 
         switch result {
         case .success(let index):
@@ -83,7 +77,7 @@ func routes(_ app: Application) throws {
 
       let searchParameters = SearchParameters.query(query)
 
-      client.search(UID: "movies", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
           if let jsonData = try? JSONSerialization.data(withJSONObject: searchResult.hits, options: []) {

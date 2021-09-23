@@ -8,7 +8,7 @@ public struct Dump: Codable, Equatable {
   // MARK: Properties
 
   /// Unique identifier and file name of the dump (.dump)
-  public let UID: String
+  public let uid: String
 
   /// Status of the dump creation
   public let status: Status
@@ -18,13 +18,6 @@ public struct Dump: Codable, Equatable {
 
   // Time when the creation of the dump completed
   public let finishedAt: String?
-
-  enum CodingKeys: String, CodingKey {
-    case UID = "uid"
-    case status
-    case startedAt
-    case finishedAt
-  }
 
   public enum Status: Codable, Equatable {
 

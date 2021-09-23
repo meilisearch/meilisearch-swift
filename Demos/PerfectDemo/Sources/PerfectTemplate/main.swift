@@ -32,12 +32,6 @@ private struct Movie: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -62,7 +56,7 @@ func index(request: HTTPRequest, response: HTTPResponse) {
     return
   }
 
-  client.getIndex(UID: uid) { result in
+  client.getIndex(uid) { result in
 
     switch result {
     case .success(let index):
@@ -112,7 +106,7 @@ func search(request: HTTPRequest, response: HTTPResponse) {
 
   let searchParameters = SearchParameters.query(query)
 
-  client.search(UID: "books_test", searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("books_test").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
 
     switch result {
     case .success(let searchResult):

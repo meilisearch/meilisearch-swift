@@ -9,12 +9,6 @@ private struct Movie: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -37,6 +31,7 @@ private let movies: [Movie] = [
 class UpdatesTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let uid: String = "books_test"
 
   // MARK: Setup
@@ -44,14 +39,12 @@ class UpdatesTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-    }
-
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+    index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
-    self.client.deleteIndex(UID: uid) { _ in
-      self.client.getOrCreateIndex(UID: self.uid) { result in
+    self.client.deleteIndex(uid) { _ in
+      self.client.getOrCreateIndex(uid: self.uid) { result in
         switch result {
         case .success:
           expectation.fulfill()
@@ -68,14 +61,13 @@ class UpdatesTests: XCTestCase {
   func testGetUpdateStatus() {
 
     let expectation = XCTestExpectation(description: "Get update status for transaction")
-
     let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
-    self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { result in
+    self.index.addDocuments(documents: documents, primaryKey: nil) { result in
       switch result {
       case .success(let update):
-        self.client.getUpdate(UID: self.uid, update) { (result: Result<Update.Result, Swift.Error>)  in
+        self.index.getUpdate(update.updateId) { (result: Result<Update.Result, Swift.Error>)  in
           switch result {
           case .success(let update):
             XCTAssertEqual("DocumentsAddition", update.type.name)
@@ -97,46 +89,40 @@ class UpdatesTests: XCTestCase {
   func testGetAllUpdatesStatus() {
 
     let expectation = XCTestExpectation(description: "Get update status for all transaction")
-
     let jsonEncoder = JSONEncoder()
-
     for index in 0...10 {
       let movie: Movie = Movie(id: index, title: "test\(index)", comment: "test movie\(index)")
       let documents: Data = try! jsonEncoder.encode([movie])
-      self.client.addDocuments(UID: self.uid, documents: documents, primaryKey: nil) { _ in }
+      self.index.addDocuments(documents: documents, primaryKey: nil) { _ in }
     }
 
-    self.client.getAllUpdates(UID: self.uid) { (result: Result<[Update.Result], Swift.Error>)  in
+    self.index.getAllUpdates { (result: Result<[Update.Result], Swift.Error>)  in
       switch result {
       case .success(let updates):
         updates.forEach { (update: Update.Result) in
           XCTAssertEqual("DocumentsAddition", update.type.name)
         }
-
       case .failure(let error):
         print(error)
         XCTFail()
       }
       expectation.fulfill()
-
     }
-    self.wait(for: [expectation], timeout: 10.0)
 
+    self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testWaitForPendingUpdateSuccessDefault () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.client.waitForPendingUpdate(UID: self.uid, update: update) { result in
+        self.index.waitForPendingUpdate(update: update) { result in
           switch result {
           case .success(let update):
             XCTAssertEqual(update.status, Update.Status.processed)
@@ -149,22 +135,21 @@ class UpdatesTests: XCTestCase {
         XCTFail(error.localizedDescription)
       }
     }
+
     self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testWaitForPendingUpdateSuccessEmptyOptions () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions()) { result in
+        self.index.waitForPendingUpdate(update: update, options: WaitOptions()) { result in
           switch result {
           case .success(let update):
             XCTAssertEqual(update.status, Update.Status.processed)
@@ -178,22 +163,21 @@ class UpdatesTests: XCTestCase {
         XCTFail()
       }
     }
+
     self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testWaitForPendingUpdateSuccessWithOptions () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 5, interval: 2)) { result in
+        self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 5, interval: 2)) { result in
           switch result {
           case .success(let update):
             XCTAssertEqual(update.status, Update.Status.processed)
@@ -211,15 +195,15 @@ class UpdatesTests: XCTestCase {
 
   func testWaitForPendingUpdateSuccessWithIntervalZero () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
-    self.client.addDocuments(
-      UID: self.uid,
+
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 5, interval: 0)) { result in
+        self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 5, interval: 0)) { result in
           switch result {
           case .success(let update):
             XCTAssertEqual(update.status, Update.Status.processed)
@@ -232,21 +216,21 @@ class UpdatesTests: XCTestCase {
         XCTFail(error.localizedDescription)
       }
     }
+
     self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testWaitForPendingUpdateTimeOut () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
-    self.client.addDocuments(
-      UID: self.uid,
+    self.index.addDocuments(
       documents: movies,
       primaryKey: nil
     ) { result in
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
-        self.client.waitForPendingUpdate(UID: self.uid, update: update, options: WaitOptions(timeOut: 0, interval: 2)) { result in
+        self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 0, interval: 2)) { result in
           switch result {
           case .success:
             XCTFail("waitForPendingUpdate should not have had the time for a second call")
@@ -266,6 +250,7 @@ class UpdatesTests: XCTestCase {
         XCTFail()
       }
     }
+
     self.wait(for: [expectation], timeout: 5.0)
   }
 }

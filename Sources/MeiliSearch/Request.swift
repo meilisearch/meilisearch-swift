@@ -20,8 +20,7 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-final class Request {
-
+public final class Request {
   private let config: Config
   private let session: URLSessionProtocol
 
@@ -37,7 +36,6 @@ final class Request {
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
 
     autoreleasepool {
-
       var urlString: String = config.url(api: api)
       if let param: String = param, !param.isEmpty {
         urlString += param
@@ -108,7 +106,6 @@ final class Request {
     }
 
     task.resume()
-
   }
 
   func put(
@@ -147,7 +144,6 @@ final class Request {
     }
 
     task.resume()
-
   }
 
   func delete(
@@ -178,9 +174,7 @@ final class Request {
       }
     }
     task.resume()
-
   }
-
 }
 
 extension URLSession: URLSessionProtocol {

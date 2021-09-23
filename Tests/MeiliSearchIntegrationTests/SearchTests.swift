@@ -39,12 +39,6 @@ private struct FormattedBook: Codable, Equatable {
   let title: String
   let comment: String?
 
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case comment
-  }
-
   init(id: Int, title: String, comment: String? = nil) {
     self.id = id
     self.title = title
@@ -56,19 +50,11 @@ private struct FormattedBook: Codable, Equatable {
 private struct MatchesInfoBook: Codable, Equatable {
   let comment: [Info]?
   let title: [Info]?
-  enum CodingKeys: String, CodingKey {
-    case comment
-    case title
-  }
 }
 
 private struct Info: Codable, Equatable {
   let start: Int
   let length: Int
-  enum CodingKeys: String, CodingKey {
-    case start
-    case length
-  }
 }
 
 private let books: [Book] = [
@@ -85,6 +71,7 @@ private let books: [Book] = [
 class SearchTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var index: Indexes!
   private let uid: String = "books_test"
 
   // MARK: Setup
@@ -92,23 +79,20 @@ class SearchTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-    }
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+    index = self.client.index(self.uid)
 
     let documents: Data = try! JSONEncoder().encode(books)
 
     let expectation = XCTestExpectation(description: "Add documents to index")
 
-    self.client.deleteIndex(UID: uid) { result in
+    self.client.deleteIndex(uid) { result in
 
-      self.client.getOrCreateIndex(UID: self.uid) { result in
+      self.client.getOrCreateIndex(uid: self.uid) { result in
 
         switch result {
         case .success:
-
-          self.client.addDocuments(
-            UID: self.uid,
+          self.index.addDocuments(
             documents: documents,
             primaryKey: nil
           ) { result in
@@ -142,7 +126,7 @@ class SearchTests: XCTestCase {
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let query = "Moreninha"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
         XCTAssertTrue(response.query == query)
@@ -165,7 +149,7 @@ class SearchTests: XCTestCase {
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
 
-    self.client.search(UID: self.uid, SearchParameters(query: nil)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: nil)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
         XCTAssertEqual("", response.query)
@@ -188,10 +172,9 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Search for Books using phrase search")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
-    // let limit = 5
     let query = "A \"great book\""
 
-    self.client.search(UID: self.uid, SearchParameters(query: query)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -218,7 +201,7 @@ class SearchTests: XCTestCase {
     let limit = 5
     let query = "Moreninha"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -242,7 +225,7 @@ class SearchTests: XCTestCase {
     let limit = 0
     let query = "A Moreninha"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -265,7 +248,7 @@ class SearchTests: XCTestCase {
     let limit = 5
     let query = "A"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -289,7 +272,7 @@ class SearchTests: XCTestCase {
     let limit = 5
     let query = ""
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -316,7 +299,7 @@ class SearchTests: XCTestCase {
     let offset = 2
     let query = "A"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -341,7 +324,7 @@ class SearchTests: XCTestCase {
     let offset = 0
     let query = "A"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -366,7 +349,7 @@ class SearchTests: XCTestCase {
     let offset = 6
     let query = "A"
 
-    self.client.search(UID: self.uid, SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
+    self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -396,7 +379,7 @@ class SearchTests: XCTestCase {
     let cropLength = 5
     let searchParameters = SearchParameters(query: query, limit: limit, attributesToCrop: attributesToCrop, cropLength: cropLength)
 
-    self.client.search(UID: self.uid, searchParameters) { (result: MeiliResult) in
+    self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.limit == limit)
@@ -425,7 +408,7 @@ class SearchTests: XCTestCase {
     let cropLength = 5
     let searchParameters = SearchParameters(query: query, limit: limit, attributesToCrop: attributesToCrop, cropLength: cropLength)
 
-    self.client.search(UID: self.uid, searchParameters) { (result: MeiliResult) in
+    self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.limit == limit)
@@ -453,7 +436,7 @@ class SearchTests: XCTestCase {
     let query = "Moreninha"
     let parameters = SearchParameters(query: query, limit: limit, matches: true)
 
-    self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+    self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -492,7 +475,7 @@ class SearchTests: XCTestCase {
     let attributesToHighlight = ["comment"]
     let parameters = SearchParameters(query: query, limit: limit, attributesToHighlight: attributesToHighlight)
 
-    self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+    self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -522,7 +505,7 @@ class SearchTests: XCTestCase {
     let attributesToRetrieve = ["id", "title"]
     let parameters = SearchParameters(query: query, limit: limit, attributesToRetrieve: attributesToRetrieve)
 
-    self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+    self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
         XCTAssertTrue(documents.query == query)
@@ -558,7 +541,7 @@ class SearchTests: XCTestCase {
 
     let expectation = XCTestExpectation(description: "Configure filterable attributes")
 
-    self.client.updateSettings(UID: self.uid, settings) { result in
+    self.index.updateSettings(settings) { result in
       switch result {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
@@ -582,7 +565,7 @@ class SearchTests: XCTestCase {
       let filter = "id = 456"
       let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)
@@ -612,7 +595,7 @@ class SearchTests: XCTestCase {
       let sort = ["id:asc"]
       let parameters = SearchParameters(query: query, sort: sort)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)
@@ -641,7 +624,7 @@ class SearchTests: XCTestCase {
       let filter = "id = 456"
       let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)
@@ -668,7 +651,7 @@ class SearchTests: XCTestCase {
       let filter = "genres = Novel"
       let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)
@@ -703,7 +686,7 @@ class SearchTests: XCTestCase {
       let facetsDistribution = ["genres"]
       let parameters = SearchParameters(query: query, limit: limit, facetsDistribution: facetsDistribution)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)
@@ -747,7 +730,7 @@ class SearchTests: XCTestCase {
       let filter = "genres = comedy"
       let parameters = SearchParameters(query: query, limit: limit, filter: filter, facetsDistribution: facetsDistribution)
 
-      self.client.search(UID: self.uid, parameters) { (result: MeiliResult) in
+      self.index.search(parameters) { (result: MeiliResult) in
         switch result {
         case .success(let documents):
           XCTAssertTrue(documents.query == query)

@@ -24,19 +24,16 @@ class DumpsTests: XCTestCase {
     self.client.createDump { result in
       switch result {
       case .success(let createDump):
-
-        XCTAssertTrue(!createDump.UID.isEmpty)
-
-        self.client.getDumpStatus(UID: createDump.UID) { result in
+        XCTAssertTrue(!createDump.uid.isEmpty)
+        self.client.getDumpStatus(createDump.uid) { result in
           switch result {
           case .success(let dumpStatus):
-            XCTAssertEqual(createDump.UID, dumpStatus.UID)
+            XCTAssertEqual(createDump.uid, dumpStatus.uid)
           case .failure(let error):
             XCTFail("Failed to request dump status \(error)")
           }
           expectation.fulfill()
         }
-
       case .failure(let error):
         XCTFail("Failed to request dump creation \(error)")
         expectation.fulfill()
@@ -44,12 +41,6 @@ class DumpsTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 10.0)
-
   }
-
-  static var allTests = [
-    ("testCreateAndGetDump", testCreateAndGetDump)
-  ]
-
 }
 // swiftlint:enable force_try

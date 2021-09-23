@@ -69,11 +69,11 @@ class DumpsTests: XCTestCase {
 
     // Start the test with the mocked server
 
-    let UID: String = "20200929-114144097"
+    let uid: String = "20200929-114144097"
 
     let expectation = XCTestExpectation(description: "Get the dump status")
 
-    self.client.getDumpStatus(UID: UID) { result in
+    self.client.getDumpStatus(uid) { result in
       switch result {
       case .success(let dump):
         XCTAssertEqual(stubDump, dump)

@@ -137,13 +137,6 @@ class SystemTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
 
   }
-
-  static var allTests = [
-    ("testHealthStatusAvailable", testHealthStatusAvailable),
-    ("testIsHealthyTrue", testIsHealthyTrue),
-    ("testIsHealthyFalse", testIsHealthyFalse),
-    ("testVersion", testVersion)
-  ]
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

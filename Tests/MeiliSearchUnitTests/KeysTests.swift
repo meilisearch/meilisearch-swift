@@ -44,11 +44,6 @@ class KeysTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 5.0)
   }
-
-  static var allTests = [
-    ("testKeys", testKeys)
-  ]
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

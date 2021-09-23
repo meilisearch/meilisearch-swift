@@ -18,9 +18,9 @@ struct Settings {
   // MARK: All Settings
 
   func get(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(UID)/settings") { result in
+    self.request.get(api: "/indexes/\(uid)/settings") { result in
 
       switch result {
       case .success(let data):
@@ -46,7 +46,7 @@ struct Settings {
   }
 
   func update(
-    _ UID: String,
+    _ uid: String,
     _ setting: Setting,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -58,7 +58,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings", data) { result in
       switch result {
       case .success(let data):
         do {
@@ -76,10 +76,10 @@ struct Settings {
 
   // can this be refactor
   func reset(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings") { result in
 
       switch result {
       case .success(let data):
@@ -107,10 +107,10 @@ struct Settings {
   // MARK: Synonyms
 
   func getSynonyms(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/synonyms") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/synonyms") { result in
 
       switch result {
       case .success(let data):
@@ -136,7 +136,7 @@ struct Settings {
   }
 
   func updateSynonyms(
-    _ UID: String,
+    _ uid: String,
     _ synonyms: [String: [String]]? = [:],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -148,7 +148,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/synonyms", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/synonyms", data) { result in
       switch result {
       case .success(let data):
         do {
@@ -164,10 +164,10 @@ struct Settings {
   }
 
   func resetSynonyms(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/synonyms") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/synonyms") { result in
 
       switch result {
       case .success(let data):
@@ -195,10 +195,10 @@ struct Settings {
   // MARK: Stop Words
 
   func getStopWords(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/stop-words") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/stop-words") { result in
 
       switch result {
       case .success(let data):
@@ -224,7 +224,7 @@ struct Settings {
   }
 
   func updateStopWords(
-    _ UID: String,
+    _ uid: String,
     _ stopWords: [String]? = [],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -236,7 +236,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/stop-words", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/stop-words", data) { result in
 
       switch result {
       case .success(let data):
@@ -257,10 +257,10 @@ struct Settings {
   }
 
   func resetStopWords(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/stop-words") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/stop-words") { result in
 
       switch result {
       case .success(let data):
@@ -288,10 +288,10 @@ struct Settings {
   // MARK: Ranking
 
   func getRankingRules(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/ranking-rules") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/ranking-rules") { result in
 
       switch result {
       case .success(let data):
@@ -317,7 +317,7 @@ struct Settings {
   }
 
   func updateRankingRules(
-    _ UID: String,
+    _ uid: String,
     _ rankingRules: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -329,7 +329,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/ranking-rules", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/ranking-rules", data) { result in
 
       switch result {
       case .success(let data):
@@ -350,10 +350,10 @@ struct Settings {
   }
 
   func resetRankingRules(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/ranking-rules") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/ranking-rules") { result in
 
       switch result {
       case .success(let data):
@@ -388,10 +388,10 @@ struct Settings {
   }
 
   func getDistinctAttribute(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
 
       switch result {
       case .success(let data):
@@ -417,7 +417,7 @@ struct Settings {
   }
 
   func updateDistinctAttribute(
-    _ UID: String,
+    _ uid: String,
     _ distinctAttribute: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -429,7 +429,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings", data) { result in
 
       switch result {
       case .success(let data):
@@ -450,10 +450,10 @@ struct Settings {
   }
 
   func resetDistinctAttribute(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/distinct-attribute") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
 
       switch result {
       case .success(let data):
@@ -481,10 +481,10 @@ struct Settings {
   // MARK: Searchable attributes
 
   func getSearchableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -510,7 +510,7 @@ struct Settings {
   }
 
   func updateSearchableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ searchableAttributes: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -522,7 +522,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/searchable-attributes", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/searchable-attributes", data) { result in
 
       switch result {
       case .success(let data):
@@ -543,10 +543,10 @@ struct Settings {
   }
 
   func resetSearchableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/searchable-attributes") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -574,10 +574,10 @@ struct Settings {
   // MARK: Displayed attributes
 
   func getDisplayedAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -603,7 +603,7 @@ struct Settings {
   }
 
   func updateDisplayedAttributes(
-    _ UID: String,
+    _ uid: String,
     _ displayedAttributes: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -615,7 +615,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/displayed-attributes", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/displayed-attributes", data) { result in
 
       switch result {
       case .success(let data):
@@ -636,10 +636,10 @@ struct Settings {
   }
 
   func resetDisplayedAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/displayed-attributes") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -667,10 +667,10 @@ struct Settings {
   // MARK: Filterable Attributes
 
   func getFilterableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/filterable-attributes") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -696,7 +696,7 @@ struct Settings {
   }
 
   func updateFilterableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ attributes: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -708,7 +708,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/filterable-attributes", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/filterable-attributes", data) { result in
 
       switch result {
       case .success(let data):
@@ -729,10 +729,10 @@ struct Settings {
   }
 
   func resetFilterableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/filterable-attributes") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -760,10 +760,10 @@ struct Settings {
   // MARK: Sortable Attributes
 
   func getSortableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
 
-    self.request.get(api: "/indexes/\(UID)/settings/sortable-attributes") { result in
+    self.request.get(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
 
       switch result {
       case .success(let data):
@@ -789,7 +789,7 @@ struct Settings {
   }
 
   func updateSortableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ attributes: [String],
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
@@ -801,7 +801,7 @@ struct Settings {
       return
     }
 
-    self.request.post(api: "/indexes/\(UID)/settings/sortable-attributes", data) { result in
+    self.request.post(api: "/indexes/\(uid)/settings/sortable-attributes", data) { result in
 
       switch result {
       case .success(let data):
@@ -822,10 +822,10 @@ struct Settings {
   }
 
   func resetSortableAttributes(
-    _ UID: String,
+    _ uid: String,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(UID)/settings/sortable-attributes") { result in
+    self.request.delete(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
 
       switch result {
       case .success(let data):
