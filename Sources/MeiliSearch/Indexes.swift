@@ -695,7 +695,7 @@ public struct Indexes {
     self.settings.resetDistinctAttribute(self.uid, completion)
   }
 
-  // MARK: Searchable Attribute
+  // MARK: Searchable Attributes
 
   /**
    Get the searchable attribute field of an `Index`.
@@ -738,7 +738,7 @@ public struct Indexes {
     self.settings.resetSearchableAttributes(self.uid, completion)
   }
 
-  // MARK: Displayed Attribute
+  // MARK: Displayed Attributes
 
   /**
    Get the displayed attribute field of the index.
