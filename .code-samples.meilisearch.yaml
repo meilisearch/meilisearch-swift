@@ -720,15 +720,6 @@ settings_guide_displayed_1: |-
           print(error)
       }
   }
-settings_guide_accept_new_fields_1: |-
-  client.index("movies").updateAcceptNewFields(false) { (result: Result<Update, Swift.Error>) in
-      switch result {
-      case .success(let update):
-          print(update)
-      case .failure(let error):
-          print(error)
-      }
-  }
 add_movies_json_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
