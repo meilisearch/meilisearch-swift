@@ -31,7 +31,7 @@ create_an_index_1: |-
       }
   }
 update_an_index_1: |-
-  client.index("movies").updateIndex(primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
+  client.index("movies").update(primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -40,7 +40,7 @@ update_an_index_1: |-
       }
   }
 delete_an_index_1: |-
-  client.index("movies").deleteIndex { (result: Result<(), Swift.Error>) in
+  client.index("movies").delete { (result: Result<(), Swift.Error>) in
       switch result {
       case .success:
           print("Index deleted")
