@@ -296,7 +296,7 @@ public struct Indexes {
 
     To completely overwrite a document, `addDocuments`
 
-   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter documents:  The documents to update in MeiliSearch.
    - parameter Encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
@@ -344,9 +344,9 @@ public struct Indexes {
   }
 
   /**
-   Get the Document on the index based on the provided document identifier.
+   Get the document on the index based on the provided document identifier.
 
-   - parameter identifier: The document identifier for the Document to be found.
+   - parameter identifier: The document identifier for the document to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
    If the request was sucessful or `Error` if a failure occured.
@@ -359,9 +359,9 @@ public struct Indexes {
   }
 
   /**
-   Get the Document on the index based on the provided document identifier.
+   Get the document on the index based on the provided document identifier.
 
-   - parameter identifier: The document identifier for the Document to be found.
+   - parameter identifier: The document identifier for the document to be found.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
    If the request was sucessful or `Error` if a failure occured.
@@ -374,10 +374,10 @@ public struct Indexes {
   }
 
   /**
-   List the all Documents.
+   List all Documents.
 
-   - parameter limit:      Limit the size of the query.
-   - parameter completion: The completion closure used to notify when the server
+   - parameter options:      Options on get documents.
+   - parameter completion:   The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains
    `[T]` value. If the request was sucessful or `Error` if a
    failure occured.
@@ -390,9 +390,9 @@ public struct Indexes {
   }
 
   /**
-   Delete a Document on the index based on the provided document identifier.
+   Delete a document on the index based on the provided document identifier.
 
-   - parameter identifier: The document identifier for the Document to be found.
+   - parameter documentId: The document identifier of the document.
    - parameter completion: The completion closure used to notify when the server
    completes the delete request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -418,7 +418,7 @@ public struct Indexes {
   /**
    Delete a selection of documents based on array of document `identifiers`'s.
 
-   - parameter documentsIdentifiers: The array of unique identifier for the Document to be deleted.
+   - parameter documentIds: The array of unique identifier for the document to be deleted.
    - parameter completion:   The completion closure used to notify when the server
    completes the delete request, it returns a `Result` object that contains `Update`
    value. If the request was sucessful or `Error` if a failure occured.
@@ -451,7 +451,7 @@ public struct Indexes {
   /**
    Get the status of an update of the index.
 
-   - parameter update:    The update value.
+   - parameter updateId:    The update identifier.
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
@@ -465,7 +465,6 @@ public struct Indexes {
   /**
    Get the status of an update of the index.
 
-   - parameter update:    The update value.
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
