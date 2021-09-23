@@ -20,12 +20,5 @@ class ClientTests: XCTestCase {
       XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.hostNotValid)
     }
   }
-
-  static var allTests = [
-    ("testValidHostURL", testValidHostURL),
-    ("testWrongHostURL", testWrongHostURL),
-    ("testNotValidHostURL", testNotValidHostURL)
-  ]
-
 }
 // swiftlint:enable force_cast
