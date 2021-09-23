@@ -194,7 +194,7 @@ update_settings_1: |-
   ], synonyms: [
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
-  ], acceptNewFields: false)
+  ])
   client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
