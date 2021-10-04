@@ -84,7 +84,7 @@ public final class Request {
     var request: URLRequest = URLRequest(url: url)
     request.httpMethod = "POST"
     request.httpBody = data
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
@@ -121,7 +121,7 @@ public final class Request {
     var request: URLRequest = URLRequest(url: url)
     request.httpMethod = "PUT"
     request.httpBody = data
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
@@ -156,7 +156,7 @@ public final class Request {
 
     var request: URLRequest = URLRequest(url: url)
     request.httpMethod = "DELETE"
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
