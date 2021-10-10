@@ -5,13 +5,15 @@ import XCTest
 class IndexesTests: XCTestCase {
 
   private var client: MeiliSearch!
+  private var session: URLSessionProtocol!
   private let uid: String = "books_test"
 
   override func setUp() {
     super.setUp()
 
     if client == nil {
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+      session = URLSession(configuration: .ephemeral)
+      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     }
     let getIndexesExp = XCTestExpectation(description: "Try to get all indexes")
     self.client.getIndexes { result in
