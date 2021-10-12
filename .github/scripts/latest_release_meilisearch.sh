@@ -10,6 +10,10 @@
 temp_file='temp_file' # temp_file needed because `grep` would start before the download is over
 
 curl -H "Authorization:  $1" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
+
+echo "Latest release of MeiliSearch is" 
+cat "$temp_file" 
+
 latest_ms_release=$(cat "$temp_file" \
     | grep -E 'tag_name' | grep 'v0' | head -1 \
     | tr -d ',"' | cut -d ':' -f2 | tr -d ' ')
