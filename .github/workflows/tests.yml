@@ -24,7 +24,7 @@ jobs:
           curl -H "Authorization: ${{ secrets.API_GITHUB_TOKEN_SWIFT }}" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
           
           echo "Api response of MeiliSearch is" 
-          cat "$temp_file" 
+          cat "$temp_file" | head -10 
           
           latest_ms_release=$(cat "$temp_file" \
               | grep -E 'tag_name' | grep 'v0' | head -1 \
@@ -32,7 +32,7 @@ jobs:
           rm -rf "$temp_file"
 
           echo "Latest release of MeiliSearch is" 
-          cat "$temp_file"
+          cat "$latest_ms_release"
 
           echo "MEILISEARCH_LATEST=$($latest_ms_release)" >> $GITHUB_ENV
       - name: Download MeiliSearch
