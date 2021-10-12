@@ -31,8 +31,7 @@ jobs:
               | tr -d ',"' | cut -d ':' -f2 | tr -d ' ')
           rm -rf "$temp_file"
 
-          echo "Latest release of MeiliSearch is" 
-          cat "$latest_ms_release"
+          echo "Latest release of MeiliSearch is: $latest_ms_release" 
 
           echo "MEILISEARCH_LATEST=$($latest_ms_release)" >> $GITHUB_ENV
       - name: Download MeiliSearch
