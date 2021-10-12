@@ -33,7 +33,7 @@ jobs:
 
           echo "Latest release of MeiliSearch is: $latest_ms_release" 
 
-          echo "MEILISEARCH_LATEST=$(${{ $latest_ms_release }})" >> $GITHUB_ENV
+          echo "MEILISEARCH_LATEST=$latest_ms_release" >> $GITHUB_ENV
       - name: Download MeiliSearch
         run: |
           curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
