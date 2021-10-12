@@ -21,9 +21,9 @@ jobs:
         run: |
           temp_file='temp_file' # temp_file needed because `grep` would start before the download is over
 
-          curl -H "Authorization:  $1" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
+          curl -H "Authorization: ${{ secrets.API_GITHUB_TOKEN_SWIFT }}" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
           
-          echo "Latest release of MeiliSearch is" 
+          echo "Api response of MeiliSearch is" 
           cat "$temp_file" 
           
           latest_ms_release=$(cat "$temp_file" \
@@ -31,7 +31,10 @@ jobs:
               | tr -d ',"' | cut -d ':' -f2 | tr -d ' ')
           rm -rf "$temp_file"
 
-          echo "MEILISEARCH_LATEST=$($latest_ms_release ${{ secrets.API_GITHUB_TOKEN_SWIFT }})" >> $GITHUB_ENV
+          echo "Latest release of MeiliSearch is" 
+          cat "$temp_file"
+
+          echo "MEILISEARCH_LATEST=$($latest_ms_release)" >> $GITHUB_ENV
       - name: Download MeiliSearch
         run: |
           curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
