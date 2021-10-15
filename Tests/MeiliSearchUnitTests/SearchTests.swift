@@ -139,6 +139,115 @@ class SearchTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 5.0)
   }
+
+  func testShouldFilterValuesWithSpaces() {
+    let jsonString = """
+      {
+        "hits": [
+          {
+            "id": 123,
+            "title": "Pride and Prejudice",
+            "comment": "A great book",
+            "genre": "romance",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 456,
+            "title": "Le Petit Prince",
+            "comment": "A french book about a prince that walks on little cute planets",
+            "genre": "adventure",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 2,
+            "title": "Le Rouge et le Noir",
+            "comment": "Another french book",
+            "genre": "romance",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 1,
+            "title": "Alice In Wonderland",
+            "comment": "A weird book",
+            "genre": "adventure",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 1344,
+            "title": "The Hobbit",
+            "comment": "An awesome book",
+            "genre": "sci fi",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 4,
+            "title": "Harry Potter and the Half-Blood Prince",
+            "comment": "The best book",
+            "genre": "fantasy",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          },
+          {
+            "id": 42,
+            "title": "The Hitchhiker's Guide to the Galaxy",
+            "genre": "fantasy",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          }
+        ],
+        "offset": 0,
+        "limit": 20,
+        "processingTimeMs": 2,
+        "nbHits": 1,
+        "query": "h",
+        "genre": "sci fi"
+      }
+      """
+
+    // Prepare the mock server
+    guard let data = jsonString.data(using: .utf8), let stubSearchResult = try? Constants.customJSONDecoder.decode(SearchResult<Movie>.self, from: data) else {
+      XCTFail("Failed to encode JSON data")
+      return
+    }
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let searchParameters = SearchParameters(
+      query: "h",
+      filter: "genre = sci fi",
+      sort: ["id:asc"]
+    )
+
+    let expectation = XCTestExpectation(description: "Searching for the hobbit")
+    typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
+
+    index .search(searchParameters) { (result: MeiliResult) in
+      switch result {
+      case .success(let searchResult):
+        XCTAssertEqual(stubSearchResult, searchResult)
+        XCTAssertEqual(searchResult.nbHits, 1)
+      case .failure:
+        XCTFail("Failed to search for botman")
+      }
+
+      expectation.fulfill()
+    }
+
+    wait(for: [expectation], timeout: 5.0)
+  }
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try
