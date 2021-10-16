@@ -15,28 +15,12 @@ jobs:
     runs-on: macos-latest
     env:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
     steps:
       - uses: actions/checkout@v2
-      - name: Grep latest version of MeiliSearch
+      - name: Download the latest stable version of MeiliSearch
         run: |
-          temp_file='temp_file' # temp_file needed because `grep` would start before the download is over
-
-          curl -H "Authorization: ${{ secrets.API_GITHUB_TOKEN_SWIFT }}" -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file" -i
-          
-          echo "Api response of MeiliSearch is" 
-          cat "$temp_file" | head -10 
-          
-          latest_ms_release=$(cat "$temp_file" \
-              | grep -E 'tag_name' | grep 'v0' | head -1 \
-              | tr -d ',"' | cut -d ':' -f2 | tr -d ' ')
-          rm -rf "$temp_file"
-
-          echo "Latest release of MeiliSearch is: $latest_ms_release" 
-
-          echo "MEILISEARCH_LATEST=$latest_ms_release" >> $GITHUB_ENV
-      - name: Download MeiliSearch
-        run: |
-          curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_LATEST }}/meilisearch-macos-amd64 --output meilisearch --location
+          curl -L https://install.meilisearch.com | sh
           chmod +x meilisearch
       - name: Run MeiliSearch
         run: |
