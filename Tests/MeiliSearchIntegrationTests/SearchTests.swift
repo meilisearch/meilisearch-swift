@@ -674,11 +674,11 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Search for Books using filters with a space in the value")
 
     configureFilters {
-      typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+      typealias MeiliResult = Result<SearchResult<Book>, Error>
 
-      let query = "*"
+      let query = ""
       let limit = 5
-      let filter = "genres = High Fantasy"
+      let filter = "genres = 'High fantasy'"
       let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
       self.index.search(parameters) { (result: MeiliResult) in
@@ -687,6 +687,13 @@ class SearchTests: XCTestCase {
           XCTAssertEqual(documents.query, query)
           XCTAssertEqual(documents.limit, limit)
           XCTAssertEqual(documents.hits.count, 1)
+
+          guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
+            XCTFail("Failed to search with testSearchFilterWithEmptySpace")
+            return
+          }
+
+          XCTAssertEqual("The Hobbit", book.title)
 
           expectation.fulfill()
 
