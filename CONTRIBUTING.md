@@ -50,6 +50,8 @@ swift build
 If you have a running MeiliSearch instance at port `localhost:7700` with the following master key: `masterKey`, you will need to run the following command to test the package:
 
 ```bash
+curl -L https://install.meilisearch.com | sh # download MeiliSearch
+./meilisearch --master-key=masterKey --no-analytics=true # run MeiliSearch
 swift test
 ```
 
