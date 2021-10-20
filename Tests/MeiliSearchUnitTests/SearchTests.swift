@@ -227,7 +227,7 @@ class SearchTests: XCTestCase {
     // Start the test with the mocked server
     let searchParameters = SearchParameters(
       query: "h",
-      filter: "genre = sci fi",
+      filter: "genre = 'sci fi'",
       sort: ["id:asc"]
     )
 
