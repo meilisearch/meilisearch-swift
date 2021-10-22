@@ -312,7 +312,7 @@ reset_ranking_rules_1: |-
       }
   }
 get_distinct_attribute_1: |-
-  client.index("movies").getDistinctAttribute { (result: Result<String, Swift.Error>) in
+  client.index("shoes").getDistinctAttribute { (result: Result<String, Swift.Error>) in
       switch result {
       case .success(let distinctAttribute):
           print(distinctAttribute)
@@ -321,7 +321,7 @@ get_distinct_attribute_1: |-
       }
   }
 update_distinct_attribute_1: |-
-  client.index("movies").updateDistinctAttribute("movie_id") { (result: Result<Update, Swift.Error>) in
+  client.index("shoes").updateDistinctAttribute("skuid") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -330,7 +330,7 @@ update_distinct_attribute_1: |-
       }
   }
 reset_distinct_attribute_1: |-
-  client.index("movies").resetDistinctAttribute { (result: Result<Update, Swift.Error>) in
+  client.index("shoes").resetDistinctAttribute { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
