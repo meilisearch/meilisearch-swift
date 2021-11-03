@@ -1,0 +1,41 @@
+# Testing the code base against the MeiliSearch pre-releases
+name: Pre-Release Tests
+
+# Will only run for PRs and pushes to bump-meilisearch-v*
+on:
+  push:
+    branches: bump-meilisearch-v*
+  pull_request:
+    branches: bump-meilisearch-v*
+
+jobs:
+  integeration_tests:
+    name: integration-tests
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+      GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download the latest stable version of MeiliSearch
+        run: |
+          echo "MEILISEARCH_VERSION=$(curl https://raw.githubusercontent.com/meilisearch/integration-guides/main/scripts/get-latest-meilisearch-rc.sh | bash)" >> $GITHUB_ENV
+      - name: Download MeiliSearch
+        run: |
+          curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_VERSION }}/meilisearch-macos-amd64 --output meilisearch --location
+          chmod +x meilisearch
+      - name: Run MeiliSearch
+        run: |
+          ./meilisearch --master-key=masterKey --no-analytics true &
+      - name: Run tests
+        run: swift test
+
+  linter:
+    name: linter-check
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run SwiftLint
+        run: sh ./Scripts/swiftlint.sh
