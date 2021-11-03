@@ -56,7 +56,6 @@ swift test
 ```
 
 If you do not have a MeiliSearch instance with the previous mentioned parameters, you can run the test script that will automatically run a Docker container with MeiliSearch and start the test:
-<br>
 
 ```bash
 ./Scripts/run-test.sh
