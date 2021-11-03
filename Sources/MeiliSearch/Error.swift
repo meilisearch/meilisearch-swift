@@ -8,9 +8,9 @@ public extension MeiliSearch {
   // MARK: Error
   struct MSErrorResponse: Decodable, Equatable {
     public let message: String
-    public let errorCode: String
-    public let errorType: String
-    public let errorLink: String?
+    public let code: String
+    public let type: String
+    public let link: String?
   }
 
   static func errorHandler(url: URL, data: Data?, response: URLResponse?, error: Swift.Error?) throws {
@@ -33,9 +33,9 @@ public extension MeiliSearch {
         message: res.message,
         msErrorResponse: MeiliSearch.MSErrorResponse(
           message: res.message,
-          errorCode: res.errorCode,
-          errorType: res.errorType,
-          errorLink: res.errorLink
+          code: res.code,
+          type: res.type,
+          link: res.link
         ),
         statusCode: response.statusCode,
         url: url.absoluteString
@@ -75,7 +75,7 @@ public extension MeiliSearch {
     case invalidURL(url: String? = "")
 
     /// Error originating from MeiliSearch API.
-    // case meiliSearchApiError(message: String, errorCode: String, errorType: String, errorLink: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
+    // case meiliSearchApiError(message: String, code: String, type: String, link: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
     case meiliSearchApiError(message: String, msErrorResponse: MSErrorResponse?, statusCode: Int = 0, url: String = "")
 
     /// Error communicating with MeiliSearch API.
@@ -106,9 +106,9 @@ public extension MeiliSearch {
         if let msErrorResponse = error as MSErrorResponse? {
           return """
           MeiliSearchApiError: \(msErrorResponse.message)
-          errorCode: \(msErrorResponse.errorCode)
-          errorType: \(msErrorResponse.errorType)
-          errorLink: \(String(describing: msErrorResponse.errorLink))
+          code: \(msErrorResponse.code)
+          type: \(msErrorResponse.type)
+          link: \(String(describing: msErrorResponse.link))
           status: \(statusCode)
           """
         }

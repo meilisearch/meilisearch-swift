@@ -85,10 +85,10 @@ class IndexesTests: XCTestCase {
           XCTAssertNotNil(statusCode)
           XCTAssertNotNil(url)
           if let msError = msErrorResponse as MeiliSearch.MSErrorResponse? {
-            XCTAssertEqual(msError.errorCode, "index_already_exists")
+            XCTAssertEqual(msError.code, "index_already_exists")
             XCTAssertNotNil(msError.message)
-            XCTAssertNotNil(msError.errorLink)
-            XCTAssertNotNil(msError.errorType)
+            XCTAssertNotNil(msError.link)
+            XCTAssertNotNil(msError.type)
           } else {
             XCTFail("Error body should be of type msErrorResponse")
           }

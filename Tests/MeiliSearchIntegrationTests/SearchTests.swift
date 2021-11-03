@@ -35,12 +35,12 @@ private struct Book: Codable, Equatable {
 
 private struct FormattedBook: Codable, Equatable {
 
-  let id: Int
+  let id: String
   let title: String
   let comment: String?
 
   init(id: Int, title: String, comment: String? = nil) {
-    self.id = id
+    self.id = String(id)
     self.title = title
     self.comment = comment
   }
@@ -385,11 +385,12 @@ class SearchTests: XCTestCase {
         XCTAssertTrue(documents.limit == limit)
         XCTAssertTrue(documents.hits.count == 1)
         let book: Book = documents.hits[0]
-        XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!) // to fix
-        expectation.fulfill()
-      case .failure:
+        XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
+      case .failure(let error):
+        print(error)
         XCTFail("Failed to search with testSearchAttributesToCrop")
       }
+      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 5.0)

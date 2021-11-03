@@ -133,7 +133,7 @@ public struct Indexes {
         switch error {
         case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
           if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
-            if msErrorBody.errorCode == "index_already_exists" {
+            if msErrorBody.code == "index_already_exists" {
               Indexes(config: config, uid: uid).get(completion)
             }
           } else {
