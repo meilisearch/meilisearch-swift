@@ -139,7 +139,7 @@ class UpdatesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
-  func testAddDocumentWithNoPrimaryKet () {
+  func testAddDocumentWithNoPrimaryKey () {
     let expectation = XCTestExpectation(description: "Add documents with no primary key and check update error")
 
     struct WrongMovie: Codable, Equatable {
