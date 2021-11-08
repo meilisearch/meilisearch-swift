@@ -139,6 +139,51 @@ class UpdatesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
+  func testAddDocumentWithNoPrimaryKey () {
+    let expectation = XCTestExpectation(description: "Add documents with no primary key and check update error")
+
+    struct WrongMovie: Codable, Equatable {
+      let id: Int?
+      let title: String
+
+      init(id: Int? = nil, title: String) {
+        self.id = id
+        self.title = title
+      }
+
+    }
+    let wrongMovies: [WrongMovie] = [
+      WrongMovie(title: "Pride and Prejudice")
+    ]
+
+    self.index.addDocuments(
+      documents: wrongMovies
+    ) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(Update(updateId: 0), update)
+        self.index.waitForPendingUpdate(update: update) { result in
+          switch result {
+          case .success(let update):
+            XCTAssertEqual(update.status, Update.Status.failed)
+            XCTAssertEqual(update.error?.code, "primary_key_inference_failed")
+            XCTAssertNotNil(update.error?.type)
+            XCTAssertNotNil(update.error?.link)
+            XCTAssertNotNil(update.error?.message)
+
+          case .failure(let error):
+            XCTFail(error.localizedDescription)
+          }
+          expectation.fulfill()
+        }
+      case .failure(let error):
+        XCTFail(error.localizedDescription)
+      }
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
+
   func testWaitForPendingUpdateSuccessEmptyOptions () {
     let expectation = XCTestExpectation(description: "Wait for pending update with default options")
 
