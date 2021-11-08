@@ -6,7 +6,7 @@ import Foundation
 public extension MeiliSearch {
 
   // MARK: Error
-  struct MSErrorResponse: Decodable, Equatable {
+  struct MSErrorResponse: Decodable, Encodable, Equatable {
     public let message: String
     public let code: String
     public let type: String

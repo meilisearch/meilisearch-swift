@@ -50,6 +50,8 @@ public struct Update: Codable, Equatable {
       public let number: Int?
 
     }
+    /// Error information in case of failed update.
+    public let error: MeiliSearch.MSErrorResponse?
 
   }
 
