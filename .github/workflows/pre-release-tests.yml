@@ -1,0 +1,53 @@
+# Testing the code base against the MeiliSearch pre-releases
+name: Pre-Release Tests
+
+# Will only run for PRs and pushes to bump-meilisearch-v*
+on:
+  push:
+    branches: [bump-meilisearch-v*]
+  pull_request:
+    branches: [bump-meilisearch-v*]
+
+jobs:
+  integeration_tests:
+    name: integration-tests
+    runs-on: macos-11
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download the latest stable version of MeiliSearch
+        run: |
+          # This script is used in the SDK CIs to fetch the latest MeiliSearch RC name (ex: v0.16.0rc2).
+          # The MeiliSearch RC is needed when maintainers are developing features during the pre-release week because the final MeiliSearch release is not out yet.
+
+          temp_file='temp_file' # temp_file needed because `grep` would start before the download is over
+          curl -s 'https://api.github.com/repos/meilisearch/MeiliSearch/releases' > "$temp_file"
+          cat temp_file
+          latest_rc_release=$(cat "$temp_file" \
+              | grep -E 'tag_name' | grep 'rc' | head -1 \
+              | tr -d ',"' | cut -d ':' -f2 | tr -d ' ')
+          echo latest_rc_release
+          rm -rf "$temp_file"
+          echo "$latest_rc_release"
+          echo "MEILISEARCH_VERSION=$latest_rc_release" >> $GITHUB_ENV
+      - name: Download MeiliSearch (${{ env.MEILISEARCH_VERSION }})
+        run: |
+          curl https://github.com/meilisearch/MeiliSearch/releases/download/${{ env.MEILISEARCH_VERSION }}/meilisearch-macos-amd64 --output meilisearch --location
+          chmod +x meilisearch
+
+      - name: Run MeiliSearch
+        run: |
+          ./meilisearch --master-key=masterKey --no-analytics true &
+      - name: Run tests
+        run: swift test
+
+  linter:
+    name: linter-check
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run SwiftLint
+        run: sh ./Scripts/swiftlint.sh
