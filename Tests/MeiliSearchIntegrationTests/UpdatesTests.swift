@@ -39,8 +39,8 @@ class UpdatesTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-	  session = URLSession(configuration: .ephemeral)
-	  client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+	   session = URLSession(configuration: .ephemeral)
+	   client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
