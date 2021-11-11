@@ -62,7 +62,7 @@ private let books: [Book] = [
   Book(id: 456, title: "Le Petit Prince", comment: "A french book", genres: ["Novel"]),
   Book(id: 2, title: "Le Rouge et le Noir", comment: "Another french book", genres: ["Bildungsroman"]),
   Book(id: 1, title: "Alice In Wonderland", comment: "A weird book", genres: ["Fantasy"]),
-  Book(id: 1344, title: "The Hobbit", comment: "An awesome book", genres: ["High fantasy‎"]),
+  Book(id: 1344, title: "The Hobbit", comment: "An awesome book", genres: ["High fantasy"]),
   Book(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book", genres: ["Fantasy"]),
   Book(id: 42, title: "The Hitchhiker's Guide to the Galaxy", genres: ["Novel"]),
   Book(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo", genres: ["Novel"])
@@ -666,10 +666,43 @@ class SearchTests: XCTestCase {
           XCTFail("Failed to search with testSearchFacetsFilters")
         }
       }
+    }
+    self.wait(for: [expectation], timeout: 2.0)
+  }
 
+  func testSearchFilterWithEmptySpace() {
+    let expectation = XCTestExpectation(description: "Search for Books using filters with a space in the value")
+
+    configureFilters {
+      typealias MeiliResult = Result<SearchResult<Book>, Error>
+
+      let query = ""
+      let limit = 5
+      let filter = "genres = 'High fantasy'"
+      let parameters = SearchParameters(query: query, limit: limit, filter: filter)
+
+      self.index.search(parameters) { (result: MeiliResult) in
+        switch result {
+        case .success(let documents):
+          XCTAssertEqual(documents.query, query)
+          XCTAssertEqual(documents.limit, limit)
+          XCTAssertEqual(documents.hits.count, 1)
+          guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
+            XCTFail("Failed to search with testSearchFilterWithEmptySpace")
+            return
+          }
+
+          XCTAssertEqual("The Hobbit", book.title)
+
+          expectation.fulfill()
+
+        case .failure:
+          XCTFail("Failed to search with testSearchFilterWithEmptySpace")
+        }
+      }
     }
 
-    self.wait(for: [expectation], timeout: 2.0)
+    wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Facets distribution
@@ -698,7 +731,7 @@ class SearchTests: XCTestCase {
           let expected: [String: [String: Int]] = [
             "genres": [
               "Classic Regency nove": 1,
-              "High fantasy‎": 1,
+              "High fantasy": 1,
               "Fantasy": 2,
               "Novel": 2,
               "Bildungsroman": 1
