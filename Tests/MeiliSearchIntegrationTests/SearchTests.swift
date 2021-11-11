@@ -666,10 +666,44 @@ class SearchTests: XCTestCase {
           XCTFail("Failed to search with testSearchFacetsFilters")
         }
       }
+    }
+    self.wait(for: [expectation], timeout: 2.0)
+  }
 
+  func testSearchFilterWithEmptySpace() {
+    let expectation = XCTestExpectation(description: "Search for Books using filters with a space in the value")
+
+    configureFilters {
+      typealias MeiliResult = Result<SearchResult<Book>, Error>
+
+      let query = ""
+      let limit = 5
+      let filter = "genres = 'High fantasy'"
+      let parameters = SearchParameters(query: query, limit: limit, filter: filter)
+
+      self.index.search(parameters) { (result: MeiliResult) in
+        switch result {
+        case .success(let documents):
+          XCTAssertEqual(documents.query, query)
+          XCTAssertEqual(documents.limit, limit)
+          XCTAssertEqual(documents.hits.count, 1)
+
+          guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
+            XCTFail("Failed to search with testSearchFilterWithEmptySpace")
+            return
+          }
+
+          XCTAssertEqual("The Hobbit", book.title)
+
+          expectation.fulfill()
+
+        case .failure:
+          XCTFail("Failed to search with testSearchFilterWithEmptySpace")
+        }
+      }
     }
 
-    self.wait(for: [expectation], timeout: 2.0)
+    wait(for: [expectation], timeout: 5.0)
   }
 
   // MARK: Facets distribution
