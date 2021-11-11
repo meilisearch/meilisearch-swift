@@ -62,7 +62,7 @@ private let books: [Book] = [
   Book(id: 456, title: "Le Petit Prince", comment: "A french book", genres: ["Novel"]),
   Book(id: 2, title: "Le Rouge et le Noir", comment: "Another french book", genres: ["Bildungsroman"]),
   Book(id: 1, title: "Alice In Wonderland", comment: "A weird book", genres: ["Fantasy"]),
-  Book(id: 1344, title: "The Hobbit", comment: "An awesome book", genres: ["High fantasy‎"]),
+  Book(id: 1344, title: "The Hobbit", comment: "An awesome book", genres: ["High fantasy"]),
   Book(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book", genres: ["Fantasy"]),
   Book(id: 42, title: "The Hitchhiker's Guide to the Galaxy", genres: ["Novel"]),
   Book(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo", genres: ["Novel"])
@@ -687,7 +687,6 @@ class SearchTests: XCTestCase {
           XCTAssertEqual(documents.query, query)
           XCTAssertEqual(documents.limit, limit)
           XCTAssertEqual(documents.hits.count, 1)
-
           guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
             XCTFail("Failed to search with testSearchFilterWithEmptySpace")
             return
@@ -732,7 +731,7 @@ class SearchTests: XCTestCase {
           let expected: [String: [String: Int]] = [
             "genres": [
               "Classic Regency nove": 1,
-              "High fantasy‎": 1,
+              "High fantasy": 1,
               "Fantasy": 2,
               "Novel": 2,
               "Bildungsroman": 1
