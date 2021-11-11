@@ -230,6 +230,24 @@ public struct Indexes {
     }
   }
 
+  /**
+   Delete the index only if it exists.
+
+  - parameter completion: The completion closure used to notify when the server
+   completes the delete request, it returns a `Bool` that is `true`
+   If the request sucessfully deleted an existent index or `false` if a failure occured or the index do not exist.
+   */
+  public func deleteIfExists(_ completion: @escaping (Bool) -> Void) {
+    self.request.delete(api: "/indexes/\(self.uid)") { result in
+      switch result {
+      case .success:
+        completion(true)
+      default:
+        completion(false)
+      }
+    }
+  }
+
     // MARK: Document
 
   /**
