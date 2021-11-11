@@ -7,6 +7,7 @@ class SettingsTests: XCTestCase {
 
   private var client: MeiliSearch!
   private var index: Indexes!
+  private var session: URLSessionProtocol!
   private let uid: String = "books_test"
 
   private let defaultRankingRules: [String] = [
@@ -32,7 +33,8 @@ class SettingsTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+	session = URLSession(configuration: .ephemeral)
+	client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
