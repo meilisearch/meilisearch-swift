@@ -277,6 +277,45 @@ class IndexesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
+  func testDeleteIndexIfExists() {
+    // Prepare the mock server
+    session.pushEmpty(code: 204)
+
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Delete Movies index")
+
+    self.index.deleteIfExists { result in
+      if result {
+        XCTAssertTrue(result)
+        expectation.fulfill()
+      } else {
+        XCTFail("Failed to delete Movies index, it was not present on the server")
+      }
+      expectation.fulfill()
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
+
+  func testDeleteIndexIfExistsWhenIsnt() {
+    // Prepare the mock server
+    session.pushEmpty(code: 404)
+
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Delete Movies index only if exists")
+
+    self.index.deleteIfExists { result in
+      if !result {
+        XCTAssertFalse(result)
+        expectation.fulfill()
+      } else {
+        XCTFail("Deleting the index should have returned false as the index does not exist on the server")
+      }
+      expectation.fulfill()
+    }
+
+    self.wait(for: [expectation], timeout: 10.0)
+  }
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try
