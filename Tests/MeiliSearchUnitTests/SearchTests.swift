@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 private struct Movie: Codable, Equatable {
-
   let id: Int
   let title: String
   let poster: String
@@ -18,11 +17,9 @@ private struct Movie: Codable, Equatable {
     case overview
     case releaseDate = "release_date"
   }
-
 }
 
 class SearchTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private let session = MockURLSession()
@@ -34,7 +31,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchForBotmanMovie() {
-
     let jsonString = """
       {
         "hits": [
@@ -85,7 +81,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchForBotmanMovieFacets() {
-
     let jsonString = """
       {
         "hits": [

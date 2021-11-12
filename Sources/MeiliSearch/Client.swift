@@ -8,7 +8,6 @@ import Foundation
  or dispatch queues.
  */
 public struct MeiliSearch {
-
   // MARK: Properties
 
   /**

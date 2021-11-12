@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class UpdatesTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var uid: String = "movies_test"
@@ -52,7 +51,6 @@ class UpdatesTests: XCTestCase {
   }
 
   func testGetUpdateInvalidStatus() {
-
     let badStatusUpdateJson = """
       {
         "status": "something",
@@ -86,7 +84,6 @@ class UpdatesTests: XCTestCase {
   }
 
   func testGetAllUpdates() {
-
     let json = """
       [
         {

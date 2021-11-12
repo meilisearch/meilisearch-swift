@@ -4,7 +4,6 @@ import Foundation
  `WaitOptions` struct represent the options used during a waitForPendingUpdate call.
  */
 public struct WaitOptions: Codable, Equatable {
-
   // MARK: Properties
 
   /// Maximum time in seconds before timeOut

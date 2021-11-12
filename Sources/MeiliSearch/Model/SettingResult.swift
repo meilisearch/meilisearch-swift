@@ -2,7 +2,6 @@
   Returned Setting object with avoided nil values
  */
 public struct SettingResult: Codable, Equatable {
-
   // MARK: Properties
 
   /// List of ranking rules for a given `Index`.
@@ -28,5 +27,4 @@ public struct SettingResult: Codable, Equatable {
 
   /// List of attributes used for sorting
   public let sortableAttributes: [String]
-
 }

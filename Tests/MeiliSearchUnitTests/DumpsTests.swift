@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class DumpsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private let session = MockURLSession()
 
@@ -14,7 +13,6 @@ class DumpsTests: XCTestCase {
   }
 
   func testCreateDump() {
-
     // Prepare the mock server
 
     let json = """
@@ -46,11 +44,9 @@ class DumpsTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testGetDumpStatus() {
-
     // Prepare the mock server
 
     let json = """
@@ -84,9 +80,7 @@ class DumpsTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

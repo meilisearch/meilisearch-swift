@@ -4,7 +4,6 @@ import Foundation
 
 // swiftlint:disable force_try
 private struct Movie: Codable, Equatable {
-
   let id: Int
   let title: String
   let comment: String?
@@ -14,7 +13,6 @@ private struct Movie: Codable, Equatable {
     self.title = title
     self.comment = comment
   }
-
 }
 
 private let movies: [Movie] = [
@@ -29,7 +27,6 @@ private let movies: [Movie] = [
 ]
 
 class UpdatesTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var session: URLSessionProtocol!
@@ -60,9 +57,8 @@ class UpdatesTests: XCTestCase {
   }
 
   func testGetUpdateStatus() {
-
     let expectation = XCTestExpectation(description: "Get update status for transaction")
-    let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
+    let movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
     self.index.addDocuments(documents: documents, primaryKey: nil) { result in
@@ -84,15 +80,13 @@ class UpdatesTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 10.0)
-
   }
 
   func testGetAllUpdatesStatus() {
-
     let expectation = XCTestExpectation(description: "Get update status for all transaction")
     let jsonEncoder = JSONEncoder()
     for index in 0...10 {
-      let movie: Movie = Movie(id: index, title: "test\(index)", comment: "test movie\(index)")
+      let movie = Movie(id: index, title: "test\(index)", comment: "test movie\(index)")
       let documents: Data = try! jsonEncoder.encode([movie])
       self.index.addDocuments(documents: documents, primaryKey: nil) { _ in }
     }

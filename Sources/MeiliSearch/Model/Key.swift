@@ -5,7 +5,6 @@ import Foundation
  Each key has a given set of permissions on the API routes.
  */
 public struct Key: Codable, Equatable {
-
   // MARK: Properties
 
   /// Private key used to access a determined set of API routes.
@@ -13,5 +12,4 @@ public struct Key: Codable, Equatable {
 
   /// Public key used to access a determined set of API routes.
   public let `public`: String
-
 }

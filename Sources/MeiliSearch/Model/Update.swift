@@ -5,7 +5,6 @@ import Foundation
  verify the status of your transaction.
  */
 public struct Update: Codable, Equatable {
-
   // MARK: Properties
 
   /// The uid of the update.
@@ -17,7 +16,6 @@ public struct Update: Codable, Equatable {
 
   /// Result type for the Update.
   public struct Result: Codable, Equatable {
-
     // MARK: Properties
 
     /// Returns if the update has been sucessful or not.
@@ -40,7 +38,6 @@ public struct Update: Codable, Equatable {
 
     /// Type of `Update`.
     public struct UpdateType: Codable, Equatable {
-
       // MARK: Properties
 
       /// Name of update type.
@@ -48,15 +45,13 @@ public struct Update: Codable, Equatable {
 
       /// ID of update type.
       public let number: Int?
-
     }
+
     /// Error information in case of failed update.
     public let error: MeiliSearch.MSErrorResponse?
-
   }
 
   public enum Status: Codable, Equatable {
-
     case enqueued
     case processing
     case processed
@@ -84,7 +79,5 @@ public struct Update: Codable, Equatable {
     }
 
     public func encode(to encoder: Encoder) throws { }
-
   }
-
 }

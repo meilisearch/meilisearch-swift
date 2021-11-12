@@ -6,7 +6,6 @@ import Foundation
 // swiftlint:disable force_try
 // swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
-
   let id: Int
   let title: String
   let overview: String
@@ -18,11 +17,9 @@ private struct Movie: Codable, Equatable {
     case overview
     case releaseDate = "release_date"
   }
-
 }
 
 class DocumentsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var uid: String = "movies_test"
@@ -35,13 +32,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testAddDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -71,13 +67,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testAddDataDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -115,13 +110,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testUpdateDataDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -153,13 +147,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testUpdateDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -190,7 +183,6 @@ class DocumentsTests: XCTestCase {
   }
 
   func testGetDocument() {
-
     let jsonString = """
       {
         "id": 25684,
@@ -203,7 +195,7 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
     let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
@@ -226,7 +218,6 @@ class DocumentsTests: XCTestCase {
   }
 
   func testGetDocuments() {
-
     let jsonString = """
       [{
         "id": 25684,
@@ -245,7 +236,7 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
     let stubMovies: [Movie] = try! decoder.decode([Movie].self, from: data)
@@ -266,13 +257,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testDeleteDocument() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -282,7 +272,6 @@ class DocumentsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Delete Movies document")
 
     self.index.deleteDocument(identifier) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(stubUpdate, update)
@@ -296,13 +285,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testDeleteAllDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -323,13 +311,12 @@ class DocumentsTests: XCTestCase {
   }
 
   func testDeleteBatchDocuments() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -349,7 +336,6 @@ class DocumentsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 10.0)
   }
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_cast

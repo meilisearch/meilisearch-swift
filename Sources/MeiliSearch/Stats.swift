@@ -1,7 +1,6 @@
 import Foundation
 
 struct Stats {
-
   // MARK: Properties
 
   let request: Request
@@ -15,7 +14,6 @@ struct Stats {
   func stats(
     _ uid: String,
     _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-
     self.request.get(api: "/indexes/\(uid)/stats") { result in
       switch result {
       case .success(let data):
@@ -55,5 +53,4 @@ struct Stats {
       }
     }
   }
-
 }
