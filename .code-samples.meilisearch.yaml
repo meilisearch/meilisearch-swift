@@ -190,12 +190,13 @@ update_settings_1: |-
       "the",
       "a",
       "an"
-  ], sortableAttributes: [
-      "title",
-      "release_date"
   ], synonyms: [
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
+  ], distinctAttribute: "product_id",
+  sortableAttributes: [
+      "title",
+      "release_date"
   ])
   client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
@@ -648,12 +649,13 @@ search_parameter_guide_matches_1: |-
       }
   }
 settings_guide_stop_words_1: |-
-  let stopWords: [String] = [
+  let settings = Setting(
+    stopWords: [
       "the",
       "a",
       "an"
-  ]
-  client.index("movies").updateStopWords(stopWords) { (result: Result<Update, Swift.Error>) in
+  ])
+  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -662,7 +664,8 @@ settings_guide_stop_words_1: |-
       }
   }
 settings_guide_ranking_rules_1: |-
-  let rankingRules: [String] = [
+  let settings = Setting(
+    rankingRules: [
       "words",
       "typo",
       "proximity",
@@ -671,8 +674,8 @@ settings_guide_ranking_rules_1: |-
       "exactness",
       "release_date:asc",
       "rank:desc"
-  ]
-  client.index("movies").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
+  ])
+  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -681,7 +684,10 @@ settings_guide_ranking_rules_1: |-
       }
   }
 settings_guide_distinct_1: |-
-  client.index("movies").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
+  let settings = Setting(
+    distinctAttribute: "product_id"
+  )
+  client.index("jackets").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -690,7 +696,8 @@ settings_guide_distinct_1: |-
       }
   }
 settings_guide_searchable_1: |-
-  let searchableAttributes: [String] = [
+  let settings = Setting(
+    searchableAttributes: [
       "uid",
       "movie_id",
       "title",
@@ -698,8 +705,22 @@ settings_guide_searchable_1: |-
       "poster",
       "release_date",
       "rank"
-  ]
-  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  ])
+  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_synonyms_1: |-
+  let settings = Setting(
+    synonyms: [
+      "sweater": ["jumper"],
+      "jumper": ["sweater"]
+  ])
+  client.index("tops").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -708,14 +729,29 @@ settings_guide_searchable_1: |-
       }
   }
 settings_guide_displayed_1: |-
-  let displayedAttributes: [String] = [
+  let settings = Setting(
+    displayedAttributes: [
       "title",
       "description",
       "poster",
       "release_date",
       "rank"
-  ]
-  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  ])
+  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+settings_guide_sortable_1: |-
+  let settings = Setting(
+    sortableAttributes: [
+      "author",
+      "price"
+  ])
+  client.index("books").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
@@ -1037,19 +1073,6 @@ search_parameter_guide_sort_1: |-
     case .failure(let error):
       print(error)
     }
-  }
-settings_guide_synonyms_1: |-
-  let synonyms: [String: [String]] = [
-      "sweater": ["jumper"],
-      "jumper": ["sweater"]
-  ]
-  client.index("tops").updateSynonyms(synonyms) { (result: Result<Update, Swift.Error>) in
-      switch result {
-      case .success(let update):
-          print(update)
-      case .failure(let error):
-          print(error)
-      }
   }
 post_dump_1: |-
   self.client.createDump { result in
