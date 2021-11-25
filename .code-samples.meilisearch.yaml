@@ -687,7 +687,7 @@ settings_guide_distinct_1: |-
   let settings = Setting(
     distinctAttribute: "product_id"
   )
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("jackets").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
