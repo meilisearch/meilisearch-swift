@@ -1106,7 +1106,7 @@ geosearch_guide_filter_usage_1: |-
   let searchParameters = SearchParameters(
       filter: ["_geoRadius(45.4628328, 9.1076931, 2000)"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1118,7 +1118,7 @@ geosearch_guide_filter_usage_2: |-
   let searchParameters = SearchParameters(
       filter: ["_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1139,7 +1139,7 @@ geosearch_guide_sort_usage_1: |-
   let searchParameters = SearchParameters(
       sort: ["_geoPoint(48.8583701,2.2922926):asc"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1151,7 +1151,7 @@ geosearch_guide_sort_usage_2: |-
   let searchParameters = SearchParameters(
       sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
