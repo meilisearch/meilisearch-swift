@@ -4,7 +4,6 @@ import Foundation
  `Dump` instances represent the current status of a dump in the server
  */
 public struct Dump: Codable, Equatable {
-
   // MARK: Properties
 
   /// Unique identifier and file name of the dump (.dump)
@@ -20,7 +19,6 @@ public struct Dump: Codable, Equatable {
   public let finishedAt: String?
 
   public enum Status: Codable, Equatable {
-
     case inProgress
     case failed
     case done
@@ -45,7 +43,5 @@ public struct Dump: Codable, Equatable {
     }
 
     public func encode(to encoder: Encoder) throws { }
-
   }
-
 }

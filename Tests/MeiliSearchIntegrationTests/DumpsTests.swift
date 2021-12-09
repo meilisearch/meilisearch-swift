@@ -4,7 +4,6 @@ import Foundation
 
 // swiftlint:disable force_try
 class DumpsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
@@ -20,7 +19,6 @@ class DumpsTests: XCTestCase {
   }
 
   func testCreateAndGetDump() {
-
     let expectation = XCTestExpectation(description: "Request dump status")
 
     self.client.createDump { result in

@@ -4,7 +4,6 @@ import Foundation
  `GetParameters` instances represent query setup for a documents fetch request.
  */
 public struct GetParameters: Codable, Equatable {
-
   // MARK: Properties
 
   /// Number of documents to take.

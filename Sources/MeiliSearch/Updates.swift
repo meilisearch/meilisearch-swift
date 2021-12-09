@@ -4,7 +4,6 @@ import Foundation
   Updates contains information related to asynchronous tasks in MeiliSearch
  */
 struct Updates {
-
   // MARK: Properties
 
   let request: Request
@@ -44,7 +43,6 @@ struct Updates {
   func getAll(
     _ uid: String,
     _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
-
     self.request.get(api: "/indexes/\(uid)/updates") { result in
       switch result {
       case .success(let data):
@@ -105,5 +103,4 @@ struct Updates {
         }
       }
   }
-
 }

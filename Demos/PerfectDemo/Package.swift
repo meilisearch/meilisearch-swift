@@ -15,6 +15,6 @@ let package = Package(
 		.target(name: "PerfectTemplate", dependencies: [
       .product(name: "PerfectHTTPServer"),
       .product(name: "MeiliSearch", package: "meilisearch-swift")
-    ])
+		])
 	]
 )

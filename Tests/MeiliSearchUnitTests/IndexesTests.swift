@@ -3,7 +3,6 @@ import XCTest
 
 // swiftlint:disable force_try
 class IndexesTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private let uid: String = "movies_test"
@@ -16,7 +15,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testCreateIndex() {
-
     let jsonString = """
       {
         "name":"Movies",
@@ -47,7 +45,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testGetOrCreateIndex() {
-
     let jsonString = """
       {
         "name":"Movies",
@@ -77,7 +74,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testGetIndexWithClient() {
-
     let jsonString = """
       {
         "name":"Movies",
@@ -108,7 +104,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testGetIndex() {
-
     let jsonString = """
       {
         "name":"Movies",
@@ -164,15 +159,12 @@ class IndexesTests: XCTestCase {
       case .failure:
         XCTFail("Failed to get all Indexes")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 10.0)
-
   }
 
   func testUpdateIndexWithClient() {
-
     let jsonString = """
       {
         "uid": "movies_test",
@@ -204,7 +196,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testUpdateIndex() {
-
     let jsonString = """
       {
         "uid": "movies_test",
@@ -236,7 +227,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testDeleteIndexWithClient() {
-
     // Prepare the mock server
     session.pushEmpty(code: 204)
 
@@ -257,7 +247,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testDeleteIndex() {
-
     // Prepare the mock server
     session.pushEmpty(code: 204)
 

@@ -5,7 +5,6 @@ import XCTest
 // swiftlint:disable force_cast
 // swiftlint:disable force_try
 class SettingsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var uid: String = "movies_test"
@@ -49,7 +48,6 @@ class SettingsTests: XCTestCase {
   // MARK: Settings
 
   func testgetSettings() {
-
     // Prepare the mock server
     let stubSetting: SettingResult = buildStubSettingResult(from: json)
     session.pushData(json)
@@ -70,13 +68,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testupdateSettings() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
 
@@ -100,13 +97,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetSettings() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let data: Data = jsonString.data(using: .utf8)!
     let stubUpdate: Update = try! decoder.decode(Update.self, from: data)
     session.pushData(jsonString)
@@ -130,7 +126,6 @@ class SettingsTests: XCTestCase {
   // MARK: Synonyms
 
   func testGetSynonyms() {
-
     let jsonString = """
       {
         "wolverine": ["xmen", "logan"],
@@ -163,13 +158,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSynonyms() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -202,13 +196,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetSynonyms() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -233,7 +226,6 @@ class SettingsTests: XCTestCase {
   // MARK: Stop words
 
   func testGetStopWords() {
-
     let jsonString = """
       ["of", "the", "to"]
       """
@@ -261,13 +253,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateStopWords() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -295,13 +286,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetStopWords() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -327,7 +317,6 @@ class SettingsTests: XCTestCase {
   // MARK: Ranking rules
 
   func testGetRankingRules() {
-
     let jsonString = """
       [
         "words",
@@ -363,13 +352,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateRankingRules() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -397,13 +385,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetRankingRules() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -429,7 +416,6 @@ class SettingsTests: XCTestCase {
   // MARK: Distinct Attribute
 
   func testGetDistinctAttribute() {
-
     let stubDistinctAttribute: String = """
       "movie_id"
       """
@@ -454,13 +440,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateDistinctAttribute() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -484,13 +469,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetDistinctAttribute() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -515,7 +499,6 @@ class SettingsTests: XCTestCase {
   // MARK: Searchable Attribute
 
   func testGetSearchableAttributes() {
-
     let jsonString = """
       ["title", "description", "uid"]
       """
@@ -543,13 +526,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSearchableAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -578,13 +560,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetSearchableAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -608,7 +589,6 @@ class SettingsTests: XCTestCase {
   // MARK: Displayed Attributes
 
   func testGetDisplayedAttributes() {
-
     let jsonString = """
       ["title", "description", "release_date", "rank", "poster"]
       """
@@ -636,13 +616,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateDisplayedAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -674,13 +653,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetDisplayedAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -705,7 +683,6 @@ class SettingsTests: XCTestCase {
   // MARK: Filterable Attributes
 
   func testGetFilterableAttributes() {
-
     let jsonString = """
       ["genre", "director"]
       """
@@ -730,13 +707,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateFilterableAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -761,13 +737,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetFilterableAttributes() {
-
     let jsonString = """
       {"updateId":1}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -793,7 +768,6 @@ class SettingsTests: XCTestCase {
   // MARK: Filterable Attributes
 
   func testGetSortableAttributes() {
-
     let jsonString = """
       ["genre", "director"]
       """
@@ -818,13 +792,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSortableAttributes() {
-
     let jsonString = """
       {"updateId":0}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -849,13 +822,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetSortableAttributes() {
-
     let jsonString = """
       {"updateId":1}
       """
 
     // Prepare the mock server
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let stubUpdate: Update = try! decoder.decode(
       Update.self,
       from: jsonString.data(using: .utf8)!)
@@ -879,16 +851,15 @@ class SettingsTests: XCTestCase {
 
   private func buildStubSetting(from json: String) -> Setting {
     let data = json.data(using: .utf8)!
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     return try! decoder.decode(Setting.self, from: data)
   }
 
   private func buildStubSettingResult(from json: String) -> SettingResult {
     let data = json.data(using: .utf8)!
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     return try! decoder.decode(SettingResult.self, from: data)
   }
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_cast

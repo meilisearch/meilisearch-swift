@@ -4,7 +4,6 @@ import Foundation
  A `Config` instance represents the config used by MeiliSearch instance.
  */
 public class Config {
-
   // MARK: Properties
 
   /// Address for the MeiliSearch server.

@@ -3,7 +3,6 @@ import Foundation
 
 // swiftlint:disable force_unwrapping
 class MockURLSession: URLSessionProtocol {
-
   private(set) var nextDataTask = MockURLSessionDataTask()
 
   private(set) var lastURL: URL?
@@ -19,7 +18,6 @@ class MockURLSession: URLSessionProtocol {
   }
 
   func execute(with request: URLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
-
     let first: ResponsePayload = !responses.isEmpty ? responses.removeFirst() : ResponsePayload.default
     lastURL = request.url
 
@@ -58,7 +56,6 @@ class MockURLSession: URLSessionProtocol {
       nextCode: code)
     responses.append(payload)
   }
-
 }
 
 class MockURLSessionDataTask: URLSessionDataTaskProtocol {

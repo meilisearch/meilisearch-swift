@@ -5,7 +5,6 @@ import Foundation
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 private struct Movie: Codable, Equatable {
-
   let id: Int
   let title: String
   let comment: String?
@@ -15,7 +14,6 @@ private struct Movie: Codable, Equatable {
     self.title = title
     self.comment = comment
   }
-
 }
 
 private let movies: [Movie] = [
@@ -30,7 +28,6 @@ private let movies: [Movie] = [
 ]
 
 class DocumentsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var session: URLSessionProtocol!
@@ -61,7 +58,6 @@ class DocumentsTests: XCTestCase {
   }
 
   func testAddAndGetDocuments() {
-
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
     self.index.addDocuments(
       documents: movies,
@@ -99,7 +95,6 @@ class DocumentsTests: XCTestCase {
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
@@ -135,7 +130,6 @@ class DocumentsTests: XCTestCase {
       documents: movies,
       primaryKey: nil
     ) { result in
-
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 0), update)
@@ -179,7 +173,7 @@ class DocumentsTests: XCTestCase {
   }
 
   func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
-    let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
+    let movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
@@ -188,18 +182,14 @@ class DocumentsTests: XCTestCase {
       documents: documents,
       primaryKey: nil
     ) { result in
-
       switch result {
-
       case .success(let update):
 
         XCTAssertEqual(Update(updateId: 0), update)
 
         waitForPendingUpdate(self.client, self.uid, update) {
-
           self.index.getDocument(10
           ) { (result: Result<Movie, Swift.Error>) in
-
             switch result {
             case .success(let returnedMovie):
               XCTAssertEqual(movie, returnedMovie)
@@ -208,9 +198,7 @@ class DocumentsTests: XCTestCase {
               XCTFail()
             }
             expectation.fulfill()
-
           }
-
         }
 
       case .failure(let error):
@@ -218,15 +206,13 @@ class DocumentsTests: XCTestCase {
         XCTFail()
         expectation.fulfill()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testAddAndGetOneDocuments() {
-
-    let movie: Movie = Movie(id: 10, title: "test", comment: "test movie")
+    let movie = Movie(id: 10, title: "test", comment: "test movie")
     let documents: Data = try! JSONEncoder().encode([movie])
 
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
@@ -235,18 +221,14 @@ class DocumentsTests: XCTestCase {
       documents: documents,
       primaryKey: nil
     ) { result in
-
       switch result {
-
       case .success(let update):
 
         XCTAssertEqual(Update(updateId: 0), update)
 
         waitForPendingUpdate(self.client, self.uid, update) {
-
           self.index.getDocument("10"
           ) { (result: Result<Movie, Swift.Error>) in
-
             switch result {
             case .success(let returnedMovie):
               XCTAssertEqual(movie, returnedMovie)
@@ -255,9 +237,7 @@ class DocumentsTests: XCTestCase {
               XCTFail()
             }
             expectation.fulfill()
-
           }
-
         }
 
       case .failure(let error):
@@ -265,14 +245,12 @@ class DocumentsTests: XCTestCase {
         XCTFail()
         expectation.fulfill()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testUpdateAndGetDocuments() {
-
     let identifier: Int = 1844
 
     let movie: Movie = movies.first(where: { (movie: Movie) in movie.id == identifier })!
@@ -284,18 +262,14 @@ class DocumentsTests: XCTestCase {
       documents: documents,
       primaryKey: nil
     ) { result in
-
       switch result {
-
       case .success(let update):
 
         XCTAssertEqual(Update(updateId: 0), update)
 
         waitForPendingUpdate(self.client, self.uid, update) {
-
           self.index.getDocument("\(identifier)"
           ) { (result: Result<Movie, Swift.Error>) in
-
             switch result {
             case .success(let returnedMovie):
               XCTAssertEqual(movie, returnedMovie)
@@ -306,7 +280,6 @@ class DocumentsTests: XCTestCase {
 
             expectation.fulfill()
           }
-
         }
 
       case .failure(let error):
@@ -314,14 +287,12 @@ class DocumentsTests: XCTestCase {
         XCTFail()
         expectation.fulfill()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testDeleteOneDocument() {
-
     let documents: Data = try! JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete one Movie")
@@ -363,7 +334,6 @@ class DocumentsTests: XCTestCase {
       }
     }
     self.wait(for: [getExpectation], timeout: 3.0)
-
   }
 
   func testDeleteAllDocuments() {
@@ -380,7 +350,6 @@ class DocumentsTests: XCTestCase {
         XCTAssertEqual(Update(updateId: 0), update)
 
         waitForPendingUpdate(self.client, self.uid, update) {
-
           self.index.deleteAllDocuments { (result: Result<Update, Swift.Error>) in
             switch result {
             case .success(let update):
@@ -388,7 +357,6 @@ class DocumentsTests: XCTestCase {
               XCTAssertEqual(Update(updateId: 1), update)
 
               waitForPendingUpdate(self.client, self.uid, update) {
-
                 self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
@@ -400,7 +368,6 @@ class DocumentsTests: XCTestCase {
                     expectation.fulfill()
                   }
                 }
-
               }
 
             case .failure(let error):
@@ -409,7 +376,6 @@ class DocumentsTests: XCTestCase {
               expectation.fulfill()
             }
           }
-
         }
 
       case .failure:
@@ -422,7 +388,6 @@ class DocumentsTests: XCTestCase {
   }
 
   func testDeleteBatchDocuments() {
-
     let documents: Data = try! JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete batch movies")
@@ -431,26 +396,21 @@ class DocumentsTests: XCTestCase {
       documents: documents,
       primaryKey: nil
     ) { result in
-
       switch result {
-
       case .success(let update):
 
         XCTAssertEqual(Update(updateId: 0), update)
 
         waitForPendingUpdate(self.client, self.uid, update) {
-
           let idsToDelete: [Int] = [2, 1, 4]
 
           self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Update, Swift.Error>) in
             switch result {
-
             case .success(let update):
 
               XCTAssertEqual(Update(updateId: 1), update)
 
               waitForPendingUpdate(self.client, self.uid, update) {
-
                 self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
@@ -470,14 +430,12 @@ class DocumentsTests: XCTestCase {
               expectation.fulfill()
             }
           }
-
         }
 
       case .failure:
         XCTFail("Failed to delete batch movies")
         expectation.fulfill()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)

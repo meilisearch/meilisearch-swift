@@ -1,7 +1,6 @@
 import Foundation
 
 struct System {
-
   // MARK: Properties
 
   let request: Request
