@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MeiliSearch  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a title="MeiliSearch  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">MeiliSearch 0.12.0 Docs</a> (84% documented)</p>
+        <div class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">MeiliSearch Reference</a>
+        <img id="carat" src="img/carat.png" alt=""/>
+        MeiliSearch  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Config.html">Config</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:11MeiliSearch7RequestC">Request</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/URLSession.html">URLSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/c:objc(cs)NSURLSessionDataTask">URLSessionDataTask</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/URLSessionDataTaskProtocol.html">URLSessionDataTaskProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/URLSessionProtocol.html">URLSessionProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/AllStats.html">AllStats</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Dump.html">Dump</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Dump/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/GetParameters.html">GetParameters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Health.html">Health</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Index.html">Index</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Indexes.html">Indexes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Key.html">Key</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MeiliSearch.html">MeiliSearch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MeiliSearch/MSErrorResponse.html">– MSErrorResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MeiliSearch/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SearchParameters.html">SearchParameters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SearchResult.html">SearchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Setting.html">Setting</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SettingResult.html">SettingResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Stat.html">Stat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Update.html">Update</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Update/Result.html">– Result</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Update/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Version.html">Version</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WaitOptions.html">WaitOptions</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <p align="center">
+  <img src="https://github.com/meilisearch/meilisearch-swift/blob/main/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
+</p>
+
+<h1 align="center">MeiliSearch Swift</h1>
+
+<h4 align="center">
+  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
+  <a href="https://slack.meilisearch.com">Slack</a> |
+  <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
+  <a href="https://www.meilisearch.com">Website</a> |
+  <a href="https://docs.meilisearch.com/faq">FAQ</a>
+</h4>
+
+<p align="center">
+  <a href="https://github.com/meilisearch/meilisearch-swift/actions"><img src="https://github.com/meilisearch/meilisearch-swift/workflows/Tests/badge.svg" alt="GitHub Workflow Status"></a>
+  <a href="https://github.com/meilisearch/meilisearch-swift/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
+  <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
+</p>
+
+<p align="center">⚡ The MeiliSearch API client written for Swift 🍎</p>
+
+<p><strong>MeiliSearch Swift</strong> is the MeiliSearch API client for Swift developers.</p>
+
+<p><strong>MeiliSearch</strong> is an open-source search engine. <a href="https://github.com/meilisearch/MeiliSearch">Discover what MeiliSearch is!</a></p>
+<h2 id='table-of-contents-lt-omit-in-toc-gt' class='heading'>Table of Contents &lt;!&ndash; omit in toc &ndash;&gt;</h2>
+
+<ul>
+<li><a href="#-documentation">📖 Documentation</a></li>
+<li><a href="#-installation">🔧 Installation</a></li>
+<li><a href="#-getting-started">🎬 Getting Started</a></li>
+<li><a href="#-compatibility-with-meilisearch">🤖 Compatibility with MeiliSearch</a></li>
+<li><a href="#-learn-more">💡 Learn More</a></li>
+<li><a href="#%EF%B8%8F-development-workflow-and-contributing">⚙️ Development Workflow and Contributing</a></li>
+<li><a href="#-demos">📜 Demos</a></li>
+</ul>
+<h2 id='documentation' class='heading'>📖 Documentation</h2>
+
+<p>For more information about this API see our <a href="https://meilisearch.github.io/meilisearch-swift/">Swift documentation</a>.</p>
+
+<p>For more information about MeiliSearch see our <a href="https://docs.meilisearch.com/learn/tutorials/getting_started.html">Documentation</a> or our <a href="https://docs.meilisearch.com/reference/api/">API References</a>.</p>
+<h2 id='installation' class='heading'>🔧 Installation</h2>
+<h3 id='with-cocoapods-lt-omit-in-toc-gt' class='heading'>With Cocoapods &lt;!&ndash; omit in toc &ndash;&gt;</h3>
+
+<p><a href="https://cocoapods.org/">CocoaPods</a> is a dependency manager for Cocoa projects.</p>
+
+<p><strong>MeiliSearch-Swift</strong> is available through CocoaPods. To install it, add the following line to your Podfile:</p>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'MeiliSearch'</span>
+</code></pre>
+
+<p>Then, run the following command:</p>
+<pre class="highlight shell"><code>pod install
+</code></pre>
+
+<p>This will download the latest version of MeiliSearch pod and prepare the <code>xcworkspace</code>.</p>
+<h3 id='with-the-swift-package-manager-lt-omit-in-toc-gt' class='heading'>With the Swift Package Manager &lt;!&ndash; omit in toc &ndash;&gt;</h3>
+
+<p>The <a href="https://swift.org/package-manager/">Swift Package Manager</a> is a tool for automating the distribution of Swift code and is integrated into the <code>swift</code> compiler.</p>
+
+<p>Once you have your Swift package set up, adding <strong>MeiliSearch-Swift</strong> as a dependency is as easy as adding it to the <code>dependencies</code> value of your <code>Package.swift</code>.</p>
+<pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/meilisearch/meilisearch-swift.git"</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre>
+<h3 id='️-run-meilisearch-lt-omit-in-toc-gt' class='heading'>🏃‍♀️ Run MeiliSearch &lt;!&ndash; omit in toc &ndash;&gt;</h3>
+
+<p>There are many easy ways to <a href="https://docs.meilisearch.com/reference/features/installation.html#download-and-launch">download and run a MeiliSearch instance</a>.</p>
+
+<p>For example, using the <code>curl</code> command in your <a href="https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/">Terminal</a>:</p>
+<pre class="highlight shell"><code><span class="c">#Install MeiliSearch</span>
+curl -L https://install.meilisearch.com | sh
+
+<span class="c"># Launch MeiliSearch</span>
+./meilisearch --master-key<span class="o">=</span>masterKey
+</code></pre>
+
+<p>NB: you can also download MeiliSearch from <strong>Homebrew</strong> or <strong>APT</strong> or even run it using <strong>Docker</strong>.</p>
+<h2 id='getting-started' class='heading'>🎬 Getting Started</h2>
+
+<p>To do a simply search using the client, you can create a Swift script like this:</p>
+<h4 id='add-documents-lt-omit-in-toc-gt' class='heading'>Add documents &lt;!&ndash; omit in toc &ndash;&gt;</h4>
+<pre class="highlight swift"><code>    <span class="kd">import</span> <span class="kt">MeiliSearch</span>
+
+    <span class="c1">// Create a new client instance of MeiliSearch.</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">try!</span> <span class="kt">MeiliSearch</span><span class="p">(</span><span class="nv">host</span><span class="p">:</span> <span class="s">"http://localhost:7700"</span><span class="p">)</span>
+
+    <span class="kd">struct</span> <span class="kt">Movie</span><span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">Equatable</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
+        <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
+        <span class="k">let</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="k">let</span> <span class="nv">movies</span><span class="p">:</span> <span class="p">[</span><span class="kt">Movie</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Carol"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Romance"</span><span class="p">,</span> <span class="s">"Drama"</span><span class="p">]),</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Wonder Woman"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Action"</span><span class="p">,</span> <span class="s">"Adventure"</span><span class="p">]),</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Life of Pi"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Adventure"</span><span class="p">,</span> <span class="s">"Drama"</span><span class="p">]),</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Mad Max: Fury Road"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Adventure"</span><span class="p">,</span> <span class="s">"Science Fiction"</span><span class="p">]),</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Moana"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Fantasy"</span><span class="p">,</span> <span class="s">"Action"</span><span class="p">]),</span>
+        <span class="kt">Movie</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"Philadelphia"</span><span class="p">,</span> <span class="nv">genres</span><span class="p">:</span> <span class="p">[</span><span class="s">"Drama"</span><span class="p">])</span>
+    <span class="p">]</span>
+
+    <span class="k">let</span> <span class="nv">semaphore</span> <span class="o">=</span> <span class="kt">DispatchSemaphore</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1">// An index is where the documents are stored.</span>
+    <span class="c1">// The uid is the unique identifier to that index.</span>
+    <span class="k">let</span> <span class="nv">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">index</span><span class="p">(</span><span class="s">"movies"</span><span class="p">)</span>
+
+    <span class="c1">// If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="nf">addDocuments</span><span class="p">(</span>
+        <span class="nv">documents</span><span class="p">:</span> <span class="n">movies</span><span class="p">,</span>
+        <span class="nv">primaryKey</span><span class="p">:</span> <span class="kc">nil</span>
+    <span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+        <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">update</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">update</span><span class="p">)</span> <span class="c1">// =&gt; Update(updateId: 0)</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">semaphore</span><span class="o">.</span><span class="nf">signal</span><span class="p">()</span>
+      <span class="p">}</span>
+    <span class="n">semaphore</span><span class="o">.</span><span class="nf">wait</span><span class="p">()</span>
+</code></pre>
+
+<p>With the <code>updateId</code>, you can check the status (<code>enqueued</code>, <code>processing</code>, <code>processed</code> or <code>failed</code>) of your documents addition using the <a href="https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status">update endpoint</a>.</p>
+<h4 id='basic-search-lt-omit-in-toc-gt' class='heading'>Basic Search &lt;!&ndash; omit in toc &ndash;&gt;</h4>
+<pre class="highlight swift"><code>
+<span class="k">let</span> <span class="nv">semaphore</span> <span class="o">=</span> <span class="kt">DispatchSemaphore</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">// Typealias that represents the result from MeiliSearch.</span>
+<span class="kd">typealias</span> <span class="kt">MeiliResult</span> <span class="o">=</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">SearchResult</span><span class="o">&lt;</span><span class="kt">Movie</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span>
+
+<span class="c1">// Call the function search and wait for the closure result.</span>
+<span class="n">client</span><span class="o">.</span><span class="nf">index</span><span class="p">(</span><span class="s">"movies"</span><span class="p">)</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="kt">SearchParameters</span><span class="p">(</span> <span class="nv">query</span><span class="p">:</span> <span class="s">"philoudelphia"</span> <span class="p">))</span> <span class="p">{</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">MeiliResult</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">searchResult</span><span class="p">):</span>
+        <span class="nf">dump</span><span class="p">(</span><span class="n">searchResult</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">semaphore</span><span class="o">.</span><span class="nf">signal</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="n">semaphore</span><span class="o">.</span><span class="nf">wait</span><span class="p">()</span>
+
+</code></pre>
+
+<p>Output:</p>
+<pre class="highlight shell"><code> MeiliSearch.SearchResult&lt;SwiftWork.<span class="o">(</span>unknown context at <span class="nv">$10d9e7f3c</span><span class="o">)</span>.Movie&gt;
+  ▿ hits: 1 element
+    ▿ SwiftWork.<span class="o">(</span>unknown context at <span class="nv">$10d9e7f3c</span><span class="o">)</span>.Movie
+      - id: 6
+      - title: <span class="s2">"Philadelphia"</span>
+      ▿ genres: 1 element
+        - <span class="s2">"Drama"</span>
+  - offset: 0
+  - limit: 20
+  - nbHits: 1
+  ▿ exhaustiveNbHits: Optional<span class="o">(</span><span class="nb">false</span><span class="o">)</span>
+    - some: <span class="nb">false</span>
+  - facetsDistribution: nil
+  - exhaustiveFacetsCount: nil
+  ▿ processingTimeMs: Optional<span class="o">(</span>1<span class="o">)</span>
+    - some: 1
+  ▿ query: Optional<span class="o">(</span><span class="s2">"philoudelphia"</span><span class="o">)</span>
+    - some: <span class="s2">"philoudelphia"</span>
+</code></pre>
+
+<p>Since MeiliSearch is typo-tolerant, the movie <code>philadelphia</code> is a valid search response to <code>philoudelphia</code>.</p>
+<h2 id='compatibility-with-meilisearch' class='heading'>🤖 Compatibility with MeiliSearch</h2>
+
+<p>This package only guarantees the compatibility with the <a href="https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0">version v0.24.0 of MeiliSearch</a>.</p>
+<h2 id='learn-more' class='heading'>💡 Learn More</h2>
+
+<p>The following sections may interest you:</p>
+
+<ul>
+<li><strong>Manipulate documents</strong>: see the <a href="https://docs.meilisearch.com/reference/api/documents.html">API references</a> or read more about <a href="https://docs.meilisearch.com/learn/core_concepts/documents.html">documents</a>.</li>
+<li><strong>Search</strong>: see the <a href="https://docs.meilisearch.com/reference/api/search.html">API references</a> or follow our guide on <a href="https://docs.meilisearch.com/reference/features/search_parameters.html">search parameters</a>.</li>
+<li><strong>Manage the indexes</strong>: see the <a href="https://docs.meilisearch.com/reference/api/indexes.html">API references</a> or read more about <a href="https://docs.meilisearch.com/learn/core_concepts/indexes.html">indexes</a>.</li>
+<li><strong>Configure the index settings</strong>: see the <a href="https://docs.meilisearch.com/reference/api/settings.html">API references</a> or follow our guide on <a href="https://docs.meilisearch.com/reference/features/settings.html">settings parameters</a>.</li>
+</ul>
+<h2 id='️-development-workflow-and-contributing' class='heading'>⚙️ Development Workflow and Contributing</h2>
+
+<p>Any new contribution is more than welcome in this project!</p>
+
+<p>If you want to know more about the development workflow or want to contribute, please visit our <a href="/CONTRIBUTING.md">contributing guidelines</a> for detailed instructions!</p>
+<h2 id='demos' class='heading'>📜 Demos</h2>
+
+<p>To try out a demo you will need to go to its directory in <code>Demos/</code>. In that directory you can either:</p>
+
+<ul>
+<li>Open the SwiftPM project in Xcode and press run, or</li>
+<li>Run <code>swift build</code> or <code>swift run</code> in the terminal.</li>
+</ul>
+<h3 id='vapor-lt-omit-in-toc-gt' class='heading'>Vapor &lt;!&ndash; omit in toc &ndash;&gt;</h3>
+
+<p>Please check the Vapor Demo source code <a href="https://github.com/meilisearch/meilisearch-swift/tree/main/Demos/VaporDemo">here</a>.</p>
+<h3 id='perfect-lt-omit-in-toc-gt' class='heading'>Perfect &lt;!&ndash; omit in toc &ndash;&gt;</h3>
+
+<p>Please check the Perfect Demo source code <a href="https://github.com/meilisearch/meilisearch-swift/tree/main/Demos/PerfectDemo">here</a>.</p>
+
+<p><hr></p>
+
+<p><strong>MeiliSearch</strong> provides and maintains many <strong>SDKs and Integration tools</strong> like this one. We want to provide everyone with an <strong>amazing search experience for any kind of project</strong>. If you want to contribute, make suggestions, or just know what&rsquo;s going on right now, visit us in the <a href="https://github.com/meilisearch/integration-guides">integration-guides</a> repository.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="https://github.com/meilisearch/meilisearch-swift" target="_blank" rel="external noopener">MeiliSearch</a>. All rights reserved. (Last updated: 2021-12-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>

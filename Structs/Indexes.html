@@ -1,0 +1,3316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Indexes Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/Indexes" class="dashAnchor"></a>
+    <a title="Indexes Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">MeiliSearch 0.12.0 Docs</a> (84% documented)</p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">MeiliSearch Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        Indexes Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Config.html">Config</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:11MeiliSearch7RequestC">Request</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/URLSession.html">URLSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/c:objc(cs)NSURLSessionDataTask">URLSessionDataTask</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/URLSessionDataTaskProtocol.html">URLSessionDataTaskProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/URLSessionProtocol.html">URLSessionProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/AllStats.html">AllStats</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Dump.html">Dump</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Dump/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetParameters.html">GetParameters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Health.html">Health</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Index.html">Index</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Indexes.html">Indexes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Key.html">Key</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MeiliSearch.html">MeiliSearch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MeiliSearch/MSErrorResponse.html">– MSErrorResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MeiliSearch/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SearchParameters.html">SearchParameters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SearchResult.html">SearchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Setting.html">Setting</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SettingResult.html">SettingResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Stat.html">Stat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Update.html">Update</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Update/Result.html">– Result</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Update/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Version.html">Version</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WaitOptions.html">WaitOptions</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Indexes</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Indexes</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Properties"></a>
+                  <h3 class="section-name"><span>Properties</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV3uidSSvp"></a>
+                    <a name="//apple_ref/swift/Property/uid" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV3uidSSvp">uid</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The index uid.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">uid</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV9createdAt10Foundation4DateVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/createdAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV9createdAt10Foundation4DateVSgvp">createdAt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The data when the index was created.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">createdAt</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV9updatedAt10Foundation4DateVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/updatedAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV9updatedAt10Foundation4DateVSgvp">updatedAt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The data when the index was last updated.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">updatedAt</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV10primaryKeySSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/primaryKey" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV10primaryKeySSSgvp">primaryKey</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The primary key configured for the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Functions"></a>
+                <a name="//apple_ref/swift/Section/Functions" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Functions"></a>
+                  <h3 class="section-name"><span>Functions</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV3getyyys6ResultOyACs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/get(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV3getyyys6ResultOyACs5Error_pGcF">get(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Indexes</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Index.html">Index</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV6getAll6config_yAA6ConfigC_ys6ResultOySayACGs5Error_pGctFZ"></a>
+                    <a name="//apple_ref/swift/Method/getAll(config:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV6getAll6config_yAA6ConfigC_ys6ResultOySayACGs5Error_pGctFZ">getAll(config:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List all indexes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">getAll</span><span class="p">(</span><span class="nv">config</span><span class="p">:</span> <span class="kt"><a href="../Classes/Config.html">Config</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Indexes</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[Index]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV11getOrCreate3uid10primaryKey6config_ySS_SSSgAA6ConfigCys6ResultOyACs5Error_pGctFZ"></a>
+                    <a name="//apple_ref/swift/Method/getOrCreate(uid:primaryKey:config:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV11getOrCreate3uid10primaryKey6config_ySS_SSSgAA6ConfigCys6ResultOyACs5Error_pGctFZ">getOrCreate(uid:<wbr>primaryKey:<wbr>config:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get or create an index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">getOrCreate</span><span class="p">(</span>
+  <span class="nv">uid</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="nv">config</span><span class="p">:</span> <span class="kt"><a href="../Classes/Config.html">Config</a></span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Indexes</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>uid</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The unique identifier for the <code><a href="../Structs/Index.html">Index</a></code> to be created.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the unique field of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the write request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Index.html">Index</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV6create3uid10primaryKey6config_ySS_SSSgAA6ConfigCys6ResultOyACs5Error_pGctFZ"></a>
+                    <a name="//apple_ref/swift/Method/create(uid:primaryKey:config:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV6create3uid10primaryKey6config_ySS_SSSgAA6ConfigCys6ResultOyACs5Error_pGctFZ">create(uid:<wbr>primaryKey:<wbr>config:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new Index for the given <code><a href="../Structs/Indexes.html#/s:11MeiliSearch7IndexesV3uidSSvp">uid</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">create</span><span class="p">(</span>
+  <span class="nv">uid</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="nv">config</span><span class="p">:</span> <span class="kt"><a href="../Classes/Config.html">Config</a></span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Indexes</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>uid</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The unique identifier for the <code><a href="../Structs/Index.html">Index</a></code> to be created.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the unique field of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the write request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Index.html">Index</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV6update10primaryKey_ySS_ys6ResultOyACs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/update(primaryKey:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV6update10primaryKey_ySS_ys6ResultOyACs5Error_pGctF">update(primaryKey:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the index primaryKey.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Indexes</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the unique field of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the update request, it returns a <code>Result</code> object that contains <code>()</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV6deleteyyys6ResultOyyts5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/delete(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV6deleteyyys6ResultOyyts5Error_pGcF">delete(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delete the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">(),</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the delete request, it returns a <code>Result</code> object that contains <code>()</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV14deleteIfExistsyyySbcF"></a>
+                    <a name="//apple_ref/swift/Method/deleteIfExists(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV14deleteIfExistsyyySbcF">deleteIfExists(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delete the index only if it exists.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deleteIfExists</span><span class="p">(</span><span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the delete request, it returns a <code>Bool</code> that is <code>true</code>
+If the request sucessfully deleted an existent index or <code>false</code> if a failure occured or the index do not exist.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Document"></a>
+                <a name="//apple_ref/swift/Section/Document" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Document"></a>
+                  <h3 class="section-name"><span>Document</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV12addDocuments9documents7encoder10primaryKey_ySayxG_10Foundation11JSONEncoderCSgSSSgys6ResultOyAA6UpdateVs5Error_pGctSERzlF"></a>
+                    <a name="//apple_ref/swift/Method/addDocuments(documents:encoder:primaryKey:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV12addDocuments9documents7encoder10primaryKey_ySayxG_10Foundation11JSONEncoderCSgSSSgys6ResultOyAA6UpdateVs5Error_pGctSERzlF">addDocuments(documents:<wbr>encoder:<wbr>primaryKey:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a list of documents or replace them if they already exist.</p>
+
+<p>If you send an already existing document (same id) the whole existing document will
+be overwritten by the new document. Fields previously in the document not present in
+the new document are removed.</p>
+
+<p>For a partial update of the document see <code>updateDocuments</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">addDocuments</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nv">documents</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">],</span>
+  <span class="nv">encoder</span><span class="p">:</span> <span class="kt">JSONEncoder</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The documents to add in MeiliSearch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>Encoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data structure of your documents.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The primary key of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the update request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV12addDocuments9documents10primaryKey_y10Foundation4DataV_SSSgys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/addDocuments(documents:primaryKey:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV12addDocuments9documents10primaryKey_y10Foundation4DataV_SSSgys6ResultOyAA6UpdateVs5Error_pGctF">addDocuments(documents:<wbr>primaryKey:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a list of documents as data or replace them if they already exist.</p>
+
+<p>If you send an already existing document (same id) the whole existing document will
+be overwritten by the new document. Fields previously in the document not present in
+the new document are removed.</p>
+
+<p>For a partial update of the document see <code>updateDocuments</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addDocuments</span><span class="p">(</span>
+  <span class="nv">documents</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document data (JSON) to be processed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The primary key of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the update request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV15updateDocuments9documents7encoder10primaryKey_ySayxG_10Foundation11JSONEncoderCSgSSSgys6ResultOyAA6UpdateVs5Error_pGctSERzlF"></a>
+                    <a name="//apple_ref/swift/Method/updateDocuments(documents:encoder:primaryKey:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV15updateDocuments9documents7encoder10primaryKey_ySayxG_10Foundation11JSONEncoderCSgSSSgys6ResultOyAA6UpdateVs5Error_pGctSERzlF">updateDocuments(documents:<wbr>encoder:<wbr>primaryKey:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.</p>
+
+<p>If you send an already existing document (same documentId) the old document will be only partially
+ updated according to the fields of the new document.
+ Thus, any fields not present in the new document are kept and remained unchanged.</p>
+
+<p>To completely overwrite a document, <code>addDocuments</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">updateDocuments</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nv">documents</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">],</span>
+  <span class="nv">encoder</span><span class="p">:</span> <span class="kt">JSONEncoder</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The documents to update in MeiliSearch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>Encoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data structure of your documents.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The primary key of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the update request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV15updateDocuments9documents10primaryKey_y10Foundation4DataV_SSSgys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateDocuments(documents:primaryKey:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV15updateDocuments9documents10primaryKey_y10Foundation4DataV_SSSgys6ResultOyAA6UpdateVs5Error_pGctF">updateDocuments(documents:<wbr>primaryKey:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a list of documents or update them if they already exist. If the provided index does not exist, it will be created.</p>
+
+<p>If you send an already existing document (same documentId) the old document will be only partially
+ updated according to the fields of the new document.
+ Thus, any fields not present in the new document are kept and remained unchanged.</p>
+
+<p>To completely overwrite a document, <code>addDocuments</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateDocuments</span><span class="p">(</span>
+  <span class="nv">documents</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span>
+  <span class="nv">primaryKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document data (JSON) to be processed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>primaryKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The primary key of a document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the update request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV11getDocumentyySS_ys6ResultOyxs5Error_pGctSeRzSERzSQRzlF"></a>
+                    <a name="//apple_ref/swift/Method/getDocument(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV11getDocumentyySS_ys6ResultOyxs5Error_pGctSeRzSERzSQRzlF">getDocument(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the document on the index based on the provided document identifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">getDocument</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+<span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document identifier for the document to be found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains  <code>T</code> value.
+If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV11getDocumentyySi_ys6ResultOyxs5Error_pGctSeRzSERzSQRzlF"></a>
+                    <a name="//apple_ref/swift/Method/getDocument(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV11getDocumentyySi_ys6ResultOyxs5Error_pGctSeRzSERzSQRzlF">getDocument(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the document on the index based on the provided document identifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">getDocument</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+<span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document identifier for the document to be found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains  <code>T</code> value.
+If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV12getDocuments7options_yAA13GetParametersVSg_ys6ResultOySayxGs5Error_pGctSeRzSERzSQRzlF"></a>
+                    <a name="//apple_ref/swift/Method/getDocuments(options:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV12getDocuments7options_yAA13GetParametersVSg_ys6ResultOySayxGs5Error_pGctSeRzSERzSQRzlF">getDocuments(options:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List all Documents.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">getDocuments</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Structs/GetParameters.html">GetParameters</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">T</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+<span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Options on get documents.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains
+<code>[T]</code> value. If the request was sucessful or <code>Error</code> if a
+failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV14deleteDocumentyySS_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/deleteDocument(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV14deleteDocumentyySS_ys6ResultOyAA6UpdateVs5Error_pGctF">deleteDocument(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delete a document on the index based on the provided document identifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deleteDocument</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document identifier of the document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the delete request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV18deleteAllDocumentsyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/deleteAllDocuments(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV18deleteAllDocumentsyyys6ResultOyAA6UpdateVs5Error_pGcF">deleteAllDocuments(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delete all Documents on the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deleteAllDocuments</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the delete request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV20deleteBatchDocumentsyySaySiG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/deleteBatchDocuments(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV20deleteBatchDocumentsyySaySiG_ys6ResultOyAA6UpdateVs5Error_pGctF">deleteBatchDocuments(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delete a selection of documents based on array of document <code>identifiers</code>&lsquo;s.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deleteBatchDocuments</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">documentIds</span><span class="p">:</span> <span class="p">[</span><span class="kt">Int</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentIds</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The array of unique identifier for the document to be deleted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the delete request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Search"></a>
+                <a name="//apple_ref/swift/Section/Search" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Search"></a>
+                  <h3 class="section-name"><span>Search</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV6searchyyAA0B10ParametersV_ys6ResultOyAA0bF0VyxGs5Error_pGctSeRzSERzSQRzlF"></a>
+                    <a name="//apple_ref/swift/Method/search(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV6searchyyAA0B10ParametersV_ys6ResultOyAA0bF0VyxGs5Error_pGctSeRzSERzSQRzlF">search(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Search in the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">search</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">searchParameters</span><span class="p">:</span> <span class="kt"><a href="../Structs/SearchParameters.html">SearchParameters</a></span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/SearchResult.html">SearchResult</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+<span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>searchParameters</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Options on search.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains  <code><a href="../Structs/SearchResult.html">SearchResult&lt;T&gt;</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Updates"></a>
+                <a name="//apple_ref/swift/Section/Updates" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Updates"></a>
+                  <h3 class="section-name"><span>Updates</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV9getUpdateyySi_ys6ResultOyAA0E0VAEVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/getUpdate(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV9getUpdateyySi_ys6ResultOyAA0E0VAEVs5Error_pGctF">getUpdate(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the status of an update of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getUpdate</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">updateId</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="o">.</span><span class="kt">Result</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>updateId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The update identifier.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Key.html">Key</a></code> value.
+If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV13getAllUpdatesyyys6ResultOySayAA6UpdateVAEVGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getAllUpdates(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV13getAllUpdatesyyys6ResultOySayAA6UpdateVAEVGs5Error_pGcF">getAllUpdates(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the status of an update of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAllUpdates</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="o">.</span><span class="kt">Result</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Key.html">Key</a></code> value.
+If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV20waitForPendingUpdate6update7options_yAA0G0V_AA11WaitOptionsVSgys6ResultOyAhLVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/waitForPendingUpdate(update:options:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV20waitForPendingUpdate6update7options_yAA0G0V_AA11WaitOptionsVSgys6ResultOyAhLVs5Error_pGctF">waitForPendingUpdate(update:<wbr>options:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Wait for an update to be processed or failed.</p>
+
+<p>Providing an update id, returned by asynchronous MeiliSearch options, call are made
+ to MeiliSearch to check if the update has been processed or if it has failed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">waitForPendingUpdate</span><span class="p">(</span>
+  <span class="nv">update</span><span class="p">:</span> <span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span>
+  <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Structs/WaitOptions.html">WaitOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="o">.</span><span class="kt">Result</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>updateId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The id of the update.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Settings"></a>
+                <a name="//apple_ref/swift/Section/Settings" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Settings"></a>
+                  <h3 class="section-name"><span>Settings</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV11getSettingsyyys6ResultOyAA07SettingF0Vs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getSettings(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV11getSettingsyyys6ResultOyAA07SettingF0Vs5Error_pGcF">getSettings(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a list of all the customization possible of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSettings</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/SettingResult.html">SettingResult</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Setting.html">Setting</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV14updateSettingsyyAA7SettingV_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateSettings(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV14updateSettingsyyAA7SettingV_ys6ResultOyAA6UpdateVs5Error_pGctF">updateSettings(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the settings of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateSettings</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">setting</span><span class="p">:</span> <span class="kt"><a href="../Structs/Setting.html">Setting</a></span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>setting</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Settings to change.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV13resetSettingsyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetSettings(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV13resetSettingsyyys6ResultOyAA6UpdateVs5Error_pGcF">resetSettings(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the settings of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetSettings</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Synonyms"></a>
+                <a name="//apple_ref/swift/Section/Synonyms" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Synonyms"></a>
+                  <h3 class="section-name"><span>Synonyms</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV11getSynonymsyyys6ResultOySDySSSaySSGGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getSynonyms(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV11getSynonymsyyys6ResultOySDySSSaySSGGs5Error_pGcF">getSynonyms(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a list of all synonyms possible of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSynonyms</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String: [String]]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV14updateSynonymsyySDySSSaySSGGSg_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateSynonyms(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV14updateSynonymsyySDySSSaySSGGSg_ys6ResultOyAA6UpdateVs5Error_pGctF">updateSynonyms(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the synonyms of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateSynonyms</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">synonyms</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]]?,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>setting</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Settings to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV13resetSynonymsyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetSynonyms(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV13resetSynonymsyyys6ResultOyAA6UpdateVs5Error_pGcF">resetSynonyms(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the synonyms of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetSynonyms</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Stop%20words"></a>
+                <a name="//apple_ref/swift/Section/Stop words" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Stop%20words"></a>
+                  <h3 class="section-name"><span>Stop words</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV12getStopWordsyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getStopWords(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV12getStopWordsyyys6ResultOySaySSGs5Error_pGcF">getStopWords(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a list of all stop-words possible of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getStopWords</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV15updateStopWordsyySaySSGSg_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateStopWords(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV15updateStopWordsyySaySSGSg_ys6ResultOyAA6UpdateVs5Error_pGctF">updateStopWords(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the stop-words of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateStopWords</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">stopWords</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>stopWords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of stop-word to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV14resetStopWordsyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetStopWords(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV14resetStopWordsyyys6ResultOyAA6UpdateVs5Error_pGcF">resetStopWords(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the stop-words of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetStopWords</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Ranking%20rules"></a>
+                <a name="//apple_ref/swift/Section/Ranking rules" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Ranking%20rules"></a>
+                  <h3 class="section-name"><span>Ranking rules</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV15getRankingRulesyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getRankingRules(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV15getRankingRulesyyys6ResultOySaySSGs5Error_pGcF">getRankingRules(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a list of all ranking rules possible of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getRankingRules</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV18updateRankingRulesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateRankingRules(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV18updateRankingRulesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF">updateRankingRules(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the ranking rules of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateRankingRules</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">rankingRules</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rankingRules</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of ranking rules to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV17resetRankingRulesyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetRankingRules(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV17resetRankingRulesyyys6ResultOyAA6UpdateVs5Error_pGcF">resetRankingRules(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the ranking rules of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetRankingRules</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Distinct%20Attribute"></a>
+                <a name="//apple_ref/swift/Section/Distinct Attribute" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Distinct%20Attribute"></a>
+                  <h3 class="section-name"><span>Distinct Attribute</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV20getDistinctAttributeyyys6ResultOySSSgs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getDistinctAttribute(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV20getDistinctAttributeyyys6ResultOySSSgs5Error_pGcF">getDistinctAttribute(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the distinct attribute field of an <code><a href="../Structs/Index.html">Index</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getDistinctAttribute</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">?,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV23updateDistinctAttributeyySS_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateDistinctAttribute(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV23updateDistinctAttributeyySS_ys6ResultOyAA6UpdateVs5Error_pGctF">updateDistinctAttribute(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the distinct attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateDistinctAttribute</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">distinctAttribute</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>distinctAttribute</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The distinct attribute to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV22resetDistinctAttributeyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetDistinctAttribute(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV22resetDistinctAttributeyyys6ResultOyAA6UpdateVs5Error_pGcF">resetDistinctAttribute(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the distinct attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetDistinctAttribute</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Searchable%20Attributes"></a>
+                <a name="//apple_ref/swift/Section/Searchable Attributes" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Searchable%20Attributes"></a>
+                  <h3 class="section-name"><span>Searchable Attributes</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV23getSearchableAttributesyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getSearchableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV23getSearchableAttributesyyys6ResultOySaySSGs5Error_pGcF">getSearchableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the searchable attribute field of an <code><a href="../Structs/Index.html">Index</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSearchableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV26updateSearchableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateSearchableAttributes(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV26updateSearchableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF">updateSearchableAttributes(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the searchable attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateSearchableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">searchableAttribute</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>searchableAttribute</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The searchable attribute to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV25resetSearchableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetSearchableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV25resetSearchableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF">resetSearchableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the searchable attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetSearchableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Displayed%20Attributes"></a>
+                <a name="//apple_ref/swift/Section/Displayed Attributes" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Displayed%20Attributes"></a>
+                  <h3 class="section-name"><span>Displayed Attributes</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV22getDisplayedAttributesyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getDisplayedAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV22getDisplayedAttributesyyys6ResultOySaySSGs5Error_pGcF">getDisplayedAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the displayed attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getDisplayedAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code>[String]</code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV25updateDisplayedAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateDisplayedAttributes(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV25updateDisplayedAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF">updateDisplayedAttributes(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the displayed attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateDisplayedAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">displayedAttribute</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>displayedAttribute</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The displayed attribute to be applied into <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV24resetDisplayedAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetDisplayedAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV24resetDisplayedAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF">resetDisplayedAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the displayed attribute field of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetDisplayedAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value. If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Filterable%20attributes"></a>
+                <a name="//apple_ref/swift/Section/Filterable attributes" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Filterable%20attributes"></a>
+                  <h3 class="section-name"><span>Filterable attributes</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV23getFilterableAttributesyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getFilterableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV23getFilterableAttributesyyys6ResultOySaySSGs5Error_pGcF">getFilterableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the attributes that are filterable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getFilterableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains an <code>[String]</code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV26updateFilterableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateFilterableAttributes(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV26updateFilterableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF">updateFilterableAttributes(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the attributes that are filterable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateFilterableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">attributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>attributes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The attributes that are filterable on an <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV25resetFilterableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetFilterableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV25resetFilterableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF">resetFilterableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the attributes that are filterable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetFilterableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Sortable%20attributes"></a>
+                <a name="//apple_ref/swift/Section/Sortable attributes" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Sortable%20attributes"></a>
+                  <h3 class="section-name"><span>Sortable attributes</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV21getSortableAttributesyyys6ResultOySaySSGs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/getSortableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV21getSortableAttributesyyys6ResultOySaySSGs5Error_pGcF">getSortableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the attributes that are sortable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSortableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains an <code>[String]</code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV24updateSortableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/updateSortableAttributes(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV24updateSortableAttributesyySaySSG_ys6ResultOyAA6UpdateVs5Error_pGctF">updateSortableAttributes(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the attributes that are sortable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateSortableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">attributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>attributes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The attributes that are sortable on an <code><a href="../Structs/Index.html">Index</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV23resetSortableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/resetSortableAttributes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV23resetSortableAttributesyyys6ResultOyAA6UpdateVs5Error_pGcF">resetSortableAttributes(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset the attributes that are sortable of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetSortableAttributes</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Update.html">Update</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Update.html">Update</a></code>
+value if the request was successful, or <code>Error</code> if a failure occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Stats"></a>
+                <a name="//apple_ref/swift/Section/Stats" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Stats"></a>
+                  <h3 class="section-name"><span>Stats</span>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11MeiliSearch7IndexesV5statsyyys6ResultOyAA4StatVs5Error_pGcF"></a>
+                    <a name="//apple_ref/swift/Method/stats(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11MeiliSearch7IndexesV5statsyyys6ResultOyAA4StatVs5Error_pGcF">stats(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get stats of the index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">stats</span><span class="p">(</span>
+  <span class="n">_</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Stat.html">Stat</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure used to notify when the server
+completes the query request, it returns a <code>Result</code> object that contains <code><a href="../Structs/Stat.html">Stat</a></code> value.
+If the request was sucessful or <code>Error</code> if a failure occured.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="https://github.com/meilisearch/meilisearch-swift" target="_blank" rel="external noopener">MeiliSearch</a>. All rights reserved. (Last updated: 2021-12-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
