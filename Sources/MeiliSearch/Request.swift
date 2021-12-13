@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+ import FoundationNetworking
+#endif
 
 /**
  Protocol that allows custom implementation of the HTTP layer.
