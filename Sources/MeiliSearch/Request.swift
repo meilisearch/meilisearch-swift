@@ -36,7 +36,6 @@ public final class Request {
     param: String? = nil,
     headers: [String: String] = [:],
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
-    autoreleasepool {
       var urlString: String = config.url(api: api)
       if let param: String = param, !param.isEmpty {
         urlString += param
@@ -69,7 +68,6 @@ public final class Request {
       }
 
       task.resume()
-    }
   }
 
   func post(
