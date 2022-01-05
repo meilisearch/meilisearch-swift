@@ -69,7 +69,7 @@ Once you have your Swift package set up, adding **MeiliSearch-Swift** as a depen
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
+    .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.1.0")
 ]
 ```
 
@@ -123,7 +123,7 @@ To do a simply search using the client, you can create a Swift script like this:
     let index = client.index("movies")
 
     // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
-    client.index.addDocuments(
+    index.addDocuments(
         documents: movies,
         primaryKey: nil
     ) { result in
