@@ -6,7 +6,6 @@ import Foundation
  default search configuration.
  */
 public struct SearchParameters: Codable, Equatable {
-
   // MARK: Properties
 
   /// Query string (mandatory).
@@ -96,5 +95,4 @@ public struct SearchParameters: Codable, Equatable {
     case facetsDistribution
     case matches
   }
-
 }

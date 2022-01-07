@@ -5,7 +5,6 @@ import Foundation
  Requires that the value `T` conforms to the `Codable` and `Equatable` protocols.
  */
 public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable {
-
   // MARK: Properties
 
   /// Possible hints from the search query.
@@ -34,5 +33,4 @@ public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable
 
   /// Query string from the search.
   public let query: String?
-
 }

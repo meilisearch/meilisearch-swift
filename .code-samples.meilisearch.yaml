@@ -811,33 +811,14 @@ search_guide_2: |-
           print(error)
       }
   }
-getting_started_create_index_md: |-
-  Add this in your `Package.swift`:
-  ```
-    dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
-    ]
-  ```
-  Example:
-  ```swift
-    let client = try! MeiliSearch(host: "http://localhost:7700")
-    client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
-        switch result {
-        case .success(let index):
-            print(index)
-        case .failure(let error):
-            print(error)
-        }
-    }
-  ```
 getting_started_add_documents_md: |-
-  Add this in your `Package.swift`:
-  ```
+  Add this to your `Package.swift`:
+  ```swift
     dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.12.0")
     ]
   ```
-  Example:
+
   ```swift
     let path = Bundle.main.url(forResource: "movies", withExtension: "json")
     let documents: Data = Data(contentsOf: path)
@@ -852,17 +833,9 @@ getting_started_add_documents_md: |-
         }
     }
   ```
+  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 getting_started_search_md: |-
-  Add this in your `Package.swift`:
-  ```
-    dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
-    ]
-  ```
-  Example:
   ```swift
-    let client = try! MeiliSearch(host: "http://localhost:7700")
-    let searchParameters = SearchParameters.query("botman")
     client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
         switch result {
         case .success(let searchResult):
@@ -872,7 +845,7 @@ getting_started_search_md: |-
         }
     }
   ```
-
+  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes { (result: Result<[String], Swift.Error>) in
       switch result {
@@ -1106,7 +1079,7 @@ geosearch_guide_filter_usage_1: |-
   let searchParameters = SearchParameters(
       filter: ["_geoRadius(45.4628328, 9.1076931, 2000)"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1118,7 +1091,7 @@ geosearch_guide_filter_usage_2: |-
   let searchParameters = SearchParameters(
       filter: ["_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1139,7 +1112,7 @@ geosearch_guide_sort_usage_1: |-
   let searchParameters = SearchParameters(
       sort: ["_geoPoint(48.8583701,2.2922926):asc"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1151,7 +1124,7 @@ geosearch_guide_sort_usage_2: |-
   let searchParameters = SearchParameters(
       sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]
   )
-  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)

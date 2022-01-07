@@ -5,7 +5,6 @@ import Foundation
  It can be comparable to a table in SQL, or a collection in MongoDB.
  */
 public struct Index: Codable, Equatable {
-
   // MARK: Properties
 
   /// The index uid.

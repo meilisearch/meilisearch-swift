@@ -1,7 +1,6 @@
 import Foundation
 
 struct Search {
-
   // MARK: Properties
 
   let request: Request
@@ -17,7 +16,6 @@ struct Search {
     _ searchParameters: SearchParameters,
     _ completion: @escaping (Result<SearchResult<T>, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-
     let data: Data
     do {
       data = try JSONEncoder().encode(searchParameters)
@@ -27,7 +25,6 @@ struct Search {
     }
 
     self.request.post(api: "/indexes/\(uid)/search", data) { result in
-
       switch result {
       case .success(let data):
 
@@ -36,9 +33,7 @@ struct Search {
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   private static func decodeJSON<T: Codable>(
@@ -53,5 +48,4 @@ struct Search {
       completion(.failure(error))
     }
   }
-
 }

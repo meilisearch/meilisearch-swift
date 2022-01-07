@@ -3,7 +3,6 @@ import XCTest
 
 // swiftlint:disable force_cast
 class ClientTests: XCTestCase {
-
   private let session = MockURLSession()
 
   func testValidHostURL() {

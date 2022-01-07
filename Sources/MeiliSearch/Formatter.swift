@@ -2,7 +2,7 @@ import Foundation
 
 extension Formatter {
   static let iso8601: DateFormatter = {
-    let formatter: DateFormatter = DateFormatter()
+    let formatter = DateFormatter()
     formatter.calendar = Calendar(identifier: .iso8601)
     formatter.locale = Locale(identifier: "en_US_POSIX")
     formatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -15,7 +15,7 @@ func queryURL(api: String, _ values: [String: String]) -> String {
   if values.isEmpty {
     return api
   }
-  guard var components: URLComponents = URLComponents(string: api) else {
+  guard var components = URLComponents(string: api) else {
     fatalError()
   }
   components.queryItems = values.map { (name: String, value: String) in

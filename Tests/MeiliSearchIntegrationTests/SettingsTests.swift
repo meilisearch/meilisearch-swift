@@ -4,7 +4,6 @@ import Foundation
 
 // swiftlint:disable force_try
 class SettingsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var session: URLSessionProtocol!
@@ -46,7 +45,6 @@ class SettingsTests: XCTestCase {
           expectation.fulfill()
         case .failure(let error):
           print(error)
-
         }
         expectation.fulfill()
       }
@@ -75,13 +73,11 @@ class SettingsTests: XCTestCase {
       filterableAttributes: self.defaultFilterableAttributes,
       sortableAttributes: self.defaultSortableAttributes
     )
-
   }
 
   // MARK: Filterable Attributes
 
   func testGetFilterableAttributes() {
-
     let expectation = XCTestExpectation(description: "Get current filterable attributes")
 
     self.index.getFilterableAttributes { result in
@@ -99,7 +95,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateFilterableAttributes() {
-
     let expectation = XCTestExpectation(description: "Update settings for filterable attributes")
     let newFilterableAttributes: [String] = ["title"]
 
@@ -128,7 +123,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetFilterableAttributes() {
-
     let expectation = XCTestExpectation(description: "Reset settings for filterable attributes")
 
     self.index.resetFilterableAttributes { result in
@@ -175,7 +169,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateDisplayedAttributes() {
-
     let expectation = XCTestExpectation(description: "Update settings for displayed attributes")
     let newDisplayedAttributes: [String] = ["title"]
 
@@ -204,7 +197,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetDisplayedAttributes() {
-
     let expectation = XCTestExpectation(description: "Reset settings for displayed attributes")
 
     self.index.resetDisplayedAttributes { result in
@@ -234,7 +226,6 @@ class SettingsTests: XCTestCase {
   // MARK: Distinct attributes
 
   func testGetDistinctAttribute() {
-
     let expectation = XCTestExpectation(description: "Get current distinct attribute")
 
     self.index.getDistinctAttribute { result in
@@ -252,7 +243,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateDistinctAttribute() {
-
     let expectation = XCTestExpectation(description: "Update settings for distinct attribute")
     let newDistinctAttribute: String = "title"
 
@@ -281,7 +271,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetDistinctAttributes() {
-
     let expectation = XCTestExpectation(description: "Reset settings for distinct attributes")
 
     self.index.resetDistinctAttribute { result in
@@ -311,7 +300,6 @@ class SettingsTests: XCTestCase {
   // MARK: Ranking rules
 
   func testGetRankingRules() {
-
     let expectation = XCTestExpectation(description: "Get current ranking rules")
 
     self.index.getRankingRules { result in
@@ -329,7 +317,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateRankingRules() {
-
     let expectation = XCTestExpectation(description: "Update settings for ranking rules")
 
     let newRankingRules: [String] = [
@@ -363,7 +350,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetRankingRules() {
-
     let expectation = XCTestExpectation(description: "Reset settings for ranking rules")
 
     self.index.resetRankingRules { result in
@@ -393,7 +379,6 @@ class SettingsTests: XCTestCase {
   // MARK: Searchable attributes
 
   func testGetSearchableAttributes() {
-
     let expectation = XCTestExpectation(description: "Get current searchable attributes")
 
     self.index.getSearchableAttributes { result in
@@ -411,7 +396,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSearchableAttributes() {
-
     let expectation = XCTestExpectation(description: "Update settings for searchable attributes")
 
     let newSearchableAttributes: [String] = [
@@ -438,14 +422,12 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 2.0)
   }
 
   func testResetSearchableAttributes() {
-
     let expectation = XCTestExpectation(description: "Reset settings for searchable attributes")
 
     self.index.resetSearchableAttributes { result in
@@ -475,12 +457,10 @@ class SettingsTests: XCTestCase {
   // // MARK: Stop words
 
   func testGetStopWords() {
-
     let expectation = XCTestExpectation(description: "Get current stop words")
 
     self.index.getStopWords { result in
       switch result {
-
       case .success(let stopWords):
         XCTAssertEqual(self.defaultStopWords, stopWords)
       case .failure(let error):
@@ -494,7 +474,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateStopWords() {
-
     let expectation = XCTestExpectation(description: "Update stop words")
 
     let newStopWords: [String] = ["the"]
@@ -518,14 +497,12 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testUpdateStopWordsWithEmptyArray() {
-
     let expectation = XCTestExpectation(description: "Update stop words")
 
     let nilStopWords: [String]? = [String]()
@@ -535,7 +512,6 @@ class SettingsTests: XCTestCase {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
           self.index.getStopWords { result in
-
             switch result {
             case .success(let finalStopWords):
               XCTAssertEqual(finalStopWords, [])
@@ -550,14 +526,12 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testUpdateStopWordsWithNullValue() {
-
     let expectation = XCTestExpectation(description: "Update stop words")
 
     let nilStopWords: [String]? = nil
@@ -567,7 +541,6 @@ class SettingsTests: XCTestCase {
       case .success(let update):
         waitForPendingUpdate(self.client, self.uid, update) {
           self.index.getStopWords { result in
-
             switch result {
             case .success(let finalStopWords):
               XCTAssertEqual(finalStopWords, [])
@@ -582,14 +555,12 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testResetStopWords() {
-
     let expectation = XCTestExpectation(description: "Reset stop words")
 
     self.index.resetStopWords { result in
@@ -619,7 +590,6 @@ class SettingsTests: XCTestCase {
   // MARK: Synonyms
 
   func testGetSynonyms() {
-
     let expectation = XCTestExpectation(description: "Get current synonyms")
 
     self.index.getSynonyms { result in
@@ -637,7 +607,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSynonyms() {
-
     let expectation = XCTestExpectation(description: "Update synonyms")
 
     let newSynonyms: [String: [String]] = [
@@ -673,7 +642,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSynonymsEmptyString() {
-
     let expectation = XCTestExpectation(description: "Update synonyms")
     let newSynonyms = [String: [String]]()
 
@@ -702,7 +670,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testUpdateSynonymsNil() {
-
     let expectation = XCTestExpectation(description: "Update synonyms")
 
     let newSynonyms: [String: [String]]? = nil
@@ -732,7 +699,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testResetSynonyms() {
-
     let expectation = XCTestExpectation(description: "Reset synonyms")
 
     self.index.resetSynonyms { result in
@@ -762,7 +728,6 @@ class SettingsTests: XCTestCase {
   // MARK: Global Settings
 
   func testgetSettingss() {
-
     let expectation = XCTestExpectation(description: "Get current settings")
 
     self.index.getSettings { result in
@@ -861,7 +826,6 @@ class SettingsTests: XCTestCase {
   }
 
   func testupdateSettingssWithSynonymsAndStopWordsNil() {
-
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
@@ -908,14 +872,12 @@ class SettingsTests: XCTestCase {
         print(error)
         XCTFail()
       }
-
     }
 
     self.wait(for: [expectation], timeout: 10.0)
   }
 
   func testresetSettingss() {
-
     let expectation = XCTestExpectation(description: "Reset settings")
 
     self.index.resetSettings { result in
@@ -941,6 +903,5 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 5.0)
   }
-
 }
 // swiftlint:enable force_try

@@ -4,7 +4,6 @@ import Foundation
  Represent all error types in the client.
  */
 public extension MeiliSearch {
-
   // MARK: Error
   struct MSErrorResponse: Decodable, Encodable, Equatable {
     public let message: String
@@ -14,7 +13,6 @@ public extension MeiliSearch {
   }
 
   static func errorHandler(url: URL, data: Data?, response: URLResponse?, error: Swift.Error?) throws {
-
     // Communication Error with MeiliSearch
     if let error: Swift.Error = error {
       throw MeiliSearch.Error.meiliSearchCommunicationError(
@@ -55,7 +53,6 @@ public extension MeiliSearch {
 
   /// Generic Error types for MeiliSearch,
   enum Error: Swift.Error, LocalizedError, Equatable {
-
     /// The client tried to contact the server but it was not found.
     case serverNotFound
 
