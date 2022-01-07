@@ -5,7 +5,6 @@ import Foundation
  can be used to launch MeiliSearch. Dumps are compatible between MeiliSearch versions.
  */
 struct Dumps {
-
   // MARK: Properties
 
   let request: Request
@@ -39,7 +38,6 @@ struct Dumps {
   func status(
     _ uid: String,
     _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
-
     self.request.get(api: "/dumps/\(uid)/status") { result in
       switch result {
       case .success(let data):

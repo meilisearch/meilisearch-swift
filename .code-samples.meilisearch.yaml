@@ -746,20 +746,80 @@ settings_guide_displayed_1: |-
         }
     }
 settings_guide_sortable_1: |-
-    let settings = Setting(
-      sortableAttributes: [
-        "author",
-        "price"
-    ])
-    client.index("books").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
-        switch result {
-        case .success(let update):
-            print(update)
-        case .failure(let error):
-            print(error)
-        }
-    }
+  let settings = Setting(
+    sortableAttributes: [
+      "author",
+      "price"
+  ])
+  client.index("books").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
 add_movies_json_1: |-
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let documents: Data = Data(contentsOf: path)
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+documents_guide_add_movie_1: |-
+  let documentJsonString = """
+  [{
+      "movie_id": 123sq178,
+      "title": "Amélie Poulain"
+  }]
+  """
+  let documents: Data = documentJsonString.data(using: .utf8)!
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
+      switch result {
+      case .success(let update):
+          print(update)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_guide_1: |-
+  let parameters = SearchParameters(
+      query: "shifu",
+      limit: 5,
+      offset: 10)
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_guide_2: |-
+  let parameters = SearchParameters(
+      query: "Avengers",
+      filter: "release_date > 795484800")
+  client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+getting_started_add_documents_md: |-
+  Add this to your `Package.swift`:
+  ```swift
+    dependencies: [
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.12.0")
+    ]
+  ```
+
+  ```swift
     let path = Bundle.main.url(forResource: "movies", withExtension: "json")
     let documents: Data = Data(contentsOf: path)
     client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
@@ -770,109 +830,20 @@ add_movies_json_1: |-
             print(error)
         }
     }
-documents_guide_add_movie_1: |-
-    let documentJsonString = """
-    [{
-        "movie_id": 123sq178,
-        "title": "Amélie Poulain"
-    }]
-    """
-    let documents: Data = documentJsonString.data(using: .utf8)!
-    client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
-        switch result {
-        case .success(let update):
-            print(update)
-        case .failure(let error):
-            print(error)
-        }
-    }
-search_guide_1: |-
-    let parameters = SearchParameters(
-        query: "shifu",
-        limit: 5,
-        offset: 10)
-    client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
-search_guide_2: |-
-    let parameters = SearchParameters(
-        query: "Avengers",
-        filter: "release_date > 795484800")
-    client.index("movies").search(parameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
-getting_started_create_index_md: |-
-    Add this in your `Package.swift`:
-    ```
-      dependencies: [
-        .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
-      ]
-    ```
-    Example:
-    ```swift
-      let client = try! MeiliSearch(host: "http://localhost:7700")
-      client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
-          switch result {
-          case .success(let index):
-              print(index)
-          case .failure(let error):
-              print(error)
-          }
-      }
-    ```
-getting_started_add_documents_md: |-
-    Add this in your `Package.swift`:
-    ```
-      dependencies: [
-        .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
-      ]
-    ```
-    Example:
-    ```swift
-      let path = Bundle.main.url(forResource: "movies", withExtension: "json")
-      let documents: Data = Data(contentsOf: path)
-
-      let client = try! MeiliSearch(host: "http://localhost:7700")
-      client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
-          switch result {
-          case .success(let update):
-              print(update)
-          case .failure(let error):
-              print(error)
-          }
-      }
-    ```
+  ```
+  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 getting_started_search_md: |-
-    Add this in your `Package.swift`:
-    ```
-      dependencies: [
-        .package(url: "https://github.com/meilisearch/meilisearch-swift.git")
-      ]
-    ```
-    Example:
-    ```swift
-      let client = try! MeiliSearch(host: "http://localhost:7700")
-      let searchParameters = SearchParameters.query("botman")
-      client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-          switch result {
-          case .success(let searchResult):
-              print(searchResult)
-          case .failure(let error):
-              print(error)
-          }
-      }
-    ```
-
+  ```swift
+    client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+        switch result {
+        case .success(let searchResult):
+            print(searchResult)
+        case .failure(let error):
+            print(error)
+        }
+    }
+  ```
+  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 get_filterable_attributes_1: |-
     client.index("movies").getFilterableAttributes { (result: Result<[String], Swift.Error>) in
         switch result {
@@ -1103,31 +1074,43 @@ geosearch_guide_filter_settings_1: |-
         }
     }
 geosearch_guide_filter_usage_1: |-
-    let searchParameters = SearchParameters(
-        filter: ["_geoRadius(45.4628328, 9.1076931, 2000)"]
-    )
-    client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
+  let searchParameters = SearchParameters(
+      filter: ["_geoRadius(45.4628328, 9.1076931, 2000)"]
+  )
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
 geosearch_guide_filter_usage_2: |-
-    let searchParameters = SearchParameters(
-        filter: ["_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"]
-    )
-    client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
+  let searchParameters = SearchParameters(
+      filter: ["_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"]
+  )
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
 geosearch_guide_sort_settings_1: |-
-    client.index("restaurants").updateSortableAttributes(["_geo"]) { (result: Result<Task, Swift.Error>) in
+  client.index("restaurants").updateSortableAttributes(["_geo"]) { (result: Result<Task, Swift.Error>) in
+    switch result {
+    case .success(let update):
+      print(update)
+    case .failure(let error):
+      print(error)
+    }
+  }
+geosearch_guide_sort_usage_1: |-
+  let searchParameters = SearchParameters(
+      sort: ["_geoPoint(48.8583701,2.2922926):asc"]
+  )
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let update):
         print(update)
@@ -1148,14 +1131,14 @@ geosearch_guide_sort_usage_1: |-
         }
     }
 geosearch_guide_sort_usage_2: |-
-    let searchParameters = SearchParameters(
-        sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]
-    )
-    client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
+  let searchParameters = SearchParameters(
+      sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]
+  )
+  client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }

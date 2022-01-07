@@ -4,7 +4,6 @@ import Foundation
   Settings object provided byb the user
  */
 public struct Setting: Codable, Equatable {
-
   // MARK: Properties
 
   /// List of ranking rules for a given `Index`.

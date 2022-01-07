@@ -3,7 +3,6 @@ import XCTest
 
 // swiftlint:disable force_try
 class IndexesTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
@@ -39,11 +38,9 @@ class IndexesTests: XCTestCase {
       }
     }
     self.wait(for: [getIndexesExp], timeout: 5.0)
-
   }
 
   func testCreateIndex() {
-
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
     self.client.createIndex(uid: self.uid) { result in
@@ -61,7 +58,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testCreateIndexThatAlreadyExists() {
-
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     self.client.createIndex(uid: self.uid) { result in
       switch result {
@@ -104,7 +100,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testGetOrCreateIndex() {
-
     let expectation = XCTestExpectation(description: "Get or create Movies index")
 
     self.client.getOrCreateIndex(uid: self.uid) { result in
@@ -119,11 +114,9 @@ class IndexesTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testGetOrCreateIndexAlreadyExists() {
-
     let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
     self.client.getOrCreateIndex(uid: self.uid) { result in
@@ -155,11 +148,9 @@ class IndexesTests: XCTestCase {
     }
 
     self.wait(for: [secondExpectation], timeout: 5.0)
-
   }
 
   func testGetIndex() {
-
     let expectation = XCTestExpectation(description: "Get or create a non existing uid")
 
     self.client.getOrCreateIndex(uid: self.uid) { result in
@@ -186,15 +177,12 @@ class IndexesTests: XCTestCase {
       case .failure:
         XCTFail("Failed to get index")
       }
-
     }
 
     self.wait(for: [getIndexExpectation], timeout: 5.0)
-
   }
 
   func testGetIndexes() {
-
     let createIndexExpectation = XCTestExpectation(description: "Create Movies index")
 
     self.client.createIndex(uid: self.uid) { result in
@@ -215,7 +203,6 @@ class IndexesTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Load indexes")
 
     self.client.getIndexes { result in
-
       switch result {
       case .success(let indexes):
         let stubIndexes = [self.client.index(self.uid)]
@@ -224,19 +211,15 @@ class IndexesTests: XCTestCase {
       case .failure:
         XCTFail("Failed to get all Indexes")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testGetEmptyIndexes() {
-
     let expectation = XCTestExpectation(description: "Load indexes")
 
     self.client.getIndexes { result in
-
       switch result {
       case .success(let indexes):
         XCTAssertEqual(0, indexes.count)
@@ -244,15 +227,12 @@ class IndexesTests: XCTestCase {
       case .failure:
         XCTFail("Failed to get all Indexes")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testUpdateIndexName() {
-
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
     self.client.createIndex(uid: self.uid) { result in
@@ -284,7 +264,6 @@ class IndexesTests: XCTestCase {
   }
 
   func testDeleteIndex() {
-
     let createExpectation = XCTestExpectation(description: "Create Movies index")
 
     self.client.createIndex(uid: self.uid) { result in
@@ -303,18 +282,15 @@ class IndexesTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Delete Movies index")
 
     self.client.deleteIndex(self.uid) { result in
-
       switch result {
       case .success:
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to delete Movies index")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 }
 // swiftlint:enable force_try

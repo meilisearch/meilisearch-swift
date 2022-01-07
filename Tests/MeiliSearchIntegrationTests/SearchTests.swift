@@ -5,7 +5,6 @@ import Foundation
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 private struct Book: Codable, Equatable {
-
   let id: Int
   let title: String
   let comment: String?
@@ -30,11 +29,9 @@ private struct Book: Codable, Equatable {
     self.formatted = formatted
     self.matchesInfo = matchesInfo
   }
-
 }
 
 private struct FormattedBook: Codable, Equatable {
-
   let id: String
   let title: String
   let comment: String?
@@ -44,7 +41,6 @@ private struct FormattedBook: Codable, Equatable {
     self.title = title
     self.comment = comment
   }
-
 }
 
 private struct MatchesInfoBook: Codable, Equatable {
@@ -69,7 +65,6 @@ private let books: [Book] = [
 ]
 
 class SearchTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var session: URLSessionProtocol!
@@ -89,16 +84,13 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Add documents to index")
 
     self.client.deleteIndex(uid) { result in
-
       self.client.getOrCreateIndex(uid: self.uid) { result in
-
         switch result {
         case .success:
           self.index.addDocuments(
             documents: documents,
             primaryKey: nil
           ) { result in
-
             switch result {
             case .success(let update):
               waitForPendingUpdate(self.client, self.uid, update) {
@@ -122,7 +114,6 @@ class SearchTests: XCTestCase {
   // MARK: Basic search
 
   func testBasicSearch() {
-
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -146,7 +137,6 @@ class SearchTests: XCTestCase {
   }
 
   func testBasicSearchWithNoQuery() {
-
     let expectation = XCTestExpectation(description: "Search for Books without query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -170,7 +160,6 @@ class SearchTests: XCTestCase {
   // MARK: Phrase search
 
   func testPhraseSearch() {
-
     let expectation = XCTestExpectation(description: "Search for Books using phrase search")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -196,7 +185,6 @@ class SearchTests: XCTestCase {
   // MARK: Limit
 
   func testSearchLimit() {
-
     let expectation = XCTestExpectation(description: "Search for Books using limit")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -220,7 +208,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchZeroLimit() {
-
     let expectation = XCTestExpectation(description: "Search for Books using zero limit")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -243,7 +230,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchLimitBiggerThanNumberOfBooks() {
-
     let expectation = XCTestExpectation(description: "Search for Books using limit bigger than the number of books stored")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -267,7 +253,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchLimitEmptySearch() {
-
     let expectation = XCTestExpectation(description: "Search for Books using limit but nothing in the query")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -293,7 +278,6 @@ class SearchTests: XCTestCase {
   // MARK: Offset
 
   func testSearchOffset() {
-
     let expectation = XCTestExpectation(description: "Search for Books using offset")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -318,7 +302,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchOffsetZero() {
-
     let expectation = XCTestExpectation(description: "Search for Books using zero offset")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -343,7 +326,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchOffsetLastPage() {
-
     let expectation = XCTestExpectation(description: "Search for Books using a offset at the last page")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -371,7 +353,6 @@ class SearchTests: XCTestCase {
   // MARK: Attributes to crop
 
   func testSearchAttributesToCrop() {
-
     let expectation = XCTestExpectation(description: "Search for Books using attributes to crop")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -401,7 +382,6 @@ class SearchTests: XCTestCase {
   // MARK: Crop length
 
   func testSearchCropLength() {
-
     let expectation = XCTestExpectation(description: "Search for Books using default crop length")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -431,7 +411,6 @@ class SearchTests: XCTestCase {
   // MARK: Matches tests
 
   func testSearchMatches() {
-
     let expectation = XCTestExpectation(description: "Search for Books using matches")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -469,7 +448,6 @@ class SearchTests: XCTestCase {
   // MARK: Attributes to highlight
 
   func testSearchAttributesToHighlight() {
-
     let expectation = XCTestExpectation(description: "Search for Books using attributes to highlight")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -499,7 +477,6 @@ class SearchTests: XCTestCase {
   // MARK: Attributes to retrieve
 
   func testSearchAttributesToRetrieve() {
-
     let expectation = XCTestExpectation(description: "Search for Books using attributes to retrieve")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -554,12 +531,10 @@ class SearchTests: XCTestCase {
       case .failure:
         XCTFail("Failed to update the settings")
       }
-
     }
   }
 
   func testSearchFilters() {
-
     let expectation = XCTestExpectation(description: "Search for Books using filter")
     configureFilters {
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -590,7 +565,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchSorting() {
-
     let expectation = XCTestExpectation(description: "Search for Books using sort on id")
     configureFilters {
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
@@ -617,7 +591,6 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchFiltersNotMatching() {
-
     let expectation = XCTestExpectation(description: "Search for Books using filters but the query and filters are not matching")
 
     configureFilters {
@@ -643,11 +616,9 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchFacetsFilters() {
-
     let expectation = XCTestExpectation(description: "Search for Books using facets filters")
 
     configureFilters {
-
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
       let query = "A"
@@ -711,11 +682,9 @@ class SearchTests: XCTestCase {
   // MARK: Facets distribution
 
   func testSearchFacetsDistribution() {
-
     let expectation = XCTestExpectation(description: "Search for Books using facets distribution")
 
     configureFilters {
-
       typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
       let limit = 5
       let query = "A"
@@ -748,14 +717,12 @@ class SearchTests: XCTestCase {
           XCTFail("Failed to search with testSearchFacetsDistribution")
         }
       }
-
     }
 
     self.wait(for: [expectation], timeout: 2.0)
   }
 
   func testSearchFacetsDistributionNullValue() {
-
     let expectation = XCTestExpectation(description: "Search for Books using facets distribution with 0 value")
 
     configureFilters {
@@ -784,7 +751,6 @@ class SearchTests: XCTestCase {
     }
     self.wait(for: [expectation], timeout: 2.0)
   }
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

@@ -1,7 +1,6 @@
 import Foundation
 
 struct Documents {
-
   // MARK: Properties
 
   let request: Request
@@ -19,7 +18,6 @@ struct Documents {
     _ identifier: String,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-
     let query: String = "/indexes/\(uid)/documents/\(identifier)"
     request.get(api: query) { result in
       switch result {
@@ -179,7 +177,6 @@ struct Documents {
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
-
       switch result {
       case .success(let result):
 
@@ -201,7 +198,6 @@ struct Documents {
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents") { result in
-
       switch result {
       case .success(let data):
 
@@ -233,7 +229,6 @@ struct Documents {
     }
 
     self.request.post(api: "/indexes/\(uid)/documents/delete-batch", data) { result in
-
       switch result {
       case .success(let data):
 
@@ -242,9 +237,7 @@ struct Documents {
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   private static func decodeJSON<T: Codable>(
@@ -271,5 +264,4 @@ struct Documents {
       return .failure(error)
     }
   }
-
 }

@@ -1,7 +1,6 @@
 import Foundation
 
 public struct Indexes {
-
   // MARK: Properties
 
   let request: Request
@@ -106,9 +105,7 @@ public struct Indexes {
       case .failure(let error):
         completion(.failure(error))
       }
-
     }
-
   }
 
   /**
@@ -160,7 +157,6 @@ public struct Indexes {
     primaryKey: String? = nil,
     config: Config,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-
     let payload = CreateIndexPayload(uid: uid, primaryKey: primaryKey)
     let data: Data
     do {
@@ -191,8 +187,7 @@ public struct Indexes {
   public func update(
     primaryKey: String,
     _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-
-    let payload: UpdateIndexPayload = UpdateIndexPayload(primaryKey: primaryKey)
+    let payload = UpdateIndexPayload(primaryKey: primaryKey)
     let data: Data
     do {
       data = try JSONEncoder().encode(payload)
@@ -900,7 +895,7 @@ public struct Indexes {
     _ completion: (Result<Indexes, Swift.Error>) -> Void) {
     do {
       let index: Index = try Constants.customJSONDecoder.decode(Index.self, from: data)
-      let indexes: Indexes = Indexes(config: config, uid: index.uid, primaryKey: index.primaryKey, createdAt: index.createdAt, updatedAt: index.updatedAt)
+      let indexes = Indexes(config: config, uid: index.uid, primaryKey: index.primaryKey, createdAt: index.createdAt, updatedAt: index.updatedAt)
 
       completion(.success(indexes))
     } catch {
@@ -923,7 +918,6 @@ public struct Indexes {
       completion(.failure(error))
     }
   }
-
 }
 
 struct UpdateIndexPayload: Codable {

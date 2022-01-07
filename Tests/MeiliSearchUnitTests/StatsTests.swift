@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class StatsTests: XCTestCase {
-
   private var client: MeiliSearch!
   private var index: Indexes!
   private var uid: String = "movies_test"
@@ -17,7 +16,6 @@ class StatsTests: XCTestCase {
   }
 
   func testStats() {
-
     let jsonString = """
       {
         "numberOfDocuments": 19654,
@@ -54,7 +52,6 @@ class StatsTests: XCTestCase {
   }
 
   func testAllStats() {
-
     let jsonString = """
       {
         "databaseSize": 447819776,

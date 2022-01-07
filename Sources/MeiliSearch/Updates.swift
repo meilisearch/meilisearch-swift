@@ -4,7 +4,6 @@ import Foundation
   Updates contains information related to asynchronous tasks in MeiliSearch
  */
 struct Updates {
-
   // MARK: Properties
 
   let request: Request
@@ -105,5 +104,4 @@ struct Updates {
         }
       }
   }
-
 }

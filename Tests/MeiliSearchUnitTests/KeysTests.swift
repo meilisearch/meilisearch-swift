@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class KeysTests: XCTestCase {
-
   private var client: MeiliSearch!
   private let session = MockURLSession()
 
@@ -14,7 +13,6 @@ class KeysTests: XCTestCase {
   }
 
   func testKeys() {
-
     // Prepare the mock server
 
     let jsonString = """
@@ -24,7 +22,7 @@ class KeysTests: XCTestCase {
       }
       """
 
-    let decoder: JSONDecoder = JSONDecoder()
+    let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
     let stubKey: Key = try! decoder.decode(Key.self, from: jsonData)
 

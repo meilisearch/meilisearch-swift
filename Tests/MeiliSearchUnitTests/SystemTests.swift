@@ -4,7 +4,6 @@ import XCTest
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
 class SystemTests: XCTestCase {
-
   private var client: MeiliSearch!
 
   private let session = MockURLSession()
@@ -15,7 +14,6 @@ class SystemTests: XCTestCase {
   }
 
   func testHealthStatusAvailable() {
-
     // Prepare the mock server
 
     let jsonString = """
@@ -45,11 +43,9 @@ class SystemTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testIsHealthyTrue() {
-
     // Prepare the mock server
 
     let jsonString = """
@@ -74,11 +70,9 @@ class SystemTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testIsHealthyFalse() {
-
     // Prepare the mock server
 
     session.pushData("", code: 400)
@@ -97,11 +91,9 @@ class SystemTests: XCTestCase {
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 
   func testVersion() {
-
     // Prepare the mock server
 
     let jsonString = """
@@ -123,7 +115,6 @@ class SystemTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Load server version")
 
     self.client.version { result in
-
       switch result {
       case .success(let version):
         XCTAssertEqual(stubVersion, version)
@@ -131,11 +122,9 @@ class SystemTests: XCTestCase {
       case .failure:
         XCTFail("Failed to load server version")
       }
-
     }
 
     self.wait(for: [expectation], timeout: 5.0)
-
   }
 }
 // swiftlint:enable force_unwrapping
