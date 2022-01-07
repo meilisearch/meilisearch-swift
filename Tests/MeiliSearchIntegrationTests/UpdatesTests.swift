@@ -68,7 +68,7 @@ class UpdatesTests: XCTestCase {
     self.index.addDocuments(documents: documents, primaryKey: nil) { result in
       switch result {
       case .success(let update):
-        self.index.getUpdate(update.updateId) { (result: Result<Update.Result, Swift.Error>)  in
+        self.index.getUpdate(update.updateId) { (result: Result<Task.Result, Swift.Error>)  in
           switch result {
           case .success(let update):
             XCTAssertEqual("DocumentsAddition", update.type.name)
@@ -97,10 +97,10 @@ class UpdatesTests: XCTestCase {
       self.index.addDocuments(documents: documents, primaryKey: nil) { _ in }
     }
 
-    self.index.getAllUpdates { (result: Result<[Update.Result], Swift.Error>)  in
+    self.index.getAllUpdates { (result: Result<[Task.Result], Swift.Error>)  in
       switch result {
       case .success(let updates):
-        updates.forEach { (update: Update.Result) in
+        updates.forEach { (update: Task.Result) in
           XCTAssertEqual("DocumentsAddition", update.type.name)
         }
       case .failure(let error):
@@ -126,7 +126,7 @@ class UpdatesTests: XCTestCase {
         self.index.waitForPendingUpdate(update: update) { result in
           switch result {
           case .success(let update):
-            XCTAssertEqual(update.status, Update.Status.processed)
+            XCTAssertEqual(Task.Status, Task.Status.processed)
           case .failure(let error):
             XCTFail(error.localizedDescription)
           }
@@ -166,7 +166,7 @@ class UpdatesTests: XCTestCase {
         self.index.waitForPendingUpdate(update: update) { result in
           switch result {
           case .success(let update):
-            XCTAssertEqual(update.status, Update.Status.failed)
+            XCTAssertEqual(Task.Status, Task.Status.failed)
             XCTAssertEqual(update.error?.code, "primary_key_inference_failed")
             XCTAssertNotNil(update.error?.type)
             XCTAssertNotNil(update.error?.link)
@@ -198,7 +198,7 @@ class UpdatesTests: XCTestCase {
         self.index.waitForPendingUpdate(update: update, options: WaitOptions()) { result in
           switch result {
           case .success(let update):
-            XCTAssertEqual(update.status, Update.Status.processed)
+            XCTAssertEqual(Task.Status, Task.Status.processed)
           case .failure(let error):
             XCTFail(error.localizedDescription)
           }
@@ -226,7 +226,7 @@ class UpdatesTests: XCTestCase {
         self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 5, interval: 2)) { result in
           switch result {
           case .success(let update):
-            XCTAssertEqual(update.status, Update.Status.processed)
+            XCTAssertEqual(Task.Status, Task.Status.processed)
           case .failure(let error):
             XCTFail(error.localizedDescription)
           }
@@ -252,7 +252,7 @@ class UpdatesTests: XCTestCase {
         self.index.waitForPendingUpdate(update: update, options: WaitOptions(timeOut: 5, interval: 0)) { result in
           switch result {
           case .success(let update):
-            XCTAssertEqual(update.status, Update.Status.processed)
+            XCTAssertEqual(Task.Status, Task.Status.processed)
           case .failure(let error):
             XCTFail(error.localizedDescription)
           }

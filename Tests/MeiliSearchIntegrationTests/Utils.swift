@@ -11,7 +11,7 @@ public func waitForPendingUpdate(
     client.index(uid).getUpdate(update.updateId) { result in
       switch result {
       case .success(let updateResult):
-        if updateResult.status == Update.Status.processed {
+        if updateResult.status == Task.Status.processed {
           completion()
           return
         }

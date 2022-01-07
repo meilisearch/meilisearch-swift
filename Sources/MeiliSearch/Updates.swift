@@ -18,7 +18,7 @@ struct Updates {
   func get(
     _ uid: String,
     _ updateId: Int,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(uid)/updates/\(updateId)") { result in
       switch result {
       case .success(let data):
@@ -27,8 +27,8 @@ struct Updates {
           return
         }
         do {
-          let result: Update.Result = try Constants.customJSONDecoder.decode(
-            Update.Result.self,
+          let result: Task.Result = try Constants.customJSONDecoder.decode(
+            Task.Result.self,
             from: data)
           completion(.success(result))
         } catch {
@@ -43,7 +43,7 @@ struct Updates {
 
   func getAll(
     _ uid: String,
-    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[Task.Result], Swift.Error>) -> Void) {
 
     self.request.get(api: "/indexes/\(uid)/updates") { result in
       switch result {
@@ -53,7 +53,7 @@ struct Updates {
           return
         }
         do {
-          let result: [Update.Result] = try Constants.customJSONDecoder.decode([Update.Result].self, from: data)
+          let result: [Task.Result] = try Constants.customJSONDecoder.decode([Task.Result].self, from: data)
           completion(.success(result))
         } catch {
           completion(.failure(error))
@@ -69,12 +69,12 @@ struct Updates {
     _ update: Update,
     _ options: WaitOptions,
     _ startingDate: Date,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
       self.get(uid, update.updateId) { result in
         switch result {
         case .success(let status):
-          if status.status == Update.Status.processed || status.status == Update.Status.failed {
             completion(.success(status))
+          if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
           } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
           } else {
@@ -92,7 +92,7 @@ struct Updates {
     _ uid: String,
     _ update: Update,
     _ options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
       let currentDate = Date()
       let waitOptions: WaitOptions = options ?? WaitOptions()
 

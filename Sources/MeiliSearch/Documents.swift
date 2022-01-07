@@ -71,7 +71,7 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -93,7 +93,7 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -123,7 +123,7 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -145,7 +145,7 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -176,7 +176,7 @@ struct Documents {
   func delete(
     _ uid: String,
     _ identifier: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
 
@@ -198,7 +198,7 @@ struct Documents {
 
   func deleteAll(
     _ uid: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents") { result in
 
@@ -221,7 +221,7 @@ struct Documents {
   func deleteBatch(
     _ uid: String,
     _ documentsIdentifiers: [Int],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
 
     let data: Data
 

@@ -270,7 +270,7 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
     self.documents.add(
       self.uid,
       documents,
@@ -297,7 +297,7 @@ public struct Indexes {
   public func addDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.add(
       self.uid,
       documents,
@@ -325,7 +325,7 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
     self.documents.update(
       self.uid,
       documents,
@@ -352,7 +352,7 @@ public struct Indexes {
   public func updateDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.update(
       self.uid,
       documents,
@@ -417,7 +417,7 @@ public struct Indexes {
    */
   public func deleteDocument(
     _ documentId: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.delete(self.uid, documentId, completion)
   }
 
@@ -429,7 +429,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func deleteAllDocuments(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.deleteAll(self.uid, completion)
   }
 
@@ -443,7 +443,7 @@ public struct Indexes {
    */
   public func deleteBatchDocuments(
     _ documentIds: [Int],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }
 
@@ -476,7 +476,7 @@ public struct Indexes {
    */
   public func getUpdate(
     _ updateId: Int,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
     self.updates.get(self.uid, updateId, completion)
   }
 
@@ -488,7 +488,7 @@ public struct Indexes {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getAllUpdates(
-    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[Task.Result], Swift.Error>) -> Void) {
     self.updates.getAll(self.uid, completion)
   }
 
@@ -505,7 +505,7 @@ public struct Indexes {
   public func waitForPendingUpdate(
     update: Update,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>
+    _ completion: @escaping (Result<Task.Result, Swift.Error>
   ) -> Void) {
     self.updates.waitForPendingUpdate(self.uid, update, options, completion)
   }
@@ -534,7 +534,7 @@ public struct Indexes {
    */
   public func updateSettings(
     _ setting: Setting,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.update(self.uid, setting, completion)
   }
 
@@ -546,7 +546,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSettings(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.reset(self.uid, completion)
   }
 
@@ -574,7 +574,7 @@ public struct Indexes {
    */
   public func updateSynonyms(
     _ synonyms: [String: [String]]?,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSynonyms(self.uid, synonyms, completion)
   }
 
@@ -586,7 +586,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSynonyms(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSynonyms(self.uid, completion)
   }
 
@@ -614,7 +614,7 @@ public struct Indexes {
    */
   public func updateStopWords(
     _ stopWords: [String]?,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateStopWords(self.uid, stopWords, completion)
   }
 
@@ -626,7 +626,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetStopWords(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetStopWords(self.uid, completion)
   }
 
@@ -654,7 +654,7 @@ public struct Indexes {
    */
   public func updateRankingRules(
     _ rankingRules: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateRankingRules(self.uid, rankingRules, completion)
   }
 
@@ -666,7 +666,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetRankingRules(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetRankingRules(self.uid, completion)
   }
 
@@ -694,7 +694,7 @@ public struct Indexes {
    */
   public func updateDistinctAttribute(
     _ distinctAttribute: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateDistinctAttribute(
       self.uid,
       distinctAttribute,
@@ -709,7 +709,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetDistinctAttribute(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetDistinctAttribute(self.uid, completion)
   }
 
@@ -737,7 +737,7 @@ public struct Indexes {
    */
   public func updateSearchableAttributes(
     _ searchableAttribute: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSearchableAttributes(
       self.uid,
       searchableAttribute,
@@ -752,7 +752,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSearchableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSearchableAttributes(self.uid, completion)
   }
 
@@ -780,7 +780,7 @@ public struct Indexes {
    */
   public func updateDisplayedAttributes(
     _ displayedAttribute: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateDisplayedAttributes(
       self.uid,
       displayedAttribute,
@@ -795,7 +795,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetDisplayedAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetDisplayedAttributes(self.uid, completion)
   }
 
@@ -823,7 +823,7 @@ public struct Indexes {
    */
   public func updateFilterableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateFilterableAttributes(self.uid, attributes, completion)
   }
 
@@ -835,7 +835,7 @@ public struct Indexes {
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetFilterableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetFilterableAttributes(self.uid, completion)
   }
 
@@ -863,7 +863,7 @@ public struct Indexes {
    */
   public func updateSortableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSortableAttributes(self.uid, attributes, completion)
   }
 
@@ -875,7 +875,7 @@ public struct Indexes {
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetSortableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
   // MARK: Stats

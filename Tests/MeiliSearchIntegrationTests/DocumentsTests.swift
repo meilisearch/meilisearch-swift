@@ -340,7 +340,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 5.0)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-    self.index.deleteDocument("42") { (result: Result<Update, Swift.Error>) in
+    self.index.deleteDocument("42") { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let update):
         XCTAssertEqual(Update(updateId: 1), update)
@@ -381,7 +381,7 @@ class DocumentsTests: XCTestCase {
 
         waitForPendingUpdate(self.client, self.uid, update) {
 
-          self.index.deleteAllDocuments { (result: Result<Update, Swift.Error>) in
+          self.index.deleteAllDocuments { (result: Result<Task, Swift.Error>) in
             switch result {
             case .success(let update):
 
@@ -442,7 +442,7 @@ class DocumentsTests: XCTestCase {
 
           let idsToDelete: [Int] = [2, 1, 4]
 
-          self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Update, Swift.Error>) in
+          self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Task, Swift.Error>) in
             switch result {
 
             case .success(let update):

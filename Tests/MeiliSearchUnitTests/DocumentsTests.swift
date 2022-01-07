@@ -37,13 +37,13 @@ class DocumentsTests: XCTestCase {
   func testAddDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -60,7 +60,7 @@ class DocumentsTests: XCTestCase {
     ) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask.uid, update.uid)
       case .failure:
         XCTFail("Failed to add or replace Movies document")
       }
@@ -73,13 +73,13 @@ class DocumentsTests: XCTestCase {
   func testAddDataDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let documentJsonString = """
@@ -104,7 +104,7 @@ class DocumentsTests: XCTestCase {
     ) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to add or replace Movies document")
       }
@@ -117,13 +117,13 @@ class DocumentsTests: XCTestCase {
   func testUpdateDataDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentJsonString = """
       [{
@@ -142,7 +142,7 @@ class DocumentsTests: XCTestCase {
       primaryKey: primaryKey) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to add or update Movies document")
       }
@@ -155,13 +155,13 @@ class DocumentsTests: XCTestCase {
   func testUpdateDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let movie = Movie(
@@ -179,7 +179,7 @@ class DocumentsTests: XCTestCase {
     ) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to add or update Movies document")
       }
@@ -268,13 +268,13 @@ class DocumentsTests: XCTestCase {
   func testDeleteDocument() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let identifier: String = "25684"
 
@@ -285,7 +285,7 @@ class DocumentsTests: XCTestCase {
 
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to delete Movies document")
       }
@@ -298,13 +298,13 @@ class DocumentsTests: XCTestCase {
   func testDeleteAllDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -312,7 +312,7 @@ class DocumentsTests: XCTestCase {
     self.index.deleteAllDocuments { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to delete all Movies documents")
       }
@@ -325,13 +325,13 @@ class DocumentsTests: XCTestCase {
   func testDeleteBatchDocuments() {
 
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder: JSONDecoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
 
@@ -340,7 +340,7 @@ class DocumentsTests: XCTestCase {
     self.index.deleteBatchDocuments(documentsIdentifiers) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to delete all Movies documents")
       }
