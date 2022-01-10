@@ -36,14 +36,13 @@ class DocumentsTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-	session = URLSession(configuration: .ephemeral)
-	client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    session = URLSession(configuration: .ephemeral)
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
 
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
 
-    self.client.deleteIndex(uid) { _ in
-      self.client.getOrCreateIndex(uid: self.uid) { result in
+    self.client.createIndex(uid: uid) { result in
         switch result {
         case .success:
           break
@@ -52,7 +51,6 @@ class DocumentsTests: XCTestCase {
         }
         expectation.fulfill()
       }
-    }
 
     self.wait(for: [expectation], timeout: 10.0)
   }
@@ -64,9 +62,10 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
-        XCTAssertEqual(Update(updateId: 0), update)
-        waitForPendingUpdate(self.client, self.uid, update) {
+      case .success(let task):
+        dump(task)
+        XCTAssertEqual(self.uid, task.indexUid)
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
             switch result {
             case .success(let returnedMovies):
@@ -74,7 +73,7 @@ class DocumentsTests: XCTestCase {
                 XCTAssertTrue(returnedMovies.contains(movie))
               }
             case .failure(let error):
-              print(error)
+              dump(error)
               XCTFail()
             }
             expectation.fulfill()
@@ -96,9 +95,9 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
-        XCTAssertEqual(Update(updateId: 0), update)
-        waitForPendingUpdate(self.client, self.uid, update) {
+      case .success(let task):
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocuments(
             options: GetParameters()
           ) { (result: Result<[Movie], Swift.Error>) in
@@ -131,9 +130,9 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
-        XCTAssertEqual(Update(updateId: 0), update)
-        waitForPendingUpdate(self.client, self.uid, update) {
+      case .success(let task):
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocuments(
             options: GetParameters(offset: 1, limit: 1, attributesToRetrieve: ["id", "title"])
           ) { (result: Result<[Movie], Swift.Error>) in
@@ -183,11 +182,10 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
+      case .success(let task):
 
-        XCTAssertEqual(Update(updateId: 0), update)
-
-        waitForPendingUpdate(self.client, self.uid, update) {
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocument(10
           ) { (result: Result<Movie, Swift.Error>) in
             switch result {
@@ -222,11 +220,11 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
+      case .success(let task):
 
-        XCTAssertEqual(Update(updateId: 0), update)
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocument("10"
           ) { (result: Result<Movie, Swift.Error>) in
             switch result {
@@ -263,11 +261,11 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
+      case .success(let task):
 
-        XCTAssertEqual(Update(updateId: 0), update)
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, task) {
           self.index.getDocument("\(identifier)"
           ) { (result: Result<Movie, Swift.Error>) in
             switch result {
@@ -301,8 +299,8 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
-        XCTAssertEqual(Update(updateId: 0), update)
+      case .success(let task):
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to add or replace Movies document")
@@ -313,8 +311,8 @@ class DocumentsTests: XCTestCase {
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
     self.index.deleteDocument("42") { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-        XCTAssertEqual(Update(updateId: 1), update)
+      case .success(let task):
+        XCTAssertEqual(Task(uid: 1, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
         deleteExpectation.fulfill()
       case .failure(let error):
         print(error)
@@ -345,18 +343,18 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
+      case .success(let task):
 
-        XCTAssertEqual(Update(updateId: 0), update)
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, task) {
           self.index.deleteAllDocuments { (result: Result<Task, Swift.Error>) in
             switch result {
-            case .success(let update):
+            case .success(let task):
 
-              XCTAssertEqual(Update(updateId: 1), update)
+              XCTAssertEqual(Task(uid: 1, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-              waitForPendingUpdate(self.client, self.uid, update) {
+              waitForTask(self.client, self.uid, task) {
                 self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):
@@ -397,20 +395,20 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let update):
+      case .success(let task):
 
-        XCTAssertEqual(Update(updateId: 0), update)
+        XCTAssertEqual(Task(uid: 0, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, task) {
           let idsToDelete: [Int] = [2, 1, 4]
 
           self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Task, Swift.Error>) in
             switch result {
-            case .success(let update):
+            case .success(let task):
 
-              XCTAssertEqual(Update(updateId: 1), update)
+              XCTAssertEqual(Task(uid: 1, indexUid: self.uid, status: Task.Status.enqueued, type: "documentAddition", enqueuedAt: "xxx"), task)
 
-              waitForPendingUpdate(self.client, self.uid, update) {
+              waitForTask(self.client, self.uid, task) {
                 self.index.getDocuments { (result: Result<[Movie], Swift.Error>) in
                   switch result {
                   case .success(let results):

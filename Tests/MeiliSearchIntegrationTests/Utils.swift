@@ -2,16 +2,16 @@ import Foundation
 import XCTest
 @testable import MeiliSearch
 
-public func waitForPendingUpdate(
+public func waitForTask(
   _ client: MeiliSearch,
   _ uid: String,
-  _ update: Update,
+  _ task: Task,
   _ completion: @escaping () -> Void) {
   func request() {
-    client.index(uid).getUpdate(update.updateId) { result in
+    client.index(uid).getTask(task.uid) { result in
       switch result {
-      case .success(let updateResult):
-        if updateResult.status == Task.Status.processed {
+      case .success(let taskRes):
+        if taskRes.status == Task.Status.succeeded {
           completion()
           return
         }

@@ -32,7 +32,10 @@ public struct Task: Codable, Equatable {
     public let status: Status
 
     /// Unique ID for the current `Update`.
-    public let updateId: Int
+    public let uid: Int
+
+    /// Unique ID for the current `Update`.
+    public let indexUid: String
 
     /// Type of update.
     public let type: UpdateType

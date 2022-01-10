@@ -26,14 +26,14 @@ public struct Indexes {
   // Search methods
   private let search: Search
 
-  // Updates methods
-  private let updates: Updates
-
   // Settings methods
   private let settings: Settings
 
   // Stats methods
   private let stats: Stats
+
+  // Tasks methods
+  private let tasks: Tasks
 
   // MARK: Initializers
 
@@ -57,7 +57,7 @@ public struct Indexes {
     self.updatedAt = updatedAt
     self.documents = Documents(Request(config))
     self.search = Search(Request(config))
-    self.updates = Updates(Request(config))
+    self.tasks = Tasks(Request(config))
     self.settings = Settings(Request(config))
     self.stats = Stats(Request(config))
   }
@@ -469,10 +469,10 @@ public struct Indexes {
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func getUpdate(
-    _ updateId: Int,
+  public func getTask(
+    _ taskId: Int,
     _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
-    self.updates.get(self.uid, updateId, completion)
+    self.tasks.get(self.uid, taskId, completion)
   }
 
   /**
@@ -482,9 +482,9 @@ public struct Indexes {
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func getAllUpdates(
+  public func getTasks(
     _ completion: @escaping (Result<[Task.Result], Swift.Error>) -> Void) {
-    self.updates.getAll(self.uid, completion)
+    self.tasks.getAll(self.uid, completion)
   }
 
   /**
@@ -497,12 +497,12 @@ public struct Indexes {
     - parameter: options             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/
-  public func waitForPendingUpdate(
-    update: Update,
+  public func waitForTask(
+    task: Task,
     options: WaitOptions? = nil,
     _ completion: @escaping (Result<Task.Result, Swift.Error>
   ) -> Void) {
-    self.updates.waitForPendingUpdate(self.uid, update, options, completion)
+    self.tasks.waitForTask(self.uid, task, options, completion)
   }
 
   // MARK: Settings

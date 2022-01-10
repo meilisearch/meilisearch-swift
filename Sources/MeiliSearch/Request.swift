@@ -51,7 +51,8 @@ public final class Request {
       }
 
       if let apiKey = config.apiKey {
-        request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        let bearer = "Bearer \(apiKey)"
+        request.addValue(bearer, forHTTPHeaderField: "Authorization")
       }
 
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -85,7 +86,8 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -121,7 +123,8 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -156,7 +159,8 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in

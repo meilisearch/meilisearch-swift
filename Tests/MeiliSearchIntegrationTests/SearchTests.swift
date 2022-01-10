@@ -93,7 +93,7 @@ class SearchTests: XCTestCase {
           ) { result in
             switch result {
             case .success(let update):
-              waitForPendingUpdate(self.client, self.uid, update) {
+              waitForTask(self.client, self.uid, update) {
                 expectation.fulfill()
               }
             case .failure(let error):
@@ -524,7 +524,7 @@ class SearchTests: XCTestCase {
     self.index.updateSettings(settings) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           expectation.fulfill()
           completion()
         }

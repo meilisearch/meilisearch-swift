@@ -101,7 +101,7 @@ class SettingsTests: XCTestCase {
     self.index.updateFilterableAttributes(newFilterableAttributes) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getFilterableAttributes { result in
             switch result {
             case .success(let attributes):
@@ -128,7 +128,7 @@ class SettingsTests: XCTestCase {
     self.index.resetFilterableAttributes { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getFilterableAttributes { result in
             switch result {
             case .success(let attributes):
@@ -175,7 +175,7 @@ class SettingsTests: XCTestCase {
     self.index.updateDisplayedAttributes(newDisplayedAttributes) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getDisplayedAttributes { result in
             switch result {
             case .success(let attributes):
@@ -202,7 +202,7 @@ class SettingsTests: XCTestCase {
     self.index.resetDisplayedAttributes { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getDisplayedAttributes { result in
             switch result {
             case .success(let attribute):
@@ -249,7 +249,7 @@ class SettingsTests: XCTestCase {
     self.index.updateDistinctAttribute(newDistinctAttribute) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getDistinctAttribute { result in
             switch result {
             case .success(let attribute):
@@ -276,7 +276,7 @@ class SettingsTests: XCTestCase {
     self.index.resetDistinctAttribute { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getDistinctAttribute { result in
             switch result {
             case .success(let attribute):
@@ -328,7 +328,7 @@ class SettingsTests: XCTestCase {
     self.index.updateRankingRules(newRankingRules) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getRankingRules { result in
             switch result {
             case .success(let rankingRules):
@@ -355,7 +355,7 @@ class SettingsTests: XCTestCase {
     self.index.resetRankingRules { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getRankingRules { result in
             switch result {
             case .success(let rankingRules):
@@ -406,7 +406,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSearchableAttributes(newSearchableAttributes) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSearchableAttributes { result in
             switch result {
             case .success(let searchableAttributes):
@@ -433,7 +433,7 @@ class SettingsTests: XCTestCase {
     self.index.resetSearchableAttributes { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSearchableAttributes { result in
             switch result {
             case .success(let searchableAttributes):
@@ -481,7 +481,7 @@ class SettingsTests: XCTestCase {
     self.index.updateStopWords(newStopWords) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getStopWords { result in
             switch result {
             case .success(let finalStopWords):
@@ -510,7 +510,7 @@ class SettingsTests: XCTestCase {
     self.index.updateStopWords(nilStopWords) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getStopWords { result in
             switch result {
             case .success(let finalStopWords):
@@ -539,7 +539,7 @@ class SettingsTests: XCTestCase {
     self.index.updateStopWords(nilStopWords) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getStopWords { result in
             switch result {
             case .success(let finalStopWords):
@@ -566,7 +566,7 @@ class SettingsTests: XCTestCase {
     self.index.resetStopWords { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getStopWords { result in
             switch result {
             case .success(let stopWords):
@@ -619,7 +619,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSynonyms(newSynonyms) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
@@ -648,7 +648,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSynonyms(newSynonyms) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
@@ -677,7 +677,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSynonyms(newSynonyms) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSynonyms { result in
             switch result {
             case .success(let updatedSynonyms):
@@ -704,7 +704,7 @@ class SettingsTests: XCTestCase {
     self.index.resetSynonyms { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSynonyms { result in
             switch result {
             case .success(let synonyms):
@@ -770,7 +770,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSettings(newSettings) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSettings { result in
             switch result {
             case .success(let settingResult):
@@ -800,7 +800,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSettings(overrideSettings) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSettings { result in
             switch result {
             case .success(let settingResult):
@@ -851,7 +851,7 @@ class SettingsTests: XCTestCase {
     self.index.updateSettings(newSettings) { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSettings { result in
             switch result {
             case .success(let finalSetting):
@@ -883,7 +883,7 @@ class SettingsTests: XCTestCase {
     self.index.resetSettings { result in
       switch result {
       case .success(let update):
-        waitForPendingUpdate(self.client, self.uid, update) {
+        waitForTask(self.client, self.uid, update) {
           self.index.getSettings { result in
             switch result {
             case .success(let settings):
