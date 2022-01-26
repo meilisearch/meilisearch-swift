@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://github.com/meilisearch/meilisearch-swift/blob/main/assets/logo.svg" alt="MeiliSearch-Swift" width="200" height="200" />
+  <img src="https://github.com/meilisearch/meilisearch-swift/blob/main/assets/logo.svg" alt="Meilisearch-Swift" width="200" height="200" />
 </p>
 
-<h1 align="center">MeiliSearch Swift</h1>
+<h1 align="center">Meilisearch Swift</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://github.com/meilisearch/Meilisearch">Meilisearch</a> |
   <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
@@ -19,18 +19,18 @@
   <a href="https://app.bors.tech/repositories/28499"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
-<p align="center">⚡ The MeiliSearch API client written for Swift 🍎</p>
+<p align="center">⚡ The Meilisearch API client written for Swift 🍎</p>
 
-**MeiliSearch Swift** is the MeiliSearch API client for Swift developers.
+**Meilisearch Swift** is the Meilisearch API client for Swift developers.
 
-**MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
+**Meilisearch** is an open-source search engine. [Discover what Meilisearch is!](https://github.com/meilisearch/Meilisearch)
 
 ## Table of Contents <!-- omit in toc -->
 
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
 - [🎬 Getting Started](#-getting-started)
-- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
+- [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
 - [📜 Demos](#-demos)
@@ -39,7 +39,7 @@
 
 For more information about this API see our [Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
 
-For more information about MeiliSearch see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
+For more information about Meilisearch see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
 
 ## 🔧 Installation
 
@@ -47,10 +47,10 @@ For more information about MeiliSearch see our [Documentation](https://docs.meil
 
 [CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
-**MeiliSearch-Swift** is available through CocoaPods. To install it, add the following line to your Podfile:
+**Meilisearch-Swift** is available through CocoaPods. To install it, add the following line to your Podfile:
 
 ```ruby
-pod 'MeiliSearch'
+pod 'Meilisearch'
 ```
 
 Then, run the following command:
@@ -59,13 +59,13 @@ Then, run the following command:
 pod install
 ```
 
-This will download the latest version of MeiliSearch pod and prepare the `xcworkspace`.
+This will download the latest version of Meilisearch pod and prepare the `xcworkspace`.
 
 ### With the Swift Package Manager <!-- omit in toc -->
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
-Once you have your Swift package set up, adding **MeiliSearch-Swift** as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+Once you have your Swift package set up, adding **Meilisearch-Swift** as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
 
 ```swift
 dependencies: [
@@ -73,21 +73,21 @@ dependencies: [
 ]
 ```
 
-### 🏃‍♀️ Run MeiliSearch <!-- omit in toc -->
+### 🏃‍♀️ Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
 For example, using the `curl` command in your [Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
 
 ```sh
-#Install MeiliSearch
+#Install Meilisearch
 curl -L https://install.meilisearch.com | sh
 
-# Launch MeiliSearch
+# Launch Meilisearch
 ./meilisearch --master-key=masterKey
 ```
 
-NB: you can also download MeiliSearch from **Homebrew** or **APT** or even run it using **Docker**.
+NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
 
 ## 🎬 Getting Started
 
@@ -96,10 +96,10 @@ To do a simply search using the client, you can create a Swift script like this:
 #### Add documents <!-- omit in toc -->
 
 ```swift
-    import MeiliSearch
+    import Meilisearch
 
-    // Create a new client instance of MeiliSearch.
-    let client = try! MeiliSearch(host: "http://localhost:7700")
+    // Create a new client instance of Meilisearch.
+    let client = try! Meilisearch(host: "http://localhost:7700")
 
     struct Movie: Codable, Equatable {
         let id: Int
@@ -122,7 +122,7 @@ To do a simply search using the client, you can create a Swift script like this:
     // The uid is the unique identifier to that index.
     let index = client.index("movies")
 
-    // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
+    // If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
     index.addDocuments(
         documents: movies,
         primaryKey: nil
@@ -146,7 +146,7 @@ With the `updateId`, you can check the status (`enqueued`, `processing`, `proces
 
 let semaphore = DispatchSemaphore(value: 0)
 
-// Typealias that represents the result from MeiliSearch.
+// Typealias that represents the result from Meilisearch.
 typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
 
 // Call the function search and wait for the closure result.
@@ -166,7 +166,7 @@ semaphore.wait()
 Output:
 
 ```bash
- MeiliSearch.SearchResult<SwiftWork.(unknown context at $10d9e7f3c).Movie>
+ Meilisearch.SearchResult<SwiftWork.(unknown context at $10d9e7f3c).Movie>
   ▿ hits: 1 element
     ▿ SwiftWork.(unknown context at $10d9e7f3c).Movie
       - id: 6
@@ -186,11 +186,11 @@ Output:
     - some: "philoudelphia"
 ```
 
-Since MeiliSearch is typo-tolerant, the movie `philadelphia` is a valid search response to `philoudelphia`.
+Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search response to `philoudelphia`.
 
-## 🤖 Compatibility with MeiliSearch
+## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.24.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0).
+This package only guarantees the compatibility with the [version v0.24.0 of Meilisearch](https://github.com/meilisearch/Meilisearch/releases/tag/v0.24.0).
 
 ## 💡 Learn More
 
@@ -224,4 +224,4 @@ Please check the Perfect Demo source code [here](https://github.com/meilisearch/
 
 <hr>
 
-**MeiliSearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
+**Meilisearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
