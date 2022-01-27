@@ -166,7 +166,7 @@ semaphore.wait()
 Output:
 
 ```bash
- Meilisearch.SearchResult<SwiftWork.(unknown context at $10d9e7f3c).Movie>
+ MeiliSearch.SearchResult<SwiftWork.(unknown context at $10d9e7f3c).Movie>
   ▿ hits: 1 element
     ▿ SwiftWork.(unknown context at $10d9e7f3c).Movie
       - id: 6
