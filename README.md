@@ -50,7 +50,7 @@ For more information about Meilisearch see our [Documentation](https://docs.meil
 **Meilisearch-Swift** is available through CocoaPods. To install it, add the following line to your Podfile:
 
 ```ruby
-pod 'Meilisearch'
+pod 'MeiliSearch'
 ```
 
 Then, run the following command:
