@@ -99,7 +99,7 @@ To do a simply search using the client, you can create a Swift script like this:
     import Meilisearch
 
     // Create a new client instance of Meilisearch.
-    let client = try! Meilisearch(host: "http://localhost:7700")
+    let client = try! MeiliSearch(host: "http://localhost:7700")
 
     struct Movie: Codable, Equatable {
         let id: Int
