@@ -127,7 +127,7 @@ Make a PR modifying the file [`MeiliSearch.podspec`](/MeiliSearch.podspec) with 
 
 Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-swift/releases): on this page, click on `Edit` (related to the draft release) > update the description (be sure you apply [these recommandations](https://github.com/meilisearch/integration-guides/blob/main/resources/integration-release.md#writting-the-release-description)) > when you are ready, click on `Publish release`.
 
-GitHub Actions will be triggered and push the package to [CocoaPods](https://cocoapods.org/pods/Meilisearch).
+GitHub Actions will be triggered and push the package to [CocoaPods](https://cocoapods.org/pods/meilisearch).
 
 <hr>
 
