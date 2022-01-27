@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/meilisearch/meilisearch-swift/blob/main/assets/logo.svg" alt="Meilisearch-Swift" width="200" height="200" />
+  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_swift.svg" alt="meilisearch-swift" width="200" height="200" />
 </p>
 
 <h1 align="center">Meilisearch Swift</h1>
