@@ -254,7 +254,7 @@ public struct Indexes {
 
    For a partial update of the document see `updateDocuments`.
 
-   - parameter documents:  The documents to add in MeiliSearch.
+   - parameter documents:  The documents to add in Meilisearch.
    - parameter Encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
@@ -309,7 +309,7 @@ public struct Indexes {
 
     To completely overwrite a document, `addDocuments`
 
-   - parameter documents:  The documents to update in MeiliSearch.
+   - parameter documents:  The documents to update in Meilisearch.
    - parameter Encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
    - parameter completion: The completion closure used to notify when the server
@@ -490,8 +490,8 @@ public struct Indexes {
   /**
     Wait for an update to be processed or failed.
 
-    Providing an update id, returned by asynchronous MeiliSearch options, call are made
-    to MeiliSearch to check if the update has been processed or if it has failed.
+    Providing an update id, returned by asynchronous Meilisearch options, call are made
+    to Meilisearch to check if the update has been processed or if it has failed.
 
     - parameter updateId:            The id of the update.
     - parameter: options             Optionnal configuration for timeout and interval

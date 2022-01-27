@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'MeiliSearch'
   s.version          = '0.12.0'
-  s.summary          = 'The MeiliSearch API client written in Swift'
+  s.summary          = 'The Meilisearch API client written in Swift'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-  MeiliSearch-Swift is a client for MeiliSearch written in Swift.
+  meilisearch-Swift is a client for Meilisearch written in Swift.
 
   ## Features:
 
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://github.com/meilisearch/meilisearch-swift'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'MeiliSearch' => 'bonjour@meilisearch.com' }
+  s.author           = { 'Meilisearch' => 'bonjour@meilisearch.com' }
   s.source           = { :git => 'https://github.com/meilisearch/meilisearch-swift.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/meilisearch'
 
