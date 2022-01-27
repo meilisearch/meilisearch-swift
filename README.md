@@ -96,7 +96,7 @@ To do a simply search using the client, you can create a Swift script like this:
 #### Add documents <!-- omit in toc -->
 
 ```swift
-    import Meilisearch
+    import MeiliSearch
 
     // Create a new client instance of Meilisearch.
     let client = try! MeiliSearch(host: "http://localhost:7700")
