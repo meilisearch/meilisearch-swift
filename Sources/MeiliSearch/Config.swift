@@ -6,7 +6,7 @@ import Foundation
 public class Config {
   // MARK: Properties
 
-  /// Address for the MeiliSearch server.
+  /// Address for the Meilisearch server.
   let host: String
 
   /// API key needed for an environment that requires one.
@@ -21,7 +21,7 @@ public class Config {
    Obtains a Config instance for the given `host` and optional `apiKey`
    with an optional custom `session` URLSessionProtocol.
 
-   - parameter host:  Address for the MeiliSearch server.
+   - parameter host:  Address for the Meilisearch server.
    - parameter apiKey:   API key needed for the production environment.
    - parameter session:  A custom produced URLSessionProtocol.
    */
@@ -41,7 +41,7 @@ public class Config {
   // MARK: Validate
 
   /**
-   Validate if the MeiliSearch provided host is a well formatted URL.
+   Validate if the Meilisearch provided host is a well formatted URL.
    */
   func validate() throws -> Config {
     guard URL(string: host) != nil else {

@@ -13,7 +13,7 @@ public extension MeiliSearch {
   }
 
   static func errorHandler(url: URL, data: Data?, response: URLResponse?, error: Swift.Error?) throws {
-    // Communication Error with MeiliSearch
+    // Communication Error with Meilisearch
     if let error: Swift.Error = error {
       throw MeiliSearch.Error.meiliSearchCommunicationError(
         message: error.localizedDescription,
@@ -25,7 +25,7 @@ public extension MeiliSearch {
       fatalError("Correct handles invalid response, please create a custom error type")
     }
 
-    // Error returned by MeiliSearch
+    // Error returned by Meilisearch
     if let unwrappedData: Data = data, let res: MeiliSearch.MSErrorResponse = try? Constants.customJSONDecoder.decode(MeiliSearch.MSErrorResponse.self, from: unwrappedData) {
       throw MeiliSearch.Error.meiliSearchApiError(
         message: res.message,
@@ -40,7 +40,7 @@ public extension MeiliSearch {
       )
     }
 
-    // HTTP error with MeiliSearch
+    // HTTP error with Meilisearch
     if 400 ... 599 ~= response.statusCode {
       throw MeiliSearch.Error.meiliSearchApiError(
         message: HTTPURLResponse.localizedString(forStatusCode: response.statusCode),
@@ -51,7 +51,7 @@ public extension MeiliSearch {
     }
   }
 
-  /// Generic Error types for MeiliSearch,
+  /// Generic Error types for Meilisearch,
   enum Error: Swift.Error, LocalizedError, Equatable {
     /// The client tried to contact the server but it was not found.
     case serverNotFound
@@ -71,11 +71,11 @@ public extension MeiliSearch {
     // URL is invalid
     case invalidURL(url: String? = "")
 
-    /// Error originating from MeiliSearch API.
+    /// Error originating from Meilisearch API.
     // case meiliSearchApiError(message: String, code: String, type: String, link: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
     case meiliSearchApiError(message: String, msErrorResponse: MSErrorResponse?, statusCode: Int = 0, url: String = "")
 
-    /// Error communicating with MeiliSearch API.
+    /// Error communicating with Meilisearch API.
     case meiliSearchCommunicationError(message: String, url: String)
 
     public var errorDescription: String? {

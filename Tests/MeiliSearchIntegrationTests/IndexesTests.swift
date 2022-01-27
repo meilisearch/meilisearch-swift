@@ -91,7 +91,7 @@ class IndexesTests: XCTestCase {
             XCTFail("Error body should be of type msErrorResponse")
           }
         default:
-          XCTFail("Index already exists error should be an MeiliSearch Api Error")
+          XCTFail("Index already exists error should be an Meilisearch API Error")
         }
       }
       create2ndIndexExpectation.fulfill()

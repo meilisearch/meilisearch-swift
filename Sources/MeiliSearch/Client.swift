@@ -1,18 +1,18 @@
 import Foundation
 
 /**
- A `MeiliSearch` instance represents a MeiliSearch client used to easily integrate
- your Swift product with the MeiliSearch server.
+ A `MeiliSearch` instance represents a Meilisearch client used to easily integrate
+ your Swift product with the Meilisearch server.
 
- - warning: `MeiliSearch` instances are thread safe and can be shared across threads
+ - warning: `Meilisearch` instances are thread safe and can be shared across threads
  or dispatch queues.
  */
 public struct MeiliSearch {
   // MARK: Properties
 
   /**
-   Current and immutable MeiliSearch configuration. To change this configuration please
-   create a new MeiliSearch instance.
+   Current and immutable Meilisearch configuration. To change this configuration please
+   create a new Meilisearch instance.
    */
   private let request: Request
   private(set) var config: Config
@@ -26,8 +26,8 @@ public struct MeiliSearch {
   /**
    Create an instance of MeiliSearch client.
 
-   - parameter host:   The host to the MeiliSearch http server.
-   - parameter apiKey:    The authorisation key to communicate with MeiliSearch.
+   - parameter host:   The host to the Meilisearch http server.
+   - parameter apiKey:    The authorisation key to communicate with Meilisearch.
    - parameter session:   A custom produced URLSessionProtocol.
    */
   public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil, request: Request? = nil) throws {
@@ -146,8 +146,8 @@ public struct MeiliSearch {
   // MARK: Keys
 
   /**
-   Each instance of MeiliSearch has three keys: a master, a private, and a public. Each key has a given
-   set of permissions on the API routes.
+   Protected instances of Meilisearch require API keys to perform certain actions. Only the master key has
+   the right to access the list of all API keys.
 
    - parameter masterKey:  Master key to access the `keys` function.
    - parameter completion: The completion closure used to notify when the server
@@ -176,7 +176,7 @@ public struct MeiliSearch {
   // MARK: System
 
   /**
-   Get health of MeiliSearch server.
+   Get health of Meilisearch server.
 
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Health` value.
@@ -187,7 +187,7 @@ public struct MeiliSearch {
   }
 
   /**
-   Get health of MeiliSearch server.
+   Returns whether Meilisearch server is healthy or not.
 
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Bool` that is `true`
@@ -205,7 +205,7 @@ public struct MeiliSearch {
   }
 
   /**
-   Get version of MeiliSearch.
+   Get version of Meilisearch.
 
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Version`

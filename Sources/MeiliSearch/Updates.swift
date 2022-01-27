@@ -1,7 +1,7 @@
 import Foundation
 
 /**
-  Updates contains information related to asynchronous tasks in MeiliSearch
+  Updates contains information related to asynchronous tasks in Meilisearch
  */
 struct Updates {
   // MARK: Properties

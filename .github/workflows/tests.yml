@@ -21,11 +21,11 @@ jobs:
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
     steps:
       - uses: actions/checkout@v2
-      - name: Download the latest stable version of MeiliSearch
+      - name: Download the latest stable version of Meilisearch
         run: |
           curl -L https://install.meilisearch.com | sh
           chmod +x meilisearch
-      - name: Run MeiliSearch
+      - name: Run Meilisearch
         run: |
           ./meilisearch --master-key=masterKey --no-analytics true &
       - name: Run tests

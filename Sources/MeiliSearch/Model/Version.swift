@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- `Version` instances represent the current version of the MeiliSearch server.
+ `Version` instances represent the current version of the Meilisearch server.
  */
 public struct Version: Codable, Equatable {
   // MARK: Properties
