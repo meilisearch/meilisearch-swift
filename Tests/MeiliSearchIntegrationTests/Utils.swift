@@ -11,13 +11,15 @@ public func waitForTask(
     client.index(uid).getTask(task.uid) { result in
       switch result {
       case .success(let taskRes):
+        dump(taskRes)
         if taskRes.status == Task.Status.succeeded {
           completion()
           return
         }
         request()
       case .failure(let error):
-        print(error)
+        dump("HEYYYYYY")
+        dump(error)
         XCTFail()
       }
     }

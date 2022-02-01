@@ -26,6 +26,7 @@ struct Tasks {
           return
         }
         do {
+          dump(Task.Result.self)
           let result: Task.Result = try Constants.customJSONDecoder.decode(
             Task.Result.self,
             from: data)
