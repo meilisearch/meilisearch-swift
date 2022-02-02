@@ -15,9 +15,8 @@ struct Tasks {
   }
 
   func get(
-    _ uid: String,
     _ taskId: Int,
-    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
     self.request.get(api: "/tasks/\(taskId)") { result in
       switch result {
       case .success(let data):
@@ -26,12 +25,39 @@ struct Tasks {
           return
         }
         do {
-          dump(Task.Result.self)
-          let result: Task.Result = try Constants.customJSONDecoder.decode(
-            Task.Result.self,
+          let task: TaskResult = try Constants.customJSONDecoder.decode(
+            TaskResult.self,
             from: data)
-          completion(.success(result))
+          completion(.success(task))
         } catch {
+          dump(error)
+          completion(.failure(error))
+        }
+
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func get(
+    _ uid: String,
+    _ taskId: Int,
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    self.request.get(api: "/tasks/\(taskId)") { result in
+      switch result {
+      case .success(let data):
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let task: TaskResult = try Constants.customJSONDecoder.decode(
+            TaskResult.self,
+            from: data)
+          completion(.success(task))
+        } catch {
+          dump(error)
           completion(.failure(error))
         }
 
@@ -42,8 +68,7 @@ struct Tasks {
   }
 
   func getAll(
-    _ uid: String,
-    _ completion: @escaping (Result<[Task.Result], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
 
     self.request.get(api: "/tasks") { result in
       switch result {
@@ -53,7 +78,30 @@ struct Tasks {
           return
         }
         do {
-          let result: [Task.Result] = try Constants.customJSONDecoder.decode([Task.Result].self, from: data)
+          let result: [TaskResult] = try Constants.customJSONDecoder.decode([TaskResult].self, from: data)
+          completion(.success(result))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func getAll(
+    _ uid: String,
+    _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
+
+    self.request.get(api: "/tasks") { result in
+      switch result {
+      case .success(let data):
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let result: [TaskResult] = try Constants.customJSONDecoder.decode([TaskResult].self, from: data)
           completion(.success(result))
         } catch {
           completion(.failure(error))
@@ -69,7 +117,7 @@ struct Tasks {
     _ task: Task,
     _ options: WaitOptions,
     _ startingDate: Date,
-    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
       self.get(uid, task.uid) { result in
         switch result {
         case .success(let status):
@@ -92,7 +140,7 @@ struct Tasks {
     _ uid: String,
     _ task: Task,
     _ options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task.Result, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
       let currentDate = Date()
       let waitOptions: WaitOptions = options ?? WaitOptions()
 

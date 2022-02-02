@@ -44,7 +44,7 @@ struct Settings {
   func update(
     _ uid: String,
     _ setting: Setting,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -58,7 +58,7 @@ struct Settings {
       switch result {
       case .success(let data):
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -73,7 +73,7 @@ struct Settings {
   // can this be refactor
   func reset(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings") { result in
       switch result {
@@ -85,7 +85,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -127,7 +127,7 @@ struct Settings {
   func updateSynonyms(
     _ uid: String,
     _ synonyms: [String: [String]]? = [:],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -141,7 +141,7 @@ struct Settings {
       switch result {
       case .success(let data):
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -154,7 +154,7 @@ struct Settings {
 
   func resetSynonyms(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/synonyms") { result in
       switch result {
@@ -166,7 +166,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -208,7 +208,7 @@ struct Settings {
   func updateStopWords(
     _ uid: String,
     _ stopWords: [String]? = [],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -223,7 +223,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -237,7 +237,7 @@ struct Settings {
 
   func resetStopWords(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/stop-words") { result in
       switch result {
@@ -249,7 +249,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -291,7 +291,7 @@ struct Settings {
   func updateRankingRules(
     _ uid: String,
     _ rankingRules: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -306,7 +306,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -320,7 +320,7 @@ struct Settings {
 
   func resetRankingRules(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/ranking-rules") { result in
       switch result {
@@ -332,7 +332,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -379,7 +379,7 @@ struct Settings {
   func updateDistinctAttribute(
     _ uid: String,
     _ distinctAttribute: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -394,7 +394,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -408,7 +408,7 @@ struct Settings {
 
   func resetDistinctAttribute(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
       switch result {
@@ -420,7 +420,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -462,7 +462,7 @@ struct Settings {
   func updateSearchableAttributes(
     _ uid: String,
     _ searchableAttributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -477,7 +477,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -491,7 +491,7 @@ struct Settings {
 
   func resetSearchableAttributes(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
       switch result {
@@ -503,7 +503,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -545,7 +545,7 @@ struct Settings {
   func updateDisplayedAttributes(
     _ uid: String,
     _ displayedAttributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -560,7 +560,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -574,7 +574,7 @@ struct Settings {
 
   func resetDisplayedAttributes(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
       switch result {
@@ -586,7 +586,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -628,7 +628,7 @@ struct Settings {
   func updateFilterableAttributes(
     _ uid: String,
     _ attributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -643,7 +643,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -657,7 +657,7 @@ struct Settings {
 
   func resetFilterableAttributes(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
       switch result {
@@ -669,7 +669,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -711,7 +711,7 @@ struct Settings {
   func updateSortableAttributes(
     _ uid: String,
     _ attributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
     do {
@@ -726,7 +726,7 @@ struct Settings {
       case .success(let data):
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
@@ -740,7 +740,7 @@ struct Settings {
 
   func resetSortableAttributes(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
       switch result {
@@ -752,7 +752,7 @@ struct Settings {
         }
 
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
+          let task: TaskResult = try Constants.customJSONDecoder.decode(TaskResult.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))

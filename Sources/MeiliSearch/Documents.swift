@@ -19,7 +19,7 @@ struct Documents {
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
     let query: String = "/indexes/\(uid)/documents/\(identifier)"
-    request.get(api: query) { result in
+    self.request.get(api: query) { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -69,7 +69,7 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -79,6 +79,7 @@ struct Documents {
     request.post(api: query, document) { result in
       switch result {
       case .success(let data):
+        dump("Documents > add")
         Documents.decodeJSON(data, completion: completion)
       case .failure(let error):
         completion(.failure(error))
@@ -91,8 +92,8 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
-
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) where T: Encodable {
+      dump("MERDE")
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
@@ -121,7 +122,7 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -143,7 +144,7 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) where T: Encodable {
 
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
@@ -174,19 +175,17 @@ struct Documents {
   func delete(
     _ uid: String,
     _ identifier: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents/\(identifier)") { result in
       switch result {
-      case .success(let result):
-
-        guard let result: Data = result else {
+      case .success(let data):
+        guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
 
-        Documents.decodeJSON(result, completion: completion)
-
+        Documents.decodeJSON(data, completion: completion)
       case .failure(let error):
         completion(.failure(error))
       }
@@ -195,7 +194,7 @@ struct Documents {
 
   func deleteAll(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     self.request.delete(api: "/indexes/\(uid)/documents") { result in
       switch result {
@@ -217,7 +216,7 @@ struct Documents {
   func deleteBatch(
     _ uid: String,
     _ documentsIdentifiers: [Int],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
 
     let data: Data
 

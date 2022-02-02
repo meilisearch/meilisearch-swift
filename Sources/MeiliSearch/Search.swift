@@ -27,9 +27,7 @@ struct Search {
     self.request.post(api: "/indexes/\(uid)/search", data) { result in
       switch result {
       case .success(let data):
-
         Search.decodeJSON(data, completion: completion)
-
       case .failure(let error):
         completion(.failure(error))
       }

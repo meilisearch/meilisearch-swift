@@ -21,6 +21,9 @@ public struct MeiliSearch {
   private let system: System
   private let dumps: Dumps
 
+  // Tasks methods
+  private let tasks: Tasks
+
   // MARK: Initializers
 
   /**
@@ -41,6 +44,7 @@ public struct MeiliSearch {
     self.stats = Stats(self.request)
     self.system = System(self.request)
     self.dumps = Dumps(self.request)
+    self.tasks = Tasks(self.request)
   }
 
   // MARK: Index
@@ -65,7 +69,7 @@ public struct MeiliSearch {
   public func createIndex(
     uid: String,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
@@ -80,12 +84,12 @@ public struct MeiliSearch {
    */
 
   // DONE
-  public func getOrCreateIndex(
-    uid: String,
-    primaryKey: String? = nil,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.getOrCreate(uid: uid, primaryKey: primaryKey, config: self.config, completion)
-  }
+  // public func getOrCreateIndex(
+  //   uid: String,
+  //   primaryKey: String? = nil,
+  //   _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
+  //   Indexes.getOrCreate(uid: uid, primaryKey: primaryKey, config: self.config, completion)
+  // }
 
   /**
    Get an index.
@@ -97,7 +101,7 @@ public struct MeiliSearch {
    */
   public func getIndex(
     _ uid: String,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
     self.index(uid).get(completion)
   }
 
@@ -109,7 +113,7 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndexes(
-    _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
     Indexes.getAll(config: self.config, completion)
   }
 
@@ -125,7 +129,7 @@ public struct MeiliSearch {
   public func updateIndex(
     uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
@@ -139,8 +143,36 @@ public struct MeiliSearch {
    */
   public func deleteIndex(
     _ uid: String,
-    _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
+  }
+
+  // MARK: Tasks
+
+ /**
+   Get the status of an update of the index.
+
+   - parameter updateId:    The update identifier.
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getTask(
+    _ taskId: Int,
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    self.tasks.get(taskId, completion)
+  }
+
+  /**
+   Get the status of an update of the index.
+
+   - parameter completion:The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getTasks(
+    _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
+    self.tasks.getAll(completion)
   }
 
   // MARK: Keys
