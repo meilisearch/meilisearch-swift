@@ -5,8 +5,8 @@ import XCTest
 public func waitForTask(
   _ client: MeiliSearch,
   _ uid: String,
-  _ task: TaskResult,
-  _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+  _ task: Task,
+  _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   func request() {
     client.index(uid).getTask(task.uid) { result in
       switch result {
@@ -26,7 +26,7 @@ public func waitForTask(
   request()
 }
 
-  public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<TaskResult, Swift.Error>) -> Void) {
+  public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
       client.deleteIndex(uid) { result in
         switch result {
         case .success:
@@ -50,7 +50,7 @@ public func waitForTask(
         }
       }
   }
-public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<TaskResult, Swift.Error>) -> Void) {
+public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
       switch result {
       case .success(let task):

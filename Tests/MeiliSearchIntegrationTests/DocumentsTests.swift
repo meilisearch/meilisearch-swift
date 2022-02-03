@@ -337,7 +337,7 @@ class DocumentsTests: XCTestCase {
      self.wait(for: [expectation], timeout: 5.0)
 
      let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-     self.index.deleteDocument("42") { (result: Result<TaskResult, Swift.Error>) in
+     self.index.deleteDocument("42") { (result: Result<Task, Swift.Error>) in
        switch result {
        case .success(let task):
         self.client.waitForTask(task: task) { result in
@@ -379,7 +379,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
 
     let deleteExpectation = XCTestExpectation(description: "Delete all documents")
-    self.index.deleteAllDocuments { (result: Result<TaskResult, Swift.Error>) in
+    self.index.deleteAllDocuments { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
@@ -434,7 +434,7 @@ class DocumentsTests: XCTestCase {
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
     let idsToDelete: [Int] = [2, 1, 4]
 
-    self.index.deleteBatchDocuments(idsToDelete) { (result: Result<TaskResult, Swift.Error>) in
+    self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
         self.client.waitForTask(task: task) { result in

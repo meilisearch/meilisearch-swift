@@ -5,12 +5,12 @@ import Foundation
  */
 public protocol URLSessionProtocol {
   /// Result for the `execute` function.
-  typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+  typealias DataTask = (Data?, URLResponse?, Error?) -> Void
 
   /// Function that will trigger the HTTP request.
   func execute(
     with request: URLRequest,
-    completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+    completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol
 }
 
 /// URLSessionDataTaskProtocol handler.
@@ -180,7 +180,7 @@ public final class Request {
 extension URLSession: URLSessionProtocol {
   public func execute(
     with request: URLRequest,
-    completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+    completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol {
     self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
   }
 }

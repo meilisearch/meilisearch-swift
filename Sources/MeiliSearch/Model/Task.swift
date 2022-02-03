@@ -8,63 +8,76 @@ public struct Task: Codable, Equatable {
 
   // MARK: Properties
 
-  /// The uid of the update.
+  /// Unique ID for the current `Update`.
   public let uid: Int
+
+  /// Unique ID for the current `Update`.
   public let indexUid: String
-  public let status: Status
+
+  /// Returns if the update has been sucessful or not.
+  public let status: Task.Status
+
+  /// Type of update.
   public let type: String
+
+  /// Type of update.
+  public let details: Details?
+
+  /// Duration of the update process.
+  public let duration: String?
+
+  /// Date when the update has been enqueued.
   public let enqueuedAt: String
 
-  public init(uid: Int, indexUid: String, status: Status, type: String, enqueuedAt: String) {
-    self.uid = uid
-    self.indexUid = indexUid
-    self.status = status
-    self.type = type
-    self.enqueuedAt = enqueuedAt
-  }
+  /// Date when the update has been processed.
+  // TODO: should this become a Date type?
+  public let processedAt: String?
 
-  /// Result type for the Update.
-  public struct Result: Codable, Equatable {
+  /// Type of `Update`.
+  public struct Details: Codable, Equatable {
 
     // MARK: Properties
 
-    /// Returns if the update has been sucessful or not.
-    public let status: Status
+    // Number of documents sent
+    public let receivedDocuments: Int?
 
-    /// Unique ID for the current `Update`.
-    public let uid: Int
+    // Number of documents successfully indexed/updated in Meilisearch
+    public let indexedDocuments: Int?
 
-    /// Unique ID for the current `Update`.
-    public let indexUid: String
+    // Number of deleted documents
+    public let deletedDocuments: Int?
 
-    /// Type of update.
-    public let type: UpdateType
+    // Primary key on index creation
+    public let primaryKey: String?
 
-    /// Duration of the update process.
-    public let duration: TimeInterval?
+    // Ranking rules on settings actions
+    public let rankingRules: [String]?
 
-    /// Date when the update has been enqueued.
-    public let enqueuedAt: Date
+    // Searchable attributes on settings actions
+    public let searchableAttributes: [String]?
 
-    /// Date when the update has been processed.
-    public let processedAt: Date?
+    // Displayed attributes on settings actions
+    public let displayedAttributes: [String]?
 
-    /// Type of `Update`.
-    public struct UpdateType: Codable, Equatable {
+    // Filterable attributes on settings actions
+    public let filterableAttributes: [String]?
 
-      // MARK: Properties
+    // Sortable attributes on settings actions
+    public let sortableAttributes: [String]?
 
-      /// Name of update type.
-      public let name: String
+    // Stop words on settings actions
+    public let stopWords: [String]?
 
-      /// ID of update type.
-      public let number: Int?
+    // Stop words on settings actions
+    public let synonyms: [String: [String]]?
 
-    }
-    /// Error information in case of failed update.
-    public let error: MeiliSearch.MSErrorResponse?
+    // Distinct attribute on settings actions
+    public let distinctAttribute: String?
 
   }
+  /// Error information in case of failed update.
+  public let error: MeiliSearch.MSErrorResponse?
+
 
   public enum Status: Codable, Equatable {
 

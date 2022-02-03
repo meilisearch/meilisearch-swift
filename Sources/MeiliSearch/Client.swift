@@ -69,7 +69,7 @@ public struct MeiliSearch {
   public func createIndex(
     uid: String,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
@@ -85,9 +85,9 @@ public struct MeiliSearch {
       - parameter completion:          The completion closure used to notify when the server
     **/
     public func waitForTask(
-      task: TaskResult,
+      task: Task,
       options: WaitOptions? = nil,
-      _ completion: @escaping (Result<TaskResult, Swift.Error>
+      _ completion: @escaping (Result<Task, Swift.Error>
     ) -> Void) {
       self.tasks.waitForTask(task: task, options: options, completion)
     }
@@ -148,7 +148,7 @@ public struct MeiliSearch {
   public func updateIndex(
     uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
@@ -162,7 +162,7 @@ public struct MeiliSearch {
    */
   public func deleteIndex(
     _ uid: String,
-    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
   }
 
@@ -178,7 +178,7 @@ public struct MeiliSearch {
    */
   public func getTask(
     _ taskId: Int,
-    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.tasks.get(taskId: taskId, completion)
   }
 
@@ -190,7 +190,7 @@ public struct MeiliSearch {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getTasks(
-    _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[Task], Swift.Error>) -> Void) {
     self.tasks.getAll(completion)
   }
 
