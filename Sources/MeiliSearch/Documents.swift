@@ -79,7 +79,6 @@ struct Documents {
     request.post(api: query, document) { result in
       switch result {
       case .success(let data):
-        dump("Documents > add")
         Documents.decodeJSON(data, completion: completion)
       case .failure(let error):
         completion(.failure(error))
@@ -93,7 +92,6 @@ struct Documents {
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) where T: Encodable {
-      dump("MERDE")
     var query: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"

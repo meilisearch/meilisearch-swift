@@ -15,7 +15,7 @@ struct Tasks {
   }
 
   func get(
-    _ taskId: Int,
+    taskId: Int,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
     self.request.get(api: "/tasks/\(taskId)") { result in
       switch result {
@@ -41,10 +41,10 @@ struct Tasks {
   }
 
   func get(
-    _ uid: String,
-    _ taskId: Int,
+    uid: String,
+    taskId: Int,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
-    self.request.get(api: "/tasks/\(taskId)") { result in
+    self.request.get(api: "/indexes/\(uid)/tasks/\(taskId)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -57,7 +57,6 @@ struct Tasks {
             from: data)
           completion(.success(task))
         } catch {
-          dump(error)
           completion(.failure(error))
         }
 
@@ -69,7 +68,6 @@ struct Tasks {
 
   func getAll(
     _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
-
     self.request.get(api: "/tasks") { result in
       switch result {
       case .success(let data):
@@ -90,10 +88,9 @@ struct Tasks {
   }
 
   func getAll(
-    _ uid: String,
+    uid: String,
     _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
-
-    self.request.get(api: "/tasks") { result in
+    self.request.get(api: "/indexes/\(uid)/tasks") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -101,7 +98,9 @@ struct Tasks {
           return
         }
         do {
+          dump("ICI")
           let result: [TaskResult] = try Constants.customJSONDecoder.decode([TaskResult].self, from: data)
+          dump("LA")
           completion(.success(result))
         } catch {
           completion(.failure(error))
@@ -113,16 +112,39 @@ struct Tasks {
   }
 
   private func checkStatus(
-    _ uid: String,
-    _ task: Task,
+    _ task: TaskResult,
     _ options: WaitOptions,
     _ startingDate: Date,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
-      self.get(uid, task.uid) { result in
+      self.get(taskId: task.uid) { result in
         switch result {
         case .success(let status):
-            completion(.success(status))
           if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
+            completion(.success(status))
+          } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
+            completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
+          } else {
+            usleep(useconds_t(options.interval * 1000000))
+            self.checkStatus(task, options, startingDate, completion)
+          }
+        case .failure(let error):
+          completion(.failure(error))
+          return
+        }
+      }
+  }
+
+  private func checkStatus(
+    _ uid: String,
+    _ task: TaskResult,
+    _ options: WaitOptions,
+    _ startingDate: Date,
+    _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
+      self.get(uid: uid, taskId: task.uid) { result in
+        switch result {
+        case .success(let status):
+          if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
+            completion(.success(status))
           } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
           } else {
@@ -137,19 +159,20 @@ struct Tasks {
   }
 
   func waitForTask(
-    _ uid: String,
-    _ task: Task,
-    _ options: WaitOptions? = nil,
+    task: TaskResult,
+    options: WaitOptions? = nil,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
-      let currentDate = Date()
-      let waitOptions: WaitOptions = options ?? WaitOptions()
+      do {
+        let currentDate = Date()
+        let waitOptions: WaitOptions = options ?? WaitOptions()
 
-      self.checkStatus(uid, task, waitOptions, currentDate) { result in
-        switch result {
-        case .success(let status):
-          completion(.success(status))
-        case .failure(let error):
-          completion(.failure(error))
+        self.checkStatus(task, waitOptions, currentDate) { result in
+          switch result {
+          case .success(let status):
+            completion(.success(status))
+          case .failure(let error):
+            completion(.failure(error))
+          }
         }
       }
   }

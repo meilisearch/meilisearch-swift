@@ -507,7 +507,7 @@ public struct Indexes {
   public func getTask(
     _ taskId: Int,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
-    self.tasks.get(self.uid, taskId, completion)
+    self.tasks.get(uid: self.uid, taskId: taskId, completion)
   }
 
   /**
@@ -519,7 +519,7 @@ public struct Indexes {
    */
   public func getTasks(
     _ completion: @escaping (Result<[TaskResult], Swift.Error>) -> Void) {
-    self.tasks.getAll(self.uid, completion)
+    self.tasks.getAll(uid: self.uid, completion)
   }
 
   /**
@@ -533,11 +533,11 @@ public struct Indexes {
     - parameter completion:          The completion closure used to notify when the server
   **/
   public func waitForTask(
-    task: Task,
+    task: TaskResult,
     options: WaitOptions? = nil,
     _ completion: @escaping (Result<TaskResult, Swift.Error>
   ) -> Void) {
-    self.tasks.waitForTask(self.uid, task, options, completion)
+    self.tasks.waitForTask(task: task, options: options, completion)
   }
 
   // MARK: Settings

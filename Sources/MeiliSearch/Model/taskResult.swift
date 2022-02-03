@@ -47,7 +47,29 @@ import Foundation
       // Primary key on index creation
       public let primaryKey: String?
 
-      //
+      // Ranking rules on settings actions
+      public let rankingRules: [String]?
+
+      // Searchable attributes on settings actions
+      public let searchableAttributes: [String]?
+
+      // Displayed attributes on settings actions
+      public let displayedAttributes: [String]?
+
+      // Filterable attributes on settings actions
+      public let filterableAttributes: [String]?
+
+      // Sortable attributes on settings actions
+      public let sortableAttributes: [String]?
+
+      // Stop words on settings actions
+      public let stopWords: [String]?
+
+      // Stop words on settings actions
+      public let synonyms: [String: [String]]?
+
+      // Distinct attribute on settings actions
+      public let distinctAttribute: String?
 
     }
     /// Error information in case of failed update.

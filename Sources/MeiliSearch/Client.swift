@@ -73,6 +73,25 @@ public struct MeiliSearch {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
+
+    /**
+      Wait for an update to be processed or failed.
+
+      Providing an update id, returned by asynchronous MeiliSearch options, call are made
+      to MeiliSearch to check if the update has been processed or if it has failed.
+
+      - parameter updateId:            The id of the update.
+      - parameter: options             Optionnal configuration for timeout and interval
+      - parameter completion:          The completion closure used to notify when the server
+    **/
+    public func waitForTask(
+      task: TaskResult,
+      options: WaitOptions? = nil,
+      _ completion: @escaping (Result<TaskResult, Swift.Error>
+    ) -> Void) {
+      self.tasks.waitForTask(task: task, options: options, completion)
+    }
+
   /**
    Get or create an index.
 
@@ -160,7 +179,7 @@ public struct MeiliSearch {
   public func getTask(
     _ taskId: Int,
     _ completion: @escaping (Result<TaskResult, Swift.Error>) -> Void) {
-    self.tasks.get(taskId, completion)
+    self.tasks.get(taskId: taskId, completion)
   }
 
   /**
