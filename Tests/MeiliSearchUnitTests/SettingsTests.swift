@@ -75,7 +75,7 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
 
     session.pushData(jsonString)
     let setting: Setting = buildStubSetting(from: json)
@@ -104,7 +104,7 @@ class SettingsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let data: Data = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: data)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: data)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -164,8 +164,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -202,8 +202,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -259,8 +259,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -292,8 +292,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -358,8 +358,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -391,8 +391,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -446,8 +446,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let distinctAttribute = "movie_id"
@@ -475,8 +475,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -532,8 +532,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -566,8 +566,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -622,8 +622,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -659,8 +659,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -713,8 +713,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -743,8 +743,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -798,8 +798,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -828,8 +828,8 @@ class SettingsTests: XCTestCase {
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskResult = try! decoder.decode(
+      TaskResult.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 

@@ -39,7 +39,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -74,7 +74,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let documentJsonString = """
@@ -117,7 +117,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentJsonString = """
       [{
@@ -154,7 +154,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let movie = Movie(
@@ -264,7 +264,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let identifier: String = "25684"
 
@@ -292,7 +292,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -318,7 +318,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskResult = try! decoder.decode(TaskResult.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
 

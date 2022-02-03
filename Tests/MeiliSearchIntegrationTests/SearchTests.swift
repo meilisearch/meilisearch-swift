@@ -84,7 +84,7 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Add documents to index")
 
     self.client.deleteIndex(uid) { result in
-      self.client.getOrCreateIndex(uid: self.uid) { result in
+      self.client.createIndex(uid: self.uid) { result in
         switch result {
         case .success:
           self.index.addDocuments(
@@ -92,18 +92,28 @@ class SearchTests: XCTestCase {
             primaryKey: nil
           ) { result in
             switch result {
-            case .success(let update):
-              waitForTask(self.client, self.uid, update) {
-                expectation.fulfill()
+            case .success(let task):
+              self.client.waitForTask(task: task) { result in
+                switch result {
+                  case .success(let task):
+                    XCTAssertEqual(task.status, Task.Status.succeeded)
+                    expectation.fulfill()
+                  case .failure(let error):
+                    dump(error)
+                    XCTFail("Could not wait for task in search tests setup")
+                    expectation.fulfill()
+                }
               }
             case .failure(let error):
-              print(error)
-              XCTFail()
+              dump(error)
+              XCTFail("Could not add documents in search tests setup")
+              expectation.fulfill()
             }
           }
         case .failure(let error):
           print(error)
-          XCTFail()
+          XCTFail("Could not create index in search tests setup")
+          expectation.fulfill()
         }
       }
     }
@@ -523,15 +533,22 @@ class SearchTests: XCTestCase {
 
     self.index.updateSettings(settings) { result in
       switch result {
-      case .success(let update):
-        waitForTask(self.client, self.uid, update) {
-          expectation.fulfill()
-          completion()
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+            case .success:
+              expectation.fulfill()
+              completion()
+           case .failure:
+            expectation.fulfill()
+            completion()
+          }
         }
       case .failure:
         XCTFail("Failed to update the settings")
       }
     }
+    self.wait(for: [expectation], timeout: 5.0)
   }
 
   func testSearchFilters() {
