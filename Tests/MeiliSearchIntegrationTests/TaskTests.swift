@@ -162,7 +162,7 @@ class UpdatesTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(task: task, options: WaitOptions(timeOut: 1, interval: 2)) { result in
+        self.client.waitForTask(task: task, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")
@@ -187,7 +187,7 @@ class UpdatesTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 1, interval: 2)) { result in
+        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")
