@@ -20,8 +20,6 @@ public struct MeiliSearch {
   private let stats: Stats
   private let system: System
   private let dumps: Dumps
-
-  // Tasks methods
   private let tasks: Tasks
 
   // MARK: Initializers
@@ -83,7 +81,7 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
 
-  // DONE
+  // TODO: remove in another PR
   // public func getOrCreateIndex(
   //   uid: String,
   //   primaryKey: String? = nil,
@@ -150,12 +148,28 @@ public struct MeiliSearch {
   // MARK: WAIT FOR TASK
 
   /**
-    Wait for an update to be processed or failed.
+    Wait for a task to be succesfull or failed.
 
-    Providing an update id, returned by asynchronous MeiliSearch options, call are made
-    to MeiliSearch to check if the update has been processed or if it has failed.
+    Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
 
-    - parameter updateId:            The id of the update.
+    - parameter taskId:              The id of the task.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForTask(
+    taskUid: Int,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(taskUid: taskUid, options: options, completion)
+  }
+
+  /**
+    Wait for a task to be succeeded or failed.
+
+    Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
+
+    - parameter task:                The task.
     - parameter: options             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/
@@ -170,9 +184,9 @@ public struct MeiliSearch {
   // MARK: Tasks
 
  /**
-   Get the status of an update of the index.
+   Get the information of a task.
 
-   - parameter updateId:    The update identifier.
+   - parameter taskUid:    The task identifier.
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
@@ -184,7 +198,7 @@ public struct MeiliSearch {
   }
 
   /**
-   Get the status of an update of the index.
+   Get all tasks.
 
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.

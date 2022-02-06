@@ -494,12 +494,12 @@ public struct Indexes {
     self.search.search(self.uid, searchParameters, completion)
   }
 
-  // MARK: Updates
+  // MARK: Tasks
 
   /**
-   Get the status of an update of the index.
+   Get a task.
 
-   - parameter updateId:    The update identifier.
+   - parameter taskuid:    The task identifier.
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
@@ -511,7 +511,7 @@ public struct Indexes {
   }
 
   /**
-   Get the status of an update of the index.
+   Get all tasks.
 
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
@@ -522,13 +522,12 @@ public struct Indexes {
     self.tasks.getAll(uid: self.uid, completion)
   }
 
-  /**
-    Wait for an update to be processed or failed.
+   /**
+    Wait for a task to be succeeded or failed.
 
-    Providing an update id, returned by asynchronous MeiliSearch options, call are made
-    to MeiliSearch to check if the update has been processed or if it has failed.
+    Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
 
-    - parameter updateId:            The id of the update.
+    - parameter task:                The task.
     - parameter: options             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/

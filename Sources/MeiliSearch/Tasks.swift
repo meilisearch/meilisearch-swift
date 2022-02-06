@@ -14,6 +14,7 @@ struct Tasks {
     self.request = request
   }
 
+  // Get on client
   func get(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
@@ -40,6 +41,7 @@ struct Tasks {
     }
   }
 
+  // Get on index
   func get(
     uid: String,
     taskUid: Int,
@@ -66,6 +68,7 @@ struct Tasks {
     }
   }
 
+  // get all on client
   func getAll(
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
     self.request.get(api: "/tasks") { result in
@@ -87,6 +90,7 @@ struct Tasks {
     }
   }
 
+  // get all on index
   func getAll(
     uid: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
@@ -132,6 +136,7 @@ struct Tasks {
       }
   }
 
+  // wait for task using taskUid
   func waitForTask(
     taskUid: Int,
     options: WaitOptions? = nil,
@@ -151,6 +156,7 @@ struct Tasks {
       }
   }
 
+  // wait for task using task structure
   func waitForTask(
     task: Task,
     options: WaitOptions? = nil,
