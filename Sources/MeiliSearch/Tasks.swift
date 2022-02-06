@@ -67,7 +67,7 @@ struct Tasks {
   }
 
   func getAll(
-    _ completion: @escaping (Result<[Task], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
     self.request.get(api: "/tasks") { result in
       switch result {
       case .success(let data):
@@ -76,7 +76,7 @@ struct Tasks {
           return
         }
         do {
-          let result: [Task] = try Constants.customJSONDecoder.decode([Task].self, from: data)
+          let result: Results<Task> = try Constants.customJSONDecoder.decode(Results<Task>.self, from: data)
           completion(.success(result))
         } catch {
           completion(.failure(error))
@@ -89,7 +89,7 @@ struct Tasks {
 
   func getAll(
     uid: String,
-    _ completion: @escaping (Result<[Task], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(uid)/tasks") { result in
       switch result {
       case .success(let data):
@@ -98,9 +98,7 @@ struct Tasks {
           return
         }
         do {
-          dump("ICI")
-          let result: [Task] = try Constants.customJSONDecoder.decode([Task].self, from: data)
-          dump("LA")
+          let result: Results<Task> = try Constants.customJSONDecoder.decode(Results<Task>.self, from: data)
           completion(.success(result))
         } catch {
           completion(.failure(error))
