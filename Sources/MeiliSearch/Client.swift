@@ -74,23 +74,7 @@ public struct MeiliSearch {
   }
 
 
-    /**
-      Wait for an update to be processed or failed.
 
-      Providing an update id, returned by asynchronous MeiliSearch options, call are made
-      to MeiliSearch to check if the update has been processed or if it has failed.
-
-      - parameter updateId:            The id of the update.
-      - parameter: options             Optionnal configuration for timeout and interval
-      - parameter completion:          The completion closure used to notify when the server
-    **/
-    public func waitForTask(
-      task: Task,
-      options: WaitOptions? = nil,
-      _ completion: @escaping (Result<Task, Swift.Error>
-    ) -> Void) {
-      self.tasks.waitForTask(task: task, options: options, completion)
-    }
 
   /**
    Get or create an index.
@@ -166,6 +150,26 @@ public struct MeiliSearch {
     self.index(uid).delete(completion)
   }
 
+  // MARK: WAIT FOR TASK
+
+  /**
+    Wait for an update to be processed or failed.
+
+    Providing an update id, returned by asynchronous MeiliSearch options, call are made
+    to MeiliSearch to check if the update has been processed or if it has failed.
+
+    - parameter updateId:            The id of the update.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForTask(
+    task: Task,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(task: task, options: options, completion)
+  }
+
   // MARK: Tasks
 
  /**
@@ -177,9 +181,9 @@ public struct MeiliSearch {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getTask(
-    _ taskId: Int,
+    taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.tasks.get(taskId: taskId, completion)
+    self.tasks.get(taskUid: taskUid, completion)
   }
 
   /**

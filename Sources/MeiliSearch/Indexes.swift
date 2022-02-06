@@ -505,9 +505,9 @@ public struct Indexes {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getTask(
-    _ taskId: Int,
+    taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.tasks.get(uid: self.uid, taskId: taskId, completion)
+    self.tasks.get(uid: self.uid, taskUid: taskUid, completion)
   }
 
   /**

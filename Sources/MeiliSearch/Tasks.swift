@@ -15,9 +15,9 @@ struct Tasks {
   }
 
   func get(
-    taskId: Int,
+    taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.request.get(api: "/tasks/\(taskId)") { result in
+    self.request.get(api: "/tasks/\(taskUid)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -42,9 +42,9 @@ struct Tasks {
 
   func get(
     uid: String,
-    taskId: Int,
+    taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(uid)/tasks/\(taskId)") { result in
+    self.request.get(api: "/indexes/\(uid)/tasks/\(taskUid)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -110,11 +110,11 @@ struct Tasks {
   }
 
   private func checkStatus(
-    _ task: Task,
+    _ taskUid: Int,
     _ options: WaitOptions,
     _ startingDate: Date,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      self.get(taskId: task.uid) { result in
+      self.get(taskUid: taskUid) { result in
         switch result {
         case .success(let status):
           if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
@@ -123,7 +123,7 @@ struct Tasks {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
           } else {
             usleep(useconds_t(options.interval * 1000000))
-            self.checkStatus(task, options, startingDate, completion)
+            self.checkStatus(taskUid, options, startingDate, completion)
           }
         case .failure(let error):
           completion(.failure(error))
@@ -132,26 +132,21 @@ struct Tasks {
       }
   }
 
-  private func checkStatus(
-    _ uid: String,
-    _ task: Task,
-    _ options: WaitOptions,
-    _ startingDate: Date,
+  func waitForTask(
+    taskUid: Int,
+    options: WaitOptions? = nil,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      self.get(uid: uid, taskId: task.uid) { result in
-        switch result {
-        case .success(let status):
-          if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
+      do {
+        let currentDate = Date()
+        let waitOptions: WaitOptions = options ?? WaitOptions()
+
+        self.checkStatus(taskUid, waitOptions, currentDate) { result in
+          switch result {
+          case .success(let status):
             completion(.success(status))
-          } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
-            completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
-          } else {
-            usleep(useconds_t(options.interval * 1000000))
-            self.checkStatus(uid, task, options, startingDate, completion)
+          case .failure(let error):
+            completion(.failure(error))
           }
-        case .failure(let error):
-          completion(.failure(error))
-          return
         }
       }
   }
@@ -164,7 +159,7 @@ struct Tasks {
         let currentDate = Date()
         let waitOptions: WaitOptions = options ?? WaitOptions()
 
-        self.checkStatus(task, waitOptions, currentDate) { result in
+        self.checkStatus(task.uid, waitOptions, currentDate) { result in
           switch result {
           case .success(let status):
             completion(.success(status))

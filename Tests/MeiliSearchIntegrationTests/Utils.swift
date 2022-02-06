@@ -15,7 +15,7 @@ private struct Movie: Codable, Equatable {
   }
 }
 
-public let movies: [Movie] = [
+private let movies: [Movie] = [
   Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
   Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
   Movie(id: 2, title: "Le Rouge et le Noir", comment: "Another french book"),
@@ -32,7 +32,7 @@ public func waitForTask(
   _ task: Task,
   _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   func request() {
-    client.index(uid).getTask(task.uid) { result in
+    client.index(uid).getTask(taskUid: task.uid) { result in
       switch result {
       case .success(let taskRes):
         if taskRes.status == Task.Status.succeeded || taskRes.status == Task.Status.failed {
