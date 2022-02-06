@@ -327,7 +327,7 @@ class DocumentsTests: XCTestCase {
       primaryKey: nil
     ) { result in
       switch result {
-      case .success(let task):
+      case .success:
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to add or replace Movies document")

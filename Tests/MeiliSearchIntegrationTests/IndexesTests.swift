@@ -247,7 +247,7 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-      case .success(let task):
+      case .success:
         createExpectation.fulfill()
       case .failure(let error):
         dump(error)

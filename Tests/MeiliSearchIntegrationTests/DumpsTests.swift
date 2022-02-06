@@ -24,7 +24,6 @@ class DumpsTests: XCTestCase {
     self.client.createDump { result in
       switch result {
       case .success(let createDump):
-        dump(createDump)
         XCTAssertTrue(!createDump.uid.isEmpty)
         self.client.getDumpStatus(createDump.uid) { result in
           switch result {

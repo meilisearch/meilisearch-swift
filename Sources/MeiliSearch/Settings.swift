@@ -22,19 +22,16 @@ struct Settings {
     self.request.get(api: "/indexes/\(uid)/settings") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let settings: SettingResult = try Constants.customJSONDecoder.decode(SettingResult.self, from: data)
           completion(.success(settings))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -63,7 +60,6 @@ struct Settings {
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -78,19 +74,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -102,22 +95,20 @@ struct Settings {
   func getSynonyms(
     _ uid: String,
     _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/synonyms") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let dictionary: [String: [String]] = try Constants.customJSONDecoder.decode([String: [String]].self, from: data)
           completion(.success(dictionary))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -136,7 +127,6 @@ struct Settings {
       completion(.failure(error))
       return
     }
-
     self.request.post(api: "/indexes/\(uid)/settings/synonyms", data) { result in
       switch result {
       case .success(let data):
@@ -159,19 +149,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/synonyms") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -186,19 +173,16 @@ struct Settings {
     self.request.get(api: "/indexes/\(uid)/settings/stop-words") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -217,18 +201,15 @@ struct Settings {
       completion(.failure(error))
       return
     }
-
     self.request.post(api: "/indexes/\(uid)/settings/stop-words", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -242,19 +223,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/stop-words") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -269,19 +247,16 @@ struct Settings {
     self.request.get(api: "/indexes/\(uid)/settings/ranking-rules") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -304,14 +279,12 @@ struct Settings {
     self.request.post(api: "/indexes/\(uid)/settings/ranking-rules", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -325,19 +298,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/ranking-rules") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -354,22 +324,20 @@ struct Settings {
   func getDistinctAttribute(
     _ uid: String,
     _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let value: String? = try Constants.customJSONDecoder.decode(String?.self, from: data)
           completion(.success(value))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -392,14 +360,12 @@ struct Settings {
     self.request.post(api: "/indexes/\(uid)/settings", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -413,19 +379,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -437,22 +400,20 @@ struct Settings {
   func getSearchableAttributes(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -471,18 +432,15 @@ struct Settings {
       completion(.failure(error))
       return
     }
-
     self.request.post(api: "/indexes/\(uid)/settings/searchable-attributes", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -496,19 +454,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -520,22 +475,20 @@ struct Settings {
   func getDisplayedAttributes(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -554,18 +507,15 @@ struct Settings {
       completion(.failure(error))
       return
     }
-
     self.request.post(api: "/indexes/\(uid)/settings/displayed-attributes", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -579,19 +529,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -603,22 +550,20 @@ struct Settings {
   func getFilterableAttributes(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -641,14 +586,12 @@ struct Settings {
     self.request.post(api: "/indexes/\(uid)/settings/filterable-attributes", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -662,19 +605,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -686,22 +626,20 @@ struct Settings {
   func getSortableAttributes(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
     self.request.get(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let array: [String] = try Constants.customJSONDecoder.decode([String].self, from: data)
           completion(.success(array))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -724,14 +662,12 @@ struct Settings {
     self.request.post(api: "/indexes/\(uid)/settings/sortable-attributes", data) { result in
       switch result {
       case .success(let data):
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }
@@ -745,19 +681,16 @@ struct Settings {
     self.request.delete(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
       switch result {
       case .success(let data):
-
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-
         do {
           let task: Task = try Constants.customJSONDecoder.decode(Task.self, from: data)
           completion(.success(task))
         } catch {
           completion(.failure(error))
         }
-
       case .failure(let error):
         completion(.failure(error))
       }

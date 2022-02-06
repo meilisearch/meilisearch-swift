@@ -102,7 +102,6 @@ class UpdatesTests: XCTestCase {
 
   func testGetTaskClient() {
     let addDocExpectation = XCTestExpectation(description: "Add documents")
-    let movie = Movie(id: 1, title: "test", comment: "test movie")
 
     self.client.createIndex(uid: self.uid) { result in
       switch result {
@@ -164,6 +163,31 @@ class UpdatesTests: XCTestCase {
       switch result {
       case .success(let task):
         self.client.waitForTask(task: task, options: WaitOptions(timeOut: 1, interval: 2)) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual(task.type, "indexCreation")
+            createIndexExpectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Could not get task")
+            createIndexExpectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        createIndexExpectation.fulfill()
+      }
+    }
+    self.wait(for: [createIndexExpectation], timeout: 10.0)
+  }
+
+  func testWaitForTaskUid() {
+    let createIndexExpectation = XCTestExpectation(description: "Add documents")
+
+    self.client.createIndex(uid: self.uid) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 1, interval: 2)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")
