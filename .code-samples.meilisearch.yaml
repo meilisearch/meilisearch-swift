@@ -126,20 +126,38 @@ search_post_1: |-
             print(error)
         }
     }
-get_update_1: |-
-    client.index("movies").getUpdate(1) { (result: Result<Task.Result, Swift.Error>) in
+get_task_by_index_1: |-
+  client.index("movies").getTask(taskUid: 1) { (result: Result<Task, Swift.Error>) in
         switch result {
-        case .success(let update):
-            print(update)
+        case .success(let task):
+            print(task)
         case .failure(let error):
             print(error)
         }
     }
-get_all_updates_1: |-
-    client.index("movies").getAllUpdates() { (result: Result<[Task.Result], Swift.Error>) in
+get_task_1: |-
+  client.getTask(taskUid: 1) { (result: Result<Task, Swift.Error>) in
         switch result {
-        case .success(let updates):
-            print(updates)
+        case .success(let task):
+            print(task)
+        case .failure(let error):
+            print(error)
+        }
+    }
+get_all_tasks_by_index_1: |-
+    client.index("movies").getTasks() { (result: Result<Results<Task>, Swift.Error>) in
+        switch result {
+        case .success(let tasks):
+            print(tasks)
+        case .failure(let error):
+            print(error)
+        }
+    }
+get_all_tasks_1: |-
+    client.getTasks() { (result: Result<Results<Task>, Swift.Error>) in
+        switch result {
+        case .success(let tasks):
+            print(tasks)
         case .failure(let error):
             print(error)
         }
