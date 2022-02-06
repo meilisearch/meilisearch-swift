@@ -111,8 +111,7 @@ class IndexesTests: XCTestCase {
               XCTAssertEqual(task.status, Task.Status.failed)
               if let error = task.error {
                 XCTAssertEqual(error.code, "index_already_exists")
-              }
-              else {
+              } else {
                 XCTFail("Failed: Error code should be index_already_exists")
               }
               create2ndIndexExpectation.fulfill()
@@ -178,7 +177,6 @@ class IndexesTests: XCTestCase {
     }
     self.wait(for: [createExpectation], timeout: 5.0)
 
-
     let expectation = XCTestExpectation(description: "Load indexes")
 
     self.client.getIndexes { result in
@@ -208,7 +206,6 @@ class IndexesTests: XCTestCase {
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
-
 
     // This tests should tests primary key when they are added to this function
     let updateExpectation = XCTestExpectation(description: "Update movie index")
@@ -244,7 +241,6 @@ class IndexesTests: XCTestCase {
     }
     self.wait(for: [updateExpectation], timeout: 5.0)
   }
-
 
   func testDeleteIndex() {
 
@@ -332,4 +328,3 @@ class IndexesTests: XCTestCase {
 
 }
 // swiftlint:enable force_try
-

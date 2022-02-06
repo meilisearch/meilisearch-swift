@@ -996,7 +996,7 @@ class SettingsTests: XCTestCase {
               XCTFail("Failed to wait for task")
               expectation.fulfill()
           }
-        }
+          }
       case .failure(let error):
         dump(error)
         XCTFail("Failed updating settings")

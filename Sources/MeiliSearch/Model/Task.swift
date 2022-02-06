@@ -78,7 +78,6 @@ public struct Task: Codable, Equatable {
   /// Error information in case of failed update.
   public let error: MeiliSearch.MSErrorResponse?
 
-
   public enum Status: Codable, Equatable {
 
     case enqueued

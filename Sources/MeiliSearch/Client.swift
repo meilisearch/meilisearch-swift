@@ -73,9 +73,6 @@ public struct MeiliSearch {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
-
-
-
   /**
    Get or create an index.
 

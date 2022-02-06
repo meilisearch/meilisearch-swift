@@ -18,7 +18,6 @@ public struct Index: Codable, Equatable {
   /// The data when the index was last updated.
   public let updatedAt: Date?
 
-
   // MARK: Initializers
 
   init(

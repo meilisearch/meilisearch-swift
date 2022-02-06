@@ -55,7 +55,7 @@ class DocumentsTests: XCTestCase {
           dump(error)
           expectation.fulfill()
         }
-      }
+    }
     self.wait(for: [expectation], timeout: 10.0)
   }
 
@@ -429,7 +429,6 @@ class DocumentsTests: XCTestCase {
         }
     }
     self.wait(for: [expectation], timeout: 10.0)
-
 
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
     let idsToDelete: [Int] = [2, 1, 4]

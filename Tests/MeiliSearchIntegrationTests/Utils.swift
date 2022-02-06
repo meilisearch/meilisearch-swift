@@ -91,7 +91,7 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
         dump(error)
         completion(.failure(error))
       }
-    }
+  }
 }
 
  public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
