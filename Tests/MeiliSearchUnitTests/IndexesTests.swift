@@ -96,6 +96,7 @@ class IndexesTests: XCTestCase {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
       case .failure(let error):
+        dump(error)
         XCTFail("Failed to get Movies index")
       }
       expectation.fulfill()
@@ -126,6 +127,7 @@ class IndexesTests: XCTestCase {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
       case .failure(let error):
+      dump(error)
         XCTFail("Failed to get Movies index")
       }
       expectation.fulfill()
@@ -158,6 +160,7 @@ class IndexesTests: XCTestCase {
         XCTAssertEqual("movies", indexes[0].uid)
         expectation.fulfill()
       case .failure(let error):
+      dump(error)
         XCTFail("Failed to get all Indexes")
       }
     }
@@ -165,67 +168,57 @@ class IndexesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 10.0)
   }
 
-  // func testUpdateIndexWithClient() {
-  //   let jsonString = """
-  //     {
-  //       "uid": "movies_test",
-  //       "primaryKey": "movie_review_id",
-  //       "createdAt": "2019-11-20T09:40:33.711324Z",
-  //       "updatedAt": "2019-11-20T10:16:42.761858Z"
-  //     }
-  //     """
+  func testUpdateIndexWithClient() {
+    let jsonString = """
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      """
 
-  //   // Prepare the mock server
-  //   session.pushData(jsonString)
-  //   let primaryKey: String = "movie_review_id"
+    // Prepare the mock server
+    session.pushData(jsonString)
+    let primaryKey: String = "movie_review_id"
 
-  //   // Start the test with the mocked server
-  //   let expectation = XCTestExpectation(description: "Update Movies index")
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Update Movies index")
 
-  //   self.client.updateIndex(uid: self.uid, primaryKey: primaryKey) { result in
-  //     switch result {
-  //     case .success(let task):
-  //       XCTAssertEqual(0, task.uid)
-  //       // XCTAssertEqual(primaryKey, index.primaryKey)
-  //     case .failure(let error):
-  //       XCTFail("Failed to update Movies index")
-  //     }
-  //     expectation.fulfill()
-  //   }
+    self.client.updateIndex(uid: self.uid, primaryKey: primaryKey) { result in
+      switch result {
+      case .success(let task):
+        XCTAssertEqual(0, task.uid)
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to update Movies index")
+      }
+      expectation.fulfill()
+    }
 
-  //   self.wait(for: [expectation], timeout: 10.0)
-  // }
+    self.wait(for: [expectation], timeout: 10.0)
+  }
 
-  // func testUpdateIndex() {
-  //   let jsonString = """
-  //     {
-  //       "uid": "movies_test",
-  //       "primaryKey": "movie_review_id",
-  //       "createdAt": "2019-11-20T09:40:33.711324Z",
-  //       "updatedAt": "2019-11-20T10:16:42.761858Z"
-  //     }
-  //     """
+  func testUpdateIndex() {
+    let jsonString = """
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      """
 
-  //   // Prepare the mock server
-  //   session.pushData(jsonString)
-  //   let primaryKey: String = "movie_review_id"
+    // Prepare the mock server
+    session.pushData(jsonString)
+    let primaryKey: String = "movie_review_id"
 
-  //   // Start the test with the mocked server
-  //   let expectation = XCTestExpectation(description: "Update Movies index")
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Update Movies index")
 
-  //   self.index.update(primaryKey: primaryKey) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       XCTAssertEqual(self.uid, index.uid)
-  //       XCTAssertEqual(primaryKey, index.primaryKey)
-  //     case .failure(let error):
-  //       XCTFail("Failed to update Movies index")
-  //     }
-  //     expectation.fulfill()
-  //   }
+    self.index.update(primaryKey: primaryKey) { result in
+      switch result {
+      case .success(let task):
+        XCTAssertEqual(0, task.uid)
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to update Movies index")
+      }
+      expectation.fulfill()
+    }
 
-  //   self.wait(for: [expectation], timeout: 10.0)
-  // }
+    self.wait(for: [expectation], timeout: 10.0)
+  }
 
   func testDeleteIndexWithClient() {
     let jsonString = """
