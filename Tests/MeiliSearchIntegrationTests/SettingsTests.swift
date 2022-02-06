@@ -39,12 +39,12 @@ class SettingsTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success:
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success:
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -102,23 +102,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let filterableAttributes = details.filterableAttributes {
-                  XCTAssertEqual(newFilterableAttributes, filterableAttributes)
-                } else {
-                  XCTFail("filterableAttributes should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let filterableAttributes = details.filterableAttributes {
+                XCTAssertEqual(newFilterableAttributes, filterableAttributes)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("filterableAttributes should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -139,14 +139,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -188,23 +188,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let displayedAttributes = details.displayedAttributes {
-                  XCTAssertEqual(newDisplayedAttributes, displayedAttributes)
-                } else {
-                  XCTFail("displayedAttributes should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let displayedAttributes = details.displayedAttributes {
+                XCTAssertEqual(newDisplayedAttributes, displayedAttributes)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("displayedAttributes should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -225,14 +225,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -273,23 +273,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let distinctAttribute = details.distinctAttribute {
-                  XCTAssertEqual(newDistinctAttribute, distinctAttribute)
-                } else {
-                  XCTFail("distinctAttribute should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let distinctAttribute = details.distinctAttribute {
+                XCTAssertEqual(newDistinctAttribute, distinctAttribute)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("distinctAttribute should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -309,15 +309,15 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
-          }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+        }
         }
       case .failure(let error):
         dump(error)
@@ -363,23 +363,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let rankingRules = details.rankingRules {
-                  XCTAssertEqual(newRankingRules, rankingRules)
-                } else {
-                  XCTFail("rankingRules should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let rankingRules = details.rankingRules {
+                XCTAssertEqual(newRankingRules, rankingRules)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("rankingRules should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -400,14 +400,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -453,23 +453,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let searchableAttributes = details.searchableAttributes {
-                  XCTAssertEqual(newSearchableAttributes, searchableAttributes)
-                } else {
-                  XCTFail("searchableAttributes should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let searchableAttributes = details.searchableAttributes {
+                XCTAssertEqual(newSearchableAttributes, searchableAttributes)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("searchableAttributes should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -490,14 +490,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -540,23 +540,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let stopWords = details.stopWords {
-                  XCTAssertEqual(newStopWords, stopWords)
-                } else {
-                  XCTFail("stopWords should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let stopWords = details.stopWords {
+                XCTAssertEqual(newStopWords, stopWords)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("stopWords should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -578,24 +578,24 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              dump(task)
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let stopWords = details.stopWords {
-                  XCTAssertEqual(emptyStopWords, stopWords)
-                } else {
-                  XCTFail("stopWords should be nil")
-                }
+          case .success(let task):
+            dump(task)
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let stopWords = details.stopWords {
+                XCTAssertEqual(emptyStopWords, stopWords)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("stopWords should be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -617,24 +617,24 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              dump(task)
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if details.stopWords == nil {
-                  XCTAssertEqual(nilStopWords, details.stopWords)
-                } else {
-                  XCTFail("stopWords should be nil")
-                }
+          case .success(let task):
+            dump(task)
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if details.stopWords == nil {
+                XCTAssertEqual(nilStopWords, details.stopWords)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("stopWords should be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -655,14 +655,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -710,23 +710,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let synonyms = details.synonyms {
-                  XCTAssertEqual(newSynonyms, synonyms)
-                } else {
-                  XCTFail("synonyms should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let synonyms = details.synonyms {
+                XCTAssertEqual(newSynonyms, synonyms)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("synonyms should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -748,23 +748,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if let synonyms = details.synonyms {
-                  XCTAssertEqual(newSynonyms, synonyms)
-                } else {
-                  XCTFail("synonyms should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let synonyms = details.synonyms {
+                XCTAssertEqual(newSynonyms, synonyms)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("synonyms should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -787,23 +787,23 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                if details.synonyms == nil {
-                  XCTAssertEqual(newSynonyms, details.synonyms)
-                } else {
-                  XCTFail("synonyms should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if details.synonyms == nil {
+                XCTAssertEqual(newSynonyms, details.synonyms)
               } else {
-                XCTFail("details should exists in details field of task")
+                XCTFail("synonyms should not be nil")
               }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -824,14 +824,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -892,21 +892,21 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
-                XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
-                XCTAssertEqual(expectedSettingResult.stopWords, details.stopWords)
-              } else {
-                XCTFail("details should exists in details field of task")
-              }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
+              XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
+              XCTAssertEqual(expectedSettingResult.stopWords, details.stopWords)
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):
@@ -925,19 +925,19 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
-              } else {
-                XCTFail("details should exists in details field of task")
-              }
-              overrideSettingsExpectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              overrideSettingsExpectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            overrideSettingsExpectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            overrideSettingsExpectation.fulfill()
           }
         }
       case .failure(let error):
@@ -975,28 +975,28 @@ class SettingsTests: XCTestCase {
     self.index.updateSettings(newSettings) { result in
       switch result {
       case .success(let task):
-          self.client.waitForTask(task: task) { result in
-          switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              if let details = task.details {
-                XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
-                XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
-                XCTAssertEqual(expectedSettingResult.displayedAttributes, details.displayedAttributes)
-                XCTAssertEqual(expectedSettingResult.distinctAttribute, details.distinctAttribute)
-                XCTAssertEqual(expectedSettingResult.filterableAttributes, details.filterableAttributes)
-                XCTAssertEqual(expectedSettingResult.sortableAttributes, details.sortableAttributes)
-              } else {
-                XCTFail("details should exists in details field of task")
-              }
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+        self.client.waitForTask(task: task) { result in
+        switch result {
+        case .success(let task):
+          XCTAssertEqual("settingsUpdate", task.type)
+          XCTAssertEqual(Task.Status.succeeded, task.status)
+          if let details = task.details {
+            XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
+            XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
+            XCTAssertEqual(expectedSettingResult.displayedAttributes, details.displayedAttributes)
+            XCTAssertEqual(expectedSettingResult.distinctAttribute, details.distinctAttribute)
+            XCTAssertEqual(expectedSettingResult.filterableAttributes, details.filterableAttributes)
+            XCTAssertEqual(expectedSettingResult.sortableAttributes, details.sortableAttributes)
+          } else {
+            XCTFail("details should exists in details field of task")
           }
-          }
+          expectation.fulfill()
+        case .failure(let error):
+          dump(error)
+          XCTFail("Failed to wait for task")
+          expectation.fulfill()
+        }
+        }
       case .failure(let error):
         dump(error)
         XCTFail("Failed updating settings")
@@ -1015,14 +1015,14 @@ class SettingsTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("settingsUpdate", task.type)
-              XCTAssertEqual(Task.Status.succeeded, task.status)
-              expectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              expectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
           }
         }
       case .failure(let error):

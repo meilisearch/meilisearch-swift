@@ -95,13 +95,13 @@ class SearchTests: XCTestCase {
             case .success(let task):
               self.client.waitForTask(task: task) { result in
                 switch result {
-                  case .success(let task):
-                    XCTAssertEqual(task.status, Task.Status.succeeded)
-                    expectation.fulfill()
-                  case .failure(let error):
-                    dump(error)
-                    XCTFail("Could not wait for task in search tests setup")
-                    expectation.fulfill()
+                case .success(let task):
+                  XCTAssertEqual(task.status, Task.Status.succeeded)
+                  expectation.fulfill()
+                case .failure(let error):
+                  dump(error)
+                  XCTFail("Could not wait for task in search tests setup")
+                  expectation.fulfill()
                 }
               }
             case .failure(let error):
@@ -536,10 +536,10 @@ class SearchTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success:
-              expectation.fulfill()
-              completion()
-           case .failure:
+          case .success:
+            expectation.fulfill()
+            completion()
+          case .failure:
             expectation.fulfill()
             completion()
           }

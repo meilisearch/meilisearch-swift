@@ -52,14 +52,14 @@ class IndexesTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("indexCreation", task.type)
-              XCTAssertEqual(task.status, Task.Status.succeeded)
-              createExpectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              createExpectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("indexCreation", task.type)
+            XCTAssertEqual(task.status, Task.Status.succeeded)
+            createExpectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            createExpectation.fulfill()
           }
         }
       case .failure(let error):
@@ -75,12 +75,12 @@ class IndexesTests: XCTestCase {
     let deleteException = XCTestExpectation(description: "Delete Movies index")
     deleteIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success:
-          deleteException.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          deleteException.fulfill()
+      case .success:
+        deleteException.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        deleteException.fulfill()
       }
     }
     self.wait(for: [deleteException], timeout: 5.0)
@@ -88,14 +88,14 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid ) { result in
       switch result {
-        case .success(let task):
-          XCTAssertEqual("indexCreation", task.type)
-          XCTAssertEqual(task.status, Task.Status.succeeded)
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success(let task):
+        XCTAssertEqual("indexCreation", task.type)
+        XCTAssertEqual(task.status, Task.Status.succeeded)
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -106,19 +106,19 @@ class IndexesTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("indexCreation", task.type)
-              XCTAssertEqual(task.status, Task.Status.failed)
-              if let error = task.error {
-                XCTAssertEqual(error.code, "index_already_exists")
-              } else {
-                XCTFail("Failed: Error code should be index_already_exists")
-              }
-              create2ndIndexExpectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              create2ndIndexExpectation.fulfill()
+          case .success(let task):
+            XCTAssertEqual("indexCreation", task.type)
+            XCTAssertEqual(task.status, Task.Status.failed)
+            if let error = task.error {
+              XCTAssertEqual(error.code, "index_already_exists")
+            } else {
+              XCTFail("Failed: Error code should be index_already_exists")
+            }
+            create2ndIndexExpectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            create2ndIndexExpectation.fulfill()
           }
         }
       case .failure(let error):
@@ -136,12 +136,12 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid ) { result in
       switch result {
-        case .success:
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success:
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -167,12 +167,12 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success:
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success:
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -197,12 +197,12 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success:
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success:
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -214,23 +214,23 @@ class IndexesTests: XCTestCase {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
-            case .success(let task):
-              XCTAssertEqual("indexUpdate", task.type)
-              XCTAssertEqual(task.status, Task.Status.succeeded)
-              if let details = task.details {
-                if let primaryKey = details.primaryKey {
-                  XCTAssertEqual("random", primaryKey)
-                } else {
-                  XCTFail("Primary key should not be nil")
-                }
+          case .success(let task):
+            XCTAssertEqual("indexUpdate", task.type)
+            XCTAssertEqual(task.status, Task.Status.succeeded)
+            if let details = task.details {
+              if let primaryKey = details.primaryKey {
+                XCTAssertEqual("random", primaryKey)
               } else {
-                XCTFail("Primary key should exists in details field of task")
+                XCTFail("Primary key should not be nil")
               }
-              updateExpectation.fulfill()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to wait for task")
-              updateExpectation.fulfill()
+            } else {
+              XCTFail("Primary key should exists in details field of task")
+            }
+            updateExpectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            updateExpectation.fulfill()
           }
         }
       case .failure(let error):
@@ -247,12 +247,12 @@ class IndexesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success(let task):
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success(let task):
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -260,14 +260,14 @@ class IndexesTests: XCTestCase {
     let deleteException = XCTestExpectation(description: "Delete Movies index")
     deleteIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success(let task):
-          XCTAssertEqual("indexDeletion", task.type)
-          XCTAssertEqual(task.status, Task.Status.succeeded)
-          deleteException.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          deleteException.fulfill()
+      case .success(let task):
+        XCTAssertEqual("indexDeletion", task.type)
+        XCTAssertEqual(task.status, Task.Status.succeeded)
+        deleteException.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        deleteException.fulfill()
       }
     }
     self.wait(for: [deleteException], timeout: 5.0)

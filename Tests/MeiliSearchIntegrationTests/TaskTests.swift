@@ -31,12 +31,12 @@ class UpdatesTests: XCTestCase {
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-        case .success:
-          createExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          createExpectation.fulfill()
+      case .success:
+        createExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        createExpectation.fulfill()
       }
     }
     self.wait(for: [createExpectation], timeout: 5.0)
@@ -73,12 +73,12 @@ class UpdatesTests: XCTestCase {
 
     addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
       switch result {
-        case .success:
-          addDocExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          addDocExpectation.fulfill()
+      case .success:
+        addDocExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        addDocExpectation.fulfill()
       }
     }
     self.wait(for: [addDocExpectation], timeout: 10.0)
@@ -131,12 +131,12 @@ class UpdatesTests: XCTestCase {
 
     addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
       switch result {
-        case .success:
-          addDocExpectation.fulfill()
-        case .failure(let error):
-          dump(error)
-          XCTFail("Failed to create index")
-          addDocExpectation.fulfill()
+      case .success:
+        addDocExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        addDocExpectation.fulfill()
       }
     }
     self.wait(for: [addDocExpectation], timeout: 10.0)

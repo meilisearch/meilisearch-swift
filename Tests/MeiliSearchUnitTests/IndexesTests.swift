@@ -228,15 +228,15 @@ class IndexesTests: XCTestCase {
   // }
 
   func testDeleteIndexWithClient() {
-      let jsonString = """
-      {
-        "uid": 0,
-        "indexUid":"movies_test",
-        "status": "succeeded",
-        "type": "indexDeletion",
-        "enqueuedAt":"2020-04-04T19:59:49.259572Z"
-      }
-      """
+    let jsonString = """
+    {
+      "uid": 0,
+      "indexUid":"movies_test",
+      "status": "succeeded",
+      "type": "indexDeletion",
+      "enqueuedAt":"2020-04-04T19:59:49.259572Z"
+    }
+    """
 
     // Prepare the mock server
     session.pushData(jsonString)
@@ -260,15 +260,15 @@ class IndexesTests: XCTestCase {
   }
 
   func testDeleteIndex() {
-      let jsonString = """
-      {
-        "uid": 0,
-        "indexUid":"movies_test",
-        "status": "succeeded",
-        "type": "indexDeletion",
-        "enqueuedAt":"2020-04-04T19:59:49.259572Z"
-      }
-      """
+    let jsonString = """
+    {
+      "uid": 0,
+      "indexUid":"movies_test",
+      "status": "succeeded",
+      "type": "indexDeletion",
+      "enqueuedAt":"2020-04-04T19:59:49.259572Z"
+    }
+    """
 
     // Prepare the mock server
     session.pushData(jsonString)

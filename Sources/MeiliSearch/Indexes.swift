@@ -180,8 +180,8 @@ public struct Indexes {
       case .success(let data):
       do {
         let result: Task = try Constants.customJSONDecoder.decode(
-            Task.self,
-            from: data)
+          Task.self,
+          from: data)
           completion(.success(result))
       } catch {
         completion(.failure(error))
@@ -217,8 +217,8 @@ public struct Indexes {
       case .success(let data):
         do {
           let task: Task = try Constants.customJSONDecoder.decode(
-              Task.self,
-              from: data)
+            Task.self,
+            from: data)
             completion(.success(task))
         } catch {
           completion(.failure(error))
