@@ -451,7 +451,7 @@ get_sys_info_1: |-
       }
   }
 distinct_attribute_guide_1: |-
-  client.index("movies").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
+  client.index("jackets").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
       switch result {
       case .success(let update):
           print(update)
