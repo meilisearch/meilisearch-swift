@@ -181,12 +181,13 @@ get_all_keys_1: |-
       }
   }
 create_a_key_1: |-
-  self.client.createKey(
-      description: "Add documents: Products API key",
-      actions: ["documents.add"],
-      indexes: ["products"],
-      expiresAt: "2042-04-02T00:42:42Z"
-  ) { result in
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add"],
+    indexes: ["products"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
+  self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
           print(keys)
@@ -195,12 +196,15 @@ create_a_key_1: |-
       }
   }
 update_a_key_1: |-
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add", "documents.delete"],
+    indexes: ["products", "reviews"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
   self.client.updateKey(
       key: d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4
-      description: "Add documents: Products API key",
-      actions: ["documents.add", "documents.delete"],
-      indexes: ["products", "reviews"],
-      expiresAt: "2042-04-02T00:42:42Z"
+      keyparams: keyParams
   ) { result in
       switch result {
       case .success(let key):
@@ -232,9 +236,12 @@ security_guide_search_key_1: |-
       }
   }
 security_guide_update_key_1: |-
+  let keyParams = KeyParams(
+    indexes: ["doctors"]
+  )
   self.client.updateKey(
     key: d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4,
-    indexes: ["doctors"],
+    keyParams: keyParams,
   ) { result in
     switch result {
     case .success(let key):
@@ -244,12 +251,13 @@ security_guide_update_key_1: |-
     }
   }
 security_guide_create_key_1: |-
-  self.client.createKey(
+  let keyParams = KeyParams(
     description: "Search patient records key",
     actions: ["search"],
     indexes: ["patient_medical_records"],
     expiresAt: "2023-01-01T00:00:00Z""
-  ) { result in
+  )
+  self.client.createKey(keyParams) { result in
     switch result {
     case .success(let key):
       print(keys)
