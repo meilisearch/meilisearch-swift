@@ -41,7 +41,7 @@ class IndexesTests: XCTestCase {
         getIndexesExp.fulfill()
       }
     }
-    self.wait(for: [getIndexesExp], timeout: 5.0)
+    self.wait(for: [getIndexesExp], timeout: 20.0)
   }
 
   func testCreateIndex() {
@@ -68,7 +68,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
   }
 
   func testCreateIndexThatAlreadyExists() {
@@ -83,7 +83,7 @@ class IndexesTests: XCTestCase {
         deleteException.fulfill()
       }
     }
-    self.wait(for: [deleteException], timeout: 5.0)
+    self.wait(for: [deleteException], timeout: 20.0)
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid ) { result in
@@ -98,7 +98,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
 
     let create2ndIndexExpectation = XCTestExpectation(description: "Create Movies index that already exists and fail")
     self.client.createIndex(uid: self.uid) { result in
@@ -127,7 +127,7 @@ class IndexesTests: XCTestCase {
         create2ndIndexExpectation.fulfill()
       }
     }
-    self.wait(for: [create2ndIndexExpectation], timeout: 5.0)
+    self.wait(for: [create2ndIndexExpectation], timeout: 20.0)
 
   }
 
@@ -144,7 +144,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
 
     let getIndexExpectation = XCTestExpectation(description: "Get index")
 
@@ -160,7 +160,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [getIndexExpectation], timeout: 5.0)
+    self.wait(for: [getIndexExpectation], timeout: 20.0)
   }
 
   func testGetIndexes() {
@@ -175,7 +175,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
 
     let expectation = XCTestExpectation(description: "Load indexes")
 
@@ -190,7 +190,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testUpdateIndexName() {
@@ -205,7 +205,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
 
     // This tests should tests primary key when they are added to this function
     let updateExpectation = XCTestExpectation(description: "Update movie index")
@@ -239,7 +239,7 @@ class IndexesTests: XCTestCase {
         updateExpectation.fulfill()
       }
     }
-    self.wait(for: [updateExpectation], timeout: 5.0)
+    self.wait(for: [updateExpectation], timeout: 20.0)
   }
 
   func testDeleteIndex() {
@@ -255,7 +255,7 @@ class IndexesTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 5.0)
+    self.wait(for: [createExpectation], timeout: 20.0)
 
     let deleteException = XCTestExpectation(description: "Delete Movies index")
     deleteIndex(client: self.client, uid: self.uid) { result in
@@ -270,7 +270,7 @@ class IndexesTests: XCTestCase {
         deleteException.fulfill()
       }
     }
-    self.wait(for: [deleteException], timeout: 5.0)
+    self.wait(for: [deleteException], timeout: 20.0)
   }
 
     // TODO: remove
@@ -289,7 +289,7 @@ class IndexesTests: XCTestCase {
   //     }
   //   }
 
-  //   self.wait(for: [expectation], timeout: 5.0)
+  //   self.wait(for: [expectation], timeout: 20.0)
   // }
 
   // func testGetOrCreateIndexAlreadyExists() {
@@ -306,7 +306,7 @@ class IndexesTests: XCTestCase {
   //     }
   //   }
 
-  //   self.wait(for: [expectation], timeout: 5.0)
+  //   self.wait(for: [expectation], timeout: 20.0)
 
   //   sleep(2)
 
@@ -323,7 +323,7 @@ class IndexesTests: XCTestCase {
   //     }
   //   }
 
-  //   self.wait(for: [secondExpectation], timeout: 5.0)
+  //   self.wait(for: [secondExpectation], timeout: 20.0)
   // }
 
 }
