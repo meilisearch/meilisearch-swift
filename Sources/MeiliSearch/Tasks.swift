@@ -18,27 +18,7 @@ struct Tasks {
   func get(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.request.get(api: "/tasks/\(taskUid)") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: Task = try Constants.customJSONDecoder.decode(
-            Task.self,
-            from: data)
-          completion(.success(task))
-        } catch {
-          dump(error)
-          completion(.failure(error))
-        }
-
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+      get(url: "/tasks/\(taskUid)", completion)
   }
 
   // Get on index
@@ -46,64 +26,49 @@ struct Tasks {
     uid: String,
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(uid)/tasks/\(taskUid)") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: Task = try Constants.customJSONDecoder.decode(
-            Task.self,
-            from: data)
-          completion(.success(task))
-        } catch {
+      get(url: "/indexes/\(uid)/tasks/\(taskUid)", completion)
+  }
+
+  func get (
+    url: String,
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+      self.request.get(api: url) { result in
+        switch result {
+        case .success(let data):
+          do {
+            let task: Result<Task, Swift.Error>  = try Constants.resultDecoder(data: data)
+            completion(task)
+          } catch {
+            completion(.failure(error))
+          }
+        case .failure(let error):
           completion(.failure(error))
         }
-
-      case .failure(let error):
-        completion(.failure(error))
       }
     }
-  }
 
   // get all on client
   func getAll(
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: "/tasks") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let result: Results<Task> = try Constants.customJSONDecoder.decode(Results<Task>.self, from: data)
-          completion(.success(result))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+      getAll(url: "/tasks", completion)
   }
 
   // get all on index
   func getAll(
     uid: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(uid)/tasks") { result in
+      getAll(url: "/indexes/\(uid)/tasks", completion)
+  }
+
+  func getAll(
+    url: String,
+    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    self.request.get(api: url) { result in
       switch result {
       case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
         do {
-          let result: Results<Task> = try Constants.customJSONDecoder.decode(Results<Task>.self, from: data)
-          completion(.success(result))
+          let task: Result<Results<Task>, Swift.Error>  = try Constants.resultDecoder(data: data)
+          completion(task)
         } catch {
           completion(.failure(error))
         }
@@ -136,6 +101,16 @@ struct Tasks {
       }
   }
 
+
+
+  // wait for task using task structure
+  func waitForTask(
+    task: Task,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+      waitForTask(taskUid: task.uid, options: options, completion)
+  }
+
   // wait for task using taskUid
   func waitForTask(
     taskUid: Int,
@@ -146,26 +121,6 @@ struct Tasks {
         let waitOptions: WaitOptions = options ?? WaitOptions()
 
         self.checkStatus(taskUid, waitOptions, currentDate) { result in
-          switch result {
-          case .success(let status):
-            completion(.success(status))
-          case .failure(let error):
-            completion(.failure(error))
-          }
-        }
-      }
-  }
-
-  // wait for task using task structure
-  func waitForTask(
-    task: Task,
-    options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      do {
-        let currentDate = Date()
-        let waitOptions: WaitOptions = options ?? WaitOptions()
-
-        self.checkStatus(task.uid, waitOptions, currentDate) { result in
           switch result {
           case .success(let status):
             completion(.success(status))
