@@ -8,32 +8,32 @@ public struct Task: Codable, Equatable {
 
   // MARK: Properties
 
-  /// Unique ID for the current `Update`.
+  /// Unique ID for the current `Task`.
   public let uid: Int
 
-  /// Unique ID for the current `Update`.
+  /// Unique ID for the current `Task`.
   public let indexUid: String
 
-  /// Returns if the update has been sucessful or not.
+  /// Returns if the task has been successful or not.
   public let status: Task.Status
 
-  /// Type of update.
+  /// Type of the task.
   public let type: String
 
-  /// Type of update.
+  /// Details of the task.
   public let details: Details?
 
-  /// Duration of the update process.
+  /// Duration of the task process.
   public let duration: String?
 
-  /// Date when the update has been enqueued.
+  /// Date when the task has been enqueued.
   public let enqueuedAt: String
 
-  /// Date when the update has been processed.
+  /// Date when the task has been processed.
   // TODO: should this become a Date type?
   public let processedAt: String?
 
-  /// Type of `Update`.
+  /// Type of `Task`.
   public struct Details: Codable, Equatable {
 
     // MARK: Properties
@@ -68,7 +68,7 @@ public struct Task: Codable, Equatable {
     // Stop words on settings actions
     public let stopWords: [String]?
 
-    // Stop words on settings actions
+    // Synonyms on settings actions
     public let synonyms: [String: [String]]?
 
     // Distinct attribute on settings actions

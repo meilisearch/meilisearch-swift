@@ -68,8 +68,8 @@ public struct Indexes {
    Get the index.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
+   completes the query request. It returns a `Result` object that contains `Index`
+   value if the request was successful or `Error` if a failure occurred.
    */
   public func get(_ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(self.uid)") { result in
@@ -98,8 +98,8 @@ public struct Indexes {
    List all indexes.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `[Index]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   completes the query request. It returns a `Result` object that contains `[Index]`
+   value if the request was successful or `Error` if a failure occurred.
    */
   public static func getAll(config: Config, _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
     Request(config).get(api: "/indexes") { result in
@@ -253,7 +253,6 @@ public struct Indexes {
         } catch {
           completion(.failure(error))
         }
-        // }
       case .failure(let error):
         completion(.failure(error))
       }
