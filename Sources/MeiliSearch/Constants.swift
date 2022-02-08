@@ -12,4 +12,19 @@ struct Constants {
     encoder.dateEncodingStrategy = JSONEncoder.DateEncodingStrategy.formatted(Formatter.iso8601)
     return encoder
   }()
+
+  static func resultDecoder<T: Decodable>(data: Data?) throws -> Result<T, Swift.Error> {
+    guard let data: Data = data else {
+      return .failure(MeiliSearch.Error.dataNotFound)
+    }
+    do {
+      let task: T = try Constants.customJSONDecoder.decode(
+        T.self,
+        from: data)
+      return .success(task)
+    } catch {
+      return .failure(error)
+    }
+  }
+
 }

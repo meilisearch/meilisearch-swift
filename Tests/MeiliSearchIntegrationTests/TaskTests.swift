@@ -15,7 +15,7 @@ private struct Movie: Codable, Equatable {
   }
 }
 
-class UpdatesTests: XCTestCase {
+class TasksTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
   private var session: URLSessionProtocol!
