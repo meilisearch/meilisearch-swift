@@ -275,58 +275,5 @@ class IndexesTests: XCTestCase {
     self.wait(for: [deleteException], timeout: 20.0)
   }
 
-    // TODO: remove
-  // func testGetOrCreateIndex() {
-  //   let expectation = XCTestExpectation(description: "Get or create Movies index")
-
-  //   self.client.getOrCreateIndex(uid: self.uid) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       let stubIndex = self.client.index(self.uid)
-  //       XCTAssertEqual(stubIndex.uid, index.uid)
-  //       expectation.fulfill()
-  //     case .failure(let error):
-//    dump(error)
-  //       XCTFail("Failed to get or create Movies index")
-  //     }
-  //   }
-
-  //   self.wait(for: [expectation], timeout: 20.0)
-  // }
-
-  // func testGetOrCreateIndexAlreadyExists() {
-  //   let expectation = XCTestExpectation(description: "Get or create a non existing uid")
-
-  //   self.client.getOrCreateIndex(uid: self.uid) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       let stubIndex = self.client.index(self.uid)
-  //       XCTAssertEqual(stubIndex.uid, index.uid)
-  //       expectation.fulfill()
-  //     case .failure(let error):
-  //       XCTFail("Failed to get or create Movies index, error: \(error)")
-  //     }
-  //   }
-
-  //   self.wait(for: [expectation], timeout: 20.0)
-
-  //   sleep(2)
-
-  //   let secondExpectation = XCTestExpectation(description: "Get or create an existing index")
-
-  //   self.client.getOrCreateIndex(uid: self.uid) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       let stubIndex = self.client.index(self.uid)
-  //       XCTAssertEqual(stubIndex.uid, index.uid)
-  //       secondExpectation.fulfill()
-  //     case .failure(let error):
-  //       XCTFail("Failed to get or create an existing index, error: \(error)")
-  //     }
-  //   }
-
-  //   self.wait(for: [secondExpectation], timeout: 20.0)
-  // }
-
 }
 // swiftlint:enable force_try

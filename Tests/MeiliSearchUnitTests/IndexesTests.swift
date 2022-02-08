@@ -44,35 +44,6 @@ class IndexesTests: XCTestCase {
     }
     self.wait(for: [expectation], timeout: 20.0)
   }
-// TODO: remove
-  // func testGetOrCreateIndex() {
-  //   let jsonString = """
-  //     {
-  //       "name":"Movies",
-  //       "uid":"movies_test",
-  //       "createdAt":"2020-04-04T19:59:49.259572Z",
-  //       "updatedAt":"2020-04-04T19:59:49.259579Z",
-  //       "primaryKey":null
-  //     }
-  //     """
-  //   // Prepare the mock server
-  //   session.pushData(jsonString)
-
-  //   // Start the test with the mocked server
-  //   let expectation = XCTestExpectation(description: "Get or create Movies index")
-
-  //   self.client.getOrCreateIndex(uid: self.uid) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       XCTAssertEqual(self.uid, index.uid)
-  //     case .failure(let error):
-  //       XCTFail("Failed to get or create Movies index")
-  //     }
-  //     expectation.fulfill()
-  //   }
-
-  //   self.wait(for: [expectation], timeout: 20.0)
-  // }
 
   func testGetIndexWithClient() {
     let jsonString = """
@@ -289,47 +260,6 @@ class IndexesTests: XCTestCase {
     self.wait(for: [expectation], timeout: 20.0)
   }
 
-  // TODO: remove
-  // func testDeleteIndexIfExists() {
-  //   // Prepare the mock server
-  //   session.pushEmpty(code: 204)
-
-  //   // Start the test with the mocked server
-  //   let expectation = XCTestExpectation(description: "Delete Movies index")
-
-  //   self.index.deleteIfExists { result in
-  //     if result {
-  //       XCTAssertTrue(result)
-  //       expectation.fulfill()
-  //     } else {
-  //       XCTFail("Failed to delete Movies index, it was not present on the server")
-  //     }
-  //     expectation.fulfill()
-  //   }
-
-  //   self.wait(for: [expectation], timeout: 20.0)
-  // }
-
-  // TODO: remove
-  // func testDeleteIndexIfExistsWhenIsnt() {
-  //   // Prepare the mock server
-  //   session.pushEmpty(code: 404)
-
-  //   // Start the test with the mocked server
-  //   let expectation = XCTestExpectation(description: "Delete Movies index only if exists")
-
-  //   self.index.deleteIfExists { result in
-  //     if !result {
-  //       XCTAssertFalse(result)
-  //       expectation.fulfill()
-  //     } else {
-  //       XCTFail("Deleting the index should have returned false as the index does not exist on the server")
-  //     }
-  //     expectation.fulfill()
-  //   }
-
-  //   self.wait(for: [expectation], timeout: 20.0)
-  // }
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

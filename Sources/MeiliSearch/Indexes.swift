@@ -116,42 +116,6 @@ public struct Indexes {
     }
   }
 
-  // TODO: remove
-  /**
-   Get or create an index.
-
-  - parameter uid:        The unique identifier for the `Index` to be created.
-  - parameter primaryKey: the unique field of a document.
-  - parameter completion: The completion closure used to notify when the server
-   completes the write request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
-   */
-  // public static func getOrCreate(
-  //   uid: String,
-  //   primaryKey: String? = nil,
-  //   config: Config,
-  //   _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-  //   Indexes.create(uid: uid, primaryKey: primaryKey, config: config) { result in
-  //     switch result {
-  //     case .success(let index):
-  //       completion(.success(index))
-  //     case .failure(let error):
-  //       switch error {
-  //       case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
-  //         if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
-  //           if msErrorBody.code == "index_already_exists" {
-  //             Indexes(config: config, uid: uid).get(completion)
-  //           }
-  //         } else {
-  //           completion(.failure(error))
-  //         }
-  //       default:
-  //         completion(.failure(error))
-  //       }
-  //     }
-  //   }
-  // }
-
   /**
    Create a new Index for the given `uid`.
 
@@ -259,25 +223,7 @@ public struct Indexes {
     }
   }
 
-  /**
-   Delete the index only if it exists.
-
-  - parameter completion: The completion closure used to notify when the server
-   completes the delete request, it returns a `Bool` that is `true`
-   If the request sucessfully deleted an existent index or `false` if a failure occured or the index do not exist.
-   */
-  public func deleteIfExists(_ completion: @escaping (Bool) -> Void) {
-    self.request.delete(api: "/indexes/\(self.uid)") { result in
-      switch result {
-      case .success:
-        completion(true)
-      default:
-        completion(false)
-      }
-    }
-  }
-
-    // MARK: Document
+  // MARK: Document
 
   /**
    Add a list of documents or replace them if they already exist.
