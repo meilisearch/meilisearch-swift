@@ -81,7 +81,7 @@ class SearchTests: XCTestCase {
 
     let addDocExpectation = XCTestExpectation(description: "Add documents")
 
-    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+    addDocuments(client: self.client, uid: self.uid, dataset: books, primaryKey: nil) { result in
       switch result {
       case .success:
         addDocExpectation.fulfill()
