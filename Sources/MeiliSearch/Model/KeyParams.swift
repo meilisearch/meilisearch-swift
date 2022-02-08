@@ -18,7 +18,4 @@ public struct KeyParams: Codable, Equatable {
   }
 
   // MARK: Properties
-
-
-
 }

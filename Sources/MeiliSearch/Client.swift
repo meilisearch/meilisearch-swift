@@ -223,7 +223,6 @@ public struct MeiliSearch {
     self.keys.getAll(completion)
   }
 
-
   /**
    Get one key's information using the key value.
 

@@ -28,7 +28,7 @@ class KeysTests: XCTestCase {
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     let keyException = XCTestExpectation(description: "Get all keys")
 
-    self.client.getKeys() { result in
+    self.client.getKeys { result in
       switch result {
       case .success(let keys):
         dump(keys)
@@ -46,7 +46,7 @@ class KeysTests: XCTestCase {
   func testGetKeys() {
     let keyException = XCTestExpectation(description: "Get all keys")
 
-    self.client.getKeys() { result in
+    self.client.getKeys { result in
       switch result {
       case .success(let keys):
         XCTAssertNotEqual(keys.results.count, 0)
