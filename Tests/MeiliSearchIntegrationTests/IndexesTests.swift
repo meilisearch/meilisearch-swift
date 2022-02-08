@@ -157,6 +157,7 @@ class IndexesTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to get index")
+        getIndexExpectation.fulfill()
       }
     }
 
@@ -187,6 +188,7 @@ class IndexesTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to get all Indexes")
+        expectation.fulfill()
       }
     }
 

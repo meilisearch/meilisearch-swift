@@ -95,9 +95,14 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
 }
 
   public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
-    let jsonEncoder = JSONEncoder()
     let movie = Movie(id: 1, title: "test", comment: "test movie")
-    let documents: Data = try! jsonEncoder.encode([movie])
+    addDocuments(client: client, uid: uid, dataset: [movie], primaryKey: primaryKey, completion)
+  }
+
+  public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+    let jsonEncoder = JSONEncoder()
+
+    let documents: Data = try! jsonEncoder.encode(dataset)
     let index = client.index(uid)
 
     client.deleteIndex(uid) { result in

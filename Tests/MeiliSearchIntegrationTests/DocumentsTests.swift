@@ -392,9 +392,11 @@ class DocumentsTests: XCTestCase {
                 XCTAssertEqual(9, deletedDocuments)
               } else {
                 XCTFail("deletedDocuments field should not be nil")
+                deleteExpectation.fulfill()
               }
             } else {
               XCTFail("deletedDocuments field should exists in details field of task")
+              deleteExpectation.fulfill()
             }
             deleteExpectation.fulfill()
           case .failure:
@@ -405,7 +407,7 @@ class DocumentsTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to delete all documents")
-        expectation.fulfill()
+        deleteExpectation.fulfill()
       }
     }
 
