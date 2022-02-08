@@ -138,7 +138,7 @@ To do a simply search using the client, you can create a Swift script like this:
     semaphore.wait()
 ```
 
-With the `uid` of the task, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+With the `uid` of the task, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/learn/advanced/asynchronous_operations.html#task-status).
 
 #### Basic Search <!-- omit in toc -->
 
