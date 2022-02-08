@@ -101,8 +101,6 @@ struct Tasks {
       }
   }
 
-
-
   // wait for task using task structure
   func waitForTask(
     task: Task,

@@ -13,7 +13,7 @@ struct Constants {
     return encoder
   }()
 
-   static func resultDecoder<T: Decodable>(data: Data?) throws -> Result<T, Swift.Error> {
+  static func resultDecoder<T: Decodable>(data: Data?) throws -> Result<T, Swift.Error> {
     guard let data: Data = data else {
       return .failure(MeiliSearch.Error.dataNotFound)
     }
