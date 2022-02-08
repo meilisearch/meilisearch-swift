@@ -108,8 +108,12 @@ class SearchTests: XCTestCase {
         XCTAssertTrue(response.query == query)
         XCTAssertTrue(response.limit == 20)
         XCTAssertTrue(response.hits.count == 1)
-        XCTAssertEqual("A Moreninha", response.hits[0].title)
-        XCTAssertNil(response.hits[0].formatted)
+        if response.hits.count > 0 {
+          XCTAssertEqual("A Moreninha", response.hits[0].title)
+          XCTAssertNil(response.hits[0].formatted)
+        } else {
+          XCTFail("Failed to find hits in the response")
+        }
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -559,8 +563,8 @@ class SearchTests: XCTestCase {
 
     configureFilters { result in
       switch result {
-        case .success:
-          self.index.search(parameters) { (result: MeiliResult) in
+      case .success:
+        self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
             XCTAssertTrue(documents.query == query)
@@ -577,10 +581,10 @@ class SearchTests: XCTestCase {
             expectation.fulfill()
           }
         }
-        case .failure(let error):
-          dump(error)
-          XCTFail("Could not update settings")
-          expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Could not update settings")
+        expectation.fulfill()
       }
     }
     self.wait(for: [expectation], timeout: 20.0)
@@ -725,9 +729,9 @@ class SearchTests: XCTestCase {
           }
         }
       case .failure(let error):
-          dump(error)
-          XCTFail("Could not update settings")
-          expectation.fulfill()
+        dump(error)
+        XCTFail("Could not update settings")
+        expectation.fulfill()
       }
     }
 
