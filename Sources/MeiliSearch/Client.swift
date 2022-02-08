@@ -212,7 +212,7 @@ public struct MeiliSearch {
   // MARK: Keys
 
   /**
-   Get all key.
+   Get all keys.
 
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
