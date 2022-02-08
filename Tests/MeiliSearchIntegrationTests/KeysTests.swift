@@ -31,11 +31,12 @@ class KeysTests: XCTestCase {
     self.client.getKeys() { result in
       switch result {
       case .success(let keys):
+        dump(keys)
         self.key = keys.results.first
         keyException.fulfill()
       case .failure(let error):
         dump(error)
-        XCTFail("Failed to getKeys")
+        XCTFail("Failed to get keys")
         keyException.fulfill()
       }
     }
@@ -79,7 +80,8 @@ class KeysTests: XCTestCase {
   func testCreateKey() {
     let keyException = XCTestExpectation(description: "Create a key")
 
-    self.client.createKey(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil) { result in
+    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
         XCTAssertEqual(key.expiresAt, nil)
@@ -101,8 +103,8 @@ class KeysTests: XCTestCase {
     formatter.dateFormat = "yyyy-MM-dd"
     let someDateTime = formatter.string(from: Date.distantFuture)
 
-    dump(someDateTime)
-    self.client.createKey(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: someDateTime) { result in
+    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: someDateTime)
+    self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
         XCTAssertNotNil(key.expiresAt)
@@ -119,13 +121,15 @@ class KeysTests: XCTestCase {
   func testUpdateKey() {
     let keyException = XCTestExpectation(description: "Update a key")
 
-    self.client.createKey(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil) { result in
+    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let newDate = formatter.string(from: Date.distantFuture)
-        self.client.updateKey(key: key.key, description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: newDate) { result in
+        let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: newDate)
+        self.client.updateKey(key: key.key, keyParams: keyParams) { result in
           switch result {
           case .success(let key):
             XCTAssertNotNil(key.expiresAt)
@@ -148,7 +152,8 @@ class KeysTests: XCTestCase {
   func testDeleteKey() {
     let keyException = XCTestExpectation(description: "Delete a key")
 
-    self.client.createKey(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil) { result in
+    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
         self.client.deleteKey(key: key.key) { result in

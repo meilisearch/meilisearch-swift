@@ -250,18 +250,9 @@ public struct MeiliSearch {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func createKey(
-    description: String,
-    actions: [String],
-    indexes: [String],
-    expiresAt: String?,
+    _ keyParams: KeyParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.create(
-      description: description,
-      actions: actions,
-      indexes: indexes,
-      expiresAt: expiresAt,
-      completion
-    )
+    self.keys.create(keyParams, completion)
   }
 
   /**
@@ -277,17 +268,11 @@ public struct MeiliSearch {
    */
   public func updateKey(
     key: String,
-    description: String,
-    actions: [String],
-    indexes: [String],
-    expiresAt: String?,
+    keyParams: KeyParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     self.keys.update(
       key: key,
-      description: description,
-      actions: actions,
-      indexes: indexes,
-      expiresAt: expiresAt,
+      keyParams: keyParams,
       completion
     )
   }

@@ -53,21 +53,12 @@ struct Keys {
   }
 
   public func create(
-    description: String,
-    actions: [String],
-    indexes: [String],
-    expiresAt: String?,
+    _ keyParams: KeyParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    let payload = CreateKeyPayload(
-      description: description,
-      actions: actions,
-      indexes: indexes,
-      expiresAt: expiresAt
-    )
     let data: Data
     do {
       let encoder = JSONEncoder()
-      data = try encoder.encode(payload)
+      data = try encoder.encode(keyParams)
     } catch {
       completion(.failure(MeiliSearch.Error.invalidJSON))
       return
@@ -91,21 +82,12 @@ struct Keys {
 
   public func update(
     key: String,
-    description: String,
-    actions: [String],
-    indexes: [String],
-    expiresAt: String?,
+    keyParams: KeyParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    let payload = CreateKeyPayload(
-      description: description,
-      actions: actions,
-      indexes: indexes,
-      expiresAt: expiresAt
-    )
     let data: Data
     do {
       let encoder = JSONEncoder()
-      data = try encoder.encode(payload)
+      data = try encoder.encode(keyParams)
     } catch {
       completion(.failure(MeiliSearch.Error.invalidJSON))
       return
@@ -138,20 +120,5 @@ struct Keys {
         completion(.failure(error))
       }
     }
-  }
-
-  struct CreateKeyPayload: Codable {
-      public let description: String
-      public let actions: [String]
-      public let indexes: [String]
-      public let expiresAt: String?
-
-      func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(description, forKey: .description)
-        try container.encode(actions, forKey: .actions)
-        try container.encode(indexes, forKey: .indexes)
-        try container.encode(expiresAt, forKey: .expiresAt)
-      }
   }
 }
