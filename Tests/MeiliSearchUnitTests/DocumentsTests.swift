@@ -63,7 +63,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testAddDataDocuments() {
@@ -106,7 +106,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testUpdateDataDocuments() {
@@ -143,7 +143,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testUpdateDocuments() {
@@ -179,7 +179,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testGetDocument() {
@@ -214,7 +214,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testGetDocuments() {
@@ -253,7 +253,7 @@ class DocumentsTests: XCTestCase {
       }
       expectation.fulfill()
     }
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testDeleteDocument() {
@@ -281,7 +281,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testDeleteAllDocuments() {
@@ -307,7 +307,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testDeleteBatchDocuments() {
@@ -334,7 +334,7 @@ class DocumentsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 }
 // swiftlint:enable force_unwrapping
