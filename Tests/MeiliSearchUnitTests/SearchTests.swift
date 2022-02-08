@@ -71,10 +71,11 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
@@ -126,10 +127,11 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
@@ -234,11 +236,11 @@ class SearchTests: XCTestCase {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
         XCTAssertEqual(searchResult.nbHits, 1)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-
-      expectation.fulfill()
     }
 
     wait(for: [expectation], timeout: 20.0)

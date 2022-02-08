@@ -1028,6 +1028,7 @@ class SettingsTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed reseting settings")
+        expectation.fulfill()
       }
     }
 

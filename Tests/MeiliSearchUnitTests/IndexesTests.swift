@@ -35,13 +35,13 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let task):
         XCTAssertEqual(0, task.uid)
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
         XCTFail("Failed to create index")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
-
     self.wait(for: [expectation], timeout: 20.0)
   }
 // TODO: remove
@@ -95,11 +95,12 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
         XCTFail("Failed to get Movies index")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
@@ -126,11 +127,12 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let index):
         XCTAssertEqual(self.uid, index.uid)
+        expectation.fulfill()
       case .failure(let error):
       dump(error)
         XCTFail("Failed to get Movies index")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
@@ -160,8 +162,9 @@ class IndexesTests: XCTestCase {
         XCTAssertEqual("movies", indexes[0].uid)
         expectation.fulfill()
       case .failure(let error):
-      dump(error)
+        dump(error)
         XCTFail("Failed to get all Indexes")
+        expectation.fulfill()
       }
     }
 
@@ -184,11 +187,12 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let task):
         XCTAssertEqual(0, task.uid)
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
         XCTFail("Failed to update Movies index")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
@@ -210,11 +214,12 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let task):
         XCTAssertEqual(0, task.uid)
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
         XCTFail("Failed to update Movies index")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
     self.wait(for: [expectation], timeout: 20.0)
