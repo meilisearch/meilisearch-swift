@@ -18,7 +18,7 @@ struct Constants {
       return .failure(MeiliSearch.Error.dataNotFound)
     }
     do {
-      let task: T = try Constants.customJSONDecoder.decode(
+      let task: T = try self.customJSONDecoder.decode(
         T.self,
         from: data)
       return .success(task)
