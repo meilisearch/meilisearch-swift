@@ -91,7 +91,7 @@ class SearchTests: XCTestCase {
         addDocExpectation.fulfill()
       }
     }
-    self.wait(for: [addDocExpectation], timeout: 20.0)
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Basic search
@@ -122,7 +122,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testBasicSearchWithNoQuery() {
@@ -145,7 +145,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Phrase search
@@ -172,7 +172,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Limit
@@ -199,7 +199,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchZeroLimit() {
@@ -223,7 +223,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchLimitBiggerThanNumberOfBooks() {
@@ -248,7 +248,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchLimitEmptySearch() {
@@ -273,7 +273,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Offset
@@ -301,7 +301,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchOffsetZero() {
@@ -327,7 +327,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchOffsetLastPage() {
@@ -354,7 +354,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Attributes to crop
@@ -384,7 +384,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Crop length
@@ -415,7 +415,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Matches tests
@@ -453,7 +453,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Attributes to highlight
@@ -484,7 +484,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Attributes to retrieve
@@ -516,7 +516,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Filters
@@ -587,7 +587,7 @@ class SearchTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchSorting() {
@@ -621,7 +621,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchFiltersNotMatching() {
@@ -655,7 +655,7 @@ class SearchTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchFacetsFilters() {
@@ -735,7 +735,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    wait(for: [expectation], timeout: 20.0)
+    wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Facets distribution

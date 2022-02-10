@@ -39,7 +39,7 @@ class TasksTests: XCTestCase {
         createExpectation.fulfill()
       }
     }
-    self.wait(for: [createExpectation], timeout: 20.0)
+    self.wait(for: [createExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetTaskIndex() {
@@ -65,7 +65,7 @@ class TasksTests: XCTestCase {
         addDocExpectation.fulfill()
       }
     }
-    self.wait(for: [addDocExpectation], timeout: 20.0)
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetTasksIndex() {
@@ -81,7 +81,7 @@ class TasksTests: XCTestCase {
         addDocExpectation.fulfill()
       }
     }
-    self.wait(for: [addDocExpectation], timeout: 20.0)
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
 
     let expectation = XCTestExpectation(description: "Get all tasks of an index")
     self.index.getTasks { (result: Result<Results<Task>, Swift.Error>)  in
@@ -97,7 +97,7 @@ class TasksTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetTaskClient() {
@@ -122,7 +122,7 @@ class TasksTests: XCTestCase {
         addDocExpectation.fulfill()
       }
     }
-    self.wait(for: [addDocExpectation], timeout: 20.0)
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetTasksClient() {
@@ -138,7 +138,7 @@ class TasksTests: XCTestCase {
         addDocExpectation.fulfill()
       }
     }
-    self.wait(for: [addDocExpectation], timeout: 20.0)
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
 
     let expectation = XCTestExpectation(description: "Get all tasks of an index")
     self.client.getTasks { (result: Result<Results<Task>, Swift.Error>)  in
@@ -153,7 +153,7 @@ class TasksTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testWaitForTask() {
@@ -178,7 +178,7 @@ class TasksTests: XCTestCase {
         createIndexExpectation.fulfill()
       }
     }
-    self.wait(for: [createIndexExpectation], timeout: 20.0)
+    self.wait(for: [createIndexExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testWaitForTaskUid() {
@@ -203,6 +203,6 @@ class TasksTests: XCTestCase {
         createIndexExpectation.fulfill()
       }
     }
-    self.wait(for: [createIndexExpectation], timeout: 20.0)
+    self.wait(for: [createIndexExpectation], timeout: TESTS_TIME_OUT)
   }
 }
