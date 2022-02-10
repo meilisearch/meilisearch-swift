@@ -31,7 +31,6 @@ class KeysTests: XCTestCase {
     self.client.getKeys { result in
       switch result {
       case .success(let keys):
-        dump(keys)
         self.key = keys.results.first
         keyException.fulfill()
       case .failure(let error):

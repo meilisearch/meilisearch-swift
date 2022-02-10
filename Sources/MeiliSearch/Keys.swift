@@ -65,11 +65,11 @@ struct Keys {
     }
     self.request.post(api: "/keys", data) { result in
       switch result {
-      case .success(let data):
+      case .success(let result):
       do {
         let key: Key = try Constants.customJSONDecoder.decode(
           Key.self,
-          from: data)
+          from: result)
           completion(.success(key))
       } catch {
         completion(.failure(error))
@@ -94,11 +94,11 @@ struct Keys {
     }
     self.request.patch(api: "/keys/\(key)", data) { result in
       switch result {
-      case .success(let data):
+      case .success(let result):
       do {
         let key: Key = try Constants.customJSONDecoder.decode(
           Key.self,
-          from: data)
+          from: result)
           completion(.success(key))
       } catch {
         completion(.failure(error))
