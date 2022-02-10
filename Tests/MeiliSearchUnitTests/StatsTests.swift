@@ -48,7 +48,7 @@ class StatsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 
   func testAllStats() {
@@ -99,7 +99,7 @@ class StatsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 }
 // swiftlint:enable force_unwrapping

@@ -35,12 +35,13 @@ class DumpsTests: XCTestCase {
           expectation.fulfill()
         }
       case .failure(let error):
+        dump(error)
         XCTFail("Failed to request dump creation \(error)")
         expectation.fulfill()
       }
     }
 
-    self.wait(for: [expectation], timeout: 10.0)
+    self.wait(for: [expectation], timeout: 20.0)
   }
 }
 // swiftlint:enable force_try

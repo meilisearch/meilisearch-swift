@@ -9,6 +9,8 @@ public struct Index: Codable, Equatable {
 
   /// The index uid.
   public let uid: String
+  /// The primary key configured for the index.
+  public let primaryKey: String?
 
   /// The data when the index was created.
   public let createdAt: Date?
@@ -16,19 +18,17 @@ public struct Index: Codable, Equatable {
   /// The data when the index was last updated.
   public let updatedAt: Date?
 
-  /// The primary key configured for the index.
-  public let primaryKey: String?
-
   // MARK: Initializers
 
   init(
     uid: String,
+    primaryKey: String? = nil,
     createdAt: Date? = nil,
-    updatedAt: Date? = nil,
-    primaryKey: String? = nil) {
+    updatedAt: Date? = nil
+    ) {
     self.uid = uid
+    self.primaryKey = primaryKey
     self.createdAt = createdAt
     self.updatedAt = updatedAt
-    self.primaryKey = primaryKey
   }
 }
