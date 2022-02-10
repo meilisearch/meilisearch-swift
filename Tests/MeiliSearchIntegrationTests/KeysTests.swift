@@ -17,7 +17,7 @@ private struct Movie: Codable, Equatable {
 
 class KeysTests: XCTestCase {
   private var client: MeiliSearch!
-  private var key: Key!
+  private var key: String = ""
   private var session: URLSessionProtocol!
 
   // MARK: Setup
@@ -31,7 +31,14 @@ class KeysTests: XCTestCase {
     self.client.getKeys { result in
       switch result {
       case .success(let keys):
-        self.key = keys.results.first
+        if keys.results.count > 0 {
+          let key = keys.results.first
+          if let firstKey: Key = key {
+            self.key = firstKey.key
+          }
+        } else {
+          XCTFail("Failed to get keys")
+        }
         keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -62,14 +69,10 @@ class KeysTests: XCTestCase {
   func testGetKey() {
     let keyExpectation = XCTestExpectation(description: "Get one key")
 
-    self.client.getKey(key: self.key.key) { result in
+    self.client.getKey(key: self.key) { result in
       switch result {
       case .success(let key):
-        if key !== nil {
-          XCTAssertNotNil(key.description)
-        } else {
-          XCTFail("Key does not exist")
-        }
+        XCTAssertNotNil(key.description)
         keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -211,3 +214,4 @@ class KeysTests: XCTestCase {
     self.wait(for: [keyExpectation], timeout: 10.0)
   }
 }
+// swiftlint:enable force_unwrapping
