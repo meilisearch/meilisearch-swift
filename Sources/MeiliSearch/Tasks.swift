@@ -18,21 +18,21 @@ struct Tasks {
   func get(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(url: "/tasks/\(taskUid)", completion)
+      get(path: "/tasks/\(taskUid)", completion)
   }
 
   // Get on index
   func get(
-    uid: String,
+    indexUid: String,
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(url: "/indexes/\(uid)/tasks/\(taskUid)", completion)
+      get(path: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
   }
 
-  func get (
-    url: String,
+  private func get (
+    path: String,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      self.request.get(api: url) { result in
+      self.request.get(api: path) { result in
         switch result {
         case .success(let data):
           do {
@@ -50,20 +50,20 @@ struct Tasks {
   // get all on client
   func getAll(
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(url: "/tasks", completion)
+      getAll(path: "/tasks", completion)
   }
 
   // get all on index
   func getAll(
     uid: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(url: "/indexes/\(uid)/tasks", completion)
+      getAll(path: "/indexes/\(uid)/tasks", completion)
   }
 
-  func getAll(
-    url: String,
+  private func getAll(
+    path: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: url) { result in
+    self.request.get(api: path) { result in
       switch result {
       case .success(let data):
         do {
@@ -116,7 +116,7 @@ struct Tasks {
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
       do {
         let currentDate = Date()
-        let waitOptions: WaitOptions = options ?? WaitOptions()
+        let waitOptions = options ?? WaitOptions()
 
         self.checkStatus(taskUid, waitOptions, currentDate) { result in
           switch result {

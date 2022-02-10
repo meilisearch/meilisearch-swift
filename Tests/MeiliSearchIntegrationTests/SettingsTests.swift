@@ -579,7 +579,6 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            dump(task)
             XCTAssertEqual("settingsUpdate", task.type)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             if let details = task.details {
@@ -618,7 +617,6 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            dump(task)
             XCTAssertEqual("settingsUpdate", task.type)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             if let details = task.details {
