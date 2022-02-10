@@ -65,7 +65,11 @@ class KeysTests: XCTestCase {
     self.client.getKey(key: self.key.key) { result in
       switch result {
       case .success(let key):
-        XCTAssertNotNil(key.description)
+        if key !== nil {
+          XCTAssertNotNil(key.description)
+        } else {
+          XCTFail("Key does not exist")
+        }
         keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -176,7 +180,7 @@ class KeysTests: XCTestCase {
               case .failure(let error as MeiliSearch.Error):
                 switch error {
                 case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
-                  if let msError: MeiliSearch.MSErrorResponse = msErrorResponse  {
+                  if let msError: MeiliSearch.MSErrorResponse = msErrorResponse {
                     XCTAssertEqual(msError.code, "api_key_not_found")
                   } else {
                     XCTFail("Failed to get the correct error code")
