@@ -214,7 +214,7 @@ class SearchTests: XCTestCase {
       case .success(let documents):
         XCTAssertEqual(documents.query, query)
         XCTAssertEqual(documents.limit, limit)
-        XCTAssertEqual(documents.hits.isEmpty)
+        XCTAssertTrue(documents.hits.isEmpty)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
