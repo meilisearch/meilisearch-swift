@@ -18,7 +18,7 @@ struct Tasks {
   func get(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(url: "/tasks/\(taskUid)", completion)
+      get(path: "/tasks/\(taskUid)", completion)
   }
 
   // Get on index
@@ -26,13 +26,13 @@ struct Tasks {
     indexUid: String,
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(url: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
+      get(path: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
   }
 
   func get (
-    url: String,
+    path: String,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      self.request.get(api: url) { result in
+      self.request.get(api: path) { result in
         switch result {
         case .success(let data):
           do {
@@ -50,20 +50,20 @@ struct Tasks {
   // get all on client
   func getAll(
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(url: "/tasks", completion)
+      getAll(path: "/tasks", completion)
   }
 
   // get all on index
   func getAll(
     uid: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(url: "/indexes/\(uid)/tasks", completion)
+      getAll(path: "/indexes/\(uid)/tasks", completion)
   }
 
   func getAll(
-    url: String,
+    path: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: url) { result in
+    self.request.get(api: path) { result in
       switch result {
       case .success(let data):
         do {
