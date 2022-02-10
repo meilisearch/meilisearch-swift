@@ -57,8 +57,7 @@ struct Keys {
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     let data: Data
     do {
-      let encoder = JSONEncoder()
-      data = try encoder.encode(keyParams)
+      data = try Constants.customJSONEecoder.encode(keyParams)
     } catch {
       completion(.failure(MeiliSearch.Error.invalidJSON))
       return
