@@ -167,7 +167,31 @@ class KeysTests: XCTestCase {
         self.client.deleteKey(key: key.key) { result in
           switch result {
           case .success:
-            keyExpectation.fulfill()
+            self.client.getKey(key: key.key) { result in
+              switch result {
+              case .success(let key):
+                XCTAssertNotNil(key.description)
+                XCTFail("Failed to get a key")
+                keyExpectation.fulfill()
+              case .failure(let error as MeiliSearch.Error):
+                switch error {
+                case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
+                  if let msError: MeiliSearch.MSErrorResponse = msErrorResponse  {
+                    XCTAssertEqual(msError.code, "api_key_not_found")
+                  } else {
+                    XCTFail("Failed to get the correct error code")
+                  }
+                default:
+                  dump(error)
+                  XCTFail("Failed to delete the key")
+                }
+                keyExpectation.fulfill()
+              case .failure(let error):
+                dump(error)
+                XCTFail("Failed to get the correct error type")
+                keyExpectation.fulfill()
+              }
+            }
           case .failure(let error):
             dump(error)
             XCTFail("Failed to delete a key")
