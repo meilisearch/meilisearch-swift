@@ -152,9 +152,9 @@ public struct MeiliSearch {
 
     Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
 
-    - parameter taskId:              The id of the task.
+    - parameter: taskId:              The id of the task.
     - parameter: options             Optionnal configuration for timeout and interval
-    - parameter completion:          The completion closure used to notify when the server
+    - parameter: completion:          The completion closure used to notify when the server
   **/
   public func waitForTask(
     taskUid: Int,
@@ -170,7 +170,7 @@ public struct MeiliSearch {
     Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
 
     - parameter task:                The task.
-    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter: options:             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/
   public func waitForTask(
@@ -187,7 +187,7 @@ public struct MeiliSearch {
    Get the information of a task.
 
    - parameter taskUid:    The task identifier.
-   - parameter completion:The completion closure used to notify when the server
+   - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
@@ -200,7 +200,7 @@ public struct MeiliSearch {
   /**
    Get all tasks.
 
-   - parameter completion:The completion closure used to notify when the server
+   - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
