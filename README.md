@@ -190,7 +190,7 @@ Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search r
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.24.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.24.0).
+This package only guarantees the compatibility with the [version v0.26.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.26.0).
 
 ## 💡 Learn More
 
