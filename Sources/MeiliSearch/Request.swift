@@ -144,6 +144,7 @@ public final class Request {
 
     task.resume()
   }
+
   func patch(
     api: String,
     _ data: Data,
@@ -161,7 +162,7 @@ public final class Request {
 
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
-      request.addValue(bearer, forHTTPHeaderField: "Authorization")
+      request.setValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
