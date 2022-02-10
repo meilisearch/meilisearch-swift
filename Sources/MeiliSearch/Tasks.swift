@@ -29,7 +29,7 @@ struct Tasks {
       get(path: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
   }
 
-  func get (
+  private func get (
     path: String,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
       self.request.get(api: path) { result in
@@ -60,7 +60,7 @@ struct Tasks {
       getAll(path: "/indexes/\(uid)/tasks", completion)
   }
 
-  func getAll(
+  private func getAll(
     path: String,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
     self.request.get(api: path) { result in
