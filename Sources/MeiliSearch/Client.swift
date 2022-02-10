@@ -240,11 +240,8 @@ public struct MeiliSearch {
   /**
     Create an API key.
 
-   - parameter description:   Description of the key.
-   - parameter actions:       Actions permitted by the key.
-   - parameter indexes:       Indexes on which the key has permissions.
-   - parameter expiresAt:     A future date in ISO-8601 format when the key becomes invalid.
-   - parameter completion: The completion closure used to notify when the server
+   - parameter keyParams:   Parameters object required to create a key.
+   - parameter completion:  The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
@@ -258,9 +255,7 @@ public struct MeiliSearch {
     Update an API key.
 
    - parameter key:         The key value.
-   - parameter actions:     Actions permitted by the key.
-   - parameter indexes:     Indexes on which the key has permissions.
-   - parameter expiresAt:   A future date in ISO-8601 format when the key becomes invalid.
+   - parameter keyParams:   Parameters object required to update a key.
    - parameter completion:  The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
