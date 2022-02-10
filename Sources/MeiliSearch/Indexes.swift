@@ -506,7 +506,7 @@ public struct Indexes {
   public func getTask(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.tasks.get(uid: self.uid, taskUid: taskUid, completion)
+    self.tasks.get(indexUid: self.uid, taskUid: taskUid, completion)
   }
 
   /**

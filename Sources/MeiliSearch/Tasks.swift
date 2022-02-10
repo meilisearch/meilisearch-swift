@@ -23,10 +23,10 @@ struct Tasks {
 
   // Get on index
   func get(
-    uid: String,
+    indexUid: String,
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(url: "/indexes/\(uid)/tasks/\(taskUid)", completion)
+      get(url: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
   }
 
   func get (
