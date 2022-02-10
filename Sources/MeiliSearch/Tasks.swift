@@ -116,7 +116,7 @@ struct Tasks {
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
       do {
         let currentDate = Date()
-        let waitOptions: WaitOptions = options ?? WaitOptions()
+        let waitOptions = options ?? WaitOptions()
 
         self.checkStatus(taskUid, waitOptions, currentDate) { result in
           switch result {
