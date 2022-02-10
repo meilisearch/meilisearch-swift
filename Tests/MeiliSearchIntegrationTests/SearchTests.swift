@@ -105,9 +105,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
-        XCTAssertTrue(response.query == query)
-        XCTAssertTrue(response.limit == 20)
-        XCTAssertTrue(response.hits.count == 1)
+        XCTAssertEqual(response.query, query)
+        XCTAssertEqual(response.limit, 20)
+        XCTAssertEqual(response.hits.count, 1)
         if response.hits.count > 0 {
           XCTAssertEqual("A Moreninha", response.hits[0].title)
           XCTAssertNil(response.hits[0].formatted)
@@ -159,9 +159,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == 20)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, 20)
+        XCTAssertEqual(documents.hits.count, 1)
         XCTAssertEqual("Pride and Prejudice", documents.hits[0].title)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
@@ -187,9 +187,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 1)
         XCTAssertEqual("A Moreninha", documents.hits[0].title)
         expectation.fulfill()
       case .failure(let error):
@@ -212,9 +212,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.isEmpty)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.isEmpty)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -236,9 +236,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == limit)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, limit)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
       case .failure(let error):
@@ -261,9 +261,9 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 5)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 5)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
       case .failure(let error):
@@ -289,10 +289,10 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.offset == offset)
-        XCTAssertTrue(documents.hits.count == 2)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(documents.hits.count, 2)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -315,10 +315,10 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.offset == offset)
-        XCTAssertTrue(documents.hits.count == 2)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(documents.hits.count, 2)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -341,10 +341,10 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.offset == offset)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(documents.hits.count, 1)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
       case .failure(let error):
@@ -372,8 +372,8 @@ class SearchTests: XCTestCase {
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 1)
         let book: Book = documents.hits[0]
         XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
@@ -402,8 +402,8 @@ class SearchTests: XCTestCase {
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 2)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 2)
 
         let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
         XCTAssertEqual("A Book from", moreninhaBook.formatted!.comment!)
@@ -431,9 +431,9 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual("A Moreninha", book.title)
 
@@ -470,9 +470,9 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual("A Moreninha", book.title)
         XCTAssertTrue(book.formatted!.comment!.contains("<em>Joaquim</em> <em>Manuel</em> <em>de</em> <em>Macedo</em>"))
@@ -501,9 +501,9 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertTrue(documents.query == query)
-        XCTAssertTrue(documents.limit == limit)
-        XCTAssertTrue(documents.hits.count == 1)
+        XCTAssertEqual(documents.query, query)
+        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual(1844, book.id)
         XCTAssertEqual("A Moreninha", book.title)
@@ -567,9 +567,9 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
-            XCTAssertTrue(documents.limit == limit)
-            XCTAssertTrue(documents.hits.count == 1)
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(documents.hits.count, 1)
             let book = documents.hits[0]
             XCTAssertEqual(456, book.id)
             XCTAssertEqual("Le Petit Prince", book.title)
@@ -603,7 +603,7 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
+            XCTAssertEqual(documents.query, query)
             let book = documents.hits[0]
             XCTAssertEqual(1, book.id)
             XCTAssertEqual("Alice In Wonderland", book.title)
@@ -639,8 +639,8 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
-            XCTAssertTrue(documents.limit == limit)
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(documents.limit, limit)
             XCTAssertTrue(documents.hits.isEmpty)
             expectation.fulfill()
           case .failure(let error):
@@ -673,9 +673,9 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
-            XCTAssertTrue(documents.limit == limit)
-            XCTAssertTrue(documents.hits.count == 2)
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(documents.hits.count, 2)
             let moreninhaBook: Book = documents.hits.first { book in book.id == 1844 }!
             XCTAssertEqual("A Moreninha", moreninhaBook.title)
             let petitBook: Book = documents.hits.first { book in book.id == 456 }!
@@ -755,9 +755,9 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
-            XCTAssertTrue(documents.limit == limit)
-            XCTAssertTrue(documents.hits.count == limit)
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(documents.hits.count, limit)
 
             let facetsDistribution = documents.facetsDistribution!
             let expected: [String: [String: Int]] = [
@@ -803,9 +803,9 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
-            XCTAssertTrue(documents.query == query)
-            XCTAssertTrue(documents.limit == limit)
-            XCTAssertTrue(documents.hits.count == 0)
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(documents.hits.count, 0)
 
             let facetsDistribution = documents.facetsDistribution!
             XCTAssertEqual(["genres": [:]], facetsDistribution)
