@@ -72,24 +72,6 @@ public struct MeiliSearch {
   }
 
   /**
-   Get or create an index.
-
-  - parameter uid:        The unique identifier for the `Index` to be created.
-  - parameter primaryKey: the unique field of a document.
-  - parameter completion: The completion closure used to notify when the server
-   completes the write request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
-   */
-
-  // TODO: remove in another PR
-  // public func getOrCreateIndex(
-  //   uid: String,
-  //   primaryKey: String? = nil,
-  //   _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
-  //   Indexes.getOrCreate(uid: uid, primaryKey: primaryKey, config: self.config, completion)
-  // }
-
-  /**
    Get an index.
 
    - parameter uid:        The unique identifier for the `Index` to be found.
