@@ -537,7 +537,7 @@ class SearchTests: XCTestCase {
     self.index.updateSettings(settings) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(task: task) { result in
+        self.client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
           switch result {
           case .success:
             completion(.success(()))

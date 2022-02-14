@@ -59,7 +59,7 @@ public func waitForTask(
         client.createIndex(uid: uid) { result in
           switch result {
           case .success(let task):
-            client.waitForTask(task: task) { result in
+            client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
               switch result {
               case .success(let task):
                 completion(.success(task))
