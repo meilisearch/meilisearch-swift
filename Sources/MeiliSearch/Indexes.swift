@@ -26,14 +26,14 @@ public struct Indexes {
   // Search methods
   private let search: Search
 
-  // Updates methods
-  private let updates: Updates
-
   // Settings methods
   private let settings: Settings
 
   // Stats methods
   private let stats: Stats
+
+  // Tasks methods
+  private let tasks: Tasks
 
   // MARK: Initializers
 
@@ -57,7 +57,7 @@ public struct Indexes {
     self.updatedAt = updatedAt
     self.documents = Documents(Request(config))
     self.search = Search(Request(config))
-    self.updates = Updates(Request(config))
+    self.tasks = Tasks(Request(config))
     self.settings = Settings(Request(config))
     self.stats = Stats(Request(config))
   }
@@ -68,18 +68,26 @@ public struct Indexes {
    Get the index.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
+   completes the query request. It returns a `Result` object that contains `Index`
+   value if the request was successful or `Error` if a failure occurred.
    */
-  public func get(_ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+  public func get(_ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
     self.request.get(api: "/indexes/\(self.uid)") { result in
       switch result {
-      case .success(let result):
-        guard let result: Data = result else {
+      case .success(let data):
+        guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-        Indexes.decodeJSON(data: result, config: self.config, completion)
+        do {
+          let index: Index = try Constants.customJSONDecoder.decode(
+            Index.self,
+            from: data)
+          completion(.success(index))
+        } catch {
+          dump(error)
+          completion(.failure(error))
+        }
       case .failure(let error):
         completion(.failure(error))
       }
@@ -90,10 +98,10 @@ public struct Indexes {
    List all indexes.
 
    - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `[Index]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   completes the query request. It returns a `Result` object that contains `[Index]`
+   value if the request was successful or `Error` if a failure occurred.
    */
-  public static func getAll(config: Config, _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
+  public static func getAll(config: Config, _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
     Request(config).get(api: "/indexes") { result in
       switch result {
       case .success(let result):
@@ -104,41 +112,6 @@ public struct Indexes {
         Indexes.decodeJSONArray(data: result, config: config, completion)
       case .failure(let error):
         completion(.failure(error))
-      }
-    }
-  }
-
-  /**
-   Get or create an index.
-
-  - parameter uid:        The unique identifier for the `Index` to be created.
-  - parameter primaryKey: the unique field of a document.
-  - parameter completion: The completion closure used to notify when the server
-   completes the write request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
-   */
-  public static func getOrCreate(
-    uid: String,
-    primaryKey: String? = nil,
-    config: Config,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.create(uid: uid, primaryKey: primaryKey, config: config) { result in
-      switch result {
-      case .success(let index):
-        completion(.success(index))
-      case .failure(let error):
-        switch error {
-        case MeiliSearch.Error.meiliSearchApiError(_, let msErrorResponse, _, _):
-          if let msErrorBody: MeiliSearch.MSErrorResponse  = msErrorResponse {
-            if msErrorBody.code == "index_already_exists" {
-              Indexes(config: config, uid: uid).get(completion)
-            }
-          } else {
-            completion(.failure(error))
-          }
-        default:
-          completion(.failure(error))
-        }
       }
     }
   }
@@ -156,7 +129,7 @@ public struct Indexes {
     uid: String,
     primaryKey: String? = nil,
     config: Config,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     let payload = CreateIndexPayload(uid: uid, primaryKey: primaryKey)
     let data: Data
     do {
@@ -168,8 +141,15 @@ public struct Indexes {
 
     Request(config).post(api: "/indexes", data) { result in
       switch result {
-      case .success(let result):
-        Indexes.decodeJSON(data: result, config: config, completion)
+      case .success(let data):
+      do {
+        let result: Task = try Constants.customJSONDecoder.decode(
+          Task.self,
+          from: data)
+          completion(.success(result))
+      } catch {
+        completion(.failure(error))
+      }
       case .failure(let error):
         completion(.failure(error))
       }
@@ -186,7 +166,7 @@ public struct Indexes {
    */
   public func update(
     primaryKey: String,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     let payload = UpdateIndexPayload(primaryKey: primaryKey)
     let data: Data
     do {
@@ -198,8 +178,15 @@ public struct Indexes {
 
     self.request.put(api: "/indexes/\(self.uid)", data) { result in
       switch result {
-      case .success(let result):
-        Indexes.decodeJSON(data: result, config: self.config, completion)
+      case .success(let data):
+        do {
+          let task: Task = try Constants.customJSONDecoder.decode(
+            Task.self,
+            from: data)
+            completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
       case .failure(let error):
         completion(.failure(error))
       }
@@ -214,36 +201,29 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func delete(
-    _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.request.delete(api: "/indexes/\(self.uid)") { result in
       switch result {
-      case .success:
-        completion(.success(()))
+      case .success(let data):
+        guard let data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let task: Task = try Constants.customJSONDecoder.decode(
+            Task.self,
+            from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
       case .failure(let error):
         completion(.failure(error))
       }
     }
   }
 
-  /**
-   Delete the index only if it exists.
-
-  - parameter completion: The completion closure used to notify when the server
-   completes the delete request, it returns a `Bool` that is `true`
-   If the request sucessfully deleted an existent index or `false` if a failure occured or the index do not exist.
-   */
-  public func deleteIfExists(_ completion: @escaping (Bool) -> Void) {
-    self.request.delete(api: "/indexes/\(self.uid)") { result in
-      switch result {
-      case .success:
-        completion(true)
-      default:
-        completion(false)
-      }
-    }
-  }
-
-    // MARK: Document
+  // MARK: Document
 
   /**
    Add a list of documents or replace them if they already exist.
@@ -265,7 +245,7 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
     self.documents.add(
       self.uid,
       documents,
@@ -292,7 +272,7 @@ public struct Indexes {
   public func addDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.add(
       self.uid,
       documents,
@@ -320,7 +300,7 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
     self.documents.update(
       self.uid,
       documents,
@@ -347,7 +327,7 @@ public struct Indexes {
   public func updateDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.update(
       self.uid,
       documents,
@@ -412,7 +392,7 @@ public struct Indexes {
    */
   public func deleteDocument(
     _ documentId: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.delete(self.uid, documentId, completion)
   }
 
@@ -424,7 +404,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func deleteAllDocuments(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.deleteAll(self.uid, completion)
   }
 
@@ -438,7 +418,7 @@ public struct Indexes {
    */
   public func deleteBatchDocuments(
     _ documentIds: [Int],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }
 
@@ -459,50 +439,49 @@ public struct Indexes {
     self.search.search(self.uid, searchParameters, completion)
   }
 
-  // MARK: Updates
+  // MARK: Tasks
 
   /**
-   Get the status of an update of the index.
+   Get a task.
 
-   - parameter updateId:    The update identifier.
+   - parameter taskuid:    The task identifier.
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func getUpdate(
-    _ updateId: Int,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>) -> Void) {
-    self.updates.get(self.uid, updateId, completion)
+  public func getTask(
+    taskUid: Int,
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    self.tasks.get(indexUid: self.uid, taskUid: taskUid, completion)
   }
 
   /**
-   Get the status of an update of the index.
+   Get all tasks.
 
    - parameter completion:The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func getAllUpdates(
-    _ completion: @escaping (Result<[Update.Result], Swift.Error>) -> Void) {
-    self.updates.getAll(self.uid, completion)
+  public func getTasks(
+    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    self.tasks.getAll(uid: self.uid, completion)
   }
 
-  /**
-    Wait for an update to be processed or failed.
+   /**
+    Wait for a task to be succeeded or failed.
 
-    Providing an update id, returned by asynchronous Meilisearch options, call are made
-    to Meilisearch to check if the update has been processed or if it has failed.
+    Using a task returned by an asynchronous route of Meilisearch, wait for completion.
 
-    - parameter updateId:            The id of the update.
+    - parameter task:                The task.
     - parameter: options             Optionnal configuration for timeout and interval
     - parameter completion:          The completion closure used to notify when the server
   **/
-  public func waitForPendingUpdate(
-    update: Update,
+  public func waitForTask(
+    task: Task,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Update.Result, Swift.Error>
+    _ completion: @escaping (Result<Task, Swift.Error>
   ) -> Void) {
-    self.updates.waitForPendingUpdate(self.uid, update, options, completion)
+    self.tasks.waitForTask(task: task, options: options, completion)
   }
 
   // MARK: Settings
@@ -529,7 +508,7 @@ public struct Indexes {
    */
   public func updateSettings(
     _ setting: Setting,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.update(self.uid, setting, completion)
   }
 
@@ -541,7 +520,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSettings(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.reset(self.uid, completion)
   }
 
@@ -569,7 +548,7 @@ public struct Indexes {
    */
   public func updateSynonyms(
     _ synonyms: [String: [String]]?,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSynonyms(self.uid, synonyms, completion)
   }
 
@@ -581,7 +560,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSynonyms(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSynonyms(self.uid, completion)
   }
 
@@ -609,7 +588,7 @@ public struct Indexes {
    */
   public func updateStopWords(
     _ stopWords: [String]?,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateStopWords(self.uid, stopWords, completion)
   }
 
@@ -621,7 +600,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetStopWords(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetStopWords(self.uid, completion)
   }
 
@@ -649,7 +628,7 @@ public struct Indexes {
    */
   public func updateRankingRules(
     _ rankingRules: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateRankingRules(self.uid, rankingRules, completion)
   }
 
@@ -661,7 +640,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetRankingRules(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetRankingRules(self.uid, completion)
   }
 
@@ -689,7 +668,7 @@ public struct Indexes {
    */
   public func updateDistinctAttribute(
     _ distinctAttribute: String,
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateDistinctAttribute(
       self.uid,
       distinctAttribute,
@@ -704,7 +683,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetDistinctAttribute(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetDistinctAttribute(self.uid, completion)
   }
 
@@ -732,7 +711,7 @@ public struct Indexes {
    */
   public func updateSearchableAttributes(
     _ searchableAttribute: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSearchableAttributes(
       self.uid,
       searchableAttribute,
@@ -747,7 +726,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetSearchableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSearchableAttributes(self.uid, completion)
   }
 
@@ -775,7 +754,7 @@ public struct Indexes {
    */
   public func updateDisplayedAttributes(
     _ displayedAttribute: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateDisplayedAttributes(
       self.uid,
       displayedAttribute,
@@ -790,7 +769,7 @@ public struct Indexes {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func resetDisplayedAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetDisplayedAttributes(self.uid, completion)
   }
 
@@ -818,7 +797,7 @@ public struct Indexes {
    */
   public func updateFilterableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateFilterableAttributes(self.uid, attributes, completion)
   }
 
@@ -830,7 +809,7 @@ public struct Indexes {
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetFilterableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetFilterableAttributes(self.uid, completion)
   }
 
@@ -858,7 +837,7 @@ public struct Indexes {
    */
   public func updateSortableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.updateSortableAttributes(self.uid, attributes, completion)
   }
 
@@ -870,7 +849,7 @@ public struct Indexes {
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetSortableAttributes(
-    _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
   // MARK: Stats
@@ -892,10 +871,10 @@ public struct Indexes {
   private static func decodeJSON(
     data: Data,
     config: Config,
-    _ completion: (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: (Result<Index, Swift.Error>) -> Void) {
     do {
       let index: Index = try Constants.customJSONDecoder.decode(Index.self, from: data)
-      let indexes = Indexes(config: config, uid: index.uid, primaryKey: index.primaryKey, createdAt: index.createdAt, updatedAt: index.updatedAt)
+      let indexes = Index(uid: index.uid, primaryKey: index.primaryKey, createdAt: index.createdAt, updatedAt: index.updatedAt)
 
       completion(.success(indexes))
     } catch {
@@ -906,12 +885,12 @@ public struct Indexes {
   private static func decodeJSONArray(
     data: Data,
     config: Config,
-    _ completion: (Result<[Indexes], Swift.Error>) -> Void) {
+    _ completion: (Result<[Index], Swift.Error>) -> Void) {
     do {
       let rawIndexes: [Index] = try Constants.customJSONDecoder.decode([Index].self, from: data)
-      var indexes: [Indexes] = []
+      var indexes: [Index] = []
       for rawIndex in rawIndexes {
-        indexes.append(Indexes(config: config, uid: rawIndex.uid, primaryKey: rawIndex.primaryKey, createdAt: rawIndex.createdAt, updatedAt: rawIndex.updatedAt))
+        indexes.append(Index(uid: rawIndex.uid, primaryKey: rawIndex.primaryKey, createdAt: rawIndex.createdAt, updatedAt: rawIndex.updatedAt))
       }
       completion(.success(indexes))
     } catch {

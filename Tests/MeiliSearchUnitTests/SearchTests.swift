@@ -71,13 +71,14 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchForBotmanMovieFacets() {
@@ -126,13 +127,14 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-      expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testShouldFilterValuesWithSpaces() {
@@ -234,14 +236,14 @@ class SearchTests: XCTestCase {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
         XCTAssertEqual(searchResult.nbHits, 1)
+        expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")
+        expectation.fulfill()
       }
-
-      expectation.fulfill()
     }
 
-    wait(for: [expectation], timeout: 5.0)
+    wait(for: [expectation], timeout: 20.0)
   }
 }
 // swiftlint:enable force_unwrapping

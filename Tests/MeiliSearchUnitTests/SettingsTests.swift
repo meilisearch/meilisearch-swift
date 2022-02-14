@@ -64,18 +64,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testupdateSettings() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: jsonData)
+    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
 
     session.pushData(jsonString)
     let setting: Setting = buildStubSetting(from: json)
@@ -86,25 +86,25 @@ class SettingsTests: XCTestCase {
     self.index.updateSettings(setting) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update settings")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSettings() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
     let data: Data = jsonString.data(using: .utf8)!
-    let stubUpdate: Update = try! decoder.decode(Update.self, from: data)
+    let stubTask: Task = try! decoder.decode(Task.self, from: data)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -113,14 +113,14 @@ class SettingsTests: XCTestCase {
     self.index.resetSettings { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset settings")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Synonyms
@@ -154,18 +154,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSynonyms() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -185,25 +185,25 @@ class SettingsTests: XCTestCase {
     self.index.updateSynonyms(synonyms) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update synonyms")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSynonyms() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -213,14 +213,14 @@ class SettingsTests: XCTestCase {
     self.index.resetSynonyms { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset synonyms")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Stop words
@@ -249,18 +249,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateStopWords() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -275,25 +275,25 @@ class SettingsTests: XCTestCase {
     self.index.updateStopWords(stopWords) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update stop-words")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetStopWords() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -304,14 +304,14 @@ class SettingsTests: XCTestCase {
     self.index.resetStopWords { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset stop-words")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Ranking rules
@@ -348,18 +348,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateRankingRules() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -374,25 +374,25 @@ class SettingsTests: XCTestCase {
     self.index.updateRankingRules(stopWords) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update ranking rules")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetRankingRules() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -403,14 +403,14 @@ class SettingsTests: XCTestCase {
     self.index.resetRankingRules { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset ranking rules")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Distinct Attribute
@@ -436,18 +436,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateDistinctAttribute() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let distinctAttribute = "movie_id"
@@ -458,25 +458,25 @@ class SettingsTests: XCTestCase {
     self.index.updateDistinctAttribute(distinctAttribute) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update distinct attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetDistinctAttribute() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -486,14 +486,14 @@ class SettingsTests: XCTestCase {
     self.index.resetDistinctAttribute { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset distinct attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Searchable Attribute
@@ -522,18 +522,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSearchableAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -549,25 +549,25 @@ class SettingsTests: XCTestCase {
     self.index.updateSearchableAttributes(searchableAttribute) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update searchable attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSearchableAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -576,14 +576,14 @@ class SettingsTests: XCTestCase {
     self.index.resetSearchableAttributes { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset searchable attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Displayed Attributes
@@ -612,18 +612,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateDisplayedAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -642,25 +642,25 @@ class SettingsTests: XCTestCase {
     self.index.updateDisplayedAttributes(displayedAttributes) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetDisplayedAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -670,14 +670,14 @@ class SettingsTests: XCTestCase {
     self.index.resetDisplayedAttributes { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to reset displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Filterable Attributes
@@ -703,18 +703,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateFilterableAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -726,25 +726,25 @@ class SettingsTests: XCTestCase {
     self.index.updateFilterableAttributes(attributes) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetFilterableAttributes() {
     let jsonString = """
-      {"updateId":1}
+      {"uid": 1, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -755,14 +755,14 @@ class SettingsTests: XCTestCase {
     self.index.resetFilterableAttributes { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Filterable Attributes
@@ -788,18 +788,18 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSortableAttributes() {
     let jsonString = """
-      {"updateId":0}
+      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -811,25 +811,25 @@ class SettingsTests: XCTestCase {
     self.index.updateSortableAttributes(attributes) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSortableAttributes() {
     let jsonString = """
-      {"updateId":1}
+      {"uid": 1, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubUpdate: Update = try! decoder.decode(
-      Update.self,
+    let stubTask: Task = try! decoder.decode(
+      Task.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -839,14 +839,14 @@ class SettingsTests: XCTestCase {
     self.index.resetSortableAttributes { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubUpdate, update)
+        XCTAssertEqual(stubTask, update)
       case .failure:
         XCTFail("Failed to update displayed attribute")
       }
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   private func buildStubSetting(from json: String) -> Setting {

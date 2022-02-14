@@ -5,12 +5,12 @@ import Foundation
  */
 public protocol URLSessionProtocol {
   /// Result for the `execute` function.
-  typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+  typealias DataTask = (Data?, URLResponse?, Error?) -> Void
 
   /// Function that will trigger the HTTP request.
   func execute(
     with request: URLRequest,
-    completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+    completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol
 }
 
 /// URLSessionDataTaskProtocol handler.
@@ -51,7 +51,8 @@ public final class Request {
       }
 
       if let apiKey = config.apiKey {
-        request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+        let bearer = "Bearer \(apiKey)"
+        request.addValue(bearer, forHTTPHeaderField: "Authorization")
       }
 
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -85,7 +86,8 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -121,7 +123,46 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
+    }
+
+    let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
+      do {
+        try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
+        if let unwrappedData: Data = data {
+          completion(.success(unwrappedData))
+          return
+        }
+        completion(.failure(MeiliSearch.Error.invalidJSON))
+        return
+      } catch let error {
+        completion(.failure(error))
+        return
+      }
+    }
+
+    task.resume()
+  }
+
+  func patch(
+    api: String,
+    _ data: Data,
+    _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
+    guard let url = URL(string: config.url(api: api)) else {
+      completion(.failure(MeiliSearch.Error.invalidURL()))
+      return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "PATCH"
+    request.httpBody = data
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+
+    if let apiKey: String = config.apiKey {
+      let bearer = "Bearer \(apiKey)"
+      request.setValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -156,7 +197,8 @@ public final class Request {
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
     if let apiKey: String = config.apiKey {
-      request.addValue(apiKey, forHTTPHeaderField: "X-Meili-API-Key")
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
     }
 
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
@@ -176,7 +218,7 @@ public final class Request {
 extension URLSession: URLSessionProtocol {
   public func execute(
     with request: URLRequest,
-    completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+    completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol {
     self.dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
   }
 }
