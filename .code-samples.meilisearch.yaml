@@ -162,15 +162,128 @@ get_all_tasks_1: |-
             print(error)
         }
     }
-get_keys_1: |-
-    client.keys { (result: Result<Key, Swift.Error>) in
-        switch result {
-        case .success(let key):
-            print(key)
-        case .failure(let error):
-            print(error)
-        }
+get_on_key_1: |-
+  self.client.getKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
+      switch result {
+      case .success(let key):
+          print(key)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_all_keys_1: |-
+  self.client.getKeys() { result in
+      switch result {
+      case .success(let keys):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+create_a_key_1: |-
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add"],
+    indexes: ["products"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
+  self.client.createKey(keyParams) { result in
+      switch result {
+      case .success(let key):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_a_key_1: |-
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add", "documents.delete"],
+    indexes: ["products", "reviews"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
+  self.client.updateKey(
+      key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4"
+      keyparams: keyParams
+  ) { result in
+      switch result {
+      case .success(let key):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+delete_a_key_1: |-
+  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
+  { result in
+      switch result {
+      case .success:
+          print("success")
+      case .failure(let error):
+          print(error)
+      }
+  }
+
+security_guide_search_key_1: |-
+  client = MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
+  client.index("patient_medical_records")
+    .search(parameters) { (result: Result<SearchResult<Record>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+security_guide_update_key_1: |-
+  let keyParams = KeyParams(
+    indexes: ["doctors"]
+  )
+  self.client.updateKey(
+    key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4",
+    keyParams: keyParams,
+  ) { result in
+    switch result {
+    case .success(let key):
+      print(keys)
+    case .failure(let error):
+      print(error)
     }
+  }
+security_guide_create_key_1: |-
+  let keyParams = KeyParams(
+    description: "Search patient records key",
+    actions: ["search"],
+    indexes: ["patient_medical_records"],
+    expiresAt: "2023-01-01T00:00:00Z"
+  )
+  self.client.createKey(keyParams) { result in
+    switch result {
+    case .success(let key):
+      print(keys)
+    case .failure(let error):
+      print(error)
+    }
+  }
+security_guide_list_keys_1: |-
+  self.client.getKeys() { result in
+      switch result {
+      case .success(let keys):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+security_guide_delete_key_1: |-
+  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
+  { result in
+      switch result {
+      case .success:
+          print("success")
+      case .failure(let error):
+          print(error)
+      }
+  }
 get_settings_1: |-
     client.index("movies").getSettings { (result: Result<Setting, Swift.Error>) in
         switch result {

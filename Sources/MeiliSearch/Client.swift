@@ -212,17 +212,80 @@ public struct MeiliSearch {
   // MARK: Keys
 
   /**
-   Each instance of MeiliSearch has three keys: a master, a private, and a public. Each key has a given
-   set of permissions on the API routes.
+   Get all keys.
 
-   - parameter masterKey:  Master key to access the `keys` function.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func keys(
+  public func getKeys(
+    _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
+    self.keys.getAll(completion)
+  }
+
+  /**
+   Get one key's information using the key value.
+
+   - parameter key:  The key value.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getKey(
+    key: String,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.get(completion)
+    self.keys.get(key: key, completion)
+  }
+
+  /**
+    Create an API key.
+
+   - parameter keyParams:   Parameters object required to create a key.
+   - parameter completion:  The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func createKey(
+    _ keyParams: KeyParams,
+    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    self.keys.create(keyParams, completion)
+  }
+
+  /**
+    Update an API key.
+
+   - parameter key:         The key value.
+   - parameter keyParams:   Parameters object required to update a key.
+   - parameter completion:  The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateKey(
+    key: String,
+    keyParams: KeyParams,
+    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    self.keys.update(
+      key: key,
+      keyParams: keyParams,
+      completion
+    )
+  }
+
+  /**
+    Delete an API key.
+
+   - parameter key:  The key value.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func deleteKey(
+    key: String,
+    _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    self.keys.delete(
+      key: key,
+      completion
+    )
   }
 
   // MARK: Stats
