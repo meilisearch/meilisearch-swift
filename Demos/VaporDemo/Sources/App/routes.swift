@@ -17,7 +17,7 @@ private struct Movie: Codable, Equatable {
 
 func routes(_ app: Application) throws {
   guard let client = try? MeiliSearch(host: "127.0.0.1:7700", apiKey: "masterKey") else {
-    throw NSError(domain: "Failed to initialize MeiliSearch", code: 123)
+    throw NSError(domain: "Failed to initialize Meilisearch", code: 123)
   }
 
   // 127.0.0.1:8080/index?uid=books_test

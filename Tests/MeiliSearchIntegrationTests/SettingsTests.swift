@@ -917,7 +917,7 @@ class SettingsTests: XCTestCase {
 
     let overrideSettingsExpectation = XCTestExpectation(description: "Update settings")
 
-    // Test if absents settings are sent to MeiliSearch with a nil value.
+    // Test if absents settings are sent to Meilisearch with a nil value.
     self.index.updateSettings(overrideSettings) { result in
       switch result {
       case .success(let task):

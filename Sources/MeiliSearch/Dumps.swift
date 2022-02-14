@@ -2,7 +2,7 @@ import Foundation
 
 /**
  The dumps route allows the creation of database dumps. Dumps are `.tar.gz` files that
- can be used to launch MeiliSearch. Dumps are compatible between MeiliSearch versions.
+ can be used to launch Meilisearch. Dumps are compatible between Meilisearch versions.
  */
 struct Dumps {
   // MARK: Properties
