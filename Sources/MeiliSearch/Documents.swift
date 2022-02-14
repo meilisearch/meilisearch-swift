@@ -18,7 +18,7 @@ struct Documents {
     _ identifier: String,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    let query: String = "/indexes/\(uid)/documents/\(identifier)"
+    let path: String = "/indexes/\(uid)/documents/\(identifier)"
     request.get(api: query) { result in
       switch result {
       case .success(let data):
@@ -44,7 +44,7 @@ struct Documents {
       if let parameters: GetParameters = options {
         queryParameters = try parameters.toQueryParameters()
       }
-      let query: String = "/indexes/\(uid)/documents\(queryParameters)"
+      let path: String = "/indexes/\(uid)/documents\(queryParameters)"
       request.get(api: query) { result in
         switch result {
         case .success(let data):
@@ -70,7 +70,7 @@ struct Documents {
     _ document: Data,
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -91,7 +91,7 @@ struct Documents {
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -120,7 +120,7 @@ struct Documents {
     _ document: Data,
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) {
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
@@ -141,7 +141,7 @@ struct Documents {
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<Update, Swift.Error>) -> Void) where T: Encodable {
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
       query += "?primaryKey=\(primaryKey)"
     }
