@@ -20,6 +20,7 @@ public struct MeiliSearch {
   private let stats: Stats
   private let system: System
   private let dumps: Dumps
+  private let tasks: Tasks
 
   // MARK: Initializers
 
@@ -41,6 +42,7 @@ public struct MeiliSearch {
     self.stats = Stats(self.request)
     self.system = System(self.request)
     self.dumps = Dumps(self.request)
+    self.tasks = Tasks(self.request)
   }
 
   // MARK: Index
@@ -65,26 +67,8 @@ public struct MeiliSearch {
   public func createIndex(
     uid: String,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
-  }
-
-  /**
-   Get or create an index.
-
-  - parameter uid:        The unique identifier for the `Index` to be created.
-  - parameter primaryKey: the unique field of a document.
-  - parameter completion: The completion closure used to notify when the server
-   completes the write request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
-   */
-
-  // DONE
-  public func getOrCreateIndex(
-    uid: String,
-    primaryKey: String? = nil,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
-    Indexes.getOrCreate(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
   /**
@@ -97,7 +81,7 @@ public struct MeiliSearch {
    */
   public func getIndex(
     _ uid: String,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Index, Swift.Error>) -> Void) {
     self.index(uid).get(completion)
   }
 
@@ -109,7 +93,7 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndexes(
-    _ completion: @escaping (Result<[Indexes], Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
     Indexes.getAll(config: self.config, completion)
   }
 
@@ -125,7 +109,7 @@ public struct MeiliSearch {
   public func updateIndex(
     uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<Indexes, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
@@ -139,24 +123,151 @@ public struct MeiliSearch {
    */
   public func deleteIndex(
     _ uid: String,
-    _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
+  }
+
+  // MARK: WAIT FOR TASK
+
+  /**
+    Wait for a task to be succesfull or failed.
+
+    Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
+
+    - parameter: taskId:              The id of the task.
+    - parameter: options             Optionnal configuration for timeout and interval
+    - parameter: completion:          The completion closure used to notify when the server
+  **/
+  public func waitForTask(
+    taskUid: Int,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(taskUid: taskUid, options: options, completion)
+  }
+
+  /**
+    Wait for a task to be succeeded or failed.
+
+    Using a task returned by an asynchronous route of MeiliSearch, wait for completion.
+
+    - parameter task:                The task.
+    - parameter: options:             Optionnal configuration for timeout and interval
+    - parameter completion:          The completion closure used to notify when the server
+  **/
+  public func waitForTask(
+    task: Task,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(task: task, options: options, completion)
+  }
+
+  // MARK: Tasks
+
+ /**
+   Get the information of a task.
+
+   - parameter taskUid:    The task identifier.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getTask(
+    taskUid: Int,
+    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    self.tasks.get(taskUid: taskUid, completion)
+  }
+
+  /**
+   Get all tasks.
+
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getTasks(
+    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    self.tasks.getAll(completion)
   }
 
   // MARK: Keys
 
   /**
-   Protected instances of Meilisearch require API keys to perform certain actions. Only the master key has
-   the right to access the list of all API keys.
+   Get all keys.
 
-   - parameter masterKey:  Master key to access the `keys` function.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
-  public func keys(
+  public func getKeys(
+    _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
+    self.keys.getAll(completion)
+  }
+
+  /**
+   Get one key's information using the key value.
+
+   - parameter key:  The key value.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func getKey(
+    key: String,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.get(completion)
+    self.keys.get(key: key, completion)
+  }
+
+  /**
+    Create an API key.
+
+   - parameter keyParams:   Parameters object required to create a key.
+   - parameter completion:  The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func createKey(
+    _ keyParams: KeyParams,
+    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    self.keys.create(keyParams, completion)
+  }
+
+  /**
+    Update an API key.
+
+   - parameter key:         The key value.
+   - parameter keyParams:   Parameters object required to update a key.
+   - parameter completion:  The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func updateKey(
+    key: String,
+    keyParams: KeyParams,
+    _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
+    self.keys.update(
+      key: key,
+      keyParams: keyParams,
+      completion
+    )
+  }
+
+  /**
+    Delete an API key.
+
+   - parameter key:  The key value.
+   - parameter completion: The completion closure used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Key` value.
+   If the request was sucessful or `Error` if a failure occured.
+   */
+  public func deleteKey(
+    key: String,
+    _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
+    self.keys.delete(
+      key: key,
+      completion
+    )
   }
 
   // MARK: Stats

@@ -42,7 +42,7 @@ class SystemTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testIsHealthyTrue() {
@@ -69,7 +69,7 @@ class SystemTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testIsHealthyFalse() {
@@ -90,7 +90,7 @@ class SystemTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testVersion() {
@@ -124,7 +124,7 @@ class SystemTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 5.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 }
 // swiftlint:enable force_unwrapping
