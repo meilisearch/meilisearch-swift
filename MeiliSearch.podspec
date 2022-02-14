@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MeiliSearch'
-  s.version          = '0.12.0'
+  s.version          = '0.13.0'
   s.summary          = 'The Meilisearch API client written in Swift'
 
 # This description is used to generate tags and improve search results.
