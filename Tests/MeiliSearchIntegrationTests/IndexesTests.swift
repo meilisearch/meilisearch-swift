@@ -50,7 +50,7 @@ class IndexesTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(task: task) { result in
+        self.client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual("indexCreation", task.type)
