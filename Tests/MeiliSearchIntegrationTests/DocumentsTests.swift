@@ -56,7 +56,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testAddDocuments() {
@@ -106,7 +106,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testAddDocumentsWithNoPrimaryKey() {
@@ -136,7 +136,7 @@ class DocumentsTests: XCTestCase {
       }
 
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetDocumentsWithParameters() {
@@ -180,7 +180,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetOneDocumentAndFail() {
@@ -238,7 +238,7 @@ class DocumentsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testAddAndGetOneDocument() {
@@ -281,7 +281,7 @@ class DocumentsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateDocument() {
@@ -315,7 +315,7 @@ class DocumentsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testDeleteOneDocument() {
@@ -334,7 +334,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
     self.index.deleteDocument("42") { (result: Result<Task, Swift.Error>) in
@@ -376,7 +376,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete all documents")
     self.index.deleteAllDocuments { (result: Result<Task, Swift.Error>) in
@@ -411,7 +411,7 @@ class DocumentsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [deleteExpectation], timeout: 20.0)
+    self.wait(for: [deleteExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testDeleteBatchDocuments() {
@@ -430,7 +430,7 @@ class DocumentsTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
     let idsToDelete: [Int] = [2, 1, 4]
@@ -455,7 +455,7 @@ class DocumentsTests: XCTestCase {
         deleteExpectation.fulfill()
       }
     }
-    self.wait(for: [deleteExpectation], timeout: 20.0)
+    self.wait(for: [deleteExpectation], timeout: TESTS_TIME_OUT)
   }
 }
 // swiftlint:enable force_unwrapping

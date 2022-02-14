@@ -42,7 +42,7 @@ class IndexesTests: XCTestCase {
         expectation.fulfill()
       }
     }
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetIndexWithClient() {
@@ -74,7 +74,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetIndex() {
@@ -106,7 +106,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetIndexes() {
@@ -139,7 +139,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateIndexWithClient() {
@@ -166,7 +166,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateIndex() {
@@ -193,7 +193,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testDeleteIndexWithClient() {
@@ -225,7 +225,7 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testDeleteIndex() {
@@ -257,9 +257,8 @@ class IndexesTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_try

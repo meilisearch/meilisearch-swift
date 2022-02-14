@@ -78,7 +78,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testSearchForBotmanMovieFacets() {
@@ -134,7 +134,7 @@ class SearchTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testShouldFilterValuesWithSpaces() {

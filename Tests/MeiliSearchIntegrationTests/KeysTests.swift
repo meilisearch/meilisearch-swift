@@ -46,7 +46,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetKeys() {
@@ -63,7 +63,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetKey() {
@@ -80,7 +80,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testCreateKey() {
@@ -102,7 +102,7 @@ class KeysTests: XCTestCase {
       }
     }
 
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testCreateKeyWithExpire() {
@@ -127,7 +127,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateKey() {
@@ -161,7 +161,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testDeleteKey() {
@@ -211,7 +211,7 @@ class KeysTests: XCTestCase {
         keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: 10.0)
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 }
 // swiftlint:enable force_unwrapping

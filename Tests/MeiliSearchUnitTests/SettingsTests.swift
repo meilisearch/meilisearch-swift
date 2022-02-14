@@ -64,7 +64,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testupdateSettings() {
@@ -93,7 +93,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSettings() {
@@ -120,7 +120,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Synonyms
@@ -154,7 +154,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSynonyms() {
@@ -192,7 +192,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSynonyms() {
@@ -220,7 +220,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Stop words
@@ -249,7 +249,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateStopWords() {
@@ -282,7 +282,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetStopWords() {
@@ -311,7 +311,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Ranking rules
@@ -348,7 +348,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateRankingRules() {
@@ -381,7 +381,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetRankingRules() {
@@ -410,7 +410,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Distinct Attribute
@@ -436,7 +436,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateDistinctAttribute() {
@@ -465,7 +465,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetDistinctAttribute() {
@@ -493,7 +493,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Searchable Attribute
@@ -522,7 +522,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSearchableAttributes() {
@@ -556,7 +556,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSearchableAttributes() {
@@ -583,7 +583,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Displayed Attributes
@@ -612,7 +612,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateDisplayedAttributes() {
@@ -649,7 +649,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetDisplayedAttributes() {
@@ -677,7 +677,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Filterable Attributes
@@ -703,7 +703,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateFilterableAttributes() {
@@ -733,7 +733,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetFilterableAttributes() {
@@ -762,7 +762,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Filterable Attributes
@@ -788,7 +788,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateSortableAttributes() {
@@ -818,7 +818,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testResetSortableAttributes() {
@@ -846,7 +846,7 @@ class SettingsTests: XCTestCase {
       expectation.fulfill()
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   private func buildStubSetting(from json: String) -> Setting {

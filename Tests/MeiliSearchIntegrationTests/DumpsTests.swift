@@ -41,7 +41,7 @@ class DumpsTests: XCTestCase {
       }
     }
 
-    self.wait(for: [expectation], timeout: 20.0)
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 }
 // swiftlint:enable force_try

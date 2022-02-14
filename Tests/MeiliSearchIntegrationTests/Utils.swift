@@ -26,6 +26,8 @@ private let movies: [Movie] = [
   Movie(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo")
 ]
 
+public let TESTS_TIME_OUT = 10.0
+
 public func waitForTask(
   _ client: MeiliSearch,
   _ uid: String,
