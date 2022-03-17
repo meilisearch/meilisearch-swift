@@ -4,7 +4,7 @@
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
 get_one_index_1: |-
-  client.getIndex("movies") { (result: Result<Indexes, Swift.Error>) in
+  client.getIndex("movies") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -13,7 +13,7 @@ get_one_index_1: |-
       }
   }
 list_all_indexes_1: |-
-  client.getIndexes { (result: Result<[Indexes], Swift.Error>) in
+  client.getIndexes { (result: Result<[Index], Swift.Error>) in
       switch result {
       case .success(let indexes):
           print(indexes)
@@ -22,7 +22,7 @@ list_all_indexes_1: |-
       }
   }
 create_an_index_1: |-
-  client.createIndex(uid: "movies") { (result: Result<Indexes, Swift.Error>) in
+  client.createIndex(uid: "movies") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -31,7 +31,7 @@ create_an_index_1: |-
       }
   }
 update_an_index_1: |-
-  client.index("movies").update(primaryKey: "movie_review_id") { (result: Result<Indexes, Swift.Error>) in
+  client.index("movies").update(primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -69,10 +69,10 @@ get_documents_1: |-
 add_or_replace_documents_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
-  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -80,38 +80,38 @@ add_or_replace_documents_1: |-
 add_or_update_documents_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
-  client.index("movies").updateDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 delete_all_documents_1: |-
-  client.index("movies").deleteAllDocuments() { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteAllDocuments() { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 delete_one_document_1: |-
-  client.index("movies").deleteDocument(25684) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").deleteDocument(25684) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 delete_documents_1: |-
   client.index("movies").deleteBatchDocuments([23488, 153738, 437035, 363869]) {
-  (result: Result<Update, Swift.Error>) in
+  (result: Result<Task, Swift.Error>) in
         switch result {
-        case .success(let update):
-            print(update)
+        case .success(let task):
+            print(task)
         case .failure(let error):
             print(error)
         }
@@ -126,29 +126,160 @@ search_post_1: |-
           print(error)
       }
   }
-get_update_1: |-
-  client.index("movies").getUpdate(1) { (result: Result<Update.Result, Swift.Error>) in
+get_task_by_index_1: |-
+  client.index("movies").getTask(taskUid: 1) { (result: Result<Task, Swift.Error>) in
+        switch result {
+        case .success(let task):
+            print(task)
+        case .failure(let error):
+            print(error)
+        }
+    }
+get_task_1: |-
+  client.getTask(taskUid: 1) { (result: Result<Task, Swift.Error>) in
+        switch result {
+        case .success(let task):
+            print(task)
+        case .failure(let error):
+            print(error)
+        }
+    }
+get_all_tasks_by_index_1: |-
+  client.index("movies").getTasks() { (result: Result<Results<Task>, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let tasks):
+          print(tasks)
       case .failure(let error):
           print(error)
       }
   }
-get_all_updates_1: |-
-  client.index("movies").getAllUpdates() { (result: Result<[Update.Result], Swift.Error>) in
+get_all_tasks_1: |-
+  client.getTasks() { (result: Result<Results<Task>, Swift.Error>) in
       switch result {
-      case .success(let updates):
-          print(updates)
+      case .success(let tasks):
+          print(tasks)
       case .failure(let error):
           print(error)
       }
   }
-get_keys_1: |-
-  client.keys { (result: Result<Key, Swift.Error>) in
+get_on_key_1: |-
+  self.client.getKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
       switch result {
       case .success(let key):
           print(key)
+      case .failure(let error):
+          print(error)
+      }
+  }
+get_all_keys_1: |-
+  self.client.getKeys() { result in
+      switch result {
+      case .success(let keys):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+create_a_key_1: |-
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add"],
+    indexes: ["products"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
+  self.client.createKey(keyParams) { result in
+      switch result {
+      case .success(let key):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+update_a_key_1: |-
+  let keyParams = KeyParams(
+    description: "Add documents: Products API key",
+    actions: ["documents.add", "documents.delete"],
+    indexes: ["products", "reviews"],
+    expiresAt: "2042-04-02T00:42:42Z"
+  )
+  self.client.updateKey(
+      key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4"
+      keyparams: keyParams
+  ) { result in
+      switch result {
+      case .success(let key):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+delete_a_key_1: |-
+  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
+  { result in
+      switch result {
+      case .success:
+          print("success")
+      case .failure(let error):
+          print(error)
+      }
+  }
+
+security_guide_search_key_1: |-
+  client = MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
+  client.index("patient_medical_records")
+    .search(parameters) { (result: Result<SearchResult<Record>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+security_guide_update_key_1: |-
+  let keyParams = KeyParams(
+    indexes: ["doctors"]
+  )
+  self.client.updateKey(
+    key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4",
+    keyParams: keyParams,
+  ) { result in
+    switch result {
+    case .success(let key):
+      print(keys)
+    case .failure(let error):
+      print(error)
+    }
+  }
+security_guide_create_key_1: |-
+  let keyParams = KeyParams(
+    description: "Search patient records key",
+    actions: ["search"],
+    indexes: ["patient_medical_records"],
+    expiresAt: "2023-01-01T00:00:00Z"
+  )
+  self.client.createKey(keyParams) { result in
+    switch result {
+    case .success(let key):
+      print(keys)
+    case .failure(let error):
+      print(error)
+    }
+  }
+security_guide_list_keys_1: |-
+  self.client.getKeys() { result in
+      switch result {
+      case .success(let keys):
+          print(keys)
+      case .failure(let error):
+          print(error)
+      }
+  }
+security_guide_delete_key_1: |-
+  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
+  { result in
+      switch result {
+      case .success:
+          print("success")
       case .failure(let error):
           print(error)
       }
@@ -198,19 +329,19 @@ update_settings_1: |-
       "title",
       "release_date"
   ])
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_settings_1: |-
-  client.index("movies").resetSettings { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSettings { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -219,7 +350,7 @@ get_synonyms_1: |-
   client.index("movies").getSynonyms { (result: Result<[String: [String]], Swift.Error>) in
       switch result {
       case .success(let synonyms):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -230,19 +361,19 @@ update_synonyms_1: |-
       "logan": ["wolverine", "xmen"],
       "wow": ["world of warcraft"]
   ]
-  client.index("movies").updateSynonyms(synonyms) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSynonyms(synonyms) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_synonyms_1: |-
-  client.index("movies").resetSynonyms { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSynonyms { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -258,19 +389,19 @@ get_stop_words_1: |-
   }
 update_stop_words_1: |-
   let stopWords: [String] = ["of", "the", "to"]
-  client.index("movies").updateStopWords(stopWords) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateStopWords(stopWords) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_stop_words_1: |-
-  client.index("movies").resetStopWords { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetStopWords { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -295,19 +426,19 @@ update_ranking_rules_1: |-
       "release_date:asc",
       "rank:desc"
   ]
-  client.index("movies").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateRankingRules(rankingRules) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_ranking_rules_1: |-
-  client.index("movies").resetRankingRules { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetRankingRules { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -322,19 +453,19 @@ get_distinct_attribute_1: |-
       }
   }
 update_distinct_attribute_1: |-
-  client.index("shoes").updateDistinctAttribute("skuid") { (result: Result<Update, Swift.Error>) in
+  client.index("shoes").updateDistinctAttribute("skuid") { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_distinct_attribute_1: |-
-  client.index("shoes").resetDistinctAttribute { (result: Result<Update, Swift.Error>) in
+  client.index("shoes").resetDistinctAttribute { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -350,19 +481,19 @@ get_searchable_attributes_1: |-
   }
 update_searchable_attributes_1: |-
   let searchableAttributes: [String] = ["title", "description", "uid"]
-  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_searchable_attributes_1: |-
-  client.index("movies").resetSearchableAttributes { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetSearchableAttributes { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -378,19 +509,19 @@ get_displayed_attributes_1: |-
   }
 update_displayed_attributes_1: |-
   let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]
-  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_displayed_attributes_1: |-
-  client.index("movies").resetDisplayedAttributes { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetDisplayedAttributes { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -400,7 +531,7 @@ get_index_stats_1: |-
   client.index("movies").stats { (result: Result<Stat, Swift.Error>) in
       switch result {
       case .success(let stat):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -409,7 +540,7 @@ get_indexes_stats_1: |-
   client.allStats { (result: Result<AllStats, Swift.Error>) in
       switch result {
       case .success(let allStats):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -427,7 +558,7 @@ get_version_1: |-
   client.version { (result: Result<Version, Swift.Error>) in
       switch result {
       case .success(let version):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -436,7 +567,7 @@ get_pretty_sys_info_1: |-
   client.prettySystemInfo { (result: Result<PrettySystemInfo, Swift.Error>) in
       switch result {
       case .success(let systemInfo):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -445,16 +576,16 @@ get_sys_info_1: |-
   client.systemInfo { (result: Result<SystemInfo, Swift.Error>) in
       switch result {
       case .success(let systemInfo):
-          print(update)
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 distinct_attribute_guide_1: |-
-  client.index("jackets").updateDistinctAttribute("product_id") { (result: Result<Update, Swift.Error>) in
+  client.index("jackets").updateDistinctAttribute("product_id") { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -469,10 +600,10 @@ field_properties_guide_searchable_1: |-
       "release_date",
       "rank"
   ]
-  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -485,10 +616,10 @@ field_properties_guide_displayed_1: |-
       "release_date",
       "rank"
   ]
-  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -655,10 +786,10 @@ settings_guide_stop_words_1: |-
       "a",
       "an"
   ])
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -675,10 +806,10 @@ settings_guide_ranking_rules_1: |-
       "release_date:asc",
       "rank:desc"
   ])
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -687,10 +818,10 @@ settings_guide_distinct_1: |-
   let settings = Setting(
     distinctAttribute: "product_id"
   )
-  client.index("jackets").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("jackets").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -706,10 +837,10 @@ settings_guide_searchable_1: |-
       "release_date",
       "rank"
   ])
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -720,10 +851,10 @@ settings_guide_synonyms_1: |-
       "sweater": ["jumper"],
       "jumper": ["sweater"]
   ])
-  client.index("tops").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("tops").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -737,10 +868,10 @@ settings_guide_displayed_1: |-
       "release_date",
       "rank"
   ])
-  client.index("movies").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -751,10 +882,10 @@ settings_guide_sortable_1: |-
       "author",
       "price"
   ])
-  client.index("books").updateSettings(settings) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -762,10 +893,10 @@ settings_guide_sortable_1: |-
 add_movies_json_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")
   let documents: Data = Data(contentsOf: path)
-  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -778,10 +909,10 @@ documents_guide_add_movie_1: |-
   }]
   """
   let documents: Data = documentJsonString.data(using: .utf8)!
-  client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -815,19 +946,17 @@ getting_started_add_documents_md: |-
   Add this to your `Package.swift`:
   ```swift
     dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.12.0")
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.13.0")
     ]
   ```
 
   ```swift
     let path = Bundle.main.url(forResource: "movies", withExtension: "json")
     let documents: Data = Data(contentsOf: path)
-
-    let client = try! MeiliSearch(host: "http://localhost:7700")
-    client.index("movies").addDocuments(documents: documents) { (result: Result<Update, Swift.Error>) in
+    client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
         switch result {
-        case .success(let update):
-            print(update)
+        case .success(let task):
+            print(task)
         case .failure(let error):
             print(error)
         }
@@ -856,16 +985,16 @@ get_filterable_attributes_1: |-
       }
   }
 update_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
   }
 reset_filterable_attributes_1: |-
-  client.index("movies").resetFilterableAttributes { (result: Result<Update, Swift.Error>) in
+  client.index("movies").resetFilterableAttributes { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let attributes):
           print(attributes)
@@ -874,10 +1003,10 @@ reset_filterable_attributes_1: |-
       }
   }
 faceted_search_update_settings_1: |-
-  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Update, Swift.Error>) in
+  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -911,10 +1040,10 @@ faceted_search_walkthrough_filterable_attributes_1: |-
       "director",
       "producer",
       "genres",
-      "production_companies"]) { (result: Result<Update, Swift.Error>) in
+      "production_companies"]) { (result: Result<Task, Swift.Error>) in
     switch result {
-    case .success(let update):
-        print(update)
+    case .success(let task):
+        print(task)
     case .failure(let error):
         print(error)
     }
@@ -956,10 +1085,10 @@ phrase_search_1: |-
       }
   }
 sorting_guide_update_sortable_attributes_1: |-
-  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Task, Swift.Error>) in
     switch result {
-    case .success(let update):
-      print(update)
+    case .success(let task):
+      print(task)
     case .failure(let error):
       print(error)
     }
@@ -973,10 +1102,10 @@ sorting_guide_update_ranking_rules_1: |-
     "attribute",
     "exactness"
   ]
-  client.index("books").updateRankingRules(rankingRules) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateRankingRules(rankingRules) { (result: Result<Task, Swift.Error>) in
     switch result {
-    case .success(let update):
-      print(update)
+    case .success(let task):
+      print(task)
     case .failure(let error):
       print(error)
     }
@@ -1017,16 +1146,16 @@ get_sortable_attributes_1: |-
     }
   }
 update_sortable_attributes_1: |-
-  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Update, Swift.Error>) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Task, Swift.Error>) in
     switch result {
-    case .success(let update):
-      print(update)
+    case .success(let task):
+      print(task)
     case .failure(let error):
       print(error)
     }
   }
 reset_sortable_attributes_1: |-
-  client.index("books").resetSortableAttributes() { (result: Result<Update, Swift.Error>) in
+  client.index("books").resetSortableAttributes() { (result: Result<Task, Swift.Error>) in
     switch result {
     case .success(let attributes):
       print(attributes)
@@ -1067,10 +1196,10 @@ get_dump_status_1: |-
   }
 
 geosearch_guide_filter_settings_1: |-
-  client.index("restaurants").updateFilterableAttributes(["_geo"]) { (result: Result<Update, Swift.Error>) in
+  client.index("restaurants").updateFilterableAttributes(["_geo"]) { (result: Result<Task, Swift.Error>) in
       switch result {
-      case .success(let update):
-          print(update)
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
@@ -1100,10 +1229,10 @@ geosearch_guide_filter_usage_2: |-
       }
   }
 geosearch_guide_sort_settings_1: |-
-  client.index("restaurants").updateSortableAttributes(["_geo"]) { (result: Result<Update, Swift.Error>) in
+  client.index("restaurants").updateSortableAttributes(["_geo"]) { (result: Result<Task, Swift.Error>) in
     switch result {
-    case .success(let update):
-      print(update)
+    case .success(let task):
+      print(task)
     case .failure(let error):
       print(error)
     }
@@ -1114,12 +1243,12 @@ geosearch_guide_sort_usage_1: |-
   )
   client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
-      case .success(let searchResult):
-          print(searchResult)
+      case .success(let task):
+        print(task)
       case .failure(let error):
-          print(error)
+        print(error)
       }
-  }
+    }
 geosearch_guide_sort_usage_2: |-
   let searchParameters = SearchParameters(
       sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]

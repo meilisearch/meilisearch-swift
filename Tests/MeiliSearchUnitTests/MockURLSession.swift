@@ -17,7 +17,7 @@ class MockURLSession: URLSessionProtocol {
     HTTPURLResponse(url: request.url!, statusCode: nextCode, httpVersion: "HTTP/1.1", headerFields: nil)!
   }
 
-  func execute(with request: URLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+  func execute(with request: URLRequest, completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol {
     let first: ResponsePayload = !responses.isEmpty ? responses.removeFirst() : ResponsePayload.default
     lastURL = request.url
 

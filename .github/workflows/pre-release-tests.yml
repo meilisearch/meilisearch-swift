@@ -41,13 +41,3 @@ jobs:
           ./meilisearch --master-key=masterKey --no-analytics &
       - name: Run tests
         run: swift test
-
-  linter:
-    name: linter-check
-    runs-on: macos-latest
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run SwiftLint
-        run: sh ./Scripts/swiftlint.sh
