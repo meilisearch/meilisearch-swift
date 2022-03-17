@@ -40,7 +40,7 @@ If you have a running Meilisearch instance at port `localhost:7700` with the fol
 
 ```bash
 curl -L https://install.meilisearch.com | sh # download Meilisearch
-./meilisearch --master-key=masterKey --no-analytics=true # run Meilisearch
+./meilisearch --master-key=masterKey --no-analytics # run Meilisearch
 swift test
 ```
 
