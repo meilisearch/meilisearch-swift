@@ -270,6 +270,30 @@ public struct MeiliSearch {
     )
   }
 
+  /**
+    Generates a new tenant token.
+
+   - parameter searchRules: A `SearchRulesGroup` will provide the rules to be enforced at search time for all or specific accessible indexes for the signing API Key.
+   - parameter apiKey:  The API key parent of the token. If you leave it empty the client API Key will be used.
+   - parameter expiresAt: A `Date` when the key will expire.
+   - parameter completion: The completion closure will returns a `Result` object that contains token `String` value.
+   If the token was created successfully or `Error` if a failure occured.
+   - [docs.meilisearch.com](https://docs.meilisearch.com/learn/security/tenant_tokens.html)
+   */
+  public func generateTenantToken(
+    _ searchRules: SearchRulesGroup,
+    apiKey: String? = nil,
+    expiresAt: Date? = nil,
+    _ completion: @escaping (Result<String, Swift.Error>) -> Void
+  ) {
+    TenantTokens.generateTenantToken(
+      searchRules,
+      apiKey: apiKey ?? self.config.apiKey ?? "",
+      expiresAt: expiresAt,
+      completion
+    )
+  }
+
   // MARK: Stats
 
   /**
