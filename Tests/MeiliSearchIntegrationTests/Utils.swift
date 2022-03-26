@@ -3,18 +3,6 @@ import XCTest
 @testable import MeiliSearch
 
 // swiftlint:disable force_try
-private struct Movie: Codable, Equatable {
-  let id: Int
-  let title: String
-  let comment: String?
-
-  init(id: Int, title: String, comment: String? = nil) {
-    self.id = id
-    self.title = title
-    self.comment = comment
-  }
-}
-
 private let movies: [Movie] = [
   Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
   Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
@@ -52,30 +40,30 @@ public func waitForTask(
   request()
 }
 
-  public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
-    client.deleteIndex(uid) { result in
-      switch result {
-      case .success:
-        client.createIndex(uid: uid) { result in
-          switch result {
-          case .success(let task):
-            client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
-              switch result {
-              case .success(let task):
-                completion(.success(task))
-              case .failure(let error):
-                completion(.failure(error))
-              }
+public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+  client.deleteIndex(uid) { result in
+    switch result {
+    case .success:
+      client.createIndex(uid: uid) { result in
+        switch result {
+        case .success(let task):
+          client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
+            switch result {
+            case .success(let task):
+              completion(.success(task))
+            case .failure(let error):
+              completion(.failure(error))
             }
-          case .failure(let error):
-            completion(.failure(error))
           }
+        case .failure(let error):
+          completion(.failure(error))
         }
-      case .failure(let error):
-        completion(.failure(error))
       }
+    case .failure(let error):
+      completion(.failure(error))
     }
   }
+}
 
 public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
@@ -96,37 +84,37 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
   }
 }
 
-  public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
-    let movie = Movie(id: 1, title: "test", comment: "test movie")
-    addDocuments(client: client, uid: uid, dataset: [movie], primaryKey: primaryKey, completion)
-  }
+public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+  let movie = Movie(id: 1, title: "test", comment: "test movie")
+  addDocuments(client: client, uid: uid, dataset: [movie], primaryKey: primaryKey, completion)
+}
 
-  public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
-    let jsonEncoder = JSONEncoder()
+public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+  let jsonEncoder = JSONEncoder()
 
-    let documents: Data = try! jsonEncoder.encode(dataset)
-    let index = client.index(uid)
+  let documents: Data = try! jsonEncoder.encode(dataset)
+  let index = client.index(uid)
 
-    client.deleteIndex(uid) { result in
-      switch result {
-      case .success:
-        index.addDocuments(documents: documents, primaryKey: primaryKey) { result in
-          switch result {
-          case .success(let task):
-            client.waitForTask(task: task) { result in
-              switch result {
-              case .success(let task):
-                completion(.success(task))
-              case .failure(let error):
-                completion(.failure(error))
-              }
+  client.deleteIndex(uid) { result in
+    switch result {
+    case .success:
+      index.addDocuments(documents: documents, primaryKey: primaryKey) { result in
+        switch result {
+        case .success(let task):
+          client.waitForTask(task: task) { result in
+            switch result {
+            case .success(let task):
+              completion(.success(task))
+            case .failure(let error):
+              completion(.failure(error))
             }
-          case .failure(let error):
-            completion(.failure(error))
           }
+        case .failure(let error):
+          completion(.failure(error))
         }
-      case .failure(let error):
-        completion(.failure(error))
       }
+    case .failure(let error):
+      completion(.failure(error))
     }
   }
+}
