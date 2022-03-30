@@ -20,6 +20,7 @@ class MockURLSession: URLSessionProtocol {
   func execute(with request: URLRequest, completionHandler: @escaping DataTask) -> URLSessionDataTaskProtocol {
     let first: ResponsePayload = !responses.isEmpty ? responses.removeFirst() : ResponsePayload.default
     lastURL = request.url
+    nextDataTask.request = request
 
     if first.nextType == ResponseStatus.success {
       completionHandler(first.nextData, successHttpURLResponse(request, first.nextCode), first.nextError)
@@ -59,6 +60,7 @@ class MockURLSession: URLSessionProtocol {
 }
 
 class MockURLSessionDataTask: URLSessionDataTaskProtocol {
+  var request: URLRequest?
   private (set) var resumeWasCalled = false
 
   func resume() {

@@ -46,6 +46,7 @@ public final class Request {
 
       var request = URLRequest(url: url)
       request.httpMethod = "GET"
+      request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
       headers.forEach { key, value in
         request.addValue(value, forHTTPHeaderField: key)
       }
@@ -84,6 +85,7 @@ public final class Request {
     request.httpBody = data
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
 
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
@@ -121,6 +123,7 @@ public final class Request {
     request.httpBody = data
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
 
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
@@ -159,6 +162,7 @@ public final class Request {
     request.httpBody = data
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
 
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
@@ -195,6 +199,7 @@ public final class Request {
     request.httpMethod = "DELETE"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
 
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
