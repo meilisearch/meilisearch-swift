@@ -6,9 +6,18 @@
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
 #
 
+# Loads version from `PackageVersion.current` defined in the PackageVersion.swift file.
+package_version = begin
+  File
+    .read("./Sources/MeiliSearch/Model/PackageVersion.swift")
+    .match(/"([0-9]+.[0-9]+.[0-9]+)"/i)[1]
+rescue
+  raise "Cannot retrieve a valid semver.org version in the PackageVersion.swift file"
+end
+
 Pod::Spec.new do |s|
   s.name             = 'MeiliSearch'
-  s.version          = '0.13.0'
+  s.version          = package_version
   s.summary          = 'The Meilisearch API client written in Swift'
 
 # This description is used to generate tags and improve search results.
@@ -33,10 +42,11 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://github.com/meilisearch/meilisearch-swift'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Meilisearch' => 'bonjour@meilisearch.com' }
-  s.source           = { :git => 'https://github.com/meilisearch/meilisearch-swift.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/meilisearch/meilisearch-swift.git', :tag => package_version }
   s.social_media_url = 'https://twitter.com/meilisearch'
 
-  s.source_files = 'Sources/**/*'
+  s.source_files = 'Sources/**/*.{h,m,swift}'
+
   s.swift_versions = ['5.2']
   s.ios.deployment_target = '10.0'
   s.osx.deployment_target = '10.10'
