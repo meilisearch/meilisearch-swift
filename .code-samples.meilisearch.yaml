@@ -304,19 +304,14 @@ update_settings_1: |-
       "release_date:desc",
       "rank:desc"
   ], searchableAttributes: [
-      "uid",
-      "movie_id",
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres"
   ], displayedAttributes: [
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres"
+      "release_date"
   ], stopWords: [
       "the",
       "a",
@@ -480,7 +475,7 @@ get_searchable_attributes_1: |-
       }
   }
 update_searchable_attributes_1: |-
-  let searchableAttributes: [String] = ["title", "description", "uid"]
+  let searchableAttributes: [String] = ["title", "overview", "genres"]
   client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -508,7 +503,7 @@ get_displayed_attributes_1: |-
       }
   }
 update_displayed_attributes_1: |-
-  let displayedAttributes: [String] = ["title", "description", "release_date", "rank", "poster"]
+  let displayedAttributes: [String] = ["title", "overview", "genres", "release_date"]
   client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -592,13 +587,9 @@ distinct_attribute_guide_1: |-
   }
 field_properties_guide_searchable_1: |-
   let searchableAttributes: [String] = [
-      "uid",
-      "movie_id",
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres"
   ]
   client.index("movies").updateSearchableAttributes(searchableAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
@@ -611,10 +602,9 @@ field_properties_guide_searchable_1: |-
 field_properties_guide_displayed_1: |-
   let displayedAttributes: [String] = [
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres",
+      "release_date"
   ]
   client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
       switch result {
@@ -829,13 +819,9 @@ settings_guide_distinct_1: |-
 settings_guide_searchable_1: |-
   let settings = Setting(
     searchableAttributes: [
-      "uid",
-      "movie_id",
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres"
   ])
   client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
@@ -863,10 +849,9 @@ settings_guide_displayed_1: |-
   let settings = Setting(
     displayedAttributes: [
       "title",
-      "description",
-      "poster",
-      "release_date",
-      "rank"
+      "overview",
+      "genres",
+      "release_date"
   ])
   client.index("movies").updateSettings(settings) { (result: Result<Task, Swift.Error>) in
       switch result {
