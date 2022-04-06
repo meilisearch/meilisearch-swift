@@ -2,12 +2,6 @@ import Foundation
 import JWTKit
 
 internal struct TokenPayload: JWTPayload, Equatable {
-  enum CodingKeys: String, CodingKey {
-    case exp
-    case searchRules
-    case apiKeyPrefix
-  }
-
   /// The "exp" (expiration time) claim identifies the expiration time on
   /// or after which the JWT MUST NOT be accepted for processing.
   var exp: ExpirationClaim?
@@ -18,7 +12,7 @@ internal struct TokenPayload: JWTPayload, Equatable {
 
   /// The "apiKeyPrefix" claim contains the first 8 characters of the
   /// Meilisearch API key that generates and signs the Tenant Token.
-  var apiKeyPrefix: ApiKeyClaim?
+  var apiKeyPrefix: ApiKeyPrefixClaim?
 
   func verify(using signer: JWTSigner) throws {
     try self.exp?.verifyNotExpired()

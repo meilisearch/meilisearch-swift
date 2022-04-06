@@ -9,21 +9,6 @@ public struct SearchRules: Codable, Equatable {
     self.filter = filter
   }
 
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    var dict = [String: [String: String?]]()
-
-    guard let filter = self.filter, !filter.isEmpty else {
-      try container.encode([index])
-
-      return
-    }
-
-    dict[index] = ["filter": self.filter]
-
-    try container.encode(dict)
-  }
-
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
 
@@ -49,6 +34,21 @@ public struct SearchRules: Codable, Equatable {
       SearchRules.self,
       DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for SearchRules")
     )
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    var dict = [String: [String: String?]]()
+
+    guard let filter = self.filter, !filter.isEmpty else {
+      try container.encode([index])
+
+      return
+    }
+
+    dict[index] = ["filter": self.filter]
+
+    try container.encode(dict)
   }
 
   public func getFilterDict() -> [String: String?]? {

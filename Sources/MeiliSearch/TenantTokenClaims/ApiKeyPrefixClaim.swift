@@ -1,7 +1,7 @@
 import Foundation
 import JWTKit
 
-internal struct ApiKeyClaim: JWTClaim, Equatable {
+internal struct ApiKeyPrefixClaim: JWTClaim, Equatable {
   /// See `JWTClaim`.
   public var value: String
 

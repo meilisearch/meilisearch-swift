@@ -41,7 +41,7 @@ internal struct TenantTokens {
 
     var payload = TokenPayload(
       searchRules: SearchRulesClaim(value: searchRules),
-      apiKeyPrefix: ApiKeyClaim(value: String(apiKey.prefix(8)))
+      apiKeyPrefix: ApiKeyPrefixClaim(value: String(apiKey.prefix(8)))
     )
 
     if let exp = expiresAt {

@@ -13,19 +13,6 @@ public struct SearchRulesGroup: Codable, Equatable {
     self.init([searchRules])
   }
 
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    var dict = [String: [String: String?]]()
-
-    for rule in self.members {
-      if let filter = rule.getFilterDict() {
-        dict[rule.index] = filter
-      }
-    }
-
-    try container.encode(dict)
-  }
-
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
 
@@ -49,5 +36,18 @@ public struct SearchRulesGroup: Codable, Equatable {
       SearchRules.self,
       DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for SearchRules")
     )
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    var dict = [String: [String: String?]]()
+
+    for rule in self.members {
+      if let filter = rule.getFilterDict() {
+        dict[rule.index] = filter
+      }
+    }
+
+    try container.encode(dict)
   }
 }
