@@ -1291,7 +1291,7 @@ geosearch_guide_filter_settings_1: |-
   }
 geosearch_guide_filter_usage_1: |-
   let searchParameters = SearchParameters(
-      filter: ["_geoRadius(45.4628328, 9.1076931, 2000)"]
+      filter: ["_geoRadius(45.472735, 9.184019, 2000)"]
   )
   client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
@@ -1303,7 +1303,7 @@ geosearch_guide_filter_usage_1: |-
   }
 geosearch_guide_filter_usage_2: |-
   let searchParameters = SearchParameters(
-      filter: ["_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"]
+      filter: ["_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"]
   )
   client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
@@ -1324,7 +1324,7 @@ geosearch_guide_sort_settings_1: |-
   }
 geosearch_guide_sort_usage_1: |-
   let searchParameters = SearchParameters(
-      sort: ["_geoPoint(48.8583701,2.2922926):asc"]
+      sort: ["_geoPoint(48.8561446, 2.2978204):asc"]
   )
   client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
@@ -1336,7 +1336,7 @@ geosearch_guide_sort_usage_1: |-
     }
 geosearch_guide_sort_usage_2: |-
   let searchParameters = SearchParameters(
-      sort: ["_geoPoint(48.8583701,2.2922926):asc", "rating:desc"]
+      sort: ["_geoPoint(48.8561446, 2.2978204):asc", "rating:desc"]
   )
   client.index("restaurants").search(searchParameters) { (result: Result<SearchResult<Restaurant>, Swift.Error>) in
       switch result {
