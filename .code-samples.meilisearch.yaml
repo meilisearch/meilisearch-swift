@@ -641,18 +641,6 @@ filtering_guide_2: |-
   }
 filtering_guide_3: |-
   let searchParameters = SearchParameters(
-      query: "horror",
-      filter: "director = \"Jordan Peele\"")
-  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-filtering_guide_4: |-
-  let searchParameters = SearchParameters(
       query: "Planet of the Apes",
       filter: "rating >= 3 AND (NOT director = \"Tim Burton\"")
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
@@ -725,30 +713,6 @@ search_parameter_guide_highlight_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       attributesToHighlight: ["overview"])
-  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_filter_1: |-
-  let searchParameters = SearchParameters(
-      query: "n",
-      filter: "title = Nightshift")
-  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_filter_2: |-
-  let searchParameters = SearchParameters(
-      query: "n",
-      filter: "title=\"Kung Fu Panda\"")
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
@@ -1182,19 +1146,6 @@ faceted_search_facets_distribution_1: |-
           print(error)
       }
   }
-faceted_search_walkthrough_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributes([
-      "director",
-      "producer",
-      "genres",
-      "production_companies"]) { (result: Result<Task, Swift.Error>) in
-    switch result {
-    case .success(let task):
-        print(task)
-    case .failure(let error):
-        print(error)
-    }
-  }
 faceted_search_walkthrough_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
@@ -1207,19 +1158,6 @@ faceted_search_walkthrough_filter_1: |-
           print(error)
       }
   }
-faceted_search_walkthrough_facets_distribution_1: |-
-  let searchParameters = SearchParameters(
-      query: "Batman",
-      facetsDistribution: ["genres"])
-  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-
 phrase_search_1: |-
   let searchParameters = SearchParameters(
       query: "\"african american\" horror")
