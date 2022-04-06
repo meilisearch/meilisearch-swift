@@ -984,7 +984,7 @@ getting_started_synonyms: |-
   let synonyms: [String: [String]] = [
      "winnie": ["piglet"],
      "piglet": ["winnie"]
-   ]
+  ]
    client.index("movies").updateSynonyms(synonyms) { (result: Result<Task, Swift.Error>) in
        switch result {
        case .success(let task):
@@ -995,7 +995,7 @@ getting_started_synonyms: |-
    }
 getting_started_update_displayedAttributes: |-
   let displayedAttributes: [String] = ["title", "overview", "poster"]
-   client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
+  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result: Result<Task, Swift.Error>) in
        switch result {
        case .success(let task):
            print(task)
@@ -1342,6 +1342,27 @@ geosearch_guide_sort_usage_2: |-
       switch result {
       case .success(let searchResult):
           print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+landing_getting_started_1: |-
+  let client = MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+  let documentJsonString = """
+  [
+    { "id": 1, "title": "Carol" },
+    { "id": 2, "title": "Wonder Woman" },
+    { "id": 3, "title": "Life of Pi" },
+    { "id": 4, "title": "Mad Max: Fury Road" },
+    { "id": 5, "title": "Moana" },
+    { "id": 6, "title": "Philadelphia"}
+  ]
+  """
+  let documents: Data = documentJsonString.data(using: .utf8)!
+  client.index("movies").addDocuments(documents: documents, primaryKey: "reference_number") { (result: Result<Task, Swift.Error>) in
+      switch result {
+      case .success(let task):
+          print(task)
       case .failure(let error):
           print(error)
       }
