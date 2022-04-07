@@ -22,7 +22,7 @@ list_all_indexes_1: |-
       }
   }
 create_an_index_1: |-
-  client.createIndex(uid: "movies") { (result: Result<Index, Swift.Error>) in
+  client.createIndex(uid: "movies", primaryKey: "id") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
@@ -31,7 +31,7 @@ create_an_index_1: |-
       }
   }
 update_an_index_1: |-
-  client.index("movies").update(primaryKey: "movie_review_id") { (result: Result<Index, Swift.Error>) in
+  client.index("movies").update(primaryKey: "id") { (result: Result<Index, Swift.Error>) in
       switch result {
       case .success(let index):
           print(index)
