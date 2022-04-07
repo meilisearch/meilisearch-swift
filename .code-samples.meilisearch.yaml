@@ -1002,7 +1002,7 @@ getting_started_update_displayedAttributes: |-
        }
    }
 getting_started_communicating_with_a_protected_instance: |-
-  let client = MeiliSearch(host: "http://localhost:7700", apiKey: "master")
+  let client = MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
   client.index("movies").search { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
