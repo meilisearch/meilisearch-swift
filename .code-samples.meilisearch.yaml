@@ -969,17 +969,15 @@ getting_started_update_stop_words: |-
           print(error)
       }
   }
-getting_started_check_task_status_md: |-
-  ```swift
-    client.index("movies").getTask(taskUid: 0) { (result: Result<Task, Swift.Error>) in
-        switch result {
-        case .success(let task):
-            print(task)
-        case .failure(let error):
-            print(error)
-        }
-    }
-  ````
+getting_started_check_task_status: |-
+  client.index("movies").getTask(taskUid: 0) { (result: Result<Task, Swift.Error>) in
+      switch result {
+      case .success(let task):
+          print(task)
+      case .failure(let error):
+          print(error)
+      }
+  }
 getting_started_synonyms: |-
   let synonyms: [String: [String]] = [
      "winnie": ["piglet"],
