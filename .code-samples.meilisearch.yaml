@@ -67,8 +67,10 @@ get_documents_1: |-
       }
   }
 add_or_replace_documents_1: |-
-  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let file = "movies.json"
+  let path = URL(fileURLWithPath: file)
   let documents: Data = Data(contentsOf: path)
+
   client.index("movies").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -78,8 +80,10 @@ add_or_replace_documents_1: |-
       }
   }
 add_or_update_documents_1: |-
-  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
+  let file = "movies.json"
+  let path = URL(fileURLWithPath: file)
   let documents: Data = Data(contentsOf: path)
+
   client.index("movies").updateDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -319,7 +323,7 @@ update_settings_1: |-
   ], synonyms: [
       "wolverine": ["xmen", "logan"],
       "logan": ["wolverine"]
-  ], distinctAttribute: "product_id",
+  ], distinctAttribute: "movie_id",
   sortableAttributes: [
       "title",
       "release_date"
@@ -876,7 +880,7 @@ document_guide_create_index_primary_key: |-
       }
   }
 document_guide_add_document_primary_key: |-
-  let documentJsonString = """
+  let documents: Data = """
   [
     {
       "reference_number": 287947,
@@ -886,8 +890,8 @@ document_guide_add_document_primary_key: |-
       "release_date": "2019-03-23"
     }
   ]
-  """
-  let documents: Data = documentJsonString.data(using: .utf8)!
+  """.data(using: .utf8)!
+
   client.index("movies").addDocuments(documents: documents, primaryKey: "reference_number") { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -1012,8 +1016,10 @@ getting_started_communicating_with_a_protected_instance: |-
       }
   }
 getting_started_add_meteorites: |-
-  let path = Bundle.main.url(forResource: "meteorites", withExtension: "json")
+  let file = "meteorites.json"
+  let path = URL(fileURLWithPath: file)
   let documents: Data = Data(contentsOf: path)
+
   client.index("meteorites").addDocuments(documents: documents) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
@@ -1346,7 +1352,7 @@ geosearch_guide_sort_usage_2: |-
   }
 landing_getting_started_1: |-
   let client = MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-  let documentJsonString = """
+  let documents = """
   [
     { "id": 1, "title": "Carol" },
     { "id": 2, "title": "Wonder Woman" },
@@ -1355,8 +1361,8 @@ landing_getting_started_1: |-
     { "id": 5, "title": "Moana" },
     { "id": 6, "title": "Philadelphia"}
   ]
-  """
-  let documents: Data = documentJsonString.data(using: .utf8)!
+  """.data(using: .utf8)!
+
   client.index("movies").addDocuments(documents: documents, primaryKey: "reference_number") { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
