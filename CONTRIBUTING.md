@@ -120,9 +120,9 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 ⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/resources/integration-release.md).
 
 Make a PR updating the different versions with the new one on these files:
-- [`MeiliSearch.podspec`](/MeiliSearch.podspec):
-  ```ruby
-    s.version          = 'X.X.X'
+- [`Sources/MeiliSearch/Model/PackageVersion.swift`](/Sources/MeiliSearch/Model/PackageVersion.swift):
+  ```swift
+    private static let current = "X.X.X"
   ```
 - [`.code-samples.meilisearch.yaml`](/.code-samples.meilisearch.yaml) on the line containing the following:
   ```ruby
