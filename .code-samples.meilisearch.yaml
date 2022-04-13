@@ -1369,5 +1369,32 @@ landing_getting_started_1: |-
           print(task)
       case .failure(let error):
           print(error)
+tenant_token_guide_generate_sdk_1: |-
+  let apiKey = "B5KdX2MY2jV6EXfUs6scSfmC..."
+  let expiresAt = Date.distantFuture
+  let searchRules = SearchRulesGroup(SearchRules("patient_medical_records", filter: "user_id = 1"))
+
+  client.generateTenantToken(
+    searchRules,
+    apiKey: apiKey, // optional
+    expiresAt: expiresAt // optional
+  ) { (result: Result<String, Error>) in
+    switch result {
+    case .success(let token):
+      print(token)
+    case .failure(let error):
+      print(error)
+    }
+  }
+tenant_token_guide_search_sdk_1: |-
+  let frontEndClient = MeiliSearch(host: "http://localhost:7700", apiKey: token)
+
+  client.index("patient_medical_records")
+    .search(parameters) { (result: Result<SearchResult<Record>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+        print(searchResult)
+      case .failure(let error):
+        print(error)
       }
   }
