@@ -19,6 +19,14 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
+private enum HTTPMethod: String {
+  case get = "GET"
+  case put = "PUT"
+  case post = "POST"
+  case patch = "PATCH"
+  case delete = "DELETE"
+}
+
 public final class Request {
   private let config: Config
   private let session: URLSessionProtocol
@@ -26,6 +34,30 @@ public final class Request {
   init(_ config: Config) {
     self.config = config
     self.session = config.session ?? URLSession.shared
+  }
+
+  private func request(
+    _ httpMethod: HTTPMethod,
+    _ url: URL,
+    _ data: Data?,
+    _ headers: [String: String] = [:]
+  ) -> URLRequest {
+    var request = URLRequest(url: url)
+    request.httpMethod = httpMethod.rawValue
+    if httpMethod != .get {
+      request.httpBody = data
+      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+    }
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
+    headers.forEach { key, value in
+      request.addValue(value, forHTTPHeaderField: key)
+    }
+    if let apiKey: String = config.apiKey {
+      let bearer = "Bearer \(apiKey)"
+      request.addValue(bearer, forHTTPHeaderField: "Authorization")
+    }
+    return request
   }
 
   func get(
@@ -38,24 +70,11 @@ public final class Request {
       if let param: String = param, !param.isEmpty {
         urlString += param
       }
-
       guard let url = URL(string: urlString) else {
         completion(.failure(MeiliSearch.Error.invalidURL(url: urlString)))
         return
       }
-
-      var request = URLRequest(url: url)
-      request.httpMethod = "GET"
-      request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-      headers.forEach { key, value in
-        request.addValue(value, forHTTPHeaderField: key)
-      }
-
-      if let apiKey = config.apiKey {
-        let bearer = "Bearer \(apiKey)"
-        request.addValue(bearer, forHTTPHeaderField: "Authorization")
-      }
-
+      let request = self.request(.get, url, nil, headers)
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
         do {
           try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -80,18 +99,7 @@ public final class Request {
       return
     }
 
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.httpBody = data
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-
-    if let apiKey: String = config.apiKey {
-      let bearer = "Bearer \(apiKey)"
-      request.addValue(bearer, forHTTPHeaderField: "Authorization")
-    }
-
+      let request = self.request(.post, url, data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -117,19 +125,7 @@ public final class Request {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-
-    var request = URLRequest(url: url)
-    request.httpMethod = "PUT"
-    request.httpBody = data
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-
-    if let apiKey: String = config.apiKey {
-      let bearer = "Bearer \(apiKey)"
-      request.addValue(bearer, forHTTPHeaderField: "Authorization")
-    }
-
+    let request = self.request(.put, url, data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -144,7 +140,6 @@ public final class Request {
         return
       }
     }
-
     task.resume()
   }
 
@@ -156,19 +151,7 @@ public final class Request {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-
-    var request = URLRequest(url: url)
-    request.httpMethod = "PATCH"
-    request.httpBody = data
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-
-    if let apiKey: String = config.apiKey {
-      let bearer = "Bearer \(apiKey)"
-      request.setValue(bearer, forHTTPHeaderField: "Authorization")
-    }
-
+      let request = self.request(.patch, url, data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -183,7 +166,6 @@ public final class Request {
         return
       }
     }
-
     task.resume()
   }
 
@@ -194,18 +176,7 @@ public final class Request {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-
-    var request = URLRequest(url: url)
-    request.httpMethod = "DELETE"
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-
-    if let apiKey: String = config.apiKey {
-      let bearer = "Bearer \(apiKey)"
-      request.addValue(bearer, forHTTPHeaderField: "Authorization")
-    }
-
+      let request = self.request(.delete, url, nil)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
