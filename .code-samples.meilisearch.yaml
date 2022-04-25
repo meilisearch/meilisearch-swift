@@ -1386,6 +1386,7 @@ landing_getting_started_1: |-
           print(task)
       case .failure(let error):
           print(error)
+      }
 tenant_token_guide_generate_sdk_1: |-
   let apiKey = "B5KdX2MY2jV6EXfUs6scSfmC..."
   let expiresAt = Date.distantFuture
