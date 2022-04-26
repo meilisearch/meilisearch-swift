@@ -326,7 +326,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(documents.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book: Book = documents.hits[0]
-        XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
+        XCTAssertEqual("…Joaquim Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
         print(error)
@@ -357,7 +357,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(documents.hits.count, 2)
 
         let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
-        XCTAssertEqual("A Book from", moreninhaBook.formatted!.comment!)
+        XCTAssertEqual("A Book from Joaquim Manuel…", moreninhaBook.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
