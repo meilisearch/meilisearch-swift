@@ -87,7 +87,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual("", response.query)
         XCTAssertEqual(20, response.limit)
         XCTAssertEqual(books.count, response.hits.count)
-        XCTAssertEqual("Alice In Wonderland", response.hits[0].title)
+        XCTAssertEqual("Pride and Prejudice", response.hits[0].title)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -757,7 +757,6 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, 0)
-
             let facetsDistribution = documents.facetsDistribution!
             XCTAssertEqual(["genres": [:]], facetsDistribution)
 
