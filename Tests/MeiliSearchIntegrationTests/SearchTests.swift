@@ -338,6 +338,34 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+   // MARK: Crop Marker
+
+  func testSearchCropMarker() {
+    let expectation = XCTestExpectation(description: "Search for Books with a custom crop marker")
+
+    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    let query = "Manuel"
+    let attributesToCrop = ["comment"]
+    let cropLength = 2
+    let cropMarker = "(ꈍᴗꈍ)"
+    let searchParameters = SearchParameters(query: query, attributesToCrop: attributesToCrop, cropLength: cropLength, cropMarker: cropMarker)
+
+    self.index.search(searchParameters) { (result: MeiliResult) in
+      switch result {
+      case .success(let documents):
+        let book: Book = documents.hits[0]
+        XCTAssertEqual("(ꈍᴗꈍ)Joaquim Manuel(ꈍᴗꈍ)", book.formatted!.comment!)
+        expectation.fulfill()
+      case .failure(let error):
+        print(error)
+        XCTFail("Failed to search with a custom crop marker")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   // MARK: Crop length
 
   func testSearchCropLength() {
@@ -431,6 +459,34 @@ class SearchTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to search with testSearchAttributesToHighlight")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Attributes to highlight
+
+  func testSearchPrePostHighlightTags() {
+    let expectation = XCTestExpectation(description: "Search for Books using custom pre and post highlight tags")
+
+    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    let query = "Joaquim Manuel de Macedo"
+    let attributesToHighlight = ["comment"]
+    let highlightPreTag = "(⊃｡•́‿•̀｡)⊃ "
+    let highlightPostTag = " ⊂(´• ω •`⊂)"
+    let parameters = SearchParameters(query: query, attributesToHighlight: attributesToHighlight, highlightPreTag: highlightPreTag, highlightPostTag: highlightPostTag)
+
+    self.index.search(parameters) { (result: MeiliResult) in
+      switch result {
+      case .success(let documents):
+        let book = documents.hits[0]
+        XCTAssertTrue(book.formatted!.comment!.contains("(⊃｡•́‿•̀｡)⊃ Joaquim ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ Manuel ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ de ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ Macedo ⊂(´• ω •`⊂)"))
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search using custom pre and post highlight tags")
         expectation.fulfill()
       }
     }
