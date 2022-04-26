@@ -757,7 +757,6 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, 0)
-            dump(documents)
             let facetsDistribution = documents.facetsDistribution!
             XCTAssertEqual(["genres": [:]], facetsDistribution)
 
