@@ -1,5 +1,8 @@
 @testable import MeiliSearch
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_unwrapping
 class MockURLSession: URLSessionProtocol {

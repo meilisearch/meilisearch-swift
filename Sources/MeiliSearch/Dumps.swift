@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 /**
  The dumps route allows the creation of database dumps. Dumps are `.tar.gz` files that

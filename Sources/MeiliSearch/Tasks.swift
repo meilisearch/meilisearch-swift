@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 /**
   Tasks contains information related to asynchronous tasks in MeiliSearch

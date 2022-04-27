@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 /**
  `WaitOptions` struct represent the options used during a waitForPendingUpdate call.

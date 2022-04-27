@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_try
 class SettingsTests: XCTestCase {

@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 internal struct PackageVersion {
   /// This is the current version of the meilisearch-swift package
