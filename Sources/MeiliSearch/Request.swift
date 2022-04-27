@@ -47,7 +47,6 @@ public final class Request {
     if httpMethod != .get {
       request.httpBody = data
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
     }
     request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
     headers.forEach { key, value in
