@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 struct Constants {
   static let customJSONDecoder: JSONDecoder = {
