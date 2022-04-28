@@ -719,8 +719,21 @@ search_parameter_guide_retrieve_1: |-
 search_parameter_guide_crop_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
-      attributesToCrop: "overview",
-      cropLength: 10)
+      attributesToCrop: ["overview"],
+      cropLength: 5)
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_crop_marker_1: |-
+  let searchParameters = SearchParameters(
+      query: "shifu",
+      attributesToCrop: ["overview"],
+      cropMarker: "[…]")
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
@@ -733,6 +746,20 @@ search_parameter_guide_highlight_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       attributesToHighlight: ["overview"])
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+search_parameter_guide_highlight_tag_1: |-
+  let searchParameters = SearchParameters(
+      query: "winter feast",
+      attributesToHighlight: ["overview"],
+      highlightPreTag: "<span class=\"highlight\">",
+      highlightPostTag: "</span>")
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
