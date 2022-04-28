@@ -719,7 +719,7 @@ search_parameter_guide_retrieve_1: |-
 search_parameter_guide_crop_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
-      attributesToCrop: "overview",
+      attributesToCrop: ["overview"],
       cropLength: 5)
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
@@ -732,7 +732,7 @@ search_parameter_guide_crop_1: |-
 search_parameter_guide_crop_marker_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
-      attributesToCrop: "overview",
+      attributesToCrop: ["overview"],
       cropMarker: "[…]")
   client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
