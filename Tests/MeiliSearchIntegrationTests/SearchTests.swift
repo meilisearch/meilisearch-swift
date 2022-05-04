@@ -2,8 +2,6 @@
 import XCTest
 import Foundation
 
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
 private let books: [Book] = [
   Book(id: 123, title: "Pride and Prejudice", comment: "A great book", genres: ["Classic Regency nove"]),
   Book(id: 456, title: "Le Petit Prince", comment: "A french book", genres: ["Novel"]),
@@ -20,7 +18,7 @@ private let books: [Book] = [
 private let nestedBooks: [NestedBook] = [
   NestedBook(id: 123, title: "Pride and Prejudice", info: InfoNested(comment: "A great book", reviewNb: 100), genres: ["Classic Regency nove"]),
   NestedBook(id: 456, title: "Le Petit Prince", info: InfoNested(comment: "A french book", reviewNb: 100), genres: ["Novel"]),
-  NestedBook(id: 2, title: "Le Rouge et le Noir", info: InfoNested(comment: "Another french book", reviewNb: 100), genres: ["Bildungsroman"]),
+  NestedBook(id: 2, title: "Le Rouge et le Noir", info: InfoNested(comment: "Another french book", reviewNb: 100), genres: ["Bildungsroman"])
 ]
 
 class SearchTests: XCTestCase {
@@ -54,9 +52,7 @@ class SearchTests: XCTestCase {
       }
     }
     self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
-    
     let addNestedDocExpectation = XCTestExpectation(description: "Add documents")
-    
     addDocuments(client: self.client, uid: self.nested_uid, dataset: nestedBooks, primaryKey: nil) { result in
       switch result {
       case .success:
