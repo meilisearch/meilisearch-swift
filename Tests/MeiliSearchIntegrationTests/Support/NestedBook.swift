@@ -32,8 +32,8 @@ public struct FormattedNestedBook: Codable, Equatable {
   let title: String
   let info: InfoNested
 
-  init(id: Int, title: String, info: InfoNested) {
-    self.id = String(id)
+  init(id: String, title: String, info: InfoNested) {
+    self.id = id
     self.title = title
     self.info = info
   }

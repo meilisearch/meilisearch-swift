@@ -110,7 +110,6 @@ class SearchTests: XCTestCase {
     self.nestedIndex.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
-        dump(response)
         if response.hits.count > 0 {
           XCTAssertEqual("A french book", response.hits[0].info.comment)
         } else {
