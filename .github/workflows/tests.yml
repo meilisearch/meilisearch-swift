@@ -40,3 +40,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run SwiftLint
         run: sh ./Scripts/swiftlint.sh
+      - name: Run CocoaPods pod linter
+        run: pod spec lint
