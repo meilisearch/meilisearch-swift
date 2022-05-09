@@ -2,7 +2,7 @@ import Foundation
 
 internal struct PackageVersion {
   /// This is the current version of the meilisearch-swift package
-  private static let current = "0.13.1"
+  private static let current = "0.13.2"
 
   /**
    Retrieves the current version of the MeiliSearch Swift package and formats accordingly.
