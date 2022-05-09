@@ -148,8 +148,8 @@ class DocumentsTests: XCTestCase {
               case .success(let returnedMovies):
                 let returnedMovie = returnedMovies[0]
                 XCTAssertEqual(returnedMovies.count, 1)
-                XCTAssertEqual(returnedMovie.id, 123)
-                XCTAssertEqual(returnedMovie.title, "Pride and Prejudice")
+                XCTAssertEqual(returnedMovie.id, 456)
+                XCTAssertEqual(returnedMovie.title, "Le Petit Prince")
                 XCTAssertEqual(returnedMovie.comment, nil)
                 expectation.fulfill()
               case .failure:

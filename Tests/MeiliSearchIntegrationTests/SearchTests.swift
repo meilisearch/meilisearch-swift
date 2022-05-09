@@ -2,8 +2,6 @@
 import XCTest
 import Foundation
 
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
 private let books: [Book] = [
   Book(id: 123, title: "Pride and Prejudice", comment: "A great book", genres: ["Classic Regency nove"]),
   Book(id: 456, title: "Le Petit Prince", comment: "A french book", genres: ["Novel"]),
@@ -15,20 +13,31 @@ private let books: [Book] = [
   Book(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo", genres: ["Novel"])
 ]
 
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_try
+private let nestedBooks: [NestedBook] = [
+  NestedBook(id: 123, title: "Pride and Prejudice", info: InfoNested(comment: "A great book", reviewNb: 100), genres: ["Classic Regency nove"]),
+  NestedBook(id: 456, title: "Le Petit Prince", info: InfoNested(comment: "A french book", reviewNb: 100), genres: ["Novel"]),
+  NestedBook(id: 2, title: "Le Rouge et le Noir", info: InfoNested(comment: "Another french book", reviewNb: 100), genres: ["Bildungsroman"])
+]
+
 class SearchTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
+  private var nestedIndex: Indexes!
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
+  private let nested_uid: String = "nested_books_test"
 
   // MARK: Setup
 
   override func setUp() {
     super.setUp()
 
-	session = URLSession(configuration: .ephemeral)
-	client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    session = URLSession(configuration: .ephemeral)
+    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
+    nestedIndex = self.client.index(self.nested_uid)
 
     let addDocExpectation = XCTestExpectation(description: "Add documents")
 
@@ -43,10 +52,21 @@ class SearchTests: XCTestCase {
       }
     }
     self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+    let addNestedDocExpectation = XCTestExpectation(description: "Add documents")
+    addDocuments(client: self.client, uid: self.nested_uid, dataset: nestedBooks, primaryKey: nil) { result in
+      switch result {
+      case .success:
+        addNestedDocExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        addNestedDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addNestedDocExpectation], timeout: TESTS_TIME_OUT)
   }
 
   // MARK: Basic search
-
   func testBasicSearch() {
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
@@ -76,6 +96,32 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+   // MARK: Nested search
+  func testNestedSearch() {
+    let expectation = XCTestExpectation(description: "Search in Nested Books")
+
+    typealias MeiliResult = Result<SearchResult<NestedBook>, Swift.Error>
+    let query = "A french book"
+
+    self.nestedIndex.search(SearchParameters(query: query)) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        if response.hits.count > 0 {
+          XCTAssertEqual("A french book", response.hits[0].info.comment)
+        } else {
+          XCTFail("Failed to find hits in the response")
+        }
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search in nested books")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   func testBasicSearchWithNoQuery() {
     let expectation = XCTestExpectation(description: "Search for Books without query")
 
@@ -87,7 +133,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual("", response.query)
         XCTAssertEqual(20, response.limit)
         XCTAssertEqual(books.count, response.hits.count)
-        XCTAssertEqual("Alice In Wonderland", response.hits[0].title)
+        XCTAssertEqual("Pride and Prejudice", response.hits[0].title)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -326,11 +372,39 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(documents.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book: Book = documents.hits[0]
-        XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
+        XCTAssertEqual("…Joaquim Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
         print(error)
         XCTFail("Failed to search with testSearchAttributesToCrop")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+   // MARK: Crop Marker
+
+  func testSearchCropMarker() {
+    let expectation = XCTestExpectation(description: "Search for Books with a custom crop marker")
+
+    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    let query = "Manuel"
+    let attributesToCrop = ["comment"]
+    let cropLength = 2
+    let cropMarker = "(ꈍᴗꈍ)"
+    let searchParameters = SearchParameters(query: query, attributesToCrop: attributesToCrop, cropLength: cropLength, cropMarker: cropMarker)
+
+    self.index.search(searchParameters) { (result: MeiliResult) in
+      switch result {
+      case .success(let documents):
+        let book: Book = documents.hits[0]
+        XCTAssertEqual("(ꈍᴗꈍ)Joaquim Manuel(ꈍᴗꈍ)", book.formatted!.comment!)
+        expectation.fulfill()
+      case .failure(let error):
+        print(error)
+        XCTFail("Failed to search with a custom crop marker")
         expectation.fulfill()
       }
     }
@@ -357,7 +431,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(documents.hits.count, 2)
 
         let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
-        XCTAssertEqual("A Book from", moreninhaBook.formatted!.comment!)
+        XCTAssertEqual("A Book from Joaquim Manuel…", moreninhaBook.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -431,6 +505,34 @@ class SearchTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to search with testSearchAttributesToHighlight")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Attributes to highlight
+
+  func testSearchPrePostHighlightTags() {
+    let expectation = XCTestExpectation(description: "Search for Books using custom pre and post highlight tags")
+
+    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    let query = "Joaquim Manuel de Macedo"
+    let attributesToHighlight = ["comment"]
+    let highlightPreTag = "(⊃｡•́‿•̀｡)⊃ "
+    let highlightPostTag = " ⊂(´• ω •`⊂)"
+    let parameters = SearchParameters(query: query, attributesToHighlight: attributesToHighlight, highlightPreTag: highlightPreTag, highlightPostTag: highlightPostTag)
+
+    self.index.search(parameters) { (result: MeiliResult) in
+      switch result {
+      case .success(let documents):
+        let book = documents.hits[0]
+        XCTAssertTrue(book.formatted!.comment!.contains("(⊃｡•́‿•̀｡)⊃ Joaquim ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ Manuel ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ de ⊂(´• ω •`⊂) (⊃｡•́‿•̀｡)⊃ Macedo ⊂(´• ω •`⊂)"))
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search using custom pre and post highlight tags")
         expectation.fulfill()
       }
     }
@@ -757,7 +859,6 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, 0)
-
             let facetsDistribution = documents.facetsDistribution!
             XCTAssertEqual(["genres": [:]], facetsDistribution)
 

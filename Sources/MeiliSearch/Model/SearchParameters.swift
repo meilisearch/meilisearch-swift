@@ -26,8 +26,17 @@ public struct SearchParameters: Codable, Equatable {
   /// Limit length at which to crop specified attributes.
   public let cropLength: Int?
 
+  /// Marker in front and behind a cropped value.
+  public let cropMarker: String?
+
   /// Which attributes to highlight.
   public let attributesToHighlight: [String]?
+
+  /// Tag in front of highlighted term(s).
+  public let highlightPreTag: String?
+
+  /// Tag at the end of highlighted term(s).
+  public let highlightPostTag: String?
 
   /// Filter on attributes values.
   public let filter: String?
@@ -50,7 +59,10 @@ public struct SearchParameters: Codable, Equatable {
     attributesToRetrieve: [String]? = nil,
     attributesToCrop: [String]? = nil,
     cropLength: Int? = nil,
+    cropMarker: String? = nil,
     attributesToHighlight: [String]? = nil,
+    highlightPreTag: String? = nil,
+    highlightPostTag: String? = nil,
     filter: String? = nil,
     sort: [String]? = nil,
     facetsDistribution: [String]? = nil,
@@ -61,7 +73,10 @@ public struct SearchParameters: Codable, Equatable {
     self.attributesToRetrieve = attributesToRetrieve
     self.attributesToCrop = attributesToCrop
     self.cropLength = cropLength
+    self.cropMarker = cropMarker
     self.attributesToHighlight = attributesToHighlight
+    self.highlightPreTag = highlightPreTag
+    self.highlightPostTag = highlightPostTag
     self.filter = filter
     self.sort = sort
     self.facetsDistribution = facetsDistribution
@@ -89,7 +104,10 @@ public struct SearchParameters: Codable, Equatable {
     case attributesToRetrieve
     case attributesToCrop
     case cropLength
+    case cropMarker
     case attributesToHighlight
+    case highlightPreTag
+    case highlightPostTag
     case filter
     case sort
     case facetsDistribution
