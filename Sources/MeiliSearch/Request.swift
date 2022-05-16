@@ -44,18 +44,22 @@ public final class Request {
   ) -> URLRequest {
     var request = URLRequest(url: url)
     request.httpMethod = httpMethod.rawValue
+    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
+
     if httpMethod != .get {
       request.httpBody = data
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
-    request.setValue(PackageVersion.qualifiedVersion(), forHTTPHeaderField: "User-Agent")
-    headers.forEach { key, value in
-      request.addValue(value, forHTTPHeaderField: key)
-    }
+
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
       request.setValue(bearer, forHTTPHeaderField: "Authorization")
     }
+
+    headers.forEach { key, value in
+      request.addValue(value, forHTTPHeaderField: key)
+    }
+
     return request
   }
 
