@@ -329,7 +329,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual("Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
-        print(error)
+        dump(error)
         XCTFail("Failed to search with testSearchAttributesToCrop")
         expectation.fulfill()
       }
@@ -398,7 +398,7 @@ class SearchTests: XCTestCase {
         }
         expectation.fulfill()
       case .failure(let error):
-        print(error)
+        dump(error)
         XCTFail("Failed to search with testSearchMatches")
         expectation.fulfill()
       }
@@ -527,7 +527,7 @@ class SearchTests: XCTestCase {
             XCTAssertEqual("A french book", book.comment)
             expectation.fulfill()
           case .failure(let error):
-            print(error)
+            dump(error)
             XCTFail("Failed to search with testSearchFilters")
             expectation.fulfill()
           }
@@ -560,7 +560,7 @@ class SearchTests: XCTestCase {
             XCTAssertEqual("Alice In Wonderland", book.title)
             expectation.fulfill()
           case .failure(let error):
-            print(error)
+            dump(error)
             XCTFail("Failed to search with sorting parameter")
             expectation.fulfill()
           }
@@ -601,7 +601,7 @@ class SearchTests: XCTestCase {
           }
         }
       case .failure(let error):
-        print(error)
+        dump(error)
         XCTFail("Failed to search with testSearchFilters")
         expectation.fulfill()
       }
