@@ -182,7 +182,7 @@ get_all_tasks_1: |-
           print(error)
       }
   }
-get_on_key_1: |-
+get_one_key_1: |-
   self.client.getKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
       switch result {
       case .success(let key):
@@ -573,24 +573,6 @@ get_version_1: |-
   client.version { (result: Result<Version, Swift.Error>) in
       switch result {
       case .success(let version):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-get_pretty_sys_info_1: |-
-  client.prettySystemInfo { (result: Result<PrettySystemInfo, Swift.Error>) in
-      switch result {
-      case .success(let systemInfo):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-get_sys_info_1: |-
-  client.systemInfo { (result: Result<SystemInfo, Swift.Error>) in
-      switch result {
-      case .success(let systemInfo):
           print(task)
       case .failure(let error):
           print(error)
