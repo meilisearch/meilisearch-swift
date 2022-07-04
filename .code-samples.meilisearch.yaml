@@ -5,6 +5,19 @@
 ---
 getting_started_typo_tolerance: |-
 
+get_all_tasks_filtering_1: |-
+get_all_tasks_filtering_2: |-
+get_all_tasks_paginating_1: |-
+get_all_tasks_paginating_2: |-
+get_pagination_settings_1: |-
+update_pagination_settings_1: |-
+reset_pagination_settings_1: |-
+get_faceting_settings_1: |-
+update_faceting_settings_1: |-
+reset_faceting_settings_1: |-
+settings_guide_faceting_1: |-
+settings_guide_pagination_1: |-
+
 get_one_index_1: |-
   client.getIndex("movies") { (result) in
       switch result {
@@ -51,7 +64,7 @@ delete_an_index_1: |-
       }
   }
 get_one_document_1: |-
-  client.index("movies").getDocument(25684) { (result) in
+  client.index("movies").getDocument(25684) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success(let movie):
           print(movie)
@@ -166,7 +179,7 @@ get_task_1: |-
             print(error)
         }
     }
-get_all_tasks_by_index_1: |-
+PLEASE_REMOVE_ME>>>>>>>>>>>>>get_all_tasks_by_index_1: |-
   client.index("movies").getTasks() { (result: Result<Results<Task>, Swift.Error>) in
       switch result {
       case .success(let tasks):
@@ -193,7 +206,7 @@ get_one_key_1: |-
           print(error)
       }
   }
-get_all_keys_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>get_all_keys_1: |-
   self.client.getKeys() { result in
       switch result {
       case .success(let keys):
@@ -217,7 +230,7 @@ create_a_key_1: |-
           print(error)
       }
   }
-update_a_key_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>update_a_key_1: |-
   let keyParams = KeyParams(
     description: "Add documents: Products API key",
     actions: ["documents.add", "documents.delete"],
@@ -235,7 +248,7 @@ update_a_key_1: |-
           print(error)
       }
   }
-delete_a_key_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>delete_a_key_1: |-
   self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
   { result in
       switch result {
@@ -257,7 +270,7 @@ security_guide_search_key_1: |-
           print(error)
       }
   }
-security_guide_update_key_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>security_guide_update_key_1: |-
   let keyParams = KeyParams(
     indexes: ["doctors"]
   )
@@ -296,7 +309,7 @@ security_guide_list_keys_1: |-
           print(error)
       }
   }
-security_guide_delete_key_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>security_guide_delete_key_1: |-
   self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
   { result in
       switch result {
@@ -315,7 +328,7 @@ get_settings_1: |-
           print(error)
       }
   }
-update_settings_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>update_settings_1: |-
   let settings = Setting(rankingRules: [
       "words",
       "typo",
@@ -752,7 +765,7 @@ search_parameter_guide_highlight_tag_1: |-
           print(error)
       }
   }
-search_parameter_guide_matches_1: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>search_parameter_guide_matches_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       matches: true)
@@ -1011,7 +1024,7 @@ getting_started_update_stop_words: |-
       }
   }
 getting_started_check_task_status: |-
-  client.index("movies").getTask(taskUid: 0) { (result) in
+  client.index("movies").getTask(taskUid: 0) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
           print(task)
@@ -1154,8 +1167,8 @@ reset_filterable_attributes_1: |-
           print(error)
       }
   }
-faceted_search_update_settings_1: |-
-  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result) in
+faceted_search_PLEASE_UPDATE_ME>>>>>>>>>>>>>update_settings_1: |-
+  client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result: Result<Task, Swift.Error>) in
       switch result {
       case .success(let task):
           print(task)
@@ -1311,7 +1324,7 @@ post_dump_1: |-
           print(error)
       }
   }
-get_dump_status_1: |-
+PLEASE_REMOVE_ME>>>>>>>>>>>>>get_dump_status_1: |-
   self.client.getDumpStatus(uid) { result in
       switch result {
       case .success(let dumpStatus):
