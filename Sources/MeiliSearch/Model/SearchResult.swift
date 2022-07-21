@@ -17,16 +17,10 @@ public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable
   public let limit: Int
 
   /// Total number of matches,
-  public let nbHits: Int
-
-  /// Whether `nbHits` is exhaustive.
-  public let exhaustiveNbHits: Bool?
+  public let estimatedTotalHits: Int
 
   /// Distribution of the given facets.
-  public let facetsDistribution: [String: [String: Int]]?
-
-  /// Whether facetDistribution is exhaustive.
-  public let exhaustiveFacetsCount: Bool?
+  public let facetDistribution: [String: [String: Int]]?
 
   /// Time, in milliseconds, to process the query.
   public let processingTimeMs: Int?

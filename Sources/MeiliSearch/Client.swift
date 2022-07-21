@@ -67,7 +67,7 @@ public struct MeiliSearch {
   public func createIndex(
     uid: String,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
@@ -93,8 +93,9 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndexes(
-    _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
-    Indexes.getAll(config: self.config, completion)
+    params: IndexesQuery? = nil,
+    _ completion: @escaping (Result<Results<Index>, Swift.Error>) -> Void) {
+    Indexes.getAll(config: self.config, params: params, completion)
   }
 
   /**
@@ -109,7 +110,7 @@ public struct MeiliSearch {
   public func updateIndex(
     uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
@@ -123,7 +124,7 @@ public struct MeiliSearch {
    */
   public func deleteIndex(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
   }
 
@@ -163,6 +164,14 @@ public struct MeiliSearch {
     self.tasks.waitForTask(task: task, options: options, completion)
   }
 
+  public func waitForTask(
+    task: TaskInfo,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(taskUid: task.uid, options: options, completion)
+  }
+
   // MARK: Tasks
 
  /**
@@ -180,15 +189,17 @@ public struct MeiliSearch {
   }
 
   /**
-   Get all tasks.
+   List tasks based on an optional pagination criteria
 
    - parameter completion: The completion closure used to notify when the server
+   - parameter params: A TasksQuery object with pagination metadata.
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getTasks(
+    params: TasksQuery? = nil,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.tasks.getAll(completion)
+    self.tasks.getAll(params: params, completion)
   }
 
   // MARK: Keys
@@ -201,8 +212,9 @@ public struct MeiliSearch {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getKeys(
+    params: KeysQuery? = nil,
     _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
-    self.keys.getAll(completion)
+      self.keys.getAll(params: params, completion)
   }
 
   /**
@@ -244,7 +256,7 @@ public struct MeiliSearch {
    */
   public func updateKey(
     key: String,
-    keyParams: KeyParams,
+    keyParams: KeyUpdateParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     self.keys.update(
       key: key,
@@ -336,26 +348,7 @@ public struct MeiliSearch {
    value that can be used later to check the status of the dump.
    If the request was successful or `Error` if a failure occurred.
    */
-  public func createDump(_ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+  public func createDump(_ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.dumps.create(completion)
-  }
-
-  /**
-   Get the status of a dump creation process using the uid returned after calling the dump creation route.
-   The returned status could be:
-
-   `Dump.Status.inProgress`: Dump creation is in progress.
-   `Dump.Status.failed`: An error occurred during the dump process, and the task was aborted.
-   `Dump.Status.done`: Dump creation is finished and was successful.
-
-   - parameter completion: The completion closure used to notify when the server
-   completes the dump request, it returns a `Dump` object that contains `uid`
-   value that can be used later to check the status of the Dump.
-   If the request was successful or `Error` if a failure occurred.
-   */
-  public func getDumpStatus(
-    _ uid: String,
-    _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
-    self.dumps.status(uid, completion)
   }
 }

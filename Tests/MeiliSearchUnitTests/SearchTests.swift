@@ -52,7 +52,7 @@ class SearchTests: XCTestCase {
         "offset": 0,
         "limit": 20,
         "processingTimeMs": 2,
-        "nbHits": 2,
+        "estimatedTotalHits": 2,
         "query": "botman"
       }
       """
@@ -103,7 +103,7 @@ class SearchTests: XCTestCase {
         "offset": 0,
         "limit": 20,
         "processingTimeMs": 2,
-        "nbHits": 2,
+        "estimatedTotalHits": 2,
         "query": "botman"
       }
       """
@@ -207,7 +207,7 @@ class SearchTests: XCTestCase {
         "offset": 0,
         "limit": 20,
         "processingTimeMs": 2,
-        "nbHits": 1,
+        "estimatedTotalHits": 1,
         "query": "h",
         "genre": "sci fi"
       }
@@ -235,7 +235,7 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let searchResult):
         XCTAssertEqual(stubSearchResult, searchResult)
-        XCTAssertEqual(searchResult.nbHits, 1)
+        XCTAssertEqual(searchResult.estimatedTotalHits, 1)
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to search for botman")

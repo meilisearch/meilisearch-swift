@@ -175,11 +175,8 @@ Output:
         - "Drama"
   - offset: 0
   - limit: 20
-  - nbHits: 1
-  ▿ exhaustiveNbHits: Optional(false)
-    - some: false
-  - facetsDistribution: nil
-  - exhaustiveFacetsCount: nil
+  - estimatedTotalHits: 1
+  - facetDistribution: nil
   ▿ processingTimeMs: Optional(1)
     - some: 1
   ▿ query: Optional("philoudelphia")

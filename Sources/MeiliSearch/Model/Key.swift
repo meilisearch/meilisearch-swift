@@ -6,6 +6,8 @@ import Foundation
 public struct Key: Codable, Equatable {
   // MARK: Properties
 
+  public let uid: String
+  public let name: String?
   public let description: String
   public let key: String
   public let actions: [String]
