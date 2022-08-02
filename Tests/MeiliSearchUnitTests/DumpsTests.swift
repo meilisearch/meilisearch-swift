@@ -16,16 +16,12 @@ class DumpsTests: XCTestCase {
     // Prepare the mock server
 
     let json = """
-      {
-        "uid": "20200929-114144097",
-        "status": "in_progress",
-        "startedAt": "2021-06-01T14:43:39.392327Z"
-      }
-      """
+      { "taskUid": 278, "indexUid": null, "status": "enqueued", "type": "dumpCreation", "enqueuedAt": "2022-07-21T21:43:12.419917471Z" }
+    """
 
     let data = json.data(using: .utf8)!
 
-    let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
+    let stubDump: TaskInfo = try! Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
 
     session.pushData(json)
 
@@ -40,42 +36,6 @@ class DumpsTests: XCTestCase {
         expectation.fulfill()
       case .failure:
         XCTFail("Failed to create dump")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
-  }
-
-  func testGetDumpStatus() {
-    // Prepare the mock server
-
-    let json = """
-      {
-        "uid": "20200929-114144097",
-        "status": "in_progress",
-        "startedAt": "2021-06-01T14:43:39.392327Z"
-      }
-      """
-
-    let data = json.data(using: .utf8)!
-
-    let stubDump: Dump = try! Constants.customJSONDecoder.decode(Dump.self, from: data)
-
-    session.pushData(json)
-
-    // Start the test with the mocked server
-
-    let uid: String = "20200929-114144097"
-
-    let expectation = XCTestExpectation(description: "Get the dump status")
-
-    self.client.getDumpStatus(uid) { result in
-      switch result {
-      case .success(let dump):
-        XCTAssertEqual(stubDump, dump)
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed to get the dump status")
       }
     }
 
