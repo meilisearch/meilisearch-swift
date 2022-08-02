@@ -121,21 +121,18 @@ class KeysTests: XCTestCase {
   func testUpdateKey() {
     let keyExpectation = XCTestExpectation(description: "Update a key")
 
-    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    let keyParams = KeyParams(description: "Custom", name: "old name", actions: ["*"], indexes: ["index"], expiresAt: nil)
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let newDate = formatter.string(from: Date.distantFuture)
-        let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: newDate)
-        self.client.updateKey(key: key.key, keyParams: keyParams) { result in
+        let updateParams = KeyUpdateParams(description: "new name")
+        self.client.updateKey(key: key.key, keyParams: updateParams) { result in
           switch result {
           case .success(let key):
-            XCTAssertEqual(key.description, keyParams.description)
-            XCTAssertEqual(key.actions, keyParams.actions)
-            XCTAssertEqual(key.indexes, keyParams.indexes)
-            XCTAssertNotNil(key.expiresAt)
+            XCTAssertEqual(key.description, "new name")
+            XCTAssertEqual(key.name, "old name")
+            XCTAssertEqual(key.indexes, ["index"])
+            XCTAssertNil(key.expiresAt)
             keyExpectation.fulfill()
           case .failure(let error):
             dump(error)
