@@ -3,6 +3,8 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+getting_started_typo_tolerance: |-
+
 get_one_index_1: |-
   client.getIndex("movies") { (result) in
       switch result {
