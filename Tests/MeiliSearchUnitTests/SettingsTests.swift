@@ -69,13 +69,13 @@ class SettingsTests: XCTestCase {
 
   func testupdateSettings() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: jsonData)
+    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
 
     session.pushData(jsonString)
     let setting: Setting = buildStubSetting(from: json)
@@ -98,13 +98,13 @@ class SettingsTests: XCTestCase {
 
   func testResetSettings() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
     let data: Data = jsonString.data(using: .utf8)!
-    let stubTask: Task = try! decoder.decode(Task.self, from: data)
+    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: data)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -159,13 +159,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateSynonyms() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -197,13 +197,13 @@ class SettingsTests: XCTestCase {
 
   func testResetSynonyms() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -254,13 +254,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateStopWords() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -275,7 +275,7 @@ class SettingsTests: XCTestCase {
     self.index.updateStopWords(stopWords) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubTask, update)
+        XCTAssertEqual(update, stubTask)
       case .failure:
         XCTFail("Failed to update stop-words")
       }
@@ -287,13 +287,13 @@ class SettingsTests: XCTestCase {
 
   func testResetStopWords() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -353,13 +353,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateRankingRules() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let json = """
@@ -386,13 +386,13 @@ class SettingsTests: XCTestCase {
 
   func testResetRankingRules() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -441,13 +441,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateDistinctAttribute() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
     let distinctAttribute = "movie_id"
@@ -470,13 +470,13 @@ class SettingsTests: XCTestCase {
 
   func testResetDistinctAttribute() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -527,13 +527,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateSearchableAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -561,13 +561,13 @@ class SettingsTests: XCTestCase {
 
   func testResetSearchableAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -617,13 +617,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateDisplayedAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -654,13 +654,13 @@ class SettingsTests: XCTestCase {
 
   func testResetDisplayedAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
@@ -708,13 +708,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateFilterableAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -738,13 +738,13 @@ class SettingsTests: XCTestCase {
 
   func testResetFilterableAttributes() {
     let jsonString = """
-      {"uid": 1, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -793,13 +793,13 @@ class SettingsTests: XCTestCase {
 
   func testUpdateSortableAttributes() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
 
     session.pushData(jsonString)
@@ -823,13 +823,13 @@ class SettingsTests: XCTestCase {
 
   func testResetSortableAttributes() {
     let jsonString = """
-      {"uid": 1, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: Task = try! decoder.decode(
-      Task.self,
+    let stubTask: TaskInfo = try! decoder.decode(
+      TaskInfo.self,
       from: jsonString.data(using: .utf8)!)
     session.pushData(jsonString)
 
