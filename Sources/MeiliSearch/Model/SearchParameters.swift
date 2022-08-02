@@ -45,10 +45,10 @@ public struct SearchParameters: Codable, Equatable {
   public let sort: [String]?
 
   /// Retrieve the count of matching terms for each facets.
-  public let facetsDistribution: [String]?
+  public let facets: [String]?
 
   /// Whether to return the raw matches or not.
-  public let matches: Bool?
+  public let showMatchesPosition: Bool?
 
   // MARK: Initializers
 
@@ -65,8 +65,8 @@ public struct SearchParameters: Codable, Equatable {
     highlightPostTag: String? = nil,
     filter: String? = nil,
     sort: [String]? = nil,
-    facetsDistribution: [String]? = nil,
-    matches: Bool? = nil) {
+    facets: [String]? = nil,
+    showMatchesPosition: Bool? = nil) {
     self.query = query
     self.offset = offset
     self.limit = limit
@@ -79,8 +79,8 @@ public struct SearchParameters: Codable, Equatable {
     self.highlightPostTag = highlightPostTag
     self.filter = filter
     self.sort = sort
-    self.facetsDistribution = facetsDistribution
-    self.matches = matches
+    self.facets = facets
+    self.showMatchesPosition = showMatchesPosition
   }
 
   // MARK: Query Initializers
@@ -110,7 +110,7 @@ public struct SearchParameters: Codable, Equatable {
     case highlightPostTag
     case filter
     case sort
-    case facetsDistribution
-    case matches
+    case facets
+    case showMatchesPosition
   }
 }
