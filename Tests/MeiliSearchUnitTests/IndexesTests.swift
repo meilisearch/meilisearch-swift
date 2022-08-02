@@ -17,11 +17,11 @@ class IndexesTests: XCTestCase {
   func testCreateIndex() {
     let jsonString = """
       {
-        "uid": 0,
-        "indexUid":"movies_test",
-        "status": "succeeded",
+        "taskUid": 0,
+        "indexUid": "books",
+        "status": "enqueued",
         "type": "indexCreation",
-        "enqueuedAt":"2020-04-04T19:59:49.259572Z"
+        "enqueuedAt": "2022-07-21T21:57:14.052648139Z"
       }
       """
 
@@ -111,13 +111,19 @@ class IndexesTests: XCTestCase {
 
   func testGetIndexes() {
     let jsonString = """
-      [{
-        "name":"movies",
-        "uid":"movies",
-        "createdAt":"2020-04-04T19:59:49.259572Z",
-        "updatedAt":"2020-04-04T19:59:49.259579Z",
-        "primaryKey":null
-      }]
+      {
+        "results": [
+          {
+            "uid": "movies",
+            "createdAt": "2022-07-21T21:18:46.767583668Z",
+            "updatedAt": "2022-07-21T21:47:50.583352169Z",
+            "primaryKey": "id"
+          },
+        ],
+        "offset": 0,
+        "limit": 10,
+        "total": 1
+      }
       """
 
     // Prepare the mock server
@@ -130,7 +136,7 @@ class IndexesTests: XCTestCase {
     self.client.getIndexes { result in
       switch result {
       case .success(let indexes):
-        XCTAssertEqual("movies", indexes[0].uid)
+        XCTAssertEqual("movies", indexes.results[0].uid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -144,7 +150,7 @@ class IndexesTests: XCTestCase {
 
   func testUpdateIndexWithClient() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
+      {"taskUid":0,"indexUid":"books","status":"enqueued","type":"indexUpdate","enqueuedAt":"2022-07-21T22:03:40.482534429Z"}
       """
 
     // Prepare the mock server
@@ -171,8 +177,8 @@ class IndexesTests: XCTestCase {
 
   func testUpdateIndex() {
     let jsonString = """
-      {"uid": 0, "indexUid": "movies_test", "status": "enqueued", "type": "documentAddition", "enqueuedAt": "xxx" }
-      """
+      {"taskUid":0,"indexUid":"books","status":"enqueued","type":"indexUpdate","enqueuedAt":"2022-07-21T22:03:40.482534429Z"}
+    """
 
     // Prepare the mock server
     session.pushData(jsonString)
@@ -196,15 +202,75 @@ class IndexesTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testGetIndexesWithParameters() {
+    let jsonString = """
+      {
+        "results": [],
+        "offset": 1,
+        "limit": 9,
+        "total": 0
+      }
+      """
+
+    // Prepare the mock server
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Get indexes with parameters")
+
+    self.client.getIndexes(params: IndexesQuery(limit: 9, offset: 1)) { result in
+      switch result {
+      case .success:
+        XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "limit=9&offset=1")
+
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get all Indexes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testGetTasksWithParametersFromIndex() {
+    let jsonString = """
+      {
+        "results": [],
+        "limit": 20,
+        "from": 5,
+        "next": 98
+      }
+      """
+
+    // Prepare the mock server
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Get keys with parameters")
+
+    self.index.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: ["indexCreation"])) { result in
+      switch result {
+      case .success:
+        let requestQuery = self.session.nextDataTask.request?.url?.query
+
+        XCTAssertEqual(requestQuery, "from=5&indexUid=\(self.uid)&limit=20&next=98&type=indexCreation")
+
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get all Indexes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   func testDeleteIndexWithClient() {
     let jsonString = """
-    {
-      "uid": 0,
-      "indexUid":"movies_test",
-      "status": "succeeded",
-      "type": "indexDeletion",
-      "enqueuedAt":"2020-04-04T19:59:49.259572Z"
-    }
+      {"taskUid":0,"indexUid":"books","status":"enqueued","type":"indexDeletion","enqueuedAt":"2022-07-21T22:05:00.976623757Z"}
     """
 
     // Prepare the mock server
@@ -230,13 +296,7 @@ class IndexesTests: XCTestCase {
 
   func testDeleteIndex() {
     let jsonString = """
-    {
-      "uid": 0,
-      "indexUid":"movies_test",
-      "status": "succeeded",
-      "type": "indexDeletion",
-      "enqueuedAt":"2020-04-04T19:59:49.259572Z"
-    }
+      {"taskUid":0,"indexUid":"books","status":"enqueued","type":"indexDeletion","enqueuedAt":"2022-07-21T22:05:00.976623757Z"}
     """
 
     // Prepare the mock server
