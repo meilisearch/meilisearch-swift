@@ -169,7 +169,7 @@ public struct MeiliSearch {
     options: WaitOptions? = nil,
     _ completion: @escaping (Result<Task, Swift.Error>
   ) -> Void) {
-    self.tasks.waitForTask(taskUid: task.uid, options: options, completion)
+    self.tasks.waitForTask(taskUid: task.taskUid, options: options, completion)
   }
 
   // MARK: Tasks

@@ -37,7 +37,7 @@ class TasksTests: XCTestCase {
     self.index.addDocuments(documents: [movie], primaryKey: nil) { result in
       switch result {
       case .success(let task):
-        self.index.getTask(taskUid: task.uid) { result in
+        self.index.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "documentAdditionOrUpdate")
@@ -63,7 +63,7 @@ class TasksTests: XCTestCase {
     self.client.createIndex(uid: indexUid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 10.0)) { result in
+        self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 10.0)) { result in
           switch result {
           case .success:
             let index = self.client.index(indexUid)
@@ -99,7 +99,7 @@ class TasksTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.getTask(taskUid: task.uid) { result in
+        self.client.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")
@@ -180,7 +180,7 @@ class TasksTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
+        self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")

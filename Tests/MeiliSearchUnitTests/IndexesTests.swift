@@ -34,7 +34,7 @@ class IndexesTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual(0, task.uid)
+        XCTAssertEqual(0, task.taskUid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -163,7 +163,7 @@ class IndexesTests: XCTestCase {
     self.client.updateIndex(uid: self.uid, primaryKey: primaryKey) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual(0, task.uid)
+        XCTAssertEqual(0, task.taskUid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -190,7 +190,7 @@ class IndexesTests: XCTestCase {
     self.index.update(primaryKey: primaryKey) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual(0, task.uid)
+        XCTAssertEqual(0, task.taskUid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -282,7 +282,7 @@ class IndexesTests: XCTestCase {
     self.client.deleteIndex(self.uid) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual(0, task.uid)
+        XCTAssertEqual(0, task.taskUid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -308,7 +308,7 @@ class IndexesTests: XCTestCase {
     self.index.delete { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual(0, task.uid)
+        XCTAssertEqual(0, task.taskUid)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
