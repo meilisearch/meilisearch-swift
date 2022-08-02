@@ -8,7 +8,7 @@ public struct Key: Codable, Equatable {
 
   public let uid: String
   public let name: String?
-  public let description: String
+  public let description: String?
   public let key: String
   public let actions: [String]
   public let indexes: [String]

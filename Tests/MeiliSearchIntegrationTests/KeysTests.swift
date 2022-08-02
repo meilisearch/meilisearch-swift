@@ -5,69 +5,93 @@ import Foundation
 // swiftlint:disable force_try
 class KeysTests: XCTestCase {
   private var client: MeiliSearch!
-  private var key: String = ""
   private var session: URLSessionProtocol!
 
   // MARK: Setup
 
   override func setUp() {
     super.setUp()
+
     session = URLSession(configuration: .ephemeral)
     client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
-    let keyExpectation = XCTestExpectation(description: "Get all keys")
 
-    self.client.getKeys { result in
+    // remove all keys to keep a clean state
+    self.client.getKeys(params: KeysQuery(limit: 100, offset: 0)) { result in
       switch result {
       case .success(let keys):
-        if keys.results.count > 0 {
-          let key = keys.results.first
-          if let firstKey: Key = key {
-            self.key = firstKey.key
+        keys.results.forEach {
+          self.client.deleteKey(key: $0.uid) { result in
+            switch result {
+            case .success:
+              ()
+            case .failure(let error):
+              dump(error)
+              XCTFail("Failed to delete key")
+            }
           }
-        } else {
-          XCTFail("Failed to get keys")
         }
-        keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
-        XCTFail("Failed to get keys")
-        keyExpectation.fulfill()
+        XCTFail("Failed to retrieve and delete all keys")
       }
     }
-    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetKeys() {
-    let keyExpectation = XCTestExpectation(description: "Get all keys")
+    let keyExpectation = XCTestExpectation(description: "Get a list of keys")
 
-    self.client.getKeys { result in
+    self.client.createKey(KeyParams(actions: ["*"], indexes: ["*"], expiresAt: nil)) { result in
       switch result {
-      case .success(let keys):
-        XCTAssertNotEqual(keys.results.count, 0)
+      case .success:
+        self.client.getKeys { result in
+          switch result {
+          case .success(let keys):
+            XCTAssertNotEqual(keys.results.count, 0)
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to get all keys")
+          }
+        }
+
         keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
-        XCTFail("Failed to get all keys")
+        XCTFail("Failed to create a key")
         keyExpectation.fulfill()
       }
     }
+
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetKey() {
     let keyExpectation = XCTestExpectation(description: "Get one key")
 
-    self.client.getKey(key: self.key) { result in
+    self.client.createKey(KeyParams(actions: ["*"], indexes: ["*"], expiresAt: nil)) { result in
       switch result {
-      case .success(let key):
-        XCTAssertNotNil(key.description)
+      case .success(let createdKey):
+        self.client.getKey(key: createdKey.uid) { result in
+          switch result {
+          case .success(let fetchedKey):
+            XCTAssertEqual(fetchedKey.expiresAt, nil)
+            XCTAssertEqual(fetchedKey.description, createdKey.description)
+            XCTAssertEqual(fetchedKey.actions, createdKey.actions)
+            XCTAssertEqual(fetchedKey.indexes, createdKey.indexes)
+            XCTAssertEqual(fetchedKey.uid, createdKey.uid)
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to get key by uid \(createdKey.uid)")
+          }
+        }
+
         keyExpectation.fulfill()
       case .failure(let error):
         dump(error)
-        XCTFail("Failed to get a key")
+        XCTFail("Failed to create a key")
         keyExpectation.fulfill()
       }
     }
+
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
@@ -80,6 +104,29 @@ class KeysTests: XCTestCase {
       case .success(let key):
         XCTAssertEqual(key.expiresAt, nil)
         XCTAssertEqual(key.description, keyParams.description)
+        XCTAssertEqual(key.actions, keyParams.actions)
+        XCTAssertEqual(key.indexes, keyParams.indexes)
+        keyExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create a key")
+        keyExpectation.fulfill()
+      }
+    }
+
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testCreateKeyWithOptionalUid() {
+    let keyExpectation = XCTestExpectation(description: "Create a key")
+    let uid = "1f05fa47-cfa6-40f7-8b80-7bd17b39f105"
+    let keyParams = KeyParams(uid: uid, actions: ["*"], indexes: ["*"], expiresAt: nil)
+
+    self.client.createKey(keyParams) { result in
+      switch result {
+      case .success(let key):
+        XCTAssertEqual(key.expiresAt, nil)
+        XCTAssertEqual(key.uid, uid)
         XCTAssertEqual(key.actions, keyParams.actions)
         XCTAssertEqual(key.indexes, keyParams.indexes)
         keyExpectation.fulfill()
