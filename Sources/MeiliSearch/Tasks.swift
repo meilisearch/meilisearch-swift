@@ -21,14 +21,6 @@ struct Tasks {
       get(path: "/tasks/\(taskUid)", completion)
   }
 
-  // Get on index
-  func get(
-    indexUid: String,
-    taskUid: Int,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(path: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
-  }
-
   private func get (
     path: String,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
@@ -49,21 +41,34 @@ struct Tasks {
 
   // get all on client
   func getAll(
+    params: TasksQuery? = nil,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(path: "/tasks", completion)
+      getAll(path: "/tasks", params: params, completion)
   }
 
   // get all on index
   func getAll(
     uid: String,
+    params: TasksQuery? = nil,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(path: "/indexes/\(uid)/tasks", completion)
+      var query: TasksQuery?
+
+      if params != nil {
+        params?.indexUid.append(uid)
+
+        query = params
+      } else {
+        query = TasksQuery(indexUid: [uid])
+      }
+
+      getAll(path: "/tasks", params: query, completion)
   }
 
   private func getAll(
     path: String,
+    params: TasksQuery? = nil,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: path) { result in
+    self.request.get(api: path, param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
         do {

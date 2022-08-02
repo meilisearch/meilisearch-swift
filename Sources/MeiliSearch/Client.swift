@@ -164,6 +164,14 @@ public struct MeiliSearch {
     self.tasks.waitForTask(task: task, options: options, completion)
   }
 
+  public func waitForTask(
+    task: TaskInfo,
+    options: WaitOptions? = nil,
+    _ completion: @escaping (Result<Task, Swift.Error>
+  ) -> Void) {
+    self.tasks.waitForTask(taskUid: task.uid, options: options, completion)
+  }
+
   // MARK: Tasks
 
  /**
@@ -181,15 +189,17 @@ public struct MeiliSearch {
   }
 
   /**
-   Get all tasks.
+   List tasks based on an optional pagination criteria
 
    - parameter completion: The completion closure used to notify when the server
+   - parameter params: A TasksQuery object with pagination metadata.
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getTasks(
+    params: TasksQuery? = nil,
     _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.tasks.getAll(completion)
+    self.tasks.getAll(params: params, completion)
   }
 
   // MARK: Keys
