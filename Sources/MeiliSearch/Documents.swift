@@ -16,9 +16,15 @@ struct Documents {
   func get<T>(
     _ uid: String,
     _ identifier: String,
+    fields: [String]? = nil,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    let query: String = "/indexes/\(uid)/documents/\(identifier)"
+    var query: String = "/indexes/\(uid)/documents/\(identifier)"
+
+    if fields != nil {
+      query.append(fields?.joined(separator: ",") ?? "")
+    }
+
     self.request.get(api: query) { result in
       switch result {
       case .success(let data):
@@ -26,8 +32,8 @@ struct Documents {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-        Documents.decodeJSON(data, completion: completion)
 
+        Documents.decodeJSON(data, completion: completion)
       case .failure(let error):
         completion(.failure(error))
       }
