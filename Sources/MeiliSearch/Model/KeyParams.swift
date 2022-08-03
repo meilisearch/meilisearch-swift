@@ -13,14 +13,12 @@ public struct KeyParams: Codable, Equatable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
+
     if uid != nil {
       try container.encode(uid, forKey: .uid)
     }
 
-    if name != nil {
-      try container.encode(name, forKey: .name)
-    }
-
+    try container.encode(name, forKey: .name)
     try container.encode(description, forKey: .description)
     try container.encode(actions, forKey: .actions)
     try container.encode(indexes, forKey: .indexes)
