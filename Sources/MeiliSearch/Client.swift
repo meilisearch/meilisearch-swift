@@ -198,7 +198,7 @@ public struct MeiliSearch {
    */
   public func getTasks(
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
     self.tasks.getAll(params: params, completion)
   }
 
@@ -213,7 +213,7 @@ public struct MeiliSearch {
    */
   public func getKeys(
     params: KeysQuery? = nil,
-    _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<KeysResults, Swift.Error>) -> Void) {
       self.keys.getAll(params: params, completion)
   }
 

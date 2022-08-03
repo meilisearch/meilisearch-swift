@@ -42,7 +42,7 @@ struct Tasks {
   // get all on client
   func getAll(
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
       getAll(path: "/tasks", params: params, completion)
   }
 
@@ -50,7 +50,7 @@ struct Tasks {
   func getAll(
     uid: String,
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
       var query: TasksQuery?
 
       if params != nil {
@@ -67,12 +67,13 @@ struct Tasks {
   private func getAll(
     path: String,
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
     self.request.get(api: path, param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
         do {
-          let task: Result<Results<Task>, Swift.Error>  = try Constants.resultDecoder(data: data)
+          let task: Result<TasksResults, Swift.Error> = try Constants.resultDecoder(data: data)
+
           completion(task)
         } catch {
           completion(.failure(error))

@@ -472,7 +472,7 @@ public struct Indexes {
    */
   public func getTasks(
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
     self.tasks.getAll(uid: self.uid, params: params, completion)
   }
 

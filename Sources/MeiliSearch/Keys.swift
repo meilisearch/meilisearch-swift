@@ -32,7 +32,7 @@ struct Keys {
     }
   }
 
-  func getAll(params: KeysQuery?, _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
+  func getAll(params: KeysQuery?, _ completion: @escaping (Result<KeysResults, Swift.Error>) -> Void) {
     self.request.get(api: "/keys", param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
@@ -40,8 +40,10 @@ struct Keys {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
+
         do {
-          let keys: Results<Key> = try Constants.customJSONDecoder.decode(Results<Key>.self, from: data)
+          let keys = try Constants.customJSONDecoder.decode(KeysResults.self, from: data)
+
           completion(.success(keys))
         } catch {
           completion(.failure(error))
