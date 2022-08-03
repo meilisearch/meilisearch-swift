@@ -5,8 +5,9 @@ public class TasksQuery: Queryable {
   private var limit: Int?
   private var next: Int?
   private var types: [String]
-  var indexUid: [String]
   private var status: [String]
+
+  var indexUid: [String]
 
   init(limit: Int? = nil, from: Int? = nil, next: Int? = nil, status: [String]? = nil, types: [String]? = nil, indexUid: [String]? = nil) {
     self.from = from
