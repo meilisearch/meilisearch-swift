@@ -336,26 +336,7 @@ public struct MeiliSearch {
    value that can be used later to check the status of the dump.
    If the request was successful or `Error` if a failure occurred.
    */
-  public func createDump(_ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
+  public func createDump(_ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.dumps.create(completion)
-  }
-
-  /**
-   Get the status of a dump creation process using the uid returned after calling the dump creation route.
-   The returned status could be:
-
-   `Dump.Status.inProgress`: Dump creation is in progress.
-   `Dump.Status.failed`: An error occurred during the dump process, and the task was aborted.
-   `Dump.Status.done`: Dump creation is finished and was successful.
-
-   - parameter completion: The completion closure used to notify when the server
-   completes the dump request, it returns a `Dump` object that contains `uid`
-   value that can be used later to check the status of the Dump.
-   If the request was successful or `Error` if a failure occurred.
-   */
-  public func getDumpStatus(
-    _ uid: String,
-    _ completion: @escaping (Result<Dump, Swift.Error>) -> Void) {
-    self.dumps.status(uid, completion)
   }
 }

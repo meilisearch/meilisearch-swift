@@ -6,7 +6,6 @@ import Foundation
 class DumpsTests: XCTestCase {
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
-  private let uid: String = "books_test"
 
   // MARK: Setup
 
@@ -23,17 +22,9 @@ class DumpsTests: XCTestCase {
 
     self.client.createDump { result in
       switch result {
-      case .success(let createDump):
-        XCTAssertTrue(!createDump.uid.isEmpty)
-        self.client.getDumpStatus(createDump.uid) { result in
-          switch result {
-          case .success(let dumpStatus):
-            XCTAssertEqual(createDump.uid, dumpStatus.uid)
-          case .failure(let error):
-            XCTFail("Failed to request dump status \(error)")
-          }
-          expectation.fulfill()
-        }
+      case .success(let dumpTask):
+        XCTAssertEqual(dumpTask.status, Task.Status.enqueued)
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
         XCTFail("Failed to request dump creation \(error)")
