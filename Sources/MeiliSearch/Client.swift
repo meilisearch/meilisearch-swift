@@ -94,7 +94,7 @@ public struct MeiliSearch {
    */
   public func getIndexes(
     params: IndexesQuery? = nil,
-    _ completion: @escaping (Result<Results<Index>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<IndexesResults, Swift.Error>) -> Void) {
     Indexes.getAll(config: self.config, params: params, completion)
   }
 

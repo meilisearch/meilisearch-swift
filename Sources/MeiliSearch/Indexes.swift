@@ -101,7 +101,7 @@ public struct Indexes {
    completes the query request. It returns a `Result` object that contains `[Index]`
    value if the request was successful or `Error` if a failure occurred.
    */
-  public static func getAll(config: Config, params: IndexesQuery? = nil, _ completion: @escaping (Result<Results<Index>, Swift.Error>) -> Void) {
+  public static func getAll(config: Config, params: IndexesQuery? = nil, _ completion: @escaping (Result<IndexesResults, Swift.Error>) -> Void) {
     Request(config).get(api: "/indexes", param: params?.toQuery()) { result in
       switch result {
       case .success(let result):
@@ -111,7 +111,8 @@ public struct Indexes {
         }
 
         do {
-          let indexes: Results<Index> = try Constants.customJSONDecoder.decode(Results<Index>.self, from: result)
+          let indexes = try Constants.customJSONDecoder.decode(IndexesResults.self, from: result)
+
           completion(.success(indexes))
         } catch let error {
           completion(.failure(error))
