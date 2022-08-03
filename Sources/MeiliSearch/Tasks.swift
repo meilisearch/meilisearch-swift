@@ -40,14 +40,14 @@ struct Tasks {
     }
 
   // get all on client
-  func getAll(
+  func getTasks(
     params: TasksQuery? = nil,
     _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
-      getAll(path: "/tasks", params: params, completion)
+      listTasks(params: params, completion)
   }
 
   // get all on index
-  func getAll(
+  func getTasks(
     uid: String,
     params: TasksQuery? = nil,
     _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
@@ -61,14 +61,13 @@ struct Tasks {
         query = TasksQuery(indexUid: [uid])
       }
 
-      getAll(path: "/tasks", params: query, completion)
+      listTasks(params: query, completion)
   }
 
-  private func getAll(
-    path: String,
+  private func listTasks(
     params: TasksQuery? = nil,
     _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
-    self.request.get(api: path, param: params?.toQuery()) { result in
+    self.request.get(api: "/tasks", param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
         do {

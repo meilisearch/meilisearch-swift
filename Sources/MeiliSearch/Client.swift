@@ -199,7 +199,7 @@ public struct MeiliSearch {
   public func getTasks(
     params: TasksQuery? = nil,
     _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
-    self.tasks.getAll(params: params, completion)
+    self.tasks.getTasks(params: params, completion)
   }
 
   // MARK: Keys
