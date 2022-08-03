@@ -70,7 +70,7 @@ class KeysTests: XCTestCase {
     self.client.createKey(KeyParams(actions: ["*"], indexes: ["*"], expiresAt: nil)) { result in
       switch result {
       case .success(let createdKey):
-        self.client.getKey(key: createdKey.uid) { result in
+        self.client.getKey(keyOrUid: createdKey.uid) { result in
           switch result {
           case .success(let fetchedKey):
             XCTAssertEqual(fetchedKey.expiresAt, nil)
@@ -206,7 +206,7 @@ class KeysTests: XCTestCase {
         self.client.deleteKey(key: key.key) { result in
           switch result {
           case .success:
-            self.client.getKey(key: key.key) { result in
+            self.client.getKey(keyOrUid: key.key) { result in
               switch result {
               case .success(let key):
                 XCTAssertNotNil(key.description)

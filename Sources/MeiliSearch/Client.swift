@@ -220,15 +220,15 @@ public struct MeiliSearch {
   /**
    Get one key's information using the key value.
 
-   - parameter key:  The key value.
+   - parameter keyOrUid:  The key value.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getKey(
-    key: String,
+    keyOrUid: String,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.get(key: key, completion)
+    self.keys.get(key: keyOrUid, completion)
   }
 
   /**

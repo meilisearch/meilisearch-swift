@@ -57,7 +57,7 @@ class TasksTests: XCTestCase {
   }
 
   func testGetTasksIndex() {
-    let expectation = XCTestExpectation(description: "Add documents")
+    let expectation = XCTestExpectation(description: "List tasks from index")
     let indexUid = "\(self.uid)_\(UUID().uuidString)"
 
     self.client.createIndex(uid: indexUid) { result in
