@@ -46,7 +46,9 @@ struct Documents {
     params: DocumentsQuery? = nil,
     _ completion: @escaping (Result<DocumentsResults<T>, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    request.get(api: "/indexes/\(uid)/documents\(params?.toQuery() ?? "")") { result in
+    let queryParams = params?.toQuery() ?? ""
+
+    request.get(api: "/indexes/\(uid)/documents\(queryParams)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
