@@ -22,7 +22,8 @@ struct Documents {
     var query: String = "/indexes/\(uid)/documents/\(identifier)"
 
     if fields != nil {
-      query.append(fields?.joined(separator: ",") ?? "")
+      let fieldsQuery = "?fields=\(fields?.joined(separator: ",") ?? "")"
+      query.append(fieldsQuery)
     }
 
     self.request.get(api: query) { result in
