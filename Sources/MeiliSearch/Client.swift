@@ -201,8 +201,9 @@ public struct MeiliSearch {
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getKeys(
+    params: KeysQuery? = nil,
     _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
-    self.keys.getAll(completion)
+      self.keys.getAll(params: params, completion)
   }
 
   /**
@@ -244,7 +245,7 @@ public struct MeiliSearch {
    */
   public func updateKey(
     key: String,
-    keyParams: KeyParams,
+    keyParams: KeyUpdateParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     self.keys.update(
       key: key,
