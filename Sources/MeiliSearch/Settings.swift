@@ -316,11 +316,6 @@ struct Settings {
 
   // MARK: Distinct attribute
 
-  struct DistinctAttributePayload: Codable, Equatable {
-    /// Distinct attribute key
-    public let distinctAttribute: String
-  }
-
   func getDistinctAttribute(
     _ uid: String,
     _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {

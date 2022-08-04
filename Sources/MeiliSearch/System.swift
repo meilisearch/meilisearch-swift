@@ -59,7 +59,3 @@ struct System {
     }
   }
 }
-
-private struct CreateHealthPayload: Codable {
-  let health: Bool
-}
