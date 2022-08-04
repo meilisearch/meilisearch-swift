@@ -246,17 +246,17 @@ create_a_key_1: |-
   }
 update_a_key_1: |-
   let keyParams = KeyUpdateParams(
-    description: "Manage documents: Products/Reviews API key",
-    name: "Products/Reviews API key"
+    name: "Products/Reviews API key",
+    description: "Manage documents: Products/Reviews API key"
   )
 
   client.updateKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d", keyParams: keyParams) { result in
-      switch result {
-      case .success(let key):
-          print(keys)
-      case .failure(let error):
-          print(error)
-      }
+    switch result {
+    case .success(let key):
+        print(key)
+    case .failure(let error):
+        print(error)
+    }
   }
 delete_a_key_1: |-
   client.deleteKey(key: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
@@ -603,25 +603,6 @@ get_version_1: |-
       case .failure(let error):
           print(error)
       }
-  }
-get_pretty_sys_info_1: |-
-  client.prettySystemInfo { (result: Result<PrettySystemInfo, Swift.Error>) in
-      switch result {
-      case .success(let systemInfo):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-get_sys_info_1: |-
-  client.systemInfo { (result: Result<SystemInfo, Swift.Error>) in
-      switch result {
-      case .success(let systemInfo):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
 distinct_attribute_guide_1: |-
   client.index("jackets").updateDistinctAttribute("product_id") { (result: Result<Task, Swift.Error>) in
       switch result {
