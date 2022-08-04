@@ -12,7 +12,7 @@ public struct Book: Codable, Equatable {
     case comment
     case genres
     case formatted = "_formatted"
-    case matchesInfo = "_matchesInfo"
+    case matchesInfo = "_matchesPosition"
   }
 
   init(id: Int, title: String, comment: String? = nil, genres: [String] = [], formatted: FormattedBook? = nil, matchesInfo: MatchesInfoBook? = nil) {
