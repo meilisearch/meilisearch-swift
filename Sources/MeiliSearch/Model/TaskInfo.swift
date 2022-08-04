@@ -9,7 +9,7 @@ public struct TaskInfo: Codable, Equatable {
   // MARK: Properties
 
   /// Unique ID for the current `TaskInfo`.
-  public let uid: Int
+  public let taskUid: Int
 
   /// Unique ID for the current `TaskInfo`.
   public let indexUid: String?
@@ -24,10 +24,10 @@ public struct TaskInfo: Codable, Equatable {
   public let enqueuedAt: String
 
   static func == (lhs: TaskInfo, rhs: Task) -> Bool {
-    lhs.uid == rhs.uid
+    lhs.taskUid == rhs.uid
   }
 
   public enum CodingKeys: String, CodingKey {
-    case uid = "taskUid", indexUid, status, type, enqueuedAt
+    case taskUid, indexUid, status, type, enqueuedAt
   }
 }

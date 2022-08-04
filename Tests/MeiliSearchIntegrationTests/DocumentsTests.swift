@@ -328,7 +328,7 @@ class DocumentsTests: XCTestCase {
     self.index.deleteDocument("42") { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(taskUid: task.uid) { result in
+        self.client.waitForTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)

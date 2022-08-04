@@ -56,7 +56,7 @@ class DocumentsTests: XCTestCase {
     ) { result in
       switch result {
       case .success(let update):
-        XCTAssertEqual(stubTask.uid, update.uid)
+        XCTAssertEqual(stubTask.taskUid, update.taskUid)
       case .failure:
         XCTFail("Failed to add or replace Movies document")
       }
