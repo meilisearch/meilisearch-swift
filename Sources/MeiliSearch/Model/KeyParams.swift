@@ -4,7 +4,7 @@ import Foundation
  `KeyParams` contains all the parameters to create an API key.
  */
 public struct KeyParams: Codable, Equatable {
-  public let description: String
+  public var description: String?
   public var name: String?
   public var uid: String?
   public let actions: [String]
