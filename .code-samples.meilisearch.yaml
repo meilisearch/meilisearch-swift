@@ -33,7 +33,7 @@ get_all_tasks_paginating_1: |-
     }
   }
 get_all_tasks_paginating_2: |-
-  client.index("movies").getTasks(params: TasksQuery(limit: 2, from: 8)) { result in
+  client.getTasks(params: TasksQuery(limit: 2, from: 8)) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
