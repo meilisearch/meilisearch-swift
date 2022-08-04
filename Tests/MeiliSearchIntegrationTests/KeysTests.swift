@@ -173,7 +173,7 @@ class KeysTests: XCTestCase {
       switch result {
       case .success(let key):
         let updateParams = KeyUpdateParams(description: "new name")
-        self.client.updateKey(key: key.key, keyParams: updateParams) { result in
+        self.client.updateKey(keyOrUid: key.key, keyParams: updateParams) { result in
           switch result {
           case .success(let key):
             XCTAssertEqual(key.description, "new name")

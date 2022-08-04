@@ -82,7 +82,7 @@ struct Keys {
   }
 
   public func update(
-    key: String,
+    keyOrUid: String,
     keyParams: KeyUpdateParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     let data: Data
@@ -94,7 +94,7 @@ struct Keys {
       return
     }
 
-    self.request.patch(api: "/keys/\(key)", data) { result in
+    self.request.patch(api: "/keys/\(keyOrUid)", data) { result in
       switch result {
       case .success(let result):
       do {
@@ -112,9 +112,9 @@ struct Keys {
   }
 
   public func delete(
-    key: String,
+    keyOrUid: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-    self.request.delete(api: "/keys/\(key)") { result in
+    self.request.delete(api: "/keys/\(keyOrUid)") { result in
       switch result {
       case .success:
         completion(.success(()))

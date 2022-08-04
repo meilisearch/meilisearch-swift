@@ -38,40 +38,40 @@ public struct Task: Codable, Equatable {
 
     // MARK: Properties
 
-    // Number of documents sent
+    /// Number of documents sent
     public let receivedDocuments: Int?
 
-    // Number of documents successfully indexed/updated in Meilisearch
+    /// Number of documents successfully indexed/updated in Meilisearch
     public let indexedDocuments: Int?
 
-    // Number of deleted documents
+    /// Number of deleted documents
     public let deletedDocuments: Int?
 
-    // Primary key on index creation
+    /// Primary key on index creation
     public let primaryKey: String?
 
-    // Ranking rules on settings actions
+    /// Ranking rules on settings actions
     public let rankingRules: [String]?
 
-    // Searchable attributes on settings actions
+    /// Searchable attributes on settings actions
     public let searchableAttributes: [String]?
 
-    // Displayed attributes on settings actions
+    /// Displayed attributes on settings actions
     public let displayedAttributes: [String]?
 
-    // Filterable attributes on settings actions
+    /// Filterable attributes on settings actions
     public let filterableAttributes: [String]?
 
-    // Sortable attributes on settings actions
+    /// Sortable attributes on settings actions
     public let sortableAttributes: [String]?
 
-    // Stop words on settings actions
+    /// Stop words on settings actions
     public let stopWords: [String]?
 
-    // Synonyms on settings actions
+    /// Synonyms on settings actions
     public let synonyms: [String: [String]]?
 
-    // Distinct attribute on settings actions
+    /// Distinct attribute on settings actions
     public let distinctAttribute: String?
 
   }
@@ -79,10 +79,13 @@ public struct Task: Codable, Equatable {
   public let error: MeiliSearch.MSErrorResponse?
 
   public enum Status: Codable, Equatable {
-
+    /// When a task was successfully enqueued and is waiting to be processed.
     case enqueued
+    /// When a task is still being processed.
     case processing
+    /// When a task was successfully processed.
     case succeeded
+    /// When a task had an error  and could not be completed for some reason.
     case failed
 
     public enum StatusError: Error {
@@ -92,6 +95,7 @@ public struct Task: Codable, Equatable {
     public init(from decoder: Decoder) throws {
       let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
       let rawStatus: String = try container.decode(String.self)
+
       switch rawStatus {
       case "enqueued":
         self = Status.enqueued
@@ -107,7 +111,5 @@ public struct Task: Codable, Equatable {
     }
 
     public func encode(to encoder: Encoder) throws { }
-
   }
-
 }
