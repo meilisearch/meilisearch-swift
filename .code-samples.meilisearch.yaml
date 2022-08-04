@@ -6,7 +6,7 @@
 getting_started_typo_tolerance: |-
 
 get_all_tasks_filtering_1: |-
-  client.index("movies").getTasks() { result in
+  client.getTasks(params: TasksQuery(indexUid: ["movies"])) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
