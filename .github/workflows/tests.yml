@@ -10,12 +10,15 @@ on:
       - main
 
 jobs:
-  integeration_tests:
+  integration_tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
-    name: integration-tests
-    runs-on: macos-latest
+    name: integration-tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["macos-latest", "ubuntu-20.04"]
     env:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
