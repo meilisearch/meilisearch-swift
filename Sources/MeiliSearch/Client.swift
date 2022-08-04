@@ -67,7 +67,7 @@ public struct MeiliSearch {
   public func createIndex(
     uid: String,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     Indexes.create(uid: uid, primaryKey: primaryKey, config: self.config, completion)
   }
 
@@ -93,8 +93,9 @@ public struct MeiliSearch {
    value. If the request was sucessful or `Error` if a failure occured.
    */
   public func getIndexes(
-    _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
-    Indexes.getAll(config: self.config, completion)
+    params: IndexesQuery? = nil,
+    _ completion: @escaping (Result<Results<Index>, Swift.Error>) -> Void) {
+    Indexes.getAll(config: self.config, params: params, completion)
   }
 
   /**
@@ -109,7 +110,7 @@ public struct MeiliSearch {
   public func updateIndex(
     uid: String,
     primaryKey: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.index(uid).update(primaryKey: primaryKey, completion)
   }
 
@@ -123,7 +124,7 @@ public struct MeiliSearch {
    */
   public func deleteIndex(
     _ uid: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.index(uid).delete(completion)
   }
 
