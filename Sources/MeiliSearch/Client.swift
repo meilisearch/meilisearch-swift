@@ -94,7 +94,7 @@ public struct MeiliSearch {
    */
   public func getIndexes(
     params: IndexesQuery? = nil,
-    _ completion: @escaping (Result<Results<Index>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<IndexesResults, Swift.Error>) -> Void) {
     Indexes.getAll(config: self.config, params: params, completion)
   }
 
@@ -198,8 +198,8 @@ public struct MeiliSearch {
    */
   public func getTasks(
     params: TasksQuery? = nil,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.tasks.getAll(params: params, completion)
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
+    self.tasks.getTasks(params: params, completion)
   }
 
   // MARK: Keys
@@ -213,22 +213,22 @@ public struct MeiliSearch {
    */
   public func getKeys(
     params: KeysQuery? = nil,
-    _ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<KeysResults, Swift.Error>) -> Void) {
       self.keys.getAll(params: params, completion)
   }
 
   /**
    Get one key's information using the key value.
 
-   - parameter key:  The key value.
+   - parameter keyOrUid:  The key value.
    - parameter completion: The completion closure used to notify when the server
    completes the query request, it returns a `Result` object that contains `Key` value.
    If the request was sucessful or `Error` if a failure occured.
    */
   public func getKey(
-    key: String,
+    keyOrUid: String,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
-    self.keys.get(key: key, completion)
+    self.keys.get(key: keyOrUid, completion)
   }
 
   /**

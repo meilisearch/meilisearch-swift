@@ -57,7 +57,7 @@ class TasksTests: XCTestCase {
   }
 
   func testGetTasksIndex() {
-    let expectation = XCTestExpectation(description: "Add documents")
+    let expectation = XCTestExpectation(description: "List tasks from index")
     let indexUid = "\(self.uid)_\(UUID().uuidString)"
 
     self.client.createIndex(uid: indexUid) { result in
@@ -67,7 +67,7 @@ class TasksTests: XCTestCase {
           switch result {
           case .success:
             let index = self.client.index(indexUid)
-            index.getTasks { (result: Result<Results<Task>, Swift.Error>) in
+            index.getTasks { (result: Result<TasksResults, Swift.Error>) in
               switch result {
               case .success(let tasks):
                 // Only one because index has been deleted and recreated
@@ -134,7 +134,7 @@ class TasksTests: XCTestCase {
     self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
 
     let expectation = XCTestExpectation(description: "Get all tasks of an index")
-    self.client.getTasks { (result: Result<Results<Task>, Swift.Error>)  in
+    self.client.getTasks { (result: Result<TasksResults, Swift.Error>)  in
       switch result {
       case .success(let tasks):
         XCTAssertNotNil(tasks.results)

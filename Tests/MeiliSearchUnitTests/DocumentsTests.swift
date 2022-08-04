@@ -6,8 +6,8 @@ import Foundation
 // swiftlint:disable force_try
 // swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
-  let id: Int?
-  let title: String?
+  let id: Int
+  let title: String
   let overview: String?
   let releaseDate: Date?
 
@@ -241,6 +241,8 @@ class DocumentsTests: XCTestCase {
       self.index.getDocument(identifier, fields: ["title", "id"]) { (result: Result<Movie, Swift.Error>) in
         switch result {
         case .success(let movie):
+          XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "fields=title,id")
+
           XCTAssertEqual(stubMovie, movie)
         case .failure:
           XCTFail("Failed to get Movies document")
@@ -250,8 +252,6 @@ class DocumentsTests: XCTestCase {
     } catch {
       XCTFail("Failed to parse document")
     }
-
-//    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
   func testGetDocumentsWithParameters() {

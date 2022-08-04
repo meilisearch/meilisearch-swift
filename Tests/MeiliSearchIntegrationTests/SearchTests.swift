@@ -446,7 +446,7 @@ class SearchTests: XCTestCase {
   // MARK: Matches tests
 
   func testSearchMatches() {
-    let expectation = XCTestExpectation(description: "Search for Books using matches")
+    let expectation = XCTestExpectation(description: "Search for Books using showMatchesPosition")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let limit = 5
@@ -793,7 +793,7 @@ class SearchTests: XCTestCase {
   // MARK: Facet distribution
 
   func testSearchFacetDistribution() {
-    let expectation = XCTestExpectation(description: "Search for Books using facets distribution")
+    let expectation = XCTestExpectation(description: "Search for Books using facets")
 
     configureFilters { result in
       switch result {
@@ -841,7 +841,7 @@ class SearchTests: XCTestCase {
   }
 
   func testSearchFacetDistributionNullValue() {
-    let expectation = XCTestExpectation(description: "Search for Books using facets distribution with 0 value")
+    let expectation = XCTestExpectation(description: "Search for Books using facets with 0 value")
 
     configureFilters { result in
       switch result {
