@@ -15,7 +15,7 @@ get_all_tasks_filtering_1: |-
     }
   }
 get_all_tasks_filtering_2: |-
-  client.index("movies").getTasks(params: TasksQuery(status: ["succeeded", "failed"], types: ["documentAdditionOrUpdate"])) { result in
+  client.getTasks(params: TasksQuery(status: ["succeeded", "failed"], types: ["documentAdditionOrUpdate"])) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
