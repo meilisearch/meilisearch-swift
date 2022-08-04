@@ -185,7 +185,7 @@ get_all_tasks_1: |-
       }
   }
 get_one_key_1: |-
-  self.client.getKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
+  self.client.getKey(keyOrUid: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
       switch result {
       case .success(let key):
           print(key)

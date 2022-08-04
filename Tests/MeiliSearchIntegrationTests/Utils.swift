@@ -47,7 +47,7 @@ public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @
       client.createIndex(uid: uid) { result in
         switch result {
         case .success(let task):
-          client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
+          client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 10.0)) { result in
             switch result {
             case .success(let task):
               completion(.success(task))
@@ -69,7 +69,7 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
   client.deleteIndex(uid) { result in
     switch result {
     case .success(let task):
-      client.waitForTask(task: task) { result in
+      client.waitForTask(taskUid: task.taskUid) { result in
         switch result {
         case .success(let task):
           completion(.success(task))
@@ -101,7 +101,7 @@ public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset
       index.addDocuments(documents: documents, primaryKey: primaryKey) { result in
         switch result {
         case .success(let task):
-          client.waitForTask(task: task) { result in
+          client.waitForTask(taskUid: task.taskUid) { result in
             switch result {
             case .success(let task):
               completion(.success(task))

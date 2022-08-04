@@ -37,10 +37,10 @@ class TasksTests: XCTestCase {
     self.index.addDocuments(documents: [movie], primaryKey: nil) { result in
       switch result {
       case .success(let task):
-        self.index.getTask(taskUid: task.uid) { result in
+        self.index.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "documentAddition")
+            XCTAssertEqual(task.type, "documentAdditionOrUpdate")
             addDocExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -57,31 +57,36 @@ class TasksTests: XCTestCase {
   }
 
   func testGetTasksIndex() {
-    let addDocExpectation = XCTestExpectation(description: "Add documents")
+    let expectation = XCTestExpectation(description: "List tasks from index")
+    let indexUid = "\(self.uid)_\(UUID().uuidString)"
 
-    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+    self.client.createIndex(uid: indexUid) { result in
       switch result {
-      case .success:
-        addDocExpectation.fulfill()
+      case .success(let task):
+        self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 10.0)) { result in
+          switch result {
+          case .success:
+            let index = self.client.index(indexUid)
+            index.getTasks { (result: Result<TasksResults, Swift.Error>) in
+              switch result {
+              case .success(let tasks):
+                // Only one because index has been deleted and recreated
+                XCTAssertEqual(tasks.results.count, 1)
+                expectation.fulfill()
+              case .failure(let error):
+                dump(error)
+                XCTFail("Failed to get tasks")
+                expectation.fulfill()
+              }
+            }
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to create index to get tasks")
+          }
+        }
       case .failure(let error):
         dump(error)
-        XCTFail("Failed to create index")
-        addDocExpectation.fulfill()
-      }
-    }
-    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
-
-    let expectation = XCTestExpectation(description: "Get all tasks of an index")
-    self.index.getTasks { (result: Result<Results<Task>, Swift.Error>)  in
-      switch result {
-      case .success(let tasks):
-        // Only one because index has been deleted and recreated
-        XCTAssertEqual(tasks.results.count, 1)
-        expectation.fulfill()
-      case .failure(let error):
-        dump(error)
-        XCTFail("Failed to get tasks")
-        expectation.fulfill()
+        XCTFail("Failed to create index to get tasks")
       }
     }
 
@@ -94,7 +99,7 @@ class TasksTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.getTask(taskUid: task.uid) { result in
+        self.client.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")
@@ -129,7 +134,7 @@ class TasksTests: XCTestCase {
     self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
 
     let expectation = XCTestExpectation(description: "Get all tasks of an index")
-    self.client.getTasks { (result: Result<Results<Task>, Swift.Error>)  in
+    self.client.getTasks { (result: Result<TasksResults, Swift.Error>)  in
       switch result {
       case .success(let tasks):
         XCTAssertNotNil(tasks.results)
@@ -175,7 +180,7 @@ class TasksTests: XCTestCase {
     self.client.createIndex(uid: self.uid) { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(taskUid: task.uid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
+        self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(task.type, "indexCreation")

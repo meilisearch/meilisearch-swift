@@ -23,7 +23,7 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let indexes):
         let asyncDeletegroup = DispatchGroup()
-        for index in indexes {
+        for index in indexes.results {
           asyncDeletegroup.enter()
           self.client.deleteIndex(index.uid) { res in
             switch res {
@@ -183,7 +183,7 @@ class IndexesTests: XCTestCase {
     self.client.getIndexes { result in
       switch result {
       case .success(let indexes):
-        XCTAssertEqual(1, indexes.count)
+        XCTAssertEqual(1, indexes.results.count)
         expectation.fulfill()
       case .failure(let error):
         dump(error)

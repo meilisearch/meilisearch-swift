@@ -21,14 +21,6 @@ struct Tasks {
       get(path: "/tasks/\(taskUid)", completion)
   }
 
-  // Get on index
-  func get(
-    indexUid: String,
-    taskUid: Int,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-      get(path: "/indexes/\(indexUid)/tasks/\(taskUid)", completion)
-  }
-
   private func get (
     path: String,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
@@ -48,26 +40,39 @@ struct Tasks {
     }
 
   // get all on client
-  func getAll(
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(path: "/tasks", completion)
+  func getTasks(
+    params: TasksQuery? = nil,
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
+      listTasks(params: params, completion)
   }
 
   // get all on index
-  func getAll(
+  func getTasks(
     uid: String,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-      getAll(path: "/indexes/\(uid)/tasks", completion)
+    params: TasksQuery? = nil,
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
+      var query: TasksQuery?
+
+      if params != nil {
+        params?.indexUid.append(uid)
+
+        query = params
+      } else {
+        query = TasksQuery(indexUid: [uid])
+      }
+
+      listTasks(params: query, completion)
   }
 
-  private func getAll(
-    path: String,
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.request.get(api: path) { result in
+  private func listTasks(
+    params: TasksQuery? = nil,
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
+    self.request.get(api: "/tasks", param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
         do {
-          let task: Result<Results<Task>, Swift.Error>  = try Constants.resultDecoder(data: data)
+          let task: Result<TasksResults, Swift.Error> = try Constants.resultDecoder(data: data)
+
           completion(task)
         } catch {
           completion(.failure(error))

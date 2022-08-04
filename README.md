@@ -175,11 +175,8 @@ Output:
         - "Drama"
   - offset: 0
   - limit: 20
-  - nbHits: 1
-  ▿ exhaustiveNbHits: Optional(false)
-    - some: false
-  - facetsDistribution: nil
-  - exhaustiveFacetsCount: nil
+  - estimatedTotalHits: 1
+  - facetDistribution: nil
   ▿ processingTimeMs: Optional(1)
     - some: 1
   ▿ query: Optional("philoudelphia")
@@ -190,7 +187,7 @@ Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search r
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
+This package only guarantees the compatibility with the [version v0.28.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.28.0).
 
 ## 💡 Learn More
 
