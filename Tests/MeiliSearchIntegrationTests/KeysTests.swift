@@ -16,28 +16,25 @@ class KeysTests: XCTestCase {
     super.setUp()
 
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+
+    let semaphore = XCTestExpectation(description: "Setup: delete all keys")
 
     // remove all keys to keep a clean state
     self.client.getKeys(params: KeysQuery(limit: 100, offset: 0)) { result in
       switch result {
       case .success(let keys):
         keys.results.forEach {
-          self.client.deleteKey(key: $0.uid) { result in
-            switch result {
-            case .success:
-              ()
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to delete key")
-            }
-          }
+          self.client.deleteKey(key: $0.uid) { _ in }
         }
-      case .failure(let error):
-        dump(error)
-        XCTFail("Failed to retrieve and delete all keys")
+
+        semaphore.fulfill()
+      case .failure:
+        semaphore.fulfill()
       }
     }
+
+    self.wait(for: [semaphore], timeout: TESTS_TIME_OUT)
   }
 
   func testGetKeys() {
@@ -122,7 +119,7 @@ class KeysTests: XCTestCase {
 
   func testCreateKeyWithOptionalUid() {
     let keyExpectation = XCTestExpectation(description: "Create a key")
-    let uid = "1f05fa47-cfa6-40f7-8b80-7bd17b39f105"
+    let uid = UUID().uuidString.lowercased()
     let keyParams = KeyParams(uid: uid, actions: ["*"], indexes: ["*"], expiresAt: nil)
 
     self.client.createKey(keyParams) { result in
