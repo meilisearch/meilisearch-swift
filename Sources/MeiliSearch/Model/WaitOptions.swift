@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- `WaitOptions` struct represent the options used during a waitForPendingUpdate call.
+ `WaitOptions` struct represent the options used during a waitForTask call.
  */
 public struct WaitOptions: Codable, Equatable {
   // MARK: Properties

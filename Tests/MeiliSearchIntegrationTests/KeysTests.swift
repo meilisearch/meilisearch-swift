@@ -20,7 +20,7 @@ class KeysTests: XCTestCase {
       switch result {
       case .success(let keys):
         keys.results.forEach {
-          self.client.deleteKey(key: $0.uid) { result in
+          self.client.deleteKey(keyOrUid: $0.uid) { result in
             switch result {
             case .success:
               ()
@@ -173,7 +173,7 @@ class KeysTests: XCTestCase {
       switch result {
       case .success(let key):
         let updateParams = KeyUpdateParams(description: "new name")
-        self.client.updateKey(key: key.key, keyParams: updateParams) { result in
+        self.client.updateKey(keyOrUid: key.key, keyParams: updateParams) { result in
           switch result {
           case .success(let key):
             XCTAssertEqual(key.description, "new name")
@@ -203,7 +203,7 @@ class KeysTests: XCTestCase {
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
-        self.client.deleteKey(key: key.key) { result in
+        self.client.deleteKey(keyOrUid: key.key) { result in
           switch result {
           case .success:
             self.client.getKey(keyOrUid: key.key) { result in
