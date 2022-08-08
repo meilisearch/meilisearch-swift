@@ -5,6 +5,42 @@
 ---
 getting_started_typo_tolerance: |-
 
+get_all_tasks_filtering_1: |-
+  client.getTasks(params: TasksQuery(indexUid: ["movies"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+get_all_tasks_filtering_2: |-
+  client.getTasks(params: TasksQuery(status: ["succeeded", "failed"], types: ["documentAdditionOrUpdate"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+get_all_tasks_paginating_1: |-
+  client.getTasks(params: TasksQuery(limit: 2, from: 10)) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+get_all_tasks_paginating_2: |-
+  client.getTasks(params: TasksQuery(limit: 2, from: 8)) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
 get_one_index_1: |-
   client.getIndex("movies") { (result) in
       switch result {
@@ -166,17 +202,8 @@ get_task_1: |-
             print(error)
         }
     }
-get_all_tasks_by_index_1: |-
-  client.index("movies").getTasks() { (result: Result<Results<Task>, Swift.Error>) in
-      switch result {
-      case .success(let tasks):
-          print(tasks)
-      case .failure(let error):
-          print(error)
-      }
-  }
 get_all_tasks_1: |-
-  client.getTasks() { (result: Result<Results<Task>, Swift.Error>) in
+  client.getTasks() { (result) in
       switch result {
       case .success(let tasks):
           print(tasks)
@@ -185,7 +212,7 @@ get_all_tasks_1: |-
       }
   }
 get_one_key_1: |-
-  self.client.getKey(keyOrUid: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4") { result in
+  client.getKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
       switch result {
       case .success(let key):
           print(key)
@@ -194,7 +221,7 @@ get_one_key_1: |-
       }
   }
 get_all_keys_1: |-
-  self.client.getKeys() { result in
+  client.getKeys(params: KeysQuery(limit: 3)) { result in
       switch result {
       case .success(let keys):
           print(keys)
@@ -209,7 +236,7 @@ create_a_key_1: |-
     indexes: ["products"],
     expiresAt: "2042-04-02T00:42:42Z"
   )
-  self.client.createKey(keyParams) { result in
+  client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
           print(keys)
@@ -218,26 +245,21 @@ create_a_key_1: |-
       }
   }
 update_a_key_1: |-
-  let keyParams = KeyParams(
-    description: "Add documents: Products API key",
-    actions: ["documents.add", "documents.delete"],
-    indexes: ["products", "reviews"],
-    expiresAt: "2042-04-02T00:42:42Z"
+  let keyParams = KeyUpdateParams(
+    name: "Products/Reviews API key",
+    description: "Manage documents: Products/Reviews API key"
   )
-  self.client.updateKey(
-      key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4"
-      keyparams: keyParams
-  ) { result in
-      switch result {
-      case .success(let key):
-          print(keys)
-      case .failure(let error):
-          print(error)
-      }
+
+  client.updateKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d", keyParams: keyParams) { result in
+    switch result {
+    case .success(let key):
+        print(key)
+    case .failure(let error):
+        print(error)
+    }
   }
 delete_a_key_1: |-
-  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
-  { result in
+  client.deleteKey(key: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
       switch result {
       case .success:
           print("success")
@@ -258,13 +280,10 @@ security_guide_search_key_1: |-
       }
   }
 security_guide_update_key_1: |-
-  let keyParams = KeyParams(
-    indexes: ["doctors"]
-  )
-  self.client.updateKey(
-    key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4",
-    keyParams: keyParams,
-  ) { result in
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+  let keyParams = KeyUpdateParams(description: "Default Search API Key")
+
+  client.updateKey(key: "74c9c733-3368-4738-bbe5-1d18a5fecb37", keyParams: keyParams) { result in
     switch result {
     case .success(let key):
       print(keys)
@@ -273,13 +292,15 @@ security_guide_update_key_1: |-
     }
   }
 security_guide_create_key_1: |-
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+
   let keyParams = KeyParams(
     description: "Search patient records key",
     actions: ["search"],
     indexes: ["patient_medical_records"],
     expiresAt: "2023-01-01T00:00:00Z"
   )
-  self.client.createKey(keyParams) { result in
+  client.createKey(keyParams) { result in
     switch result {
     case .success(let key):
       print(keys)
@@ -288,7 +309,9 @@ security_guide_create_key_1: |-
     }
   }
 security_guide_list_keys_1: |-
-  self.client.getKeys() { result in
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+
+  client.getKeys() { result in
       switch result {
       case .success(let keys):
           print(keys)
@@ -297,8 +320,9 @@ security_guide_list_keys_1: |-
       }
   }
 security_guide_delete_key_1: |-
-  self.client.deleteKey(key: "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
-  { result in
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+
+  client.deleteKey(key: "ac5cd97d-5a4b-4226-a868-2d0eb6d197ab") { result in
       switch result {
       case .success:
           print("success")
@@ -752,7 +776,7 @@ search_parameter_guide_highlight_tag_1: |-
           print(error)
       }
   }
-search_parameter_guide_matches_1: |-
+search_parameter_guide_show_matches_position_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       matches: true)
@@ -1011,7 +1035,7 @@ getting_started_update_stop_words: |-
       }
   }
 getting_started_check_task_status: |-
-  client.index("movies").getTask(taskUid: 0) { (result) in
+  client.getTask(taskUid: 0) { (result) in
       switch result {
       case .success(let task):
           print(task)
@@ -1175,11 +1199,11 @@ faceted_search_filter_1: |-
           print(error)
       }
   }
-faceted_search_facets_distribution_1: |-
+faceted_search_facets_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
-      facetsDistribution: ["genres"]])
-  client.index("movies").search(searchParameters) { (result) in
+      facets: ["genres"]])
+  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1211,7 +1235,7 @@ phrase_search_1: |-
       }
   }
 sorting_guide_update_sortable_attributes_1: |-
-  client.index("books").updateSortableAttributes(["price", "author"]) { (result) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Task, Swift.Error>) in
     switch result {
     case .success(let task):
       print(task)
@@ -1303,7 +1327,7 @@ search_parameter_guide_sort_1: |-
     }
   }
 post_dump_1: |-
-  self.client.createDump { result in
+  client.createDump { result in
       switch result {
       case .success(let dumpStatus):
           print(dumpStatus)
@@ -1311,16 +1335,6 @@ post_dump_1: |-
           print(error)
       }
   }
-get_dump_status_1: |-
-  self.client.getDumpStatus(uid) { result in
-      switch result {
-      case .success(let dumpStatus):
-          print(dumpStatus)
-      case .failure:
-          print(error)
-      }
-  }
-
 geosearch_guide_filter_settings_1: |-
   client.index("restaurants").updateFilterableAttributes(["_geo"]) { (result) in
       switch result {
