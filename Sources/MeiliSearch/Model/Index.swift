@@ -14,10 +14,8 @@ public struct Index: Codable, Equatable {
   public let uid: String
   /// The primary key configured for the index.
   public let primaryKey: String?
-
   /// The data when the index was created.
   public let createdAt: Date?
-
   /// The data when the index was last updated.
   public let updatedAt: Date?
 
