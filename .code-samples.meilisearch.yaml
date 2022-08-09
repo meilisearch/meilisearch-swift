@@ -1043,7 +1043,7 @@ getting_started_update_displayed_attributes: |-
        }
    }
 getting_started_communicating_with_a_protected_instance: |-
-  let client = MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
   client.index("movies").search { (result) in
       switch result {
       case .success(let searchResult):
@@ -1388,7 +1388,7 @@ geosearch_guide_sort_usage_2: |-
       }
   }
 landing_getting_started_1: |-
-  let client = MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
   let documents = """
   [
     { "id": 1, "title": "Carol" },
