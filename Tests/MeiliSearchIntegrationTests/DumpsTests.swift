@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_try
 class DumpsTests: XCTestCase {
@@ -13,7 +16,7 @@ class DumpsTests: XCTestCase {
     super.setUp()
     if client == nil {
       session = URLSession(configuration: .ephemeral)
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+      client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     }
   }
 

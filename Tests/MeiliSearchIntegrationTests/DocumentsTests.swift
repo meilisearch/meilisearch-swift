@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
@@ -24,7 +27,7 @@ class DocumentsTests: XCTestCase {
   override func setUp() {
     super.setUp()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
     self.client.createIndex(uid: uid) { result in

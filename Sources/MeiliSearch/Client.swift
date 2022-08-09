@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 /**
  A `MeiliSearch` instance represents a Meilisearch client used to easily integrate

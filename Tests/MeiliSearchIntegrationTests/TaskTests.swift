@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_try
 class TasksTests: XCTestCase {
@@ -14,7 +17,7 @@ class TasksTests: XCTestCase {
   override func setUp() {
     super.setUp()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in

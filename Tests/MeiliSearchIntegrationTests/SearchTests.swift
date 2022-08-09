@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 private let books: [Book] = [
   Book(id: 123, title: "Pride and Prejudice", comment: "A great book", genres: ["Classic Regency nove"]),
@@ -35,7 +38,7 @@ class SearchTests: XCTestCase {
     super.setUp()
 
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     nestedIndex = self.client.index(self.nested_uid)
 
