@@ -9,9 +9,12 @@ on:
     branches: [bump-meilisearch-v*]
 
 jobs:
-  integeration_tests:
-    name: integration-tests
-    runs-on: macos-11
+  integration_tests:
+    name: integration-tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["macos-latest", "ubuntu-20.04"]
     env:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:

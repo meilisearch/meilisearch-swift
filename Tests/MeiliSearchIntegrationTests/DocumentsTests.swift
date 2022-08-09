@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_unwrapping
 // swiftlint:disable force_try
@@ -24,7 +27,7 @@ class DocumentsTests: XCTestCase {
   override func setUp() {
     super.setUp()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
     self.client.createIndex(uid: uid) { result in
@@ -60,7 +63,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAddition", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             if let details = task.details {
               if let indexedDocuments = details.indexedDocuments {
@@ -108,7 +111,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAddition", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -140,14 +143,14 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAddition", task.type)
-            self.index.getDocuments(
-              options: GetParameters(offset: 1, limit: 1, attributesToRetrieve: ["id", "title"])
-            ) { (result: Result<[Movie], Swift.Error>) in
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+
+            self.index.getDocuments(params: DocumentsQuery(limit: 1, offset: 1, fields: ["id", "title"])) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
               switch result {
-              case .success(let returnedMovies):
-                let returnedMovie = returnedMovies[0]
-                XCTAssertEqual(returnedMovies.count, 1)
+              case .success(let movies):
+                let returnedMovie = movies.results[0]
+
+                XCTAssertEqual(movies.results.count, 1)
                 XCTAssertEqual(returnedMovie.id, 456)
                 XCTAssertEqual(returnedMovie.title, "Le Petit Prince")
                 XCTAssertEqual(returnedMovie.comment, nil)
@@ -201,7 +204,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAddition", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
             self.index.getDocument(10
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -244,7 +247,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAddition", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
             self.index.getDocument("10"
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -289,7 +292,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentPartial", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type)
             expectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -325,10 +328,10 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete one Movie")
-    self.index.deleteDocument("42") { (result: Result<Task, Swift.Error>) in
+    self.index.deleteDocument("42") { result in
       switch result {
       case .success(let task):
-        self.client.waitForTask(task: task) { result in
+        self.client.waitForTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
@@ -367,17 +370,17 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete all documents")
-    self.index.deleteAllDocuments { (result: Result<Task, Swift.Error>) in
+    self.index.deleteAllDocuments { result in
       switch result {
       case .success(let task):
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("clearAll", task.type)
+            XCTAssertEqual("documentDeletion", task.type)
             if let details = task.details {
               if let deletedDocuments = details.deletedDocuments {
-                XCTAssertEqual(9, deletedDocuments)
+                XCTAssertGreaterThanOrEqual(deletedDocuments, 8)
               } else {
                 XCTFail("deletedDocuments field should not be nil")
                 deleteExpectation.fulfill()
@@ -423,7 +426,7 @@ class DocumentsTests: XCTestCase {
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
     let idsToDelete: [Int] = [2, 1, 4]
 
-    self.index.deleteBatchDocuments(idsToDelete) { (result: Result<Task, Swift.Error>) in
+    self.index.deleteBatchDocuments(idsToDelete) { result in
       switch result {
       case .success(let task):
         self.client.waitForTask(task: task) { result in

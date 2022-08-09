@@ -1,6 +1,9 @@
 @testable import MeiliSearch
 import XCTest
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 private let books: [Book] = [
   Book(id: 123, title: "Pride and Prejudice", comment: "A great book", genres: ["Classic Regency nove"]),
@@ -35,7 +38,7 @@ class SearchTests: XCTestCase {
     super.setUp()
 
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     nestedIndex = self.client.index(self.nested_uid)
 
@@ -372,7 +375,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(documents.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book: Book = documents.hits[0]
-        XCTAssertEqual("…Joaquim Manuel de Macedo", book.formatted!.comment!)
+        XCTAssertEqual("…from Joaquim Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -446,12 +449,12 @@ class SearchTests: XCTestCase {
   // MARK: Matches tests
 
   func testSearchMatches() {
-    let expectation = XCTestExpectation(description: "Search for Books using matches")
+    let expectation = XCTestExpectation(description: "Search for Books using showMatchesPosition")
 
     typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
     let limit = 5
     let query = "Moreninha"
-    let parameters = SearchParameters(query: query, limit: limit, matches: true)
+    let parameters = SearchParameters(query: query, limit: limit, showMatchesPosition: true)
 
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
@@ -585,7 +588,7 @@ class SearchTests: XCTestCase {
       distinctAttribute: nil,
       filterableAttributes: filterableAttributes,
       sortableAttributes: ["id"]
-      )
+    )
 
     self.index.updateSettings(settings) { result in
       switch result {
@@ -720,7 +723,7 @@ class SearchTests: XCTestCase {
         typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
         let limit = 5
         let query = "A"
-        let filter = "genres = Novel"
+        let filter = "genres = Fantasy"
         let parameters = SearchParameters(query: query, limit: limit, filter: filter)
 
         self.index.search(parameters) { (result: MeiliResult) in
@@ -729,10 +732,9 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, 2)
-            let moreninhaBook: Book = documents.hits.first { book in book.id == 1844 }!
-            XCTAssertEqual("A Moreninha", moreninhaBook.title)
-            let petitBook: Book = documents.hits.first { book in book.id == 456 }!
-            XCTAssertEqual("Le Petit Prince", petitBook.title)
+
+            XCTAssertEqual(documents.hits.compactMap { $0.title }, ["Alice In Wonderland", "Harry Potter and the Half-Blood Prince"])
+
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -791,10 +793,10 @@ class SearchTests: XCTestCase {
     wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  // MARK: Facets distribution
+  // MARK: Facet distribution
 
-  func testSearchFacetsDistribution() {
-    let expectation = XCTestExpectation(description: "Search for Books using facets distribution")
+  func testSearchFacetDistribution() {
+    let expectation = XCTestExpectation(description: "Search for Books using facets")
 
     configureFilters { result in
       switch result {
@@ -802,8 +804,8 @@ class SearchTests: XCTestCase {
         typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
         let limit = 5
         let query = "A"
-        let facetsDistribution = ["genres"]
-        let parameters = SearchParameters(query: query, limit: limit, facetsDistribution: facetsDistribution)
+        let facets = ["genres"]
+        let parameters = SearchParameters(query: query, limit: limit, facets: facets)
 
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
@@ -812,21 +814,22 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, limit)
 
-            let facetsDistribution = documents.facetsDistribution!
+            let facetDistribution = documents.facetDistribution!
             let expected: [String: [String: Int]] = [
               "genres": [
+                "Bildungsroman": 1,
                 "Classic Regency nove": 1,
-                "High fantasy": 1,
                 "Fantasy": 2,
-                "Novel": 2,
-                "Bildungsroman": 1
+                "High fantasy": 1
               ]
             ]
-            XCTAssertEqual(expected, facetsDistribution)
+
+            XCTAssertEqual(facetDistribution["genres"]?.keys.sorted(), expected["genres"]?.keys.sorted())
+            XCTAssertEqual(facetDistribution["genres"]?.values.sorted(), expected["genres"]?.values.sorted())
             expectation.fulfill()
           case .failure(let error):
             dump(error)
-            XCTFail("Failed to search with testSearchFacetsDistribution")
+            XCTFail("Failed to search with testSearchFacetDistribution")
             expectation.fulfill()
           }
         }
@@ -840,8 +843,8 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: 2.0)
   }
 
-  func testSearchFacetsDistributionNullValue() {
-    let expectation = XCTestExpectation(description: "Search for Books using facets distribution with 0 value")
+  func testSearchFacetDistributionNullValue() {
+    let expectation = XCTestExpectation(description: "Search for Books using facets with 0 value")
 
     configureFilters { result in
       switch result {
@@ -849,9 +852,9 @@ class SearchTests: XCTestCase {
         typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
         let limit = 5
         let query = "Petit Prince"
-        let facetsDistribution = ["genres"]
+        let facets = ["genres"]
         let filter = "genres = comedy"
-        let parameters = SearchParameters(query: query, limit: limit, filter: filter, facetsDistribution: facetsDistribution)
+        let parameters = SearchParameters(query: query, limit: limit, filter: filter, facets: facets)
 
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
@@ -859,13 +862,13 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(documents.limit, limit)
             XCTAssertEqual(documents.hits.count, 0)
-            let facetsDistribution = documents.facetsDistribution!
-            XCTAssertEqual(["genres": [:]], facetsDistribution)
+            let facetDistribution = documents.facetDistribution!
+            XCTAssertEqual(["genres": [:]], facetDistribution)
 
             expectation.fulfill()
           case .failure(let error):
             dump(error)
-            XCTFail("Failed to search with testSearchFacetsDistribution")
+            XCTFail("Failed to search with testSearchFacetDistribution")
             expectation.fulfill()
           }
         }

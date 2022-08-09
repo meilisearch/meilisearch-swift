@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 public struct Indexes {
   // MARK: Properties
@@ -6,7 +9,6 @@ public struct Indexes {
   let request: Request
 
   let config: Config
-  // let uid: String?
 
   /// The index uid.
   public let uid: String
@@ -67,7 +69,7 @@ public struct Indexes {
   /**
    Get the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request. It returns a `Result` object that contains `Index`
    value if the request was successful or `Error` if a failure occurred.
    */
@@ -95,21 +97,30 @@ public struct Indexes {
   }
 
   /**
-   List all indexes.
+   List indexes given an optional criteria.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request. It returns a `Result` object that contains `[Index]`
-   value if the request was successful or `Error` if a failure occurred.
+   - parameter params: A `IndexesQuery?` object with pagination & filter metadata.
+   - parameter config: Optional `Request` configuration.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `IndexesResults`
+   value. If the request was successful or `Error` if a failure occurred.
    */
-  public static func getAll(config: Config, _ completion: @escaping (Result<[Index], Swift.Error>) -> Void) {
-    Request(config).get(api: "/indexes") { result in
+  public static func getAll(config: Config, params: IndexesQuery? = nil, _ completion: @escaping (Result<IndexesResults, Swift.Error>) -> Void) {
+    Request(config).get(api: "/indexes", param: params?.toQuery()) { result in
       switch result {
       case .success(let result):
         guard let result: Data = result else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
-        Indexes.decodeJSONArray(data: result, config: config, completion)
+
+        do {
+          let indexes = try Constants.customJSONDecoder.decode(IndexesResults.self, from: result)
+
+          completion(.success(indexes))
+        } catch let error {
+          completion(.failure(error))
+        }
       case .failure(let error):
         completion(.failure(error))
       }
@@ -119,17 +130,17 @@ public struct Indexes {
   /**
    Create a new Index for the given `uid`.
 
-   - parameter uid:        The unique identifier for the `Index` to be created.
-   - parameter primaryKey: the unique field of a document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the write request, it returns a `Result` object that contains `Index`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter uid: The unique identifier for the `Index` to be created.
+   - parameter primaryKey: The unique field of a document.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the write request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public static func create(
     uid: String,
     primaryKey: String? = nil,
     config: Config,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     let payload = CreateIndexPayload(uid: uid, primaryKey: primaryKey)
     let data: Data
     do {
@@ -143,8 +154,8 @@ public struct Indexes {
       switch result {
       case .success(let data):
       do {
-        let result: Task = try Constants.customJSONDecoder.decode(
-          Task.self,
+        let result: TaskInfo = try Constants.customJSONDecoder.decode(
+          TaskInfo.self,
           from: data)
           completion(.success(result))
       } catch {
@@ -160,13 +171,13 @@ public struct Indexes {
    Update the index primaryKey.
 
   - parameter primaryKey: the unique field of a document.
-  - parameter completion: The completion closure used to notify when the server
-   completes the update request, it returns a `Result` object that contains `()`
-   value. If the request was sucessful or `Error` if a failure occured.
+  - parameter completion: The completion closure is used to notify when the server
+   completes the update request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func update(
     primaryKey: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     let payload = UpdateIndexPayload(primaryKey: primaryKey)
     let data: Data
     do {
@@ -176,12 +187,12 @@ public struct Indexes {
       return
     }
 
-    self.request.put(api: "/indexes/\(self.uid)", data) { result in
+    self.request.patch(api: "/indexes/\(self.uid)", data) { result in
       switch result {
       case .success(let data):
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(
-            Task.self,
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(
+            TaskInfo.self,
             from: data)
             completion(.success(task))
         } catch {
@@ -196,12 +207,12 @@ public struct Indexes {
   /**
    Delete the index.
 
-  - parameter completion: The completion closure used to notify when the server
-   completes the delete request, it returns a `Result` object that contains `()`
-   value. If the request was sucessful or `Error` if a failure occured.
+  - parameter completion: The completion closure is used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func delete(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.request.delete(api: "/indexes/\(self.uid)") { result in
       switch result {
       case .success(let data):
@@ -210,8 +221,8 @@ public struct Indexes {
           return
         }
         do {
-          let task: Task = try Constants.customJSONDecoder.decode(
-            Task.self,
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(
+            TaskInfo.self,
             from: data)
           completion(.success(task))
         } catch {
@@ -235,17 +246,17 @@ public struct Indexes {
    For a partial update of the document see `updateDocuments`.
 
    - parameter documents:  The documents to add in Meilisearch.
-   - parameter Encoder:    The data structure of your documents.
+   - parameter encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the update request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the update request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func addDocuments<T>(
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
     self.documents.add(
       self.uid,
       documents,
@@ -265,14 +276,14 @@ public struct Indexes {
 
    - parameter documents:  The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the update request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the update request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func addDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.add(
       self.uid,
       documents,
@@ -290,17 +301,17 @@ public struct Indexes {
     To completely overwrite a document, `addDocuments`
 
    - parameter documents:  The documents to update in Meilisearch.
-   - parameter Encoder:    The data structure of your documents.
+   - parameter encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the update request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the update request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateDocuments<T>(
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) where T: Encodable {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
     self.documents.update(
       self.uid,
       documents,
@@ -318,16 +329,16 @@ public struct Indexes {
 
     To completely overwrite a document, `addDocuments`
 
-   - parameter documents:  The document data (JSON) to be processed.
+   - parameter documents: The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the update request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the update request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateDocuments(
     documents: Data,
     primaryKey: String? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.update(
       self.uid,
       documents,
@@ -340,71 +351,74 @@ public struct Indexes {
    Get the document on the index based on the provided document identifier.
 
    - parameter identifier: The document identifier for the document to be found.
-   - parameter completion: The completion closure used to notify when the server
+   - parameter fields: List of fields that should be returned in the response. Be careful with this option, since `T` should be able to handle the missing fields.
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
-   If the request was sucessful or `Error` if a failure occured.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func getDocument<T>(
     _ identifier: String,
+    fields: [String]? = nil,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    self.documents.get(self.uid, identifier, completion)
+    self.documents.get(self.uid, identifier, fields: fields, completion)
   }
 
   /**
    Get the document on the index based on the provided document identifier.
 
    - parameter identifier: The document identifier for the document to be found.
-   - parameter completion: The completion closure used to notify when the server
+   - parameter fields: List of fields that should be returned in the response. Be careful with this option, since `T` should be able to handle the missing fields.
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains  `T` value.
-   If the request was sucessful or `Error` if a failure occured.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func getDocument<T>(
     _ identifier: Int,
+    fields: [String]? = nil,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    self.documents.get(self.uid, String(identifier), completion)
+    self.documents.get(self.uid, String(identifier), fields: fields, completion)
   }
 
   /**
-   List all Documents.
+   List documents given an optional criteria.
 
-   - parameter options:      Options on get documents.
-   - parameter completion:   The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains
-   `[T]` value. If the request was sucessful or `Error` if a
-   failure occured.
+   - parameter params: A `DocumentsQuery?` object with pagination & filter metadata.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `DocumentsResults<T>` value.
+   If the request was successful or `Error` if a failure occured.
    */
   public func getDocuments<T>(
-    options: GetParameters? = nil,
-    _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
+    params: DocumentsQuery? = nil,
+    _ completion: @escaping (Result<DocumentsResults<T>, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    self.documents.getAll(self.uid, options, completion)
+    self.documents.getAll(self.uid, params: params, completion)
   }
 
   /**
    Delete a document on the index based on the provided document identifier.
 
    - parameter documentId: The document identifier of the document.
-   - parameter completion: The completion closure used to notify when the server
-   completes the delete request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func deleteDocument(
     _ documentId: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.delete(self.uid, documentId, completion)
   }
 
   /**
-   Delete all Documents on the index.
+   Delete all documents on the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the delete request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func deleteAllDocuments(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.deleteAll(self.uid, completion)
   }
 
@@ -412,13 +426,13 @@ public struct Indexes {
    Delete a selection of documents based on array of document `identifiers`'s.
 
    - parameter documentIds: The array of unique identifier for the document to be deleted.
-   - parameter completion:   The completion closure used to notify when the server
-   completes the delete request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func deleteBatchDocuments(
     _ documentIds: [Int],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }
 
@@ -428,9 +442,9 @@ public struct Indexes {
    Search in the index.
 
    - parameter searchParameters: Options on search.
-   - parameter completion:       The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains  `SearchResult<T>`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func search<T>(
     _ searchParameters: SearchParameters,
@@ -444,44 +458,29 @@ public struct Indexes {
   /**
    Get a task.
 
-   - parameter taskuid:    The task identifier.
-   - parameter completion:The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Key` value.
-   If the request was sucessful or `Error` if a failure occured.
+   - parameter taskuid: The task identifier.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `Task` value.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func getTask(
     taskUid: Int,
     _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
-    self.tasks.get(indexUid: self.uid, taskUid: taskUid, completion)
+    self.tasks.get(taskUid: taskUid, completion)
   }
 
   /**
-   Get all tasks.
+   Get tasks from a given index based on optional criteria.
 
-   - parameter completion:The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Key` value.
-   If the request was sucessful or `Error` if a failure occured.
+   - parameter params: A `TasksQuery?` object with pagination & filter metadata.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TasksResults` value.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func getTasks(
-    _ completion: @escaping (Result<Results<Task>, Swift.Error>) -> Void) {
-    self.tasks.getAll(uid: self.uid, completion)
-  }
-
-   /**
-    Wait for a task to be succeeded or failed.
-
-    Using a task returned by an asynchronous route of Meilisearch, wait for completion.
-
-    - parameter task:                The task.
-    - parameter: options             Optionnal configuration for timeout and interval
-    - parameter completion:          The completion closure used to notify when the server
-  **/
-  public func waitForTask(
-    task: Task,
-    options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>
-  ) -> Void) {
-    self.tasks.waitForTask(task: task, options: options, completion)
+    params: TasksQuery? = nil,
+    _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
+    self.tasks.getTasks(uid: self.uid, params: params, completion)
   }
 
   // MARK: Settings
@@ -489,9 +488,9 @@ public struct Indexes {
   /**
    Get a list of all the customization possible of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `Setting`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getSettings(
     _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
@@ -501,26 +500,26 @@ public struct Indexes {
   /**
    Update the settings of the index.
 
-   - parameter setting:    Settings to change.
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter setting: Settings to change.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateSettings(
     _ setting: Setting,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.update(self.uid, setting, completion)
   }
 
   /**
    Reset the settings of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetSettings(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.reset(self.uid, completion)
   }
 
@@ -529,9 +528,9 @@ public struct Indexes {
   /**
    Get a list of all synonyms possible of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `[String: [String]]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getSynonyms(
     _ completion: @escaping (Result<[String: [String]], Swift.Error>) -> Void) {
@@ -542,25 +541,25 @@ public struct Indexes {
    Update the synonyms of the index.
 
    - parameter setting:    Settings to be applied into `Index`.
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateSynonyms(
     _ synonyms: [String: [String]]?,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateSynonyms(self.uid, synonyms, completion)
   }
 
   /**
    Reset the synonyms of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetSynonyms(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSynonyms(self.uid, completion)
   }
 
@@ -569,9 +568,9 @@ public struct Indexes {
   /**
    Get a list of all stop-words possible of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `[String]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getStopWords(
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
@@ -582,25 +581,25 @@ public struct Indexes {
    Update the stop-words of the index.
 
    - parameter stopWords:  Array of stop-word to be applied into `Index`.
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateStopWords(
     _ stopWords: [String]?,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateStopWords(self.uid, stopWords, completion)
   }
 
   /**
    Reset the stop-words of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetStopWords(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetStopWords(self.uid, completion)
   }
 
@@ -609,9 +608,9 @@ public struct Indexes {
   /**
    Get a list of all ranking rules possible of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `[String]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getRankingRules(
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
@@ -622,25 +621,25 @@ public struct Indexes {
    Update the ranking rules of the index.
 
    - parameter rankingRules: Array of ranking rules to be applied into `Index`.
-   - parameter completion:   The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion:   The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateRankingRules(
     _ rankingRules: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateRankingRules(self.uid, rankingRules, completion)
   }
 
   /**
    Reset the ranking rules of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetRankingRules(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetRankingRules(self.uid, completion)
   }
 
@@ -649,9 +648,9 @@ public struct Indexes {
   /**
    Get the distinct attribute field of an `Index`.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `[String]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `String?`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getDistinctAttribute(
     _ completion: @escaping (Result<String?, Swift.Error>) -> Void) {
@@ -662,13 +661,13 @@ public struct Indexes {
    Update the distinct attribute field of the index.
 
    - parameter distinctAttribute: The distinct attribute to be applied into `Index`.
-   - parameter completion:        The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion:        The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateDistinctAttribute(
     _ distinctAttribute: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateDistinctAttribute(
       self.uid,
       distinctAttribute,
@@ -678,12 +677,12 @@ public struct Indexes {
   /**
    Reset the distinct attribute field of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetDistinctAttribute(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetDistinctAttribute(self.uid, completion)
   }
 
@@ -692,9 +691,9 @@ public struct Indexes {
   /**
    Get the searchable attribute field of an `Index`.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `[String]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getSearchableAttributes(
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
@@ -705,13 +704,13 @@ public struct Indexes {
    Update the searchable attribute field of the index.
 
    - parameter searchableAttribute: The searchable attribute to be applied into `Index`.
-   - parameter completion:          The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion:          The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateSearchableAttributes(
     _ searchableAttribute: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateSearchableAttributes(
       self.uid,
       searchableAttribute,
@@ -721,12 +720,12 @@ public struct Indexes {
   /**
    Reset the searchable attribute field of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetSearchableAttributes(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSearchableAttributes(self.uid, completion)
   }
 
@@ -735,9 +734,9 @@ public struct Indexes {
   /**
    Get the displayed attribute field of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `[String]`
-   value. If the request was sucessful or `Error` if a failure occured.
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func getDisplayedAttributes(
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
@@ -748,13 +747,13 @@ public struct Indexes {
    Update the displayed attribute field of the index.
 
    - parameter displayedAttribute: The displayed attribute to be applied into `Index`.
-   - parameter completion:         The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion:         The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func updateDisplayedAttributes(
     _ displayedAttribute: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateDisplayedAttributes(
       self.uid,
       displayedAttribute,
@@ -764,12 +763,12 @@ public struct Indexes {
   /**
    Reset the displayed attribute field of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
-   value. If the request was sucessful or `Error` if a failure occured.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
    */
   public func resetDisplayedAttributes(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetDisplayedAttributes(self.uid, completion)
   }
 
@@ -778,7 +777,7 @@ public struct Indexes {
   /**
    Get the attributes that are filterable of the index.
 
-   - parameter completion:      The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains an `[String]`
    value if the request was successful, or `Error` if a failure occurred.
    */
@@ -790,26 +789,26 @@ public struct Indexes {
   /**
    Update the attributes that are filterable of the index.
 
-   - parameter attributes:   The attributes that are filterable on an `Index`.
-   - parameter completion:      The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
+   - parameter attributes: The attributes that are filterable on an `Index`.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func updateFilterableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateFilterableAttributes(self.uid, attributes, completion)
   }
 
   /**
    Reset the attributes that are filterable of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetFilterableAttributes(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetFilterableAttributes(self.uid, completion)
   }
 
@@ -818,7 +817,7 @@ public struct Indexes {
   /**
    Get the attributes that are sortable of the index.
 
-   - parameter completion:      The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains an `[String]`
    value if the request was successful, or `Error` if a failure occurred.
    */
@@ -830,26 +829,26 @@ public struct Indexes {
   /**
    Update the attributes that are sortable of the index.
 
-   - parameter attributes:      The attributes that are sortable on an `Index`.
-   - parameter completion:      The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
+   - parameter attributes: The attributes that are sortable on an `Index`.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func updateSortableAttributes(
     _ attributes: [String],
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.updateSortableAttributes(self.uid, attributes, completion)
   }
 
   /**
    Reset the attributes that are sortable of the index.
 
-   - parameter completion: The completion closure used to notify when the server
-   completes the query request, it returns a `Result` object that contains `Update`
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
    value if the request was successful, or `Error` if a failure occurred.
    */
   public func resetSortableAttributes(
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
   // MARK: Stats
@@ -857,9 +856,9 @@ public struct Indexes {
   /**
    Get stats of the index.
 
-   - parameter completion: The completion closure used to notify when the server
+   - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `Stat` value.
-   If the request was sucessful or `Error` if a failure occured.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func stats(
     _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
@@ -868,50 +867,20 @@ public struct Indexes {
 
   // MARK: Codable
 
-  private static func decodeJSON(
-    data: Data,
-    config: Config,
-    _ completion: (Result<Index, Swift.Error>) -> Void) {
-    do {
-      let index: Index = try Constants.customJSONDecoder.decode(Index.self, from: data)
-      let indexes = Index(uid: index.uid, primaryKey: index.primaryKey, createdAt: index.createdAt, updatedAt: index.updatedAt)
-
-      completion(.success(indexes))
-    } catch {
-      completion(.failure(error))
-    }
+  struct UpdateIndexPayload: Codable {
+    let primaryKey: String
   }
 
-  private static func decodeJSONArray(
-    data: Data,
-    config: Config,
-    _ completion: (Result<[Index], Swift.Error>) -> Void) {
-    do {
-      let rawIndexes: [Index] = try Constants.customJSONDecoder.decode([Index].self, from: data)
-      var indexes: [Index] = []
-      for rawIndex in rawIndexes {
-        indexes.append(Index(uid: rawIndex.uid, primaryKey: rawIndex.primaryKey, createdAt: rawIndex.createdAt, updatedAt: rawIndex.updatedAt))
-      }
-      completion(.success(indexes))
-    } catch {
-      completion(.failure(error))
+  struct CreateIndexPayload: Codable {
+    public let uid: String
+    public let primaryKey: String?
+
+    public init(
+      uid: String,
+      primaryKey: String? = nil
+    ) {
+      self.uid = uid
+      self.primaryKey = primaryKey
     }
-  }
-}
-
-struct UpdateIndexPayload: Codable {
-  let primaryKey: String
-}
-
-struct CreateIndexPayload: Codable {
-  public let uid: String
-  public let primaryKey: String?
-
-  public init(
-    uid: String,
-    primaryKey: String? = nil
-  ) {
-    self.uid = uid
-    self.primaryKey = primaryKey
   }
 }

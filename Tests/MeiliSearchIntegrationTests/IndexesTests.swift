@@ -1,5 +1,9 @@
 @testable import MeiliSearch
 import XCTest
+import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 // swiftlint:disable force_try
 class IndexesTests: XCTestCase {
@@ -13,7 +17,7 @@ class IndexesTests: XCTestCase {
 
     if client == nil {
       session = URLSession(configuration: .ephemeral)
-      client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+      client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     }
     index = self.client.index(self.uid)
 
@@ -23,7 +27,7 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let indexes):
         let asyncDeletegroup = DispatchGroup()
-        for index in indexes {
+        for index in indexes.results {
           asyncDeletegroup.enter()
           self.client.deleteIndex(index.uid) { res in
             switch res {
@@ -183,7 +187,7 @@ class IndexesTests: XCTestCase {
     self.client.getIndexes { result in
       switch result {
       case .success(let indexes):
-        XCTAssertEqual(1, indexes.count)
+        XCTAssertEqual(1, indexes.results.count)
         expectation.fulfill()
       case .failure(let error):
         dump(error)

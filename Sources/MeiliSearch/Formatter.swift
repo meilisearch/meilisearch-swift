@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 extension Formatter {
   static let iso8601: DateFormatter = {
@@ -9,20 +12,4 @@ extension Formatter {
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
     return formatter
   }()
-}
-
-func queryURL(api: String, _ values: [String: String]) -> String {
-  if values.isEmpty {
-    return api
-  }
-  guard var components = URLComponents(string: api) else {
-    fatalError()
-  }
-  components.queryItems = values.map { (name: String, value: String) in
-    URLQueryItem(name: name, value: value)
-  }
-  if let string: String = components.string {
-    return string
-  }
-  fatalError()
 }

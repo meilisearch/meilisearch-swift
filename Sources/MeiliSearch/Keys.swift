@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 struct Keys {
   // MARK: Properties
@@ -32,16 +35,18 @@ struct Keys {
     }
   }
 
-  func getAll(_ completion: @escaping (Result<Results<Key>, Swift.Error>) -> Void) {
-    self.request.get(api: "/keys") { result in
+  func getAll(params: KeysQuery?, _ completion: @escaping (Result<KeysResults, Swift.Error>) -> Void) {
+    self.request.get(api: "/keys", param: params?.toQuery()) { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
           completion(.failure(MeiliSearch.Error.dataNotFound))
           return
         }
+
         do {
-          let keys: Results<Key> = try Constants.customJSONDecoder.decode(Results<Key>.self, from: data)
+          let keys = try Constants.customJSONDecoder.decode(KeysResults.self, from: data)
+
           completion(.success(keys))
         } catch {
           completion(.failure(error))
@@ -80,8 +85,8 @@ struct Keys {
   }
 
   public func update(
-    key: String,
-    keyParams: KeyParams,
+    keyOrUid: String,
+    keyParams: KeyUpdateParams,
     _ completion: @escaping (Result<Key, Swift.Error>) -> Void) {
     let data: Data
     do {
@@ -91,7 +96,8 @@ struct Keys {
       completion(.failure(MeiliSearch.Error.invalidJSON))
       return
     }
-    self.request.patch(api: "/keys/\(key)", data) { result in
+
+    self.request.patch(api: "/keys/\(keyOrUid)", data) { result in
       switch result {
       case .success(let result):
       do {
@@ -109,9 +115,9 @@ struct Keys {
   }
 
   public func delete(
-    key: String,
+    keyOrUid: String,
     _ completion: @escaping (Result<(), Swift.Error>) -> Void) {
-    self.request.delete(api: "/keys/\(key)") { result in
+    self.request.delete(api: "/keys/\(keyOrUid)") { result in
       switch result {
       case .success:
         completion(.success(()))

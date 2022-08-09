@@ -1,3 +1,7 @@
-status = ['integration-tests', 'linter-check']
+status = [
+  'integration-tests on macos-11',
+  'integration-tests on ubuntu-20.04',
+  'linter-check'
+]
 # 1 hour timeout
 timeout-sec = 3600

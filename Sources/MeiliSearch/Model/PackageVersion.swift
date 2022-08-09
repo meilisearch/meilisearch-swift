@@ -1,8 +1,11 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 internal struct PackageVersion {
   /// This is the current version of the meilisearch-swift package
-  private static let current = "0.13.2"
+  private static let current = "0.14.0"
 
   /**
    Retrieves the current version of the MeiliSearch Swift package and formats accordingly.

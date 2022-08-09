@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 struct System {
   // MARK: Properties
@@ -58,8 +61,4 @@ struct System {
       }
     }
   }
-}
-
-private struct CreateHealthPayload: Codable {
-  let health: Bool
 }
