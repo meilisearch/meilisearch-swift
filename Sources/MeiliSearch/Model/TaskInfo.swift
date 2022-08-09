@@ -23,10 +23,6 @@ public struct TaskInfo: Codable, Equatable {
   /// Date when the task has been enqueued.
   public let enqueuedAt: String
 
-  static func == (lhs: TaskInfo, rhs: Task) -> Bool {
-    lhs.taskUid == rhs.uid
-  }
-
   public enum CodingKeys: String, CodingKey {
     case taskUid, indexUid, status, type, enqueuedAt
   }

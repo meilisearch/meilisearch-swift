@@ -30,6 +30,16 @@ First of all, thank you for contributing to Meilisearch! The goal of this docume
 
 ### Setup <!-- omit in TOC -->
 
+You can set up your local environment natively or using `docker`, check out the [`docker-compose.yml`](/docker-compose.yml).
+
+Example of running all the checks with docker:
+```bash
+docker-compose run --rm package bash -c "swift test && swift run swiftlint"
+```
+
+To install dependencies:
+
+
 ```bash
 swift build
 ```
@@ -62,9 +72,7 @@ If you want to fix your linting errors:
 swift run swiftlint --fix
 ```
 
-### On Xcode <!-- omit in TOC -->
-
-### Setup <!-- omit in TOC -->
+### Setup on Xcode <!-- omit in TOC -->
 
 To build the project, if it's not already done, click on the play button in the top left corner of Xcode.
 
