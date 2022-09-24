@@ -400,7 +400,7 @@ class DocumentsTests: XCTestCase {
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
-    let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
+    let documentsIdentifiers: [String] = ["23488", "153738", "437035", "363869"]
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Delete all Movies documents")

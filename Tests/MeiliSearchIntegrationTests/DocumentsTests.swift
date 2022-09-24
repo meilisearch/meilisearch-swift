@@ -424,7 +424,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
-    let idsToDelete: [Int] = [2, 1, 4]
+    let idsToDelete: [String] = ["2", "1", "4"]
 
     self.index.deleteBatchDocuments(idsToDelete) { result in
       switch result {

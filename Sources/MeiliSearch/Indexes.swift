@@ -431,7 +431,7 @@ public struct Indexes {
    value. If the request was successful or `Error` if a failure occurred.
    */
   public func deleteBatchDocuments(
-    _ documentIds: [Int],
+    _ documentIds: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }

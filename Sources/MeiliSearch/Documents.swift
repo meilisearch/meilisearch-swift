@@ -215,7 +215,7 @@ struct Documents {
 
   func deleteBatch(
     _ uid: String,
-    _ documentsIdentifiers: [Int],
+    _ documentsIdentifiers: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
     let data: Data
