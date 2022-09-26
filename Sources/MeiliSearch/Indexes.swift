@@ -436,6 +436,22 @@ public struct Indexes {
     self.documents.deleteBatch(self.uid, documentIds, completion)
   }
 
+  /**
+   Delete a selection of documents based on array of document `identifiers`'s.
+
+   - parameter documentIds: The array of unique identifier for the document to be deleted.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the delete request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
+   */
+  @available(*, deprecated, message: "Please use string values for `documentIds` instead of integers.")
+  public func deleteBatchDocuments(
+    _ documentIds: [Int],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    let documentIdStrings = documentIds.map { String($0) }
+    self.documents.deleteBatch(self.uid, documentIdStrings, completion)
+  }
+
   // MARK: Search
 
   /**
