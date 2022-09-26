@@ -416,7 +416,7 @@ class DocumentsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
   func testDeprecatedDeleteBatchDocuments() {
     let jsonString = """
