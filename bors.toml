@@ -1,5 +1,5 @@
 status = [
-  'integration-tests on macos-11',
+  'integration-tests on macos-latest',
   'integration-tests on ubuntu-20.04',
   'linter-check'
 ]
