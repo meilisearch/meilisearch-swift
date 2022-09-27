@@ -400,6 +400,34 @@ class DocumentsTests: XCTestCase {
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
+    let documentsIdentifiers: [String] = ["23488", "153738", "437035", "363869"]
+
+    // Start the test with the mocked server
+    let expectation = XCTestExpectation(description: "Delete all Movies documents")
+    self.index.deleteBatchDocuments(documentsIdentifiers) { result in
+      switch result {
+      case .success(let update):
+        XCTAssertEqual(stubTask, update)
+      case .failure:
+        XCTFail("Failed to delete all Movies documents")
+      }
+      expectation.fulfill()
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
+  func testDeprecatedDeleteBatchDocuments() {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
+    """
+
+    // Prepare the mock server
+    let decoder = JSONDecoder()
+    let jsonData = jsonString.data(using: .utf8)!
+    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
 
     // Start the test with the mocked server

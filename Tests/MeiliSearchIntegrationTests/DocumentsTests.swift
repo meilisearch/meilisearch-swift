@@ -424,6 +424,51 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
 
     let deleteExpectation = XCTestExpectation(description: "Delete batch movies")
+    let idsToDelete: [String] = ["2", "1", "4"]
+
+    self.index.deleteBatchDocuments(idsToDelete) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual("documentDeletion", task.type)
+            deleteExpectation.fulfill()
+          case .failure:
+            XCTFail("Failed to wait for task")
+            deleteExpectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to delete documents")
+        deleteExpectation.fulfill()
+      }
+    }
+    self.wait(for: [deleteExpectation], timeout: TESTS_TIME_OUT)
+  }
+
+  @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
+  func testDeprecatedDeleteBatchDocuments() {
+    let documents: Data = try! JSONEncoder().encode(movies)
+
+    let expectation = XCTestExpectation(description: "Add documents")
+    self.index.addDocuments(
+      documents: documents,
+      primaryKey: nil
+    ) { result in
+      switch result {
+      case .success:
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Failed to add or replace Movies document")
+        expectation.fulfill()
+      }
+    }
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+
+    let deleteExpectation = XCTestExpectation(description: "Delete batch movies with deprecated int ids")
     let idsToDelete: [Int] = [2, 1, 4]
 
     self.index.deleteBatchDocuments(idsToDelete) { result in
