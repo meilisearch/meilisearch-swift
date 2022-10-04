@@ -11,7 +11,7 @@ public class KeysQuery: Queryable {
   /// Offset the number of indexes that were skipped in the current response.
   private var offset: Int?
 
-  init(limit: Int? = nil, offset: Int? = nil) {
+  public init(limit: Int? = nil, offset: Int? = nil) {
     self.offset = offset
     self.limit = limit
   }
