@@ -20,7 +20,7 @@ private let movies: [Movie] = [
 public let TESTS_TIME_OUT = 10.0
 
 public func currentHost() -> String {
-  ProcessInfo.processInfo.environment["MEILISEARCH_HOST"] ?? "http://localhost:7700"
+  ProcessInfo.processInfo.environment["MEILISEARCH_URL"] ?? "http://localhost:7700"
 }
 
 public func waitForTask(
