@@ -14,6 +14,6 @@ jobs:
         with:
           swift-version: "5.2.0"
       - name: Publish Jazzy Docs
-        uses: Steven0351/publish-jazzy-docs@v1.1.1
+        uses: Steven0351/publish-jazzy-docs@v1.1.2
         with:
           personal_access_token: ${{ secrets.ACCESS_TOKEN }}
