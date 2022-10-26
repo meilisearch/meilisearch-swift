@@ -23,17 +23,17 @@
 
 **Meilisearch Swift** is the Meilisearch API client for Swift developers.
 
-**Meilisearch** is an open-source search engine. [Discover what Meilisearch is!](https://github.com/meilisearch/meilisearch)
+**Meilisearch** is an open-source search engine. [Learn more about Meilisearch.](https://github.com/meilisearch/meilisearch)
 
 ## Table of Contents <!-- omit in toc -->
 
 - [🎃 Hacktoberfest](#-hacktoberfest)
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
-- [🎬 Getting Started](#-getting-started)
+- [🎬 Getting started](#-getting-started)
 - [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
-- [💡 Learn More](#-learn-more)
-- [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
+- [💡 Learn more](#-learn-more)
+- [⚙️ Contributing](#️-contributing)
 - [📜 Demos](#-demos)
 
 ## 🎃 Hacktoberfest
@@ -82,7 +82,7 @@ dependencies: [
 ]
 ```
 
-### 🏃‍♀️ Run Meilisearch <!-- omit in toc -->
+### Run Meilisearch <!-- omit in toc -->
 
 There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
@@ -98,7 +98,7 @@ curl -L https://install.meilisearch.com | sh
 
 NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
 
-## 🎬 Getting Started
+## 🎬 Getting started
 
 To do a simply search using the client, you can create a Swift script like this:
 
@@ -200,16 +200,16 @@ This package only guarantees compatibility with the [version v0.28.0 of Meilisea
 
 :warning: This package also can work with the [version v0.29.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.29.0), but you may notice some missing features. Check [the issues page](https://github.com/meilisearch/meilisearch-swift/issues) for more information.
 
-## 💡 Learn More
+## 💡 Learn more
 
-The following sections may interest you:
+The following sections in our main documentation website may interest you:
 
 - **Manipulate documents**: see the [API references](https://docs.meilisearch.com/reference/api/documents.html) or read more about [documents](https://docs.meilisearch.com/learn/core_concepts/documents.html).
 - **Search**: see the [API references](https://docs.meilisearch.com/reference/api/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html).
 - **Manage the indexes**: see the [API references](https://docs.meilisearch.com/reference/api/indexes.html) or read more about [indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html).
 - **Configure the index settings**: see the [API references](https://docs.meilisearch.com/reference/api/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/reference/features/settings.html).
 
-## ⚙️ Development Workflow and Contributing
+## ⚙️ Contributing
 
 Any new contribution is more than welcome in this project!
 
