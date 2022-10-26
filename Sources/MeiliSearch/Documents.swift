@@ -14,22 +14,20 @@ struct Documents {
     self.request = request
   }
 
-  // MARK: Query
-
   func get<T>(
     _ uid: String,
     _ identifier: String,
     fields: [String]? = nil,
     _ completion: @escaping (Result<T, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    var query: String = "/indexes/\(uid)/documents/\(identifier)"
+    var path: String = "/indexes/\(uid)/documents/\(identifier)"
 
     if fields != nil {
       let fieldsQuery = "?fields=\(fields?.joined(separator: ",") ?? "")"
-      query.append(fieldsQuery)
+      path.append(fieldsQuery)
     }
 
-    self.request.get(api: query) { result in
+    self.request.get(api: path) { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -49,9 +47,9 @@ struct Documents {
     params: DocumentsQuery? = nil,
     _ completion: @escaping (Result<DocumentsResults<T>, Swift.Error>) -> Void)
   where T: Codable, T: Equatable {
-    let queryParams = params?.toQuery() ?? ""
+    let pathParams = params?.toQuery() ?? ""
 
-    request.get(api: "/indexes/\(uid)/documents\(queryParams)") { result in
+    request.get(api: "/indexes/\(uid)/documents\(pathParams)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -73,12 +71,12 @@ struct Documents {
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
-      query += "?primaryKey=\(primaryKey)"
+      path += "?primaryKey=\(primaryKey)"
     }
 
-    request.post(api: query, document) { result in
+    request.post(api: path, document) { result in
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
@@ -94,9 +92,9 @@ struct Documents {
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
-      query += "?primaryKey=\(primaryKey)"
+      path += "?primaryKey=\(primaryKey)"
     }
 
     let data: Data!
@@ -108,7 +106,7 @@ struct Documents {
       return
     }
 
-    request.post(api: query, data) { result in
+    request.post(api: path, data) { result in
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
@@ -124,12 +122,12 @@ struct Documents {
     _ primaryKey: String? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
-      query += "?primaryKey=\(primaryKey)"
+      path += "?primaryKey=\(primaryKey)"
     }
 
-    request.put(api: query, document) { result in
+    request.put(api: path, document) { result in
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
@@ -146,9 +144,9 @@ struct Documents {
     _ primaryKey: String? =  nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
 
-    var query: String = "/indexes/\(uid)/documents"
+    var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
-      query += "?primaryKey=\(primaryKey)"
+      path += "?primaryKey=\(primaryKey)"
     }
 
     let data: Data!
@@ -160,7 +158,7 @@ struct Documents {
       return
     }
 
-    request.put(api: query, data) { result in
+    request.put(api: path, data) { result in
       switch result {
       case .success(let data):
         Documents.decodeJSON(data, completion: completion)
