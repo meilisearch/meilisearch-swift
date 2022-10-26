@@ -14,7 +14,6 @@ struct Documents {
     self.request = request
   }
 
-  // MARK: Path
 
   func get<T>(
     _ uid: String,
