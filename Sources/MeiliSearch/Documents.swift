@@ -25,8 +25,8 @@ struct Documents {
     var path: String = "/indexes/\(uid)/documents/\(identifier)"
 
     if fields != nil {
-      let fieldsPath = "?fields=\(fields?.joined(separator: ",") ?? "")"
-      path.append(fieldsPath)
+      let fieldsQuery = "?fields=\(fields?.joined(separator: ",") ?? "")"
+      path.append(fieldsQuery)
     }
 
     self.request.get(api: path) { result in
