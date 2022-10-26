@@ -94,7 +94,7 @@ struct Documents {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
     var path: String = "/indexes/\(uid)/documents"
     if let primaryKey: String = primaryKey {
-        path += "?primaryKey=\(primaryKey)"
+      path += "?primaryKey=\(primaryKey)"
     }
 
     let data: Data!
