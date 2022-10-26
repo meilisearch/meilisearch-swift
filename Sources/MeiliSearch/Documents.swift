@@ -14,7 +14,6 @@ struct Documents {
     self.request = request
   }
 
-
   func get<T>(
     _ uid: String,
     _ identifier: String,
