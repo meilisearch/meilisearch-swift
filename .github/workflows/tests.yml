@@ -23,7 +23,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download the latest stable version of Meilisearch
         run: |
           curl -L https://install.meilisearch.com | sh
@@ -40,7 +40,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run SwiftLint
         run: sh ./Scripts/swiftlint.sh
       - name: Run CocoaPods pod linter
