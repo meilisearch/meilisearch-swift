@@ -19,6 +19,7 @@ public struct KeyParams: Codable, Equatable {
   public let indexes: [String]
   /// Date and time when the key will expire, represented in RFC 3339 format.
   public let expiresAt: String?
+
   public init(description: String? = nil, name: String? = nil, uid: String? = nil, actions: [String], indexes: [String], expiresAt: String?) {
       self.description = description
       self.name = name
