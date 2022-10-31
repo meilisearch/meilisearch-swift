@@ -100,7 +100,7 @@ NB: you can also download Meilisearch from **Homebrew** or **APT** or even run i
 
 ## 🎬 Getting Started
 
-To do a simply search using the client, you can create a Swift script like this:
+To do a simple search using the client, you can create a Swift script like this:
 
 #### Add documents <!-- omit in toc -->
 
