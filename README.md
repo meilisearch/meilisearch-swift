@@ -187,9 +187,9 @@ Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search r
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees compatibility with the [version v0.28.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.28.0).
+This package only guarantees compatibility with the [version v1.0.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v1.0.0).
 
-:warning: This package also can work with the [version v0.29.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.29.0), but you may notice some missing features. Check [the issues page](https://github.com/meilisearch/meilisearch-swift/issues) for more information.
+:warning: This package also can work with the [version v0.29.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v1.0.0), but you may notice some missing features. Check [the issues page](https://github.com/meilisearch/meilisearch-swift/issues) for more information.
 
 ## 💡 Learn more
 
