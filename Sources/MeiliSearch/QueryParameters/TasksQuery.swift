@@ -15,17 +15,17 @@ public class TasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
   private var types: [String]
   /// List of strings with all the statuses the response should contain.
-  private var status: [String]
+  private var statuses: [String]
 
-  var indexUid: [String]
+  var indexUids: [String]
 
-  init(limit: Int? = nil, from: Int? = nil, next: Int? = nil, status: [String]? = nil, types: [String]? = nil, indexUid: [String]? = nil) {
+  init(limit: Int? = nil, from: Int? = nil, next: Int? = nil, statuses: [String]? = nil, types: [String]? = nil, indexUids: [String]? = nil) {
     self.from = from
     self.limit = limit
     self.next = next
-    self.status = status ?? []
+    self.statuses = statuses ?? []
     self.types = types ?? []
-    self.indexUid = indexUid ?? []
+    self.indexUids = indexUids ?? []
   }
 
   internal func buildQuery() -> [String: Codable?] {
@@ -34,8 +34,8 @@ public class TasksQuery: Queryable {
       "from": from,
       "next": next,
       "type": types.isEmpty ? nil : types.joined(separator: ","),
-      "status": status.isEmpty ? nil : status.joined(separator: ","),
-      "indexUid": indexUid.isEmpty ? nil : indexUid.joined(separator: ",")
+      "status": statuses.isEmpty ? nil : statuses.joined(separator: ","),
+      "indexUids": indexUids.isEmpty ? nil : indexUids.joined(separator: ",")
     ]
   }
 }
