@@ -18,14 +18,21 @@ public class TasksQuery: Queryable {
   private var statuses: [String]
   /// Filter tasks response by a particular list of index Uids strings
   var indexUids: [String]
-
+  /// Filter tasks based on a list of task's uids.
   private var uids: [Int]
+  /// Filter tasks based on a list of task's uids which were used to cancel other tasks.
   private var canceledBy: [Int]
+  /// Filter tasks based on the date before the task were enqueued at.
   private var beforeEnqueuedAt: Date?
+  /// Filter tasks based on the date after the task were enqueued at.
   private var afterEnqueuedAt: Date?
+  /// Filter tasks based on the date before the task were started.
   private var beforeStartedAt: Date?
+  /// Filter tasks based on the date after the task were started at.
   private var afterStartedAt: Date?
+  /// Filter tasks based on the date before the task was finished.
   private var beforeFinishedAt: Date?
+  /// Filter tasks based on the date after the task was finished.
   private var afterFinishedAt: Date?
 
   init(
