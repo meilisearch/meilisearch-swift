@@ -15,9 +15,9 @@ extension Formatter {
 
   static func formatOptionalDate(date: Date? = nil) -> String? {
     if let unwrappedDate = date {
-      return Formatter.iso8601.string(from: unwrappedDate);
+      return Formatter.iso8601.string(from: unwrappedDate)
     }
 
-    return nil;
+    return nil
   }
 }

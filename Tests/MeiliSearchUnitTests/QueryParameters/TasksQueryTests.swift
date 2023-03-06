@@ -3,7 +3,7 @@
 import XCTest
 
 class TasksQueryTests: XCTestCase {
-  var sampleDate = Date(timeIntervalSince1970: TimeInterval(1553249221));
+  var sampleDate = Date(timeIntervalSince1970: TimeInterval(1553249221))
 
   func testRenderedQuery() {
     let data: [[String: TasksQuery]] = [
