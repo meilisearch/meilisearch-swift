@@ -256,7 +256,6 @@ class IndexesTests: XCTestCase {
         let requestQuery = self.session.nextDataTask.request?.url?.query
 
         XCTAssertEqual(requestQuery, "from=5&indexUids=\(self.uid)&limit=20&next=98&types=indexCreation")
-
         expectation.fulfill()
       case .failure(let error):
         dump(error)
