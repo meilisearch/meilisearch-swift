@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- `IndexesQuery` class represent the options used paginate and filter a documents call.
+ `IndexesQuery` class represent the options used paginate and filter a indexes call.
  */
 public class IndexesQuery: Queryable {
   // MARK: Properties
