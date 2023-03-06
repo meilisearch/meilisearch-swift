@@ -73,15 +73,51 @@ class SearchTests: XCTestCase {
   func testBasicSearch() {
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let query = "Moreninha"
 
     self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
-        XCTAssertEqual(response.query, query)
-        XCTAssertEqual(response.limit, 20)
-        XCTAssertEqual(response.hits.count, 1)
+        let result = response as! SearchResult<Book>
+
+        XCTAssertEqual(result.estimatedTotalHits, 1)
+        XCTAssertEqual(result.query, query)
+        XCTAssertEqual(result.limit, 20)
+        XCTAssertEqual(result.hits.count, 1)
+        if response.hits.count > 0 {
+          XCTAssertEqual("A Moreninha", response.hits[0].title)
+          XCTAssertNil(response.hits[0].formatted)
+        } else {
+          XCTFail("Failed to find hits in the response")
+        }
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search with testBasicSearch")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Basic search with finite pagination
+  func testBasicSearchWithFinitePagination() {
+    let expectation = XCTestExpectation(description: "Search for Books with finite pagination")
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let query = "Moreninha"
+
+    self.index.search(SearchParameters(query: query, hitsPerPage: 1)) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        let result = response as! FiniteSearchResult<Book>
+
+        XCTAssertEqual(result.totalHits, 1)
+        XCTAssertEqual(result.query, query)
+        XCTAssertEqual(result.hitsPerPage, 1)
+        XCTAssertEqual(result.hits.count, 1)
         if response.hits.count > 0 {
           XCTAssertEqual("A Moreninha", response.hits[0].title)
           XCTAssertNil(response.hits[0].formatted)
@@ -103,7 +139,7 @@ class SearchTests: XCTestCase {
   func testNestedSearch() {
     let expectation = XCTestExpectation(description: "Search in Nested Books")
 
-    typealias MeiliResult = Result<SearchResult<NestedBook>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<NestedBook>, Swift.Error>
     let query = "A french book"
 
     self.nestedIndex.search(SearchParameters(query: query)) { (result: MeiliResult) in
@@ -128,13 +164,15 @@ class SearchTests: XCTestCase {
   func testBasicSearchWithNoQuery() {
     let expectation = XCTestExpectation(description: "Search for Books without query")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
 
     self.index.search(SearchParameters(query: nil)) { (result: MeiliResult) in
       switch result {
       case .success(let response):
+        let result = response as! SearchResult<Book>
+
         XCTAssertEqual("", response.query)
-        XCTAssertEqual(20, response.limit)
+        XCTAssertEqual(20, result.limit)
         XCTAssertEqual(books.count, response.hits.count)
         XCTAssertEqual("Pride and Prejudice", response.hits[0].title)
         expectation.fulfill()
@@ -153,14 +191,16 @@ class SearchTests: XCTestCase {
   func testPhraseSearch() {
     let expectation = XCTestExpectation(description: "Search for Books using phrase search")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let query = "A \"great book\""
 
     self.index.search(SearchParameters(query: query)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, 20)
+        XCTAssertEqual(result.limit, 20)
         XCTAssertEqual(documents.hits.count, 1)
         XCTAssertEqual("Pride and Prejudice", documents.hits[0].title)
         XCTAssertNil(documents.hits[0].formatted)
@@ -180,15 +220,17 @@ class SearchTests: XCTestCase {
   func testSearchLimit() {
     let expectation = XCTestExpectation(description: "Search for Books using limit")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "Moreninha"
 
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         XCTAssertEqual("A Moreninha", documents.hits[0].title)
         expectation.fulfill()
@@ -205,15 +247,17 @@ class SearchTests: XCTestCase {
   func testSearchZeroLimit() {
     let expectation = XCTestExpectation(description: "Search for Books using zero limit")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 0
     let query = "A Moreninha"
 
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertTrue(documents.hits.isEmpty)
         expectation.fulfill()
       case .failure(let error):
@@ -229,15 +273,17 @@ class SearchTests: XCTestCase {
   func testSearchLimitBiggerThanNumberOfBooks() {
     let expectation = XCTestExpectation(description: "Search for Books using limit bigger than the number of books stored")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "A"
 
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, limit)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
@@ -254,15 +300,17 @@ class SearchTests: XCTestCase {
   func testSearchLimitEmptySearch() {
     let expectation = XCTestExpectation(description: "Search for Books using limit but nothing in the query")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = ""
 
     self.index.search(SearchParameters(query: query, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 5)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
@@ -281,7 +329,7 @@ class SearchTests: XCTestCase {
   func testSearchOffset() {
     let expectation = XCTestExpectation(description: "Search for Books using offset")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 2
     let offset = 2
     let query = "A"
@@ -289,9 +337,11 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
-        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(result.limit, limit)
+        XCTAssertEqual(result.offset, offset)
         XCTAssertEqual(documents.hits.count, 2)
         expectation.fulfill()
       case .failure(let error):
@@ -307,7 +357,7 @@ class SearchTests: XCTestCase {
   func testSearchOffsetZero() {
     let expectation = XCTestExpectation(description: "Search for Books using zero offset")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 2
     let offset = 0
     let query = "A"
@@ -315,9 +365,11 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
-        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(result.limit, limit)
+        XCTAssertEqual(result.offset, offset)
         XCTAssertEqual(documents.hits.count, 2)
         expectation.fulfill()
       case .failure(let error):
@@ -333,7 +385,7 @@ class SearchTests: XCTestCase {
   func testSearchOffsetLastPage() {
     let expectation = XCTestExpectation(description: "Search for Books using a offset at the last page")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 2
     let offset = 6
     let query = "A"
@@ -341,9 +393,11 @@ class SearchTests: XCTestCase {
     self.index.search(SearchParameters(query: query, offset: offset, limit: limit)) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
-        XCTAssertEqual(documents.offset, offset)
+        XCTAssertEqual(result.limit, limit)
+        XCTAssertEqual(result.offset, offset)
         XCTAssertEqual(documents.hits.count, 1)
         XCTAssertNil(documents.hits[0].formatted)
         expectation.fulfill()
@@ -362,7 +416,7 @@ class SearchTests: XCTestCase {
   func testSearchAttributesToCrop() {
     let expectation = XCTestExpectation(description: "Search for Books using attributes to crop")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 2
     let query = "de Macedo"
     let attributesToCrop = ["comment"]
@@ -372,7 +426,9 @@ class SearchTests: XCTestCase {
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertEqual(documents.limit, limit)
+        let result = documents as! SearchResult<Book>
+
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book: Book = documents.hits[0]
         XCTAssertEqual("…from Joaquim Manuel de Macedo", book.formatted!.comment!)
@@ -392,7 +448,7 @@ class SearchTests: XCTestCase {
   func testSearchCropMarker() {
     let expectation = XCTestExpectation(description: "Search for Books with a custom crop marker")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let query = "Manuel"
     let attributesToCrop = ["comment"]
     let cropLength = 2
@@ -420,7 +476,7 @@ class SearchTests: XCTestCase {
   func testSearchCropLength() {
     let expectation = XCTestExpectation(description: "Search for Books using default crop length")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 2
     let query = "book"
     let attributesToCrop = ["comment"]
@@ -430,7 +486,9 @@ class SearchTests: XCTestCase {
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        XCTAssertEqual(documents.limit, limit)
+        let result = documents as! SearchResult<Book>
+
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 2)
 
         let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
@@ -451,7 +509,7 @@ class SearchTests: XCTestCase {
   func testSearchMatches() {
     let expectation = XCTestExpectation(description: "Search for Books using showMatchesPosition")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "Moreninha"
     let parameters = SearchParameters(query: query, limit: limit, showMatchesPosition: true)
@@ -459,8 +517,10 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual("A Moreninha", book.title)
@@ -489,7 +549,7 @@ class SearchTests: XCTestCase {
   func testSearchAttributesToHighlight() {
     let expectation = XCTestExpectation(description: "Search for Books using attributes to highlight")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "Joaquim Manuel de Macedo"
     let attributesToHighlight = ["comment"]
@@ -498,8 +558,10 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual("A Moreninha", book.title)
@@ -520,7 +582,7 @@ class SearchTests: XCTestCase {
   func testSearchPrePostHighlightTags() {
     let expectation = XCTestExpectation(description: "Search for Books using custom pre and post highlight tags")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let query = "Joaquim Manuel de Macedo"
     let attributesToHighlight = ["comment"]
     let highlightPreTag = "(⊃｡•́‿•̀｡)⊃ "
@@ -548,7 +610,7 @@ class SearchTests: XCTestCase {
   func testSearchAttributesToRetrieve() {
     let expectation = XCTestExpectation(description: "Search for Books using attributes to retrieve")
 
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "Joaquim Manuel de Macedo"
     let attributesToRetrieve = ["id", "title"]
@@ -557,8 +619,10 @@ class SearchTests: XCTestCase {
     self.index.search(parameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
+        let result = documents as! SearchResult<Book>
+
         XCTAssertEqual(documents.query, query)
-        XCTAssertEqual(documents.limit, limit)
+        XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
         let book = documents.hits[0]
         XCTAssertEqual(1844, book.id)
@@ -611,7 +675,7 @@ class SearchTests: XCTestCase {
 
   func testSearchFilters() {
     let expectation = XCTestExpectation(description: "Search for Books using filter")
-    typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
     let limit = 5
     let query = "french book"
     let filter = "id = 456"
@@ -623,8 +687,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, 1)
             let book = documents.hits[0]
             XCTAssertEqual(456, book.id)
@@ -651,7 +717,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
         let query = ""
         let sort = ["id:asc"]
         let parameters = SearchParameters(query: query, sort: sort)
@@ -686,7 +752,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
         let limit = 5
         let query = "Joaquim Manuel de Macedo"
         let filter = "id = 456"
@@ -695,8 +761,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertTrue(documents.hits.isEmpty)
             expectation.fulfill()
           case .failure(let error):
@@ -720,7 +788,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
         let limit = 5
         let query = "A"
         let filter = "genres = Fantasy"
@@ -729,8 +797,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, 2)
 
             XCTAssertEqual(documents.hits.compactMap { $0.title }, ["Alice In Wonderland", "Harry Potter and the Half-Blood Prince"])
@@ -757,7 +827,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Error>
+        typealias MeiliResult = Result<Searchable<Book>, Error>
 
         let query = ""
         let limit = 5
@@ -767,8 +837,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, 1)
             guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
               XCTFail("Failed to search with testSearchFilterWithEmptySpace")
@@ -801,7 +873,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
         let limit = 5
         let query = "A"
         let facets = ["genres"]
@@ -810,8 +882,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, limit)
 
             let facetDistribution = documents.facetDistribution!
@@ -827,6 +901,7 @@ class SearchTests: XCTestCase {
 
             XCTAssertEqual(facetDistribution["genres"]?.keys.sorted(), expected["genres"]?.keys.sorted())
             XCTAssertEqual(facetDistribution["genres"]?.values.sorted(), expected["genres"]?.values.sorted())
+
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -850,7 +925,7 @@ class SearchTests: XCTestCase {
     configureFilters { result in
       switch result {
       case .success:
-        typealias MeiliResult = Result<SearchResult<Book>, Swift.Error>
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
         let limit = 5
         let query = "Petit Prince"
         let facets = ["genres"]
@@ -860,8 +935,10 @@ class SearchTests: XCTestCase {
         self.index.search(parameters) { (result: MeiliResult) in
           switch result {
           case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
             XCTAssertEqual(documents.query, query)
-            XCTAssertEqual(documents.limit, limit)
+            XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, 0)
             let facetDistribution = documents.facetDistribution!
             XCTAssertEqual(["genres": [:]], facetDistribution)
