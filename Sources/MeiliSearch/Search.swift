@@ -46,20 +46,4 @@ struct Search {
       }
     }
   }
-
-  private static func decodeJSON<T: Codable>(
-    _ data: Data,
-    _ customDecoder: JSONDecoder? = nil,
-    type: T.Type,
-    completion: (Result<T, Swift.Error>) -> Void
-  ) {
-    do {
-      let decoder: JSONDecoder = customDecoder ?? Constants.customJSONDecoder
-      let value: T = try decoder.decode(type, from: data)
-
-      completion(.success(value))
-    } catch {
-      completion(.failure(error))
-    }
-  }
 }
