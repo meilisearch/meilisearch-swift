@@ -820,7 +820,8 @@ class SearchTests: XCTestCase {
                 "Bildungsroman": 1,
                 "Classic Regency nove": 1,
                 "Fantasy": 2,
-                "High fantasy": 1
+                "High fantasy": 1,
+                "Novel": 2
               ]
             ]
 
