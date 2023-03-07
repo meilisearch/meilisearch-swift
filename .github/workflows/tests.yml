@@ -35,12 +35,16 @@ jobs:
 
   linter:
     name: linter-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: GitHub Action for SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+
+  pod-spec-lint:
+    name: pod-spec-lint
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Swiftlint version
-        run: swiftlint --version
-      - name: Run SwiftLint
-        run: sh ./Scripts/swiftlint.sh
       - name: Run CocoaPods pod linter
         run: pod spec lint
