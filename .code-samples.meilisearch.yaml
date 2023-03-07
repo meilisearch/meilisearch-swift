@@ -60,7 +60,7 @@ async_guide_filter_by_index_uids_1: |-
 delete_tasks_1: |-
 cancel_tasks_1: |-
 async_guide_canceled_by: |-
-  client.getTasks(params: TasksQuery(canceledBy: [9])) { result in
+  client.getTasks(params: TasksQuery(canceledBy: [9, 15])) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
