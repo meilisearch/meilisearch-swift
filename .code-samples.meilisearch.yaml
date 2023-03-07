@@ -4,7 +4,7 @@
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
 async_guide_filter_by_date_1: |-
-  client.getTasks(params: TasksQuery(afterEnqueuedAt: date)) { result in
+  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
