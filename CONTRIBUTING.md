@@ -34,7 +34,7 @@ You can set up your local environment natively or using `docker`, check out the 
 
 Example of running all the checks with docker:
 ```bash
-docker-compose run --rm package bash -c "swift test && swift run swiftlint"
+docker-compose run --rm package bash -c "swift test && swiftlint"
 ```
 
 To install dependencies:
@@ -42,6 +42,12 @@ To install dependencies:
 
 ```bash
 swift build
+```
+
+To install `swiftlint`:
+
+```
+brew install swiftlint
 ```
 
 ### Tests and Linter <!-- omit in TOC -->

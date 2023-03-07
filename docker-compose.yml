@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   package:
-    image: swift:5.7-focal
+    build: .
     tty: true
     stdin_open: true
     working_dir: /home/package

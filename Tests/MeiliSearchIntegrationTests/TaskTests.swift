@@ -137,7 +137,7 @@ class TasksTests: XCTestCase {
     self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
 
     let expectation = XCTestExpectation(description: "Get all tasks of an index")
-    self.client.getTasks { (result: Result<TasksResults, Swift.Error>)  in
+    self.client.getTasks(params: TasksQuery(beforeEnqueuedAt: Date.distantPast)) { (result: Result<TasksResults, Swift.Error>)  in
       switch result {
       case .success(let tasks):
         XCTAssertNotNil(tasks.results)

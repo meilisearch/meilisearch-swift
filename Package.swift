@@ -7,11 +7,6 @@ let package = Package(
   products: [
     .library(name: "MeiliSearch", targets: ["MeiliSearch"])
   ],
-  dependencies: [
-    // Support for dependabot for swift packages in dependabot
-    // is in draft mode https://github.com/dependabot/dependabot-core/pull/3772
-    .package(url: "https://github.com/realm/SwiftLint.git", from: "0.43.1")
-  ],
   targets: [
     .target(
       name: "MeiliSearch",

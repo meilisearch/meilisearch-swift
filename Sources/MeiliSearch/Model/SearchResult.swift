@@ -3,31 +3,104 @@ import Foundation
   import FoundationNetworking
 #endif
 
+public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
+  public static func == (lhs: Searchable<T>, rhs: Searchable<T>) -> Bool {
+    lhs.hits == rhs.hits
+  }
+
+  // MARK: Properties
+
+  /// Possible hints from the search query.
+  public var hits: [T] = []
+
+  /// Distribution of the given facets.
+  public var facetDistribution: [String: [String: Int]]?
+
+  /// Time, in milliseconds, to process the query.
+  public var processingTimeMs: Int?
+
+  /// Query string from the search.
+  public var query: String?
+
+  public enum CodingKeys: String, CodingKey {
+    case hits
+    case facetDistribution
+    case processingTimeMs
+    case query
+  }
+}
+
 /**
  `SearchResult` instances represent the result of a search.
  Requires that the value `T` conforms to the `Codable` and `Equatable` protocols.
  */
-public struct SearchResult<T>: Codable, Equatable where T: Codable, T: Equatable {
+public class SearchResult<T>: Searchable<T> where T: Codable, T: Equatable {
   // MARK: Properties
 
-  /// Possible hints from the search query.
-  public let hits: [T]
-
   /// Number of documents skipped.
-  public let offset: Int
+  public var offset: Int = 0
 
   /// Number of documents taken.
-  public let limit: Int
+  public var limit: Int = 0
 
   /// Total number of matches,
-  public let estimatedTotalHits: Int
+  public var estimatedTotalHits: Int = 0
 
-  /// Distribution of the given facets.
-  public let facetDistribution: [String: [String: Int]]?
+  public enum CodingKeys: String, CodingKey {
+    case estimatedTotalHits
+    case limit
+    case offset
+  }
 
-  /// Time, in milliseconds, to process the query.
-  public let processingTimeMs: Int?
+  // This override is required since swift does not parse all the new keys automatically.
+  // After this run the result will be a self object + all the keys defined in the Searchable<T>
+  public required init(from decoder: Decoder) throws {
+    try super.init(from: decoder)
 
-  /// Query string from the search.
-  public let query: String?
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+
+    self.limit = try values.decodeIfPresent(Int.self, forKey: .limit) ?? 0
+    self.offset = try values.decodeIfPresent(Int.self, forKey: .offset) ?? 0
+    self.estimatedTotalHits = try values.decodeIfPresent(Int.self, forKey: .estimatedTotalHits) ?? 0
+  }
+}
+
+/**
+ `FiniteSearchResult` instances represent the result of a search with finite pagination.
+ Requires that the value `T` conforms to the `Codable` and `Equatable` protocols.
+ */
+public class FiniteSearchResult<T>: Searchable<T> where T: Codable, T: Equatable {
+  // MARK: Properties
+
+  /// Number of documents skipped.
+  public var totalPages: Int = 0
+
+  /// Number of documents taken.
+  public var totalHits: Int = 0
+
+  /// Number of the current page.
+  public var page: Int = 0
+
+  /// Max number of hits per page.
+  public var hitsPerPage: Int = 0
+
+  public enum CodingKeys: String, CodingKey {
+    case totalPages
+    case totalHits
+    case page
+    case hitsPerPage
+  }
+
+  // This override is required since swift does not parse all the new keys automatically
+  // After this run the result will be a self object + all the keys defined in the Searchable<T>
+  public required init(from decoder: Decoder) throws {
+    try super.init(from: decoder)
+
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+
+    self.totalHits = try values.decodeIfPresent(Int.self, forKey: .totalHits) ?? 0
+    self.totalPages = try values.decodeIfPresent(Int.self, forKey: .totalPages) ?? 0
+    self.page = try values.decodeIfPresent(Int.self, forKey: .page) ?? 1
+    self.hitsPerPage = try values.decodeIfPresent(Int.self, forKey: .hitsPerPage) ?? 0
+  }
 }
