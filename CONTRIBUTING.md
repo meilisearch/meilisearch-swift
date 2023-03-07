@@ -152,6 +152,13 @@ Once the changes are merged on `main`, you can publish the current draft release
 
 GitHub Actions will be triggered and push the package to [CocoaPods](https://cocoapods.org/pods/meilisearch).
 
+:warning: This error: `[!] Authentication token is invalid or unverified. Either verify it with the email that was sent or register a new session.` Will be raised when the authentication is expired. To fix the error the Integrations team must do the authorization process again with:
+
+1st step: Execute this in the repo's directory: `pod trunk register robot@meilisearch.com 'Meilisearch'`<br/>
+2nd step: Confirm the link sent in the email.<br/>
+3rd step: Run `pod trunk me --verbose` and take the token from `Authorization: Token XXXXXXXXXXXXXXXXXXXXXXXXXX`.<br/>
+4th step: Update the token in the Github secrets interface `COCOAPODS_TRUNK_TOKEN`.<br/>
+
 <hr>
 
 Thank you again for reading this through. We can not wait to begin to work with you if you make your way through this contributing guide ❤️
