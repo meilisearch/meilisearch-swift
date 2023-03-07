@@ -7,7 +7,7 @@
 <h4 align="center">
   <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
   <a href="https://meilisearch.github.io/meilisearch-swift/">Documentation</a> |
-  <a href="https://slack.meilisearch.com">Slack</a> |
+  <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
@@ -188,8 +188,6 @@ Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search r
 ## 🤖 Compatibility with Meilisearch
 
 This package only guarantees compatibility with the [version v1.0.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v1.0.0).
-
-:warning: This package also can work with the [version v0.29.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v1.0.0), but you may notice some missing features. Check [the issues page](https://github.com/meilisearch/meilisearch-swift/issues) for more information.
 
 ## 💡 Learn more
 

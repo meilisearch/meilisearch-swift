@@ -57,11 +57,11 @@ struct Tasks {
       var query: TasksQuery?
 
       if params != nil {
-        params?.indexUid.append(uid)
+        params?.indexUids.append(uid)
 
         query = params
       } else {
-        query = TasksQuery(indexUid: [uid])
+        query = TasksQuery(indexUids: [uid])
       }
 
       listTasks(params: query, completion)

@@ -20,7 +20,6 @@ jobs:
       matrix:
         os: ["macos-latest", "ubuntu-20.04"]
     env:
-      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
     steps:
       - uses: actions/checkout@v3
@@ -36,12 +35,16 @@ jobs:
 
   linter:
     name: linter-check
-    runs-on: macos-latest
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run SwiftLint
-        run: sh ./Scripts/swiftlint.sh
+      - name: GitHub Action for SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+
+  pod-spec-lint:
+    name: pod-spec-lint
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Run CocoaPods pod linter
         run: pod spec lint
