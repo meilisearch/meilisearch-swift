@@ -3,6 +3,92 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+async_guide_filter_by_date_1: |-
+  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_multiple_filters_1: |-
+  client.getTasks(params: TasksQuery(indexUids: "movies", types: ["documentAdditionOrUpdate", "documentDeletion"], statuses: ["processing"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_ids_1: |-
+  client.getTasks(params: TasksQuery(uids: [5, 10, 13])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_statuses_1: |-
+  client.getTasks(params: TasksQuery(statuses: ["failed", "canceled"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_types_1: |-
+  client.getTasks(params: TasksQuery(types: ["dumpCreation", "indexSwap"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_index_uids_1: |-
+  client.getTasks(params: TasksQuery(indexUids: ["movies"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+delete_tasks_1: |-
+cancel_tasks_1: |-
+async_guide_canceled_by: |-
+  client.getTasks(params: TasksQuery(canceledBy: [9, 15])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+swap_indexes_1: |-
+search_parameter_guide_hitsperpage_1: |-
+  let searchParameters = SearchParameters.query("", hitsPerPage: 15)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+search_parameter_guide_page_1: |-
+  let searchParameters = SearchParameters.query("", page: 15)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
 authorization_header_1: |-
   client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
   client.getKeys { result in
@@ -15,24 +101,6 @@ authorization_header_1: |-
   }
 getting_started_typo_tolerance: |-
 
-get_all_tasks_filtering_1: |-
-  client.getTasks(params: TasksQuery(indexUids: ["movies"])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
-get_all_tasks_filtering_2: |-
-  client.getTasks(params: TasksQuery(statuses: ["succeeded", "failed"], types: ["documentAdditionOrUpdate"])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
 get_all_tasks_paginating_1: |-
   client.getTasks(params: TasksQuery(limit: 2, from: 10)) { result in
     switch result {
