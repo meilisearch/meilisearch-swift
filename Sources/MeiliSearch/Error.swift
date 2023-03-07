@@ -75,7 +75,7 @@ public extension MeiliSearch {
     case invalidURL(url: String? = "")
 
     /// Error originating from Meilisearch API.
-    // case meiliSearchApiError(message: String, code: String, type: String, link: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
+    /// case meiliSearchApiError(message: String, code: String, type: String, link: String? = "http://docs.meilisearch.com/errors", underlying: Swift.Error)
     case meiliSearchApiError(message: String, msErrorResponse: MSErrorResponse?, statusCode: Int = 0, url: String = "")
 
     /// Error communicating with Meilisearch API.
