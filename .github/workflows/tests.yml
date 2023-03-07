@@ -20,7 +20,6 @@ jobs:
       matrix:
         os: ["macos-latest", "ubuntu-20.04"]
     env:
-      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
     steps:
       - uses: actions/checkout@v3
@@ -37,8 +36,6 @@ jobs:
   linter:
     name: linter-check
     runs-on: macos-latest
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
     steps:
       - uses: actions/checkout@v3
       - name: Run SwiftLint
