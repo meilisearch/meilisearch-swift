@@ -20,6 +20,12 @@ public struct SearchParameters: Codable, Equatable {
   /// Number of documents to skip.
   public let offset: Int?
 
+  /// Number of documents to take per page.
+  public let hitsPerPage: Int?
+
+  /// Page number to show.
+  public let page: Int?
+
   /// Document attributes to show.
   public let attributesToRetrieve: [String]?
 
@@ -59,6 +65,8 @@ public struct SearchParameters: Codable, Equatable {
     query: String?,
     offset: Int? = nil,
     limit: Int? = nil,
+    page: Int? = nil,
+    hitsPerPage: Int? = nil,
     attributesToRetrieve: [String]? = nil,
     attributesToCrop: [String]? = nil,
     cropLength: Int? = nil,
@@ -73,6 +81,8 @@ public struct SearchParameters: Codable, Equatable {
     self.query = query
     self.offset = offset
     self.limit = limit
+    self.hitsPerPage = hitsPerPage
+    self.page = page
     self.attributesToRetrieve = attributesToRetrieve
     self.attributesToCrop = attributesToCrop
     self.cropLength = cropLength
@@ -115,5 +125,7 @@ public struct SearchParameters: Codable, Equatable {
     case sort
     case facets
     case showMatchesPosition
+    case hitsPerPage
+    case page
   }
 }

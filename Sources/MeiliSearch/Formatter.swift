@@ -12,4 +12,12 @@ extension Formatter {
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
     return formatter
   }()
+
+  static func formatOptionalDate(date: Date? = nil) -> String? {
+    if let unwrappedDate = date {
+      return Formatter.iso8601.string(from: unwrappedDate)
+    }
+
+    return nil
+  }
 }

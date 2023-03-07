@@ -1,6 +1,6 @@
 import Foundation
 /**
- `TasksQuery` class represent the options used paginate and filter a tasks call.
+ `TasksQuery` class represent the options used to filter a get tasks call.
  */
 
 public class TasksQuery: Queryable {
@@ -15,17 +15,48 @@ public class TasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
   private var types: [String]
   /// List of strings with all the statuses the response should contain.
-  private var status: [String]
+  private var statuses: [String]
+  /// Filter tasks response by a particular list of index Uids strings
+  var indexUids: [String]
+  /// Filter tasks based on a list of task's uids.
+  private var uids: [Int]
+  /// Filter tasks based on a list of task's uids which were used to cancel other tasks.
+  private var canceledBy: [Int]
+  /// Filter tasks based on the date before the task were enqueued at.
+  private var beforeEnqueuedAt: Date?
+  /// Filter tasks based on the date after the task were enqueued at.
+  private var afterEnqueuedAt: Date?
+  /// Filter tasks based on the date before the task were started.
+  private var beforeStartedAt: Date?
+  /// Filter tasks based on the date after the task were started at.
+  private var afterStartedAt: Date?
+  /// Filter tasks based on the date before the task was finished.
+  private var beforeFinishedAt: Date?
+  /// Filter tasks based on the date after the task was finished.
+  private var afterFinishedAt: Date?
 
-  var indexUid: [String]
-
-  init(limit: Int? = nil, from: Int? = nil, next: Int? = nil, status: [String]? = nil, types: [String]? = nil, indexUid: [String]? = nil) {
+  init(
+    limit: Int? = nil, from: Int? = nil, next: Int? = nil,
+    statuses: [String]? = nil, types: [String]? = nil,
+    indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
+    beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
+    afterFinishedAt: Date? = nil, beforeStartedAt: Date? = nil,
+    afterStartedAt: Date? = nil, beforeFinishedAt: Date? = nil
+  ) {
     self.from = from
     self.limit = limit
     self.next = next
-    self.status = status ?? []
+    self.statuses = statuses ?? []
     self.types = types ?? []
-    self.indexUid = indexUid ?? []
+    self.indexUids = indexUids ?? []
+    self.uids = uids ?? []
+    self.canceledBy = canceledBy ?? []
+    self.beforeEnqueuedAt = beforeEnqueuedAt
+    self.afterEnqueuedAt = afterEnqueuedAt
+    self.beforeStartedAt = beforeStartedAt
+    self.afterStartedAt = afterStartedAt
+    self.beforeFinishedAt = beforeFinishedAt
+    self.afterFinishedAt = afterFinishedAt
   }
 
   internal func buildQuery() -> [String: Codable?] {
@@ -33,9 +64,16 @@ public class TasksQuery: Queryable {
       "limit": limit,
       "from": from,
       "next": next,
-      "type": types.isEmpty ? nil : types.joined(separator: ","),
-      "status": status.isEmpty ? nil : status.joined(separator: ","),
-      "indexUid": indexUid.isEmpty ? nil : indexUid.joined(separator: ",")
+      "uids": uids.isEmpty ? nil : uids.map(String.init).joined(separator: ","),
+      "types": types.isEmpty ? nil : types.joined(separator: ","),
+      "statuses": statuses.isEmpty ? nil : statuses.joined(separator: ","),
+      "indexUids": indexUids.isEmpty ? nil : indexUids.joined(separator: ","),
+      "canceledBy": canceledBy.isEmpty ? nil : canceledBy.map(String.init).joined(separator: ","),
+      "beforeEnqueuedAt": Formatter.formatOptionalDate(date: beforeEnqueuedAt),
+      "afterEnqueuedAt": Formatter.formatOptionalDate(date: afterEnqueuedAt),
+      "beforeStartedAt": Formatter.formatOptionalDate(date: beforeStartedAt),
+      "beforeFinishedAt": Formatter.formatOptionalDate(date: beforeFinishedAt),
+      "afterFinishedAt": Formatter.formatOptionalDate(date: afterFinishedAt),
     ]
   }
 }

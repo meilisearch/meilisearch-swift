@@ -27,14 +27,13 @@ public struct Task: Codable, Equatable {
   public let details: Details?
 
   /// Duration of the task process.
-//  public let duration: String?
+  public let duration: String?
 
   /// Date when the task has been enqueued.
   public let enqueuedAt: String
 
   /// Date when the task has been processed.
-  // TODO: should this become a Date type?
-//  public let processedAt: String?
+  public let processedAt: Date?
 
   /// Type of `Task`.
   public struct Details: Codable, Equatable {

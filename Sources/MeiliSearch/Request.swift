@@ -104,7 +104,7 @@ public final class Request {
       return
     }
 
-      let request = self.request(.post, url, headers, data: data)
+    let request = self.request(.post, url, headers, data: data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)

@@ -3,6 +3,168 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+getting_started_faceting: |-
+  client.index("movies").updateFaceting({ maxValuesPerFacet: 2 })
+getting_started_pagination: |-
+  client.index("movies").updatePagination({ maxTotalHits: 500 })
+synonyms_guide_1: |-
+  let synonyms: [String: [String]] = [
+    "great": ["fantastic"],
+    "fantastic": ["great"]
+  ]
+
+  client.index("movies").updateSynonyms(synonyms) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_index_1: |-
+  let path = Bundle.main.url(forResource: "games", withExtension: "json")!
+  let documents: Data = try Data(contentsOf: path)
+
+  client.index("games").addDocuments(documents: documents) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_filterable_attributes_1: |-
+  client.index("games").updateFilterableAttributes(["release_timestamp"]) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_filter_1: |-
+  let searchParameters = SearchParameters(
+    query: "",
+    filter: "release_timestamp >= 1514761200 AND release_timestamp < 1672527600"
+  )
+  client.index("games").search(searchParameters) { (result: Result<Searchable<Game>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_sortable_attributes_1: |-
+  client.index("games").updateSortableAttributes(["release_timestamp"]) { (result) in
+    switch result {
+    case .success(let task):
+      print(task)
+    case .failure(let error):
+      print(error)
+    }
+  }
+date_guide_sort_1: |-
+  let searchParameters = SearchParameters(
+    query: "",
+    sort: ["release_timestamp:desc"],
+  )
+
+  client.index("games").search(searchParameters) { (result: Result<Searchable<Game>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+
+async_guide_filter_by_date_1: |-
+  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_multiple_filters_1: |-
+  client.getTasks(params: TasksQuery(indexUids: "movies", types: ["documentAdditionOrUpdate", "documentDeletion"], statuses: ["processing"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_ids_1: |-
+  client.getTasks(params: TasksQuery(uids: [5, 10, 13])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_statuses_1: |-
+  client.getTasks(params: TasksQuery(statuses: ["failed", "canceled"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_types_1: |-
+  client.getTasks(params: TasksQuery(types: ["dumpCreation", "indexSwap"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+async_guide_filter_by_index_uids_1: |-
+  client.getTasks(params: TasksQuery(indexUids: ["movies"])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+delete_tasks_1: |-
+cancel_tasks_1: |-
+async_guide_canceled_by: |-
+  client.getTasks(params: TasksQuery(canceledBy: [9, 15])) { result in
+    switch result {
+    case .success(let taskResult):
+      print(taskResult)
+    case .failure(let error):
+      print(error)
+    }
+  }
+swap_indexes_1: |-
+search_parameter_guide_hitsperpage_1: |-
+  let searchParameters = SearchParameters.query("", hitsPerPage: 15)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+search_parameter_guide_page_1: |-
+  let searchParameters = SearchParameters.query("", page: 15)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
 authorization_header_1: |-
   client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
   client.getKeys { result in
@@ -15,24 +177,6 @@ authorization_header_1: |-
   }
 getting_started_typo_tolerance: |-
 
-get_all_tasks_filtering_1: |-
-  client.getTasks(params: TasksQuery(indexUid: ["movies"])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
-get_all_tasks_filtering_2: |-
-  client.getTasks(params: TasksQuery(status: ["succeeded", "failed"], types: ["documentAdditionOrUpdate"])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
 get_all_tasks_paginating_1: |-
   client.getTasks(params: TasksQuery(limit: 2, from: 10)) { result in
     switch result {
@@ -83,7 +227,7 @@ update_an_index_1: |-
       switch result {
       case .success(let task):
           print(task)
-      case .failure:
+      case .failure(let error):
           print(error)
       }
   }
@@ -92,12 +236,12 @@ delete_an_index_1: |-
       switch result {
       case .success:
           print("Index deleted")
-      case .failure:
+      case .failure(let error):
           print(error)
       }
   }
 get_one_document_1: |-
-  client.index("movies").getDocument(25684) { (result) in
+  client.index("movies").getDocument(25684) { (result: Result<Movie, Swift.Error>) in
       switch result {
       case .success(let movie):
           print(movie)
@@ -106,7 +250,7 @@ get_one_document_1: |-
       }
   }
 get_documents_1: |-
-  client.index("movies").getDocuments(options: GetParameters(limit: 2)) { (result) in
+  client.index("movies").getDocuments(params: DocumentsQuery(limit: 2)) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
       switch result {
       case .success(let movies):
           print(movies)
@@ -166,7 +310,7 @@ delete_all_documents_1: |-
       }
   }
 delete_one_document_1: |-
-  client.index("movies").deleteDocument(25684) { (result) in
+  client.index("movies").deleteDocument("25684") { (result) in
       switch result {
       case .success(let task):
           print(task)
@@ -175,7 +319,7 @@ delete_one_document_1: |-
       }
   }
 delete_documents_1: |-
-  client.index("movies").deleteBatchDocuments([23488, 153738, 437035, 363869]) {
+  client.index("movies").deleteBatchDocuments(["23488", "153738", "437035", "363869"]) {
   (result) in
         switch result {
         case .success(let task):
@@ -186,7 +330,7 @@ delete_documents_1: |-
     }
 search_post_1: |-
   let searchParameters = SearchParameters.query("American ninja")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -249,15 +393,15 @@ create_a_key_1: |-
   client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
-          print(keys)
+          print(key)
       case .failure(let error):
           print(error)
       }
   }
 update_a_key_1: |-
   let keyParams = KeyUpdateParams(
-    name: "Products/Reviews API key",
-    description: "Manage documents: Products/Reviews API key"
+    description: "Manage documents: Products/Reviews API key",
+    name: "Products/Reviews API key"
   )
 
   client.updateKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d", keyParams: keyParams) { result in
@@ -269,7 +413,7 @@ update_a_key_1: |-
     }
   }
 delete_a_key_1: |-
-  client.deleteKey(key: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
+  client.deleteKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
       switch result {
       case .success:
           print("success")
@@ -279,9 +423,9 @@ delete_a_key_1: |-
   }
 
 security_guide_search_key_1: |-
-  client = MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
+  client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
   client.index("patient_medical_records")
-    .search(parameters) { (result) in
+    .search(SearchParameters.query("")) { (result: Result<Searchable<Patient>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -296,7 +440,7 @@ security_guide_update_key_1: |-
   client.updateKey(key: "74c9c733-3368-4738-bbe5-1d18a5fecb37", keyParams: keyParams) { result in
     switch result {
     case .success(let key):
-      print(keys)
+      print(key)
     case .failure(let error):
       print(error)
     }
@@ -313,7 +457,7 @@ security_guide_create_key_1: |-
   client.createKey(keyParams) { result in
     switch result {
     case .success(let key):
-      print(keys)
+      print(key)
     case .failure(let error):
       print(error)
     }
@@ -332,7 +476,7 @@ security_guide_list_keys_1: |-
 security_guide_delete_key_1: |-
   let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
 
-  client.deleteKey(key: "ac5cd97d-5a4b-4226-a868-2d0eb6d197ab") { result in
+  client.deleteKey(keyOrUid: "ac5cd97d-5a4b-4226-a868-2d0eb6d197ab") { result in
       switch result {
       case .success:
           print("success")
@@ -366,7 +510,7 @@ update_settings_1: |-
   ], displayedAttributes: [
       "title",
       "overview",
-      "genres"
+      "genres",
       "release_date"
   ], stopWords: [
       "the",
@@ -401,7 +545,7 @@ get_synonyms_1: |-
   client.index("movies").getSynonyms { (result) in
       switch result {
       case .success(let synonyms):
-          print(task)
+          print(synonyms)
       case .failure(let error):
           print(error)
       }
@@ -581,8 +725,8 @@ reset_displayed_attributes_1: |-
 get_index_stats_1: |-
   client.index("movies").stats { (result) in
       switch result {
-      case .success(let stat):
-          print(task)
+      case .success(let stats):
+          print(stats)
       case .failure(let error):
           print(error)
       }
@@ -590,8 +734,8 @@ get_index_stats_1: |-
 get_indexes_stats_1: |-
   client.allStats { (result) in
       switch result {
-      case .success(let allStats):
-          print(task)
+      case .success(let stats):
+          print(stats)
       case .failure(let error):
           print(error)
       }
@@ -609,7 +753,7 @@ get_version_1: |-
   client.version { (result) in
       switch result {
       case .success(let version):
-          print(task)
+          print(version)
       case .failure(let error):
           print(error)
       }
@@ -657,7 +801,7 @@ filtering_guide_1: |-
       query: "Avengers",
       filter: "release_date > 795484800"
   )
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -669,7 +813,7 @@ filtering_guide_2: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       filter: "release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\"")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -681,7 +825,7 @@ filtering_guide_3: |-
   let searchParameters = SearchParameters(
       query: "Planet of the Apes",
       filter: "rating >= 3 AND (NOT director = \"Tim Burton\"")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -690,7 +834,7 @@ filtering_guide_3: |-
       }
   }
 search_parameter_guide_query_1: |-
-  client.index("movies").search(searchParameters(query: "shifu")) { (result) in
+  client.index("movies").search(SearchParameters(query: "shifu")) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -702,7 +846,7 @@ search_parameter_guide_offset_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       offset: 1)
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -714,7 +858,7 @@ search_parameter_guide_limit_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       limit: 2)
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -726,7 +870,7 @@ search_parameter_guide_retrieve_1: |-
   let searchParameters = SearchParameters(
       query: "shifu",
       attributesToRetrieve: ["overview", "title"])
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -739,7 +883,7 @@ search_parameter_guide_crop_1: |-
       query: "shifu",
       attributesToCrop: ["overview"],
       cropLength: 5)
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -752,7 +896,7 @@ search_parameter_guide_crop_marker_1: |-
       query: "shifu",
       attributesToCrop: ["overview"],
       cropMarker: "[…]")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -764,7 +908,7 @@ search_parameter_guide_highlight_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
       attributesToHighlight: ["overview"])
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -778,7 +922,7 @@ search_parameter_guide_highlight_tag_1: |-
       attributesToHighlight: ["overview"],
       highlightPreTag: "<span class=\"highlight\">",
       highlightPostTag: "</span>")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -789,8 +933,8 @@ search_parameter_guide_highlight_tag_1: |-
 search_parameter_guide_show_matches_position_1: |-
   let searchParameters = SearchParameters(
       query: "winter feast",
-      matches: true)
-  client.index("movies").search(searchParameters) { (result) in
+      showMatchesPosition: true)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -805,7 +949,7 @@ settings_guide_stop_words_1: |-
       "a",
       "an"
   ])
-  client.index("movies").updateSettings(settings) { (result) in
+  client.index("movies").updateSettings(settings) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let task):
           print(task)
@@ -905,8 +1049,9 @@ settings_guide_sortable_1: |-
       }
   }
 add_movies_json_1: |-
-  let path = Bundle.main.url(forResource: "movies", withExtension: "json")
-  let documents: Data = Data(contentsOf: path)
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
+  let documents: Data = try Data(contentsOf: path)
+
   client.index("movies").addDocuments(documents: documents) { (result) in
       switch result {
       case .success(let task):
@@ -980,8 +1125,9 @@ getting_started_add_documents_md: |-
   ```
 
   ```swift
-    let path = Bundle.main.url(forResource: "movies", withExtension: "json")
-    let documents: Data = Data(contentsOf: path)
+    let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
+    let documents: Data = try Data(contentsOf: path)
+
     client.index("movies").addDocuments(documents: documents) { (result) in
         switch result {
         case .success(let task):
@@ -994,7 +1140,7 @@ getting_started_add_documents_md: |-
   [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 getting_started_search_md: |-
   ```swift
-    client.index("movies").search(searchParameters) { (result) in
+    client.index("movies").search(SearchParameters(query: "")) { (result) in
         switch result {
         case .success(let searchResult):
             print(searchResult)
@@ -1078,7 +1224,8 @@ getting_started_update_displayed_attributes: |-
    }
 getting_started_communicating_with_a_protected_instance: |-
   let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
-  client.index("movies").search { (result) in
+
+  client.index("movies").search(SearchParameters(query: "")) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1089,7 +1236,7 @@ getting_started_communicating_with_a_protected_instance: |-
 getting_started_add_meteorites: |-
   let file = "meteorites.json"
   let path = URL(fileURLWithPath: file)
-  let documents: Data = Data(contentsOf: path)
+  let documents: Data = try Data(contentsOf: path)
 
   client.index("meteorites").addDocuments(documents: documents) { (result) in
       switch result {
@@ -1114,9 +1261,10 @@ getting_started_configure_settings: |-
   }
 getting_started_geo_radius: |-
   let searchParameters = SearchParameters(
+      query: "",
       filter: "_geoRadius(46.9480, 7.4474, 210000)"
   )
-  client.index("meteorites").search(searchParameters) { (result) in
+  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1126,9 +1274,10 @@ getting_started_geo_radius: |-
   }
 getting_started_geo_point: |-
   let searchParameters = SearchParameters(
+      query: "",
       sort: ["_geoPoint(48.8583701, 2.2922926):asc"]
   )
-  client.index("meteorites").search(searchParameters) { (result) in
+  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1138,10 +1287,11 @@ getting_started_geo_point: |-
   }
 getting_started_sorting: |-
   let searchParameters = SearchParameters(
-    sort: ["mass:asc"],
-    filter: "mass < 200"
+    query: "",
+    filter: "mass < 200",
+    sort: ["mass:asc"]
   )
-  client.index("meteorites").search(searchParameters) { (result) in
+  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1151,9 +1301,10 @@ getting_started_sorting: |-
   }
 getting_started_filtering: |-
   let searchParameters = SearchParameters(
+     query: "",
      filter: "mass < 200"
    )
-   client.index("meteorites").search(searchParameters) { (result) in
+   client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
        switch result {
        case .success(let searchResult):
            print(searchResult)
@@ -1197,23 +1348,12 @@ faceted_search_update_settings_1: |-
           print(error)
       }
   }
-faceted_search_filter_1: |-
-  let searchParameters = SearchParameters(
-      query: "thriller",
-      filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.index("movies").search(searchParameters) { (result) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
+
 faceted_search_facets_1: |-
   let searchParameters = SearchParameters(
       query: "Batman",
-      facets: ["genres"]])
-  client.index("movies").search(searchParameters) { (result: Result<SearchResult<Movie>, Swift.Error>) in
+      facets: ["genres"])
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1222,21 +1362,10 @@ faceted_search_facets_1: |-
       }
   }
 faceted_search_walkthrough_filter_1: |-
-  let searchParameters = SearchParameters(
-      query: "thriller",
-      filter: [["genres = Horror", "genres = Mystery"], ["director = \"Jordan Peele\""]])
-  client.index("movies").search(searchParameters) { (result) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
 phrase_search_1: |-
   let searchParameters = SearchParameters(
       query: "\"african american\" horror")
-  client.index("movies").search(searchParameters) { (result) in
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1245,7 +1374,7 @@ phrase_search_1: |-
       }
   }
 sorting_guide_update_sortable_attributes_1: |-
-  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<Task, Swift.Error>) in
+  client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<TaskInfo, Swift.Error>) in
     switch result {
     case .success(let task):
       print(task)
@@ -1275,7 +1404,7 @@ sorting_guide_sort_parameter_1: |-
     query: "science fiction",
     sort: ["price:asc"]
   )
-  client.index("books").search(searchParameters) { (result) in
+  client.index("books").search(searchParameters) { (result: Result<Searchable<Book>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -1288,7 +1417,7 @@ sorting_guide_sort_parameter_2: |-
     query: "butler",
     sort: ["author:desc"]
   )
-  client.index("books").search(searchParameters) { (result) in
+  client.index("books").search(searchParameters) { (result: Result<Searchable<Book>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -1297,7 +1426,7 @@ sorting_guide_sort_parameter_2: |-
     }
   }
 get_sortable_attributes_1: |-
-  client.index("books").getSortableAttributes { (result) in
+  client.index("books").getSortableAttributes { (result: Result<Searchable<Book>, Swift.Error>) in
     switch result {
     case .success(let attributes):
       print(attributes)
@@ -1328,7 +1457,7 @@ search_parameter_guide_sort_1: |-
     query: "science fiction",
     sort: ["price:asc"]
   )
-  client.index("books").search(searchParameters) { (result) in
+  client.index("books").search(searchParameters) { (result: Result<Searchable<Book>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
       print(searchResult)
@@ -1341,7 +1470,7 @@ post_dump_1: |-
       switch result {
       case .success(let dumpStatus):
           print(dumpStatus)
-      case .failure:
+      case .failure(let error):
           print(error)
       }
   }
@@ -1356,9 +1485,9 @@ geosearch_guide_filter_settings_1: |-
   }
 geosearch_guide_filter_usage_1: |-
   let searchParameters = SearchParameters(
-      filter: ["_geoRadius(45.472735, 9.184019, 2000)"]
+      filter: "_geoRadius(45.472735, 9.184019, 2000)"
   )
-  client.index("restaurants").search(searchParameters) { (result) in
+  client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1368,9 +1497,9 @@ geosearch_guide_filter_usage_1: |-
   }
 geosearch_guide_filter_usage_2: |-
   let searchParameters = SearchParameters(
-      filter: ["_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"]
+      filter: "_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"
   )
-  client.index("restaurants").search(searchParameters) { (result) in
+  client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1389,9 +1518,10 @@ geosearch_guide_sort_settings_1: |-
   }
 geosearch_guide_sort_usage_1: |-
   let searchParameters = SearchParameters(
+      query: "",
       sort: ["_geoPoint(48.8561446, 2.2978204):asc"]
   )
-  client.index("restaurants").search(searchParameters) { (result) in
+  client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let task):
         print(task)
@@ -1401,9 +1531,10 @@ geosearch_guide_sort_usage_1: |-
     }
 geosearch_guide_sort_usage_2: |-
   let searchParameters = SearchParameters(
+      query: "",
       sort: ["_geoPoint(48.8561446, 2.2978204):asc", "rating:desc"]
   )
-  client.index("restaurants").search(searchParameters) { (result) in
+  client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1425,9 +1556,10 @@ landing_getting_started_1: |-
   """.data(using: .utf8)!
 
   client.index("movies").addDocuments(documents: documents, primaryKey: "reference_number") { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }

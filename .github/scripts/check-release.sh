@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Checking if current tag matches the package version
-current_tag=$(echo $GITHUB_REF | tr -d 'refs/tags/')
+current_tag=$(echo $GITHUB_REF | cut -d '/' -f 3 | sed -r 's/^v//')
 file1='README.md'
 file2='.code-samples.meilisearch.yaml'
 file3='Sources/MeiliSearch/Model/PackageVersion.swift'
