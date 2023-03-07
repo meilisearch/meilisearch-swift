@@ -80,7 +80,7 @@ date_guide_sort_1: |-
   }
 
 async_guide_filter_by_date_1: |-
-  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
+  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(/from:."0.15.0"/))) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
@@ -1120,7 +1120,7 @@ getting_started_add_documents_md: |-
   Add this to your `Package.swift`:
   ```swift
     dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.14.1")
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", /from:."0.15.0"/)
     ]
   ```
 
