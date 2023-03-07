@@ -6,6 +6,7 @@ disabled_rules:
   - xctfail_message # should be re-enabled
   - identifier_name
   - function_body_length
+  - trailing_comma
 
 analyzer_rules:
   - unused_declaration
@@ -41,3 +42,5 @@ line_length: 200
 indentation_width:
   indentation_width: 2
   include_comments: false
+
+child_config: ./Tests/.swiftlint_for_tests.yml
