@@ -1120,7 +1120,7 @@ getting_started_add_documents_md: |-
   Add this to your `Package.swift`:
   ```swift
     dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.14.1")
+      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.15.0")
     ]
   ```
 
