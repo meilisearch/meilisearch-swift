@@ -3,6 +3,82 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+getting_started_faceting: |-
+  client.index("movies").updateFaceting({ maxValuesPerFacet: 2 })
+getting_started_pagination: |-
+  client.index("movies").updatePagination({ maxTotalHits: 500 })
+synonyms_guide_1: |-
+  let synonyms: [String: [String]] = [
+    "great": ["fantastic"],
+    "fantastic": ["great"]
+  ]
+
+  client.index("movies").updateSynonyms(synonyms) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_index_1: |-
+  let path = Bundle.main.url(forResource: "games", withExtension: "json")!
+  let documents: Data = try Data(contentsOf: path)
+
+  client.index("games").addDocuments(documents: documents) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_filterable_attributes_1: |-
+  client.index("games").updateFilterableAttributes(["release_timestamp"]) { (result) in
+    switch result {
+    case .success(let task):
+        print(task)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_filter_1: |-
+  let searchParameters = SearchParameters(
+    query: "",
+    filter: "release_timestamp >= 1514761200 AND release_timestamp < 1672527600"
+  )
+  client.index("games").search(searchParameters) { (result: Result<Searchable<Game>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+date_guide_sortable_attributes_1: |-
+  client.index("games").updateSortableAttributes(["release_timestamp"]) { (result) in
+    switch result {
+    case .success(let task):
+      print(task)
+    case .failure(let error):
+      print(error)
+    }
+  }
+date_guide_sort_1: |-
+  let searchParameters = SearchParameters(
+    query: "",
+    sort: ["release_timestamp:desc"],
+  )
+
+  client.index("games").search(searchParameters) { (result: Result<Searchable<Game>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+
 async_guide_filter_by_date_1: |-
   client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
     switch result {
