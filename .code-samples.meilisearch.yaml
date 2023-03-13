@@ -3,6 +3,12 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+filtering_guide_nested_1: |-
+  with data: { "index": "movies", "q": "thriller", "filter": "rating.users >= 90" }
+
+sorting_guide_sort_nested_1: |-
+  with data: { "index": "books", "q": "science fiction", "sort": ["rating.users:asc"] }
+
 getting_started_faceting: |-
   client.index("movies").updateFaceting({ maxValuesPerFacet: 2 })
 getting_started_pagination: |-
@@ -758,7 +764,7 @@ get_version_1: |-
           print(error)
       }
   }
-distinct_attribute_guide_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME distinct_attribute_guide_1 (use distinct attribute route): |-
   client.index("jackets").updateDistinctAttribute("product_id") { (result) in
       switch result {
       case .success(let task):
@@ -767,7 +773,7 @@ distinct_attribute_guide_1: |-
           print(error)
       }
   }
-field_properties_guide_searchable_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_searchable_1 (use searchable attribute route): |-
   let searchableAttributes: [String] = [
       "title",
       "overview",
@@ -781,7 +787,7 @@ field_properties_guide_searchable_1: |-
           print(error)
       }
   }
-field_properties_guide_displayed_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_displayed_1 (use displayed attribute route): |-
   let displayedAttributes: [String] = [
       "title",
       "overview",
@@ -942,7 +948,7 @@ search_parameter_guide_show_matches_position_1: |-
           print(error)
       }
   }
-settings_guide_stop_words_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_stop_words_1: |-
   let settings = Setting(
     stopWords: [
       "the",
@@ -957,7 +963,7 @@ settings_guide_stop_words_1: |-
           print(error)
       }
   }
-settings_guide_ranking_rules_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_ranking_rules_1: |-
   let settings = Setting(
     rankingRules: [
       "words",
@@ -977,7 +983,7 @@ settings_guide_ranking_rules_1: |-
           print(error)
       }
   }
-settings_guide_distinct_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_distinct_1: |-
   let settings = Setting(
     distinctAttribute: "product_id"
   )
@@ -989,7 +995,7 @@ settings_guide_distinct_1: |-
           print(error)
       }
   }
-settings_guide_searchable_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_searchable_1: |-
   let settings = Setting(
     searchableAttributes: [
       "title",
@@ -1004,7 +1010,7 @@ settings_guide_searchable_1: |-
           print(error)
       }
   }
-settings_guide_synonyms_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_synonyms_1: |-
   let settings = Setting(
     synonyms: [
       "sweater": ["jumper"],
@@ -1018,7 +1024,7 @@ settings_guide_synonyms_1: |-
           print(error)
       }
   }
-settings_guide_displayed_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_displayed_1: |-
   let settings = Setting(
     displayedAttributes: [
       "title",
@@ -1034,7 +1040,7 @@ settings_guide_displayed_1: |-
           print(error)
       }
   }
-settings_guide_sortable_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_sortable_1: |-
   let settings = Setting(
     sortableAttributes: [
       "author",
