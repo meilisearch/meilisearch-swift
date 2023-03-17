@@ -21,7 +21,20 @@ public struct Task: Codable, Equatable {
   public let status: Task.Status
 
   /// Type of the task.
-  public let type: String
+  //public let type: String
+    public enum type {
+        case indexCreation
+        case indexUpdate
+        case indexUpdate
+        case indexSwap
+        case documentAdditionOrUpdate
+        case documentDeletion
+        case settingsUpdate
+        case dumpCreation
+        case taskCancelation
+        case taskDeletion
+        case snapshotCreation
+    }
 
   /// Details of the task.
   public let details: Details?
