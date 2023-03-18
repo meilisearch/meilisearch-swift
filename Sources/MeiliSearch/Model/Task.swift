@@ -22,10 +22,10 @@ public struct Task: Codable, Equatable {
 
   /// Type of the task.
   //public let type: String
-    public enum type {
+    public enum Type {
         case indexCreation
         case indexUpdate
-        case indexUpdate
+        case indexDeletion
         case indexSwap
         case documentAdditionOrUpdate
         case documentDeletion
