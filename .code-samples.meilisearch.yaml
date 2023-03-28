@@ -1339,7 +1339,7 @@ reset_filterable_attributes_1: |-
           print(error)
       }
   }
-faceted_search_update_settings_1: |-
+filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result) in
       switch result {
       case .success(let task):
