@@ -10,7 +10,7 @@
   <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://docs.meilisearch.com/faq">FAQ</a>
+  <a href="https://www.meilisearch.com/docs/faq">FAQ</a>
 </h4>
 
 <p align="center">
@@ -39,7 +39,7 @@
 
 For more information about this API see our [Swift documentation](https://meilisearch.github.io/meilisearch-swift/).
 
-For more information about Meilisearch see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
+For more information about Meilisearch see our [Documentation](https://www.meilisearch.com/docs/learn/tutorials/getting_started.html) or our [API References](https://www.meilisearch.com/docs/reference/api/).
 
 ## 🔧 Installation
 
@@ -75,7 +75,7 @@ dependencies: [
 
 ### Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a Meilisearch instance](https://www.meilisearch.com/docs/reference/features/installation.html#download-and-launch).
 
 For example, using the `curl` command in your [Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
 
@@ -138,7 +138,7 @@ To do a simple search using the client, you can create a Swift script like this:
     semaphore.wait()
 ```
 
-With the `uid` of the task, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/learn/advanced/asynchronous_operations.html#task-status).
+With the `uid` of the task, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [update endpoint](https://www.meilisearch.com/docs/learn/advanced/asynchronous_operations.html#task-status).
 
 #### Basic Search <!-- omit in toc -->
 
@@ -193,10 +193,10 @@ This package guarantees compatibility with [version v1.x of Meilisearch](https:/
 
 The following sections in our main documentation website may interest you:
 
-- **Manipulate documents**: see the [API references](https://docs.meilisearch.com/reference/api/documents.html) or read more about [documents](https://docs.meilisearch.com/learn/core_concepts/documents.html).
-- **Search**: see the [API references](https://docs.meilisearch.com/reference/api/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html).
-- **Manage the indexes**: see the [API references](https://docs.meilisearch.com/reference/api/indexes.html) or read more about [indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html).
-- **Configure the index settings**: see the [API references](https://docs.meilisearch.com/reference/api/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/reference/features/settings.html).
+- **Manipulate documents**: see the [API references](https://www.meilisearch.com/docs/reference/api/documents) or read more about [documents](https://www.meilisearch.com/docs/learn/core_concepts/documents.html).
+- **Search**: see the [API references](https://www.meilisearch.com/docs/reference/api/search) or follow our guide on [search parameters](https://www.meilisearch.com/docs/reference/api/search#search-parameters).
+- **Manage the indexes**: see the [API references](https://www.meilisearch.com/docs/reference/api/indexes) or read more about [indexes](https://www.meilisearch.com/docs/learn/core_concepts/indexes.html).
+- **Configure the index settings**: see the [API references](https://www.meilisearch.com/docs/reference/api/settings) or follow our guide on [settings parameters](https://www.meilisearch.com/docs/reference/api/settings#settings_parameters).
 
 ## ⚙️ Contributing
 
