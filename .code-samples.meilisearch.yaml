@@ -1140,7 +1140,7 @@ getting_started_add_documents_md: |-
   [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
 getting_started_search_md: |-
   ```swift
-    client.index("movies").search(SearchParameters(query: "")) { (result) in
+    client.index("movies").search(SearchParameters(query: "botman")) { (result) in
         switch result {
         case .success(let searchResult):
             print(searchResult)
