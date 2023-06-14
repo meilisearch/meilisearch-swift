@@ -1339,7 +1339,7 @@ reset_filterable_attributes_1: |-
           print(error)
       }
   }
-faceted_search_update_settings_1: |-
+filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributes(["genre", "director"]) { (result) in
       switch result {
       case .success(let task):
@@ -1498,6 +1498,18 @@ geosearch_guide_filter_usage_1: |-
 geosearch_guide_filter_usage_2: |-
   let searchParameters = SearchParameters(
       filter: "_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"
+  )
+  client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
+geosearch_guide_filter_usage_3: |-
+  let searchParameters = SearchParameters(
+      filter: '_geoBoundingBox([45.494181, 9.179175], [45.449484, 9.214024])'
   )
   client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
