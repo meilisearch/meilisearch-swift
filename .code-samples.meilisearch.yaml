@@ -1127,6 +1127,7 @@ getting_started_add_documents_md: |-
   ```swift
     let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
     let documents: Data = try Data(contentsOf: path)
+    let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "aSampleMasterKey")
 
     client.index("movies").addDocuments(documents: documents) { (result) in
         switch result {
