@@ -3,7 +3,7 @@
 # Install Docker on your system to run and test
 # your Vapor app in a production-like environment.
 #
-# Note: This file is intended for testing and does not 
+# Note: This file is intended for testing and does not
 # implement best practices for a production deployment.
 #
 # Learn more: https://docs.docker.com/compose/reference/

@@ -1,6 +1,6 @@
 extends: default
 ignore: |
-  node_modules
+  .build
 rules:
   comments-indentation: disable
   line-length: disable
