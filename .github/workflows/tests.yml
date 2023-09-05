@@ -48,3 +48,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run CocoaPods pod linter
         run: pod spec lint
+
+  yaml-lint:
+    name: Yaml linting check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Yaml lint check
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml

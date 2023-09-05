@@ -2,8 +2,10 @@ disabled_rules:
   - todo
   - type_body_length
   - file_length
-  - nesting # should be re-enabled
-  - xctfail_message # should be re-enabled
+  # should be re-enabled
+  - nesting
+  # should be re-enabled
+  - xctfail_message
   - identifier_name
   - function_body_length
   - trailing_comma
