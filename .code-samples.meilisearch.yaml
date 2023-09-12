@@ -827,7 +827,7 @@ filtering_guide_1: |-
       query: "Avengers",
       filter: "release_date > 795484800"
   )
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+  client.index("movie_ratings").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -839,7 +839,7 @@ filtering_guide_2: |-
   let searchParameters = SearchParameters(
       query: "Batman",
       filter: "release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\"")
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+  client.index("movie_ratings").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -850,8 +850,8 @@ filtering_guide_2: |-
 filtering_guide_3: |-
   let searchParameters = SearchParameters(
       query: "Planet of the Apes",
-      filter: "rating >= 3 AND (NOT director = \"Tim Burton\"")
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+      filter: "release_date > 1577884550 AND (NOT director = \"Tim Burton\"))
+  client.index("movie_ratings").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1430,7 +1430,7 @@ geosearch_guide_filter_usage_2: |-
   }
 geosearch_guide_filter_usage_3: |-
   let searchParameters = SearchParameters(
-      filter: '_geoBoundingBox([45.494181, 9.179175], [45.449484, 9.214024])'
+      filter: '_geoBoundingBox([45.494181, 9.214024], [45.449484, 9.179175])'
   )
   client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
