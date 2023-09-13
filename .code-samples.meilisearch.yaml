@@ -159,8 +159,6 @@ async_guide_filter_by_index_uids_1: |-
       print(error)
     }
   }
-delete_tasks_1: |-
-cancel_tasks_1: |-
 async_guide_canceled_by: |-
   client.getTasks(params: TasksQuery(canceledBy: [9, 15])) { result in
     switch result {
@@ -170,7 +168,6 @@ async_guide_canceled_by: |-
       print(error)
     }
   }
-swap_indexes_1: |-
 search_parameter_guide_hitsperpage_1: |-
   let searchParameters = SearchParameters.query("", hitsPerPage: 15)
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
@@ -1283,6 +1280,23 @@ faceted_search_facets_1: |-
       }
   }
 faceted_search_walkthrough_filter_1: |-
+  let searchParameters = SearchParameters(
+      query: "thriller",
+      filter: [
+        [
+          "genres = Horror",
+          "genres = Mystery"
+        ],
+        "director = \"Jordan Peele\""
+      ])
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
 phrase_search_1: |-
   let searchParameters = SearchParameters(
       query: "\"african american\" horror")
