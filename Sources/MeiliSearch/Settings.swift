@@ -456,4 +456,80 @@ struct Settings {
       }
     }
   }
+  
+  // MARK: Typo Tolerance
+
+  func getTypoTolerance(
+    _ uid: String,
+    _ completion: @escaping (Result<TypoToleranceResult, Swift.Error>) -> Void) {
+
+    self.request.get(api: "/indexes/\(uid)/settings/typo-tolerance") { result in
+      switch result {
+      case .success(let data):
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let response: TypoToleranceResult = try Constants.customJSONDecoder.decode(TypoToleranceResult.self, from: data)
+          completion(.success(response))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func updateTypoTolerance(
+    _ uid: String,
+    _ setting: TypoTolerance,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(setting)
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    self.request.put(api: "/indexes/\(uid)/settings/typo-tolerance", data) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func resetTypoTolerance(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    self.request.delete(api: "/indexes/\(uid)/settings/typo-tolerance") { result in
+      switch result {
+      case .success(let data):
+        guard let data: Data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 }

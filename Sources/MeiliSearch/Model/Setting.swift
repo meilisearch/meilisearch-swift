@@ -4,7 +4,7 @@ import Foundation
 #endif
 
 /**
-  Settings object provided byb the user
+  Settings object provided by the user
  */
 public struct Setting: Codable, Equatable {
   // MARK: Properties
