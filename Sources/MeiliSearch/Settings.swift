@@ -456,7 +456,7 @@ struct Settings {
       }
     }
   }
-  
+
   // MARK: Typo Tolerance
 
   func getTypoTolerance(

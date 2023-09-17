@@ -852,7 +852,7 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   // MARK: Typo Tolerance
 
   func testGetTypoTolerance() {
