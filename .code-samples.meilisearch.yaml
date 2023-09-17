@@ -169,7 +169,7 @@ async_guide_canceled_by: |-
     }
   }
 search_parameter_guide_hitsperpage_1: |-
-  let searchParameters = SearchParameters.query("", hitsPerPage: 15)
+  let searchParameters = SearchParameters(query: "", hitsPerPage: 15)
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
@@ -179,7 +179,7 @@ search_parameter_guide_hitsperpage_1: |-
     }
   }
 search_parameter_guide_page_1: |-
-  let searchParameters = SearchParameters.query("", page: 15)
+  let searchParameters = SearchParameters(query: "", page: 15)
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
@@ -194,6 +194,16 @@ search_parameter_guide_attributes_to_search_on_1: |-
     switch result {
     case .success(let searchResult):
         print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
+search_parameter_guide_show_ranking_score_1: |-
+  let searchParameters = SearchParameters(query: "dragon", showRankingScore: true)
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult.rankingScore)
     case .failure(let error):
         print(error)
     }
