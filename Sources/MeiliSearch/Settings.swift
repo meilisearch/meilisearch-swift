@@ -495,7 +495,7 @@ struct Settings {
       return
     }
 
-    self.request.put(api: "/indexes/\(uid)/settings/typo-tolerance", data) { result in
+    self.request.patch(api: "/indexes/\(uid)/settings/typo-tolerance", data) { result in
       switch result {
       case .success(let data):
         do {

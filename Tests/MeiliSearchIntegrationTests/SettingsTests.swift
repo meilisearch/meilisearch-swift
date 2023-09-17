@@ -31,6 +31,12 @@ class SettingsTests: XCTestCase {
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private let defaultPagination: Pagination = .init(maxTotalHits: 1000)
+  private let defaultTypoToleranceResult: TypoToleranceResult = .init(
+    enabled: true,
+    minWordSizeForTypos: .init(oneTypo: 5, twoTypos: 9),
+    disableOnWords: [],
+    disableOnAttributes: []
+  )
   private var defaultGlobalSettings: Setting?
   private var defaultGlobalReturnedSettings: SettingResult?
 
@@ -518,6 +524,100 @@ class SettingsTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed reseting searchable attributes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Typo Tolerance
+
+  func testGetTypoTolerance() {
+    let expectation = XCTestExpectation(description: "Get current typo tolerance")
+
+    self.index.getTypoTolerance { result in
+      switch result {
+      case .success(let typoTolerance):
+        XCTAssertEqual(self.defaultTypoToleranceResult, typoTolerance)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get typo tolerance")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdateTypoTolerance() {
+    let expectation = XCTestExpectation(description: "Update settings for typo tolerance")
+
+    let newTypoTolerance: TypoTolerance = .init(
+      minWordSizeForTypos: .init(
+        oneTypo: 1,
+        twoTypos: 2
+      ),
+      disableOnWords: ["to"],
+      disableOnAttributes: ["genre"]
+    )
+
+    self.index.updateTypoTolerance(newTypoTolerance) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let typoTolerance = details.typoTolerance {
+                XCTAssertEqual(newTypoTolerance, typoTolerance)
+              } else {
+                XCTFail("typoTolerance should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating typo tolerance")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetTypoTolerance() {
+    let expectation = XCTestExpectation(description: "Reset settings for typo tolerance")
+
+    self.index.resetTypoTolerance { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting typo tolerance")
         expectation.fulfill()
       }
     }

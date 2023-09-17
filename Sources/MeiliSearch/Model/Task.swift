@@ -88,6 +88,8 @@ public struct Task: Codable, Equatable {
     /// Settings for index level pagination rules
     public let pagination: Pagination?
 
+    /// Typo tolerance on settings actions
+    public let typoTolerance: TypoTolerance?
   }
   /// Error information in case of failed update.
   public let error: MeiliSearch.MSErrorResponse?
