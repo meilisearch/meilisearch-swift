@@ -32,6 +32,9 @@ public struct SearchParameters: Codable, Equatable {
   /// Which attributes to crop.
   public let attributesToCrop: [String]?
 
+  /// Attributes to search on.
+  public let attributesToSearchOn: [String]?
+
   /// Limit length at which to crop specified attributes.
   public let cropLength: Int?
 
@@ -69,6 +72,7 @@ public struct SearchParameters: Codable, Equatable {
     hitsPerPage: Int? = nil,
     attributesToRetrieve: [String]? = nil,
     attributesToCrop: [String]? = nil,
+    attributesToSearchOn: [String]? = nil,
     cropLength: Int? = nil,
     cropMarker: String? = nil,
     attributesToHighlight: [String]? = nil,
@@ -85,6 +89,7 @@ public struct SearchParameters: Codable, Equatable {
     self.page = page
     self.attributesToRetrieve = attributesToRetrieve
     self.attributesToCrop = attributesToCrop
+    self.attributesToSearchOn = attributesToSearchOn
     self.cropLength = cropLength
     self.cropMarker = cropMarker
     self.attributesToHighlight = attributesToHighlight
@@ -116,6 +121,7 @@ public struct SearchParameters: Codable, Equatable {
     case limit
     case attributesToRetrieve
     case attributesToCrop
+    case attributesToSearchOn
     case cropLength
     case cropMarker
     case attributesToHighlight

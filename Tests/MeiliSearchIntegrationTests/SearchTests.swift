@@ -13,7 +13,8 @@ private let books: [Book] = [
   Book(id: 1344, title: "The Hobbit", comment: "An awesome book", genres: ["High fantasy"]),
   Book(id: 4, title: "Harry Potter and the Half-Blood Prince", comment: "The best book", genres: ["Fantasy"]),
   Book(id: 42, title: "The Hitchhiker's Guide to the Galaxy", genres: ["Novel"]),
-  Book(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo", genres: ["Novel"])
+  Book(id: 1844, title: "A Moreninha", comment: "A Book from Joaquim Manuel de Macedo", genres: ["Novel"]),
+  Book(id: 94, title: "The Book Thief", comment: "By Markus Zusak", genres: ["Fictional"])
 ]
 
 // swiftlint:disable force_unwrapping
@@ -95,6 +96,40 @@ class SearchTests: XCTestCase {
       case .failure(let error):
         dump(error)
         XCTFail("Failed to search with testBasicSearch")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Attributes to search on
+  func testAttributesSearchOn() {
+    let expectation = XCTestExpectation(description: "Search for Books with limited attributes")
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let query = "book"
+    // even though multiple books have the word "book" in the comment, only one has "book" in the title.
+
+    self.index.search(SearchParameters(query: query, attributesToSearchOn: ["title"])) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        let result = response as! SearchResult<Book>
+
+        XCTAssertEqual(result.estimatedTotalHits, 1)
+        XCTAssertEqual(result.query, query)
+        XCTAssertEqual(result.limit, 20)
+        XCTAssertEqual(result.hits.count, 1)
+        if response.hits.count > 0 {
+          XCTAssertEqual("The Book Thief", response.hits[0].title)
+          XCTAssertNil(response.hits[0].formatted)
+        } else {
+          XCTFail("Failed to find hits in the response")
+        }
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search with testAttributesSearchOn")
         expectation.fulfill()
       }
     }
