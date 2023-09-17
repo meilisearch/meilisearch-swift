@@ -33,6 +33,9 @@ public struct Setting: Codable, Equatable {
   /// List of attributes used for sorting
   public let sortableAttributes: [String]?
 
+  /// Settings for typo tolerance
+  public let typoTolerance: TypoTolerance?
+
   /// List of tokens that will be considered as word separators by Meilisearch.
   public let separatorTokens: [String]?
 
@@ -59,7 +62,8 @@ public struct Setting: Codable, Equatable {
     separatorTokens: [String]? = nil,
     nonSeparatorTokens: [String]? = nil,
     dictionary: [String]? = nil,
-    pagination: Pagination? = nil
+    pagination: Pagination? = nil,
+    typoTolerance: TypoTolerance? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -73,5 +77,6 @@ public struct Setting: Codable, Equatable {
     self.separatorTokens = separatorTokens
     self.dictionary = dictionary
     self.pagination = pagination
+    self.typoTolerance = typoTolerance
   }
 }

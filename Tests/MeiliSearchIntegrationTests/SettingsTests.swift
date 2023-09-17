@@ -31,6 +31,12 @@ class SettingsTests: XCTestCase {
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
   private let defaultPagination: Pagination = .init(maxTotalHits: 1000)
+  private let defaultTypoTolerance: TypoTolerance = .init(
+    enabled: true,
+    minWordSizeForTypos: .init(oneTypo: 5, twoTypos: 9),
+    disableOnWords: [],
+    disableOnAttributes: []
+  )
   private let defaultTypoToleranceResult: TypoToleranceResult = .init(
     enabled: true,
     minWordSizeForTypos: .init(oneTypo: 5, twoTypos: 9),
@@ -74,7 +80,8 @@ class SettingsTests: XCTestCase {
       separatorTokens: self.defaultSeparatorTokens,
       nonSeparatorTokens: self.defaultNonSeparatorTokens,
       dictionary: self.defaultDictionary,
-      pagination: self.defaultPagination
+      pagination: self.defaultPagination,
+      typoTolerance: self.defaultTypoTolerance
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -89,7 +96,8 @@ class SettingsTests: XCTestCase {
       separatorTokens: self.defaultSeparatorTokens,
       nonSeparatorTokens: self.defaultNonSeparatorTokens,
       dictionary: self.defaultDictionary,
-      pagination: self.defaultPagination
+      pagination: self.defaultPagination,
+      typoTolerance: self.defaultTypoToleranceResult
     )
   }
 
@@ -1360,7 +1368,8 @@ class SettingsTests: XCTestCase {
       separatorTokens: [],
       nonSeparatorTokens: [],
       dictionary: [],
-      pagination: .init(maxTotalHits: 1000)
+      pagination: .init(maxTotalHits: 1000),
+      typoTolerance: defaultTypoToleranceResult
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -1441,7 +1450,8 @@ class SettingsTests: XCTestCase {
       separatorTokens: ["&"],
       nonSeparatorTokens: ["#"],
       dictionary: ["J.K"],
-      pagination: .init(maxTotalHits: 500)
+      pagination: .init(maxTotalHits: 500),
+      typoTolerance: nil
     )
 
     let expectedSettingResult = SettingResult(
@@ -1456,7 +1466,8 @@ class SettingsTests: XCTestCase {
       separatorTokens: ["&"],
       nonSeparatorTokens: ["#"],
       dictionary: ["J.K"],
-      pagination: .init(maxTotalHits: 500)
+      pagination: .init(maxTotalHits: 500),
+      typoTolerance: defaultTypoToleranceResult
     )
 
     self.index.updateSettings(newSettings) { result in
