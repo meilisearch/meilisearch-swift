@@ -13,4 +13,6 @@ public struct TasksResults: Codable, Equatable {
   public let from: Int?
   /// Max number of records to be returned in one request.
   public let limit: Int
+  /// The total number of tasks.
+  public let total: Int
 }

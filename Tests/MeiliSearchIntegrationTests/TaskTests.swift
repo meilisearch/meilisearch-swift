@@ -75,6 +75,7 @@ class TasksTests: XCTestCase {
               case .success(let tasks):
                 // Only one because index has been deleted and recreated
                 XCTAssertEqual(tasks.results.count, 1)
+                XCTAssertEqual(tasks.total, 1)
                 expectation.fulfill()
               case .failure(let error):
                 dump(error)
