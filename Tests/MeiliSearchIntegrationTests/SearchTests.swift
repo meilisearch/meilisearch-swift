@@ -85,6 +85,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(result.query, query)
         XCTAssertEqual(result.limit, 20)
         XCTAssertEqual(result.hits.count, 1)
+        XCTAssertNil(result.facetStats)
         if response.hits.count > 0 {
           XCTAssertEqual("A Moreninha", response.hits[0].title)
           XCTAssertNil(response.hits[0].formatted)
@@ -901,6 +902,7 @@ class SearchTests: XCTestCase {
 
             XCTAssertEqual(facetDistribution["genres"]?.keys.sorted(), expected["genres"]?.keys.sorted())
             XCTAssertEqual(facetDistribution["genres"]?.values.sorted(), expected["genres"]?.values.sorted())
+            XCTAssertEqual(documents.facetStats, [:])
 
             expectation.fulfill()
           case .failure(let error):
@@ -956,6 +958,49 @@ class SearchTests: XCTestCase {
         expectation.fulfill()
       }
     }
+    self.wait(for: [expectation], timeout: 2.0)
+  }
+
+  // MARK: Facet stats
+
+  func testSearchFacetStats() {
+    let expectation = XCTestExpectation(description: "Search for Books using facets")
+
+    configureFilters { result in
+      switch result {
+      case .success:
+        typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+        let limit = 5
+        let query = "A"
+        let facets = ["id"]
+        let parameters = SearchParameters(query: query, limit: limit, facets: facets)
+
+        self.index.search(parameters) { (result: MeiliResult) in
+          switch result {
+          case .success(let documents):
+            let result = documents as! SearchResult<Book>
+
+            XCTAssertEqual(documents.query, query)
+            XCTAssertEqual(result.limit, limit)
+            XCTAssertEqual(documents.hits.count, limit)
+            
+            XCTAssertEqual(documents.facetStats?["id"]?.min, 1)
+            XCTAssertEqual(documents.facetStats?["id"]?.max, 1844)
+
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to search with testSearchFacetStats")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Could not update settings")
+        expectation.fulfill()
+      }
+    }
+
     self.wait(for: [expectation], timeout: 2.0)
   }
 }
