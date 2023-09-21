@@ -20,7 +20,8 @@ class TasksTests: XCTestCase {
         "results": [],
         "limit": 20,
         "from": 5,
-        "next": 98
+        "next": 98,
+        "total": 4
       }
       """
 
