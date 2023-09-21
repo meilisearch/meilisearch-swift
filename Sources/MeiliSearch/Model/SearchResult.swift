@@ -36,12 +36,12 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
 
 @dynamicMemberLookup
 public struct SearchHit<T>: Equatable, Codable where T: Codable, T: Equatable {
-  public let result: T
-  public let rankingScore: Double?
+  public let document: T
+  public internal(set) var rankingScore: Double?
 
   /// Dynamic member lookup is used to allow easy access to instance members of the hit result, maintaining a level of backwards compatibility.
   public subscript<V>(dynamicMember keyPath: KeyPath<T, V>) -> V {
-    result[keyPath: keyPath]
+    document[keyPath: keyPath]
   }
 
   // MARK: Codable
@@ -52,13 +52,13 @@ public struct SearchHit<T>: Equatable, Codable where T: Codable, T: Equatable {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.result = try T(from: decoder)
+    self.document = try T(from: decoder)
     self.rankingScore = try container.decodeIfPresent(Double.self, forKey: .rankingScore)
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
-    try container.encode(result)
+    try container.encode(document)
 
     var containerTwo = encoder.container(keyedBy: CodingKeys.self)
     try containerTwo.encodeIfPresent(rankingScore, forKey: .rankingScore)

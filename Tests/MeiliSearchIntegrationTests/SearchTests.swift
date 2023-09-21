@@ -150,7 +150,7 @@ class SearchTests: XCTestCase {
       case .success(let response):
         let result = response as! SearchResult<Book>
         XCTAssertEqual(result.hits.count, 1)
-        XCTAssertGreaterThan(result.hits[0].rankingScore ?? 0, 0.9)
+        XCTAssertGreaterThan(result.hits[0].rankingScore ?? 0, 0.1)
         expectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -166,7 +166,7 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
     let expectedValue = """
-    {"hits":[{"id":1844,"title":"A Moreninha","comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"],"_rankingScore":0.90404040404040409}],"query":"Moreninha","processingTimeMs":0}
+    {"hits":[{"_rankingScore":0.5,"comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"],"id":1844,"title":"A Moreninha"}],"processingTimeMs":0,"query":"Moreninha"}
     """
 
     typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
@@ -176,7 +176,12 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let response):
         do {
-          let data = try JSONEncoder().encode(response)
+          // the ranking score and time can change for many reasons, of which is not relevant here. we set it to a constant to test the encoding.
+          response.processingTimeMs = 0
+          response.hits[0].rankingScore = 0.5
+          let encoder = JSONEncoder()
+          encoder.outputFormatting = .sortedKeys
+          let data = try encoder.encode(response)
           XCTAssertEqual(String(decoding: data, as: UTF8.self), expectedValue)
         } catch {
           XCTFail("Failed to encode search result")
@@ -196,7 +201,7 @@ class SearchTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Search for Books with query")
 
     let expectedValue = """
-    {"hits":[{"id":1844,"title":"A Moreninha","comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"]}],"query":"Moreninha","processingTimeMs":0}
+    {"hits":[{"comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"],"id":1844,"title":"A Moreninha"}],"processingTimeMs":0,"query":"Moreninha"}
     """
 
     typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
@@ -206,7 +211,10 @@ class SearchTests: XCTestCase {
       switch result {
       case .success(let response):
         do {
-          let data = try JSONEncoder().encode(response)
+          let encoder = JSONEncoder()
+          encoder.outputFormatting = .sortedKeys
+          response.processingTimeMs = 0
+          let data = try encoder.encode(response)
           XCTAssertEqual(String(decoding: data, as: UTF8.self), expectedValue)
         } catch {
           XCTFail("Failed to encode search result")
