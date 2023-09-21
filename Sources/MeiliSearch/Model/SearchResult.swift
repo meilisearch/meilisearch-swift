@@ -15,6 +15,9 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
 
   /// Distribution of the given facets.
   public var facetDistribution: [String: [String: Int]]?
+  
+  /// Maximum & minimum stats of a numeric facet.
+  public var facetStats: [String: FacetStats]?
 
   /// Time, in milliseconds, to process the query.
   public var processingTimeMs: Int?
@@ -25,6 +28,7 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
   public enum CodingKeys: String, CodingKey {
     case hits
     case facetDistribution
+    case facetStats
     case processingTimeMs
     case query
   }
