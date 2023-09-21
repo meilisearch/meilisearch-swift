@@ -188,6 +188,16 @@ search_parameter_guide_page_1: |-
         print(error)
     }
   }
+search_parameter_guide_attributes_to_search_on_1: |-
+  let searchParameters = SearchParameters(query: "adventure", attributesToSearchOn: ["overview"])
+  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
+    switch result {
+    case .success(let searchResult):
+        print(searchResult)
+    case .failure(let error):
+        print(error)
+    }
+  }
 authorization_header_1: |-
   client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
   client.getKeys { result in
