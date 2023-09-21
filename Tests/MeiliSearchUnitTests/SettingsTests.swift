@@ -39,6 +39,15 @@ class SettingsTests: XCTestCase {
       "synonyms": {
         "wolverine": ["xmen", "logan"],
         "logan": ["wolverine", "xmen"]
+      },
+      "typoTolerance": {
+        "enabled": true,
+        "minWordSizeForTypos": {
+          "oneTypo": 5,
+          "twoTypos": 9
+        },
+        "disableOnWords": [],
+        "disableOnAttributes": []
       }
     }
     """
