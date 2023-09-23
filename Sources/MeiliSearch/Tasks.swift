@@ -136,4 +136,44 @@ struct Tasks {
         }
       }
   }
+  
+  // MARK: Cancel Tasks
+  
+  func cancelTasks(
+    _ params: CancelTasksQuery,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.request.post(api: "/tasks/cancel", param: params.toQuery(), nil) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: Result<TaskInfo, Swift.Error> = try Constants.resultDecoder(data: data)
+          completion(task)
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  // MARK: Delete Tasks
+  
+  func deleteTasks(
+    _ params: DeleteTasksQuery,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.request.delete(api: "/tasks", param: params.toQuery()) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: Result<TaskInfo, Swift.Error> = try Constants.resultDecoder(data: data)
+          completion(task)
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 }

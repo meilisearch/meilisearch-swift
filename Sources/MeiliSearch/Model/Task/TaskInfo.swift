@@ -18,7 +18,7 @@ public struct TaskInfo: Codable, Equatable {
   public let type: TaskType
 
   /// Date when the task has been enqueued.
-  public let enqueuedAt: String
+  public let enqueuedAt: Date
 
   public enum CodingKeys: String, CodingKey {
     case taskUid, indexUid, status, type, enqueuedAt

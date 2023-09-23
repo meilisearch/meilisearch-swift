@@ -40,7 +40,7 @@ class DocumentsTests: XCTestCase {
     """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -75,7 +75,7 @@ class DocumentsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -118,7 +118,7 @@ class DocumentsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -155,7 +155,7 @@ class DocumentsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -198,7 +198,7 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
     let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
@@ -232,7 +232,7 @@ class DocumentsTests: XCTestCase {
     session.pushData(jsonString, code: 200)
 
     do {
-      let decoder = JSONDecoder()
+      let decoder = Constants.customJSONDecoder
       decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
       let data = jsonString.data(using: .utf8)!
       let stubMovie: Movie = try decoder.decode(Movie.self, from: data)
@@ -316,7 +316,7 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
     let stubMovies: DocumentsResults<Movie> = try! decoder.decode(DocumentsResults<Movie>.self, from: data)
@@ -342,7 +342,7 @@ class DocumentsTests: XCTestCase {
     """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -370,7 +370,7 @@ class DocumentsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -396,7 +396,7 @@ class DocumentsTests: XCTestCase {
     """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
@@ -424,7 +424,7 @@ class DocumentsTests: XCTestCase {
     """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
     let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
