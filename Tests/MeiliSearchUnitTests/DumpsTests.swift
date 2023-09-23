@@ -2,17 +2,17 @@
 import XCTest
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 class DumpsTests: XCTestCase {
   private var client: MeiliSearch!
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
   }
 
-  func testCreateDump() {
+  func testCreateDump() throws {
     // Prepare the mock server
 
     let json = """
@@ -21,7 +21,7 @@ class DumpsTests: XCTestCase {
 
     let data = json.data(using: .utf8)!
 
-    let stubDump: TaskInfo = try! Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+    let stubDump: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
 
     session.pushData(json)
 
@@ -43,4 +43,3 @@ class DumpsTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

@@ -136,9 +136,9 @@ struct Tasks {
         }
       }
   }
-  
+
   // MARK: Cancel Tasks
-  
+
   func cancelTasks(
     _ params: CancelTasksQuery,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
@@ -156,9 +156,9 @@ struct Tasks {
       }
     }
   }
-  
+
   // MARK: Delete Tasks
-  
+
   func deleteTasks(
     _ params: DeleteTasksQuery,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {

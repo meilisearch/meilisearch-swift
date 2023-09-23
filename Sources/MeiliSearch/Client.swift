@@ -200,7 +200,7 @@ public struct MeiliSearch {
     _ completion: @escaping (Result<TasksResults, Swift.Error>) -> Void) {
     self.tasks.getTasks(params: params, completion)
   }
-  
+
   /**
    Cancel any number of enqueued or processing tasks, stopping them from continuing to run
 
@@ -214,7 +214,7 @@ public struct MeiliSearch {
     completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.tasks.cancelTasks(filter, completion)
   }
-  
+
   /**
    Delete a finished (succeeded, failed, or canceled) task
 

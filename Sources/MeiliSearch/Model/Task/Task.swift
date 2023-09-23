@@ -28,16 +28,16 @@ public struct Task: Decodable, Equatable {
 
   /// Date when the task has been started.
   public let startedAt: Date?
-  
+
   /// Date when the task has been finished, regardless of status.
   public let finishedAt: Date?
 
   /// ID of the the `Task` which caused this to be canceled.
   public let canceledBy: Int?
-  
+
   /// Error information in case of failed update.
   public let error: MeiliSearch.MSErrorResponse?
-  
+
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let type = try container.decode(TaskType.self, forKey: .type)
@@ -58,7 +58,7 @@ public struct Task: Decodable, Equatable {
     let detailsDecoder = try? container.superDecoder(forKey: .details)
     self.details = try Details(decoder: detailsDecoder, type: type)
   }
-  
+
   enum CodingKeys: String, CodingKey {
     case uid, indexUid, status, type, details, duration, enqueuedAt, startedAt, finishedAt, canceledBy, error
   }

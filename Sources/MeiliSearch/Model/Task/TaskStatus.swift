@@ -20,7 +20,7 @@ public extension Task {
     public init(from decoder: Decoder) throws {
       let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
       let rawStatus: String = try container.decode(String.self)
-      
+
       switch rawStatus {
       case "enqueued":
         self = Status.enqueued

@@ -5,7 +5,6 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_try
 class TasksTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
@@ -14,10 +13,10 @@ class TasksTests: XCTestCase {
 
   // MARK: Setup
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in

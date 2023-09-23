@@ -1,17 +1,15 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_try
 class KeysTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
   private let uid: String = "movies_test"
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = client.index(self.uid)
   }
 
@@ -50,4 +48,3 @@ class KeysTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

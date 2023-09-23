@@ -2,20 +2,20 @@
 import XCTest
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 class StatsTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
   private var uid: String = "movies_test"
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = client.index(self.uid)
   }
 
-  func testStats() {
+  func testStats() throws {
     let jsonString = """
       {
         "numberOfDocuments": 19654,
@@ -32,7 +32,7 @@ class StatsTests: XCTestCase {
 
     // Prepare the mock server
     let jsonData = jsonString.data(using: .utf8)!
-    let stubStats: Stat = try! Constants.customJSONDecoder.decode(Stat.self, from: jsonData)
+    let stubStats: Stat = try Constants.customJSONDecoder.decode(Stat.self, from: jsonData)
 
     session.pushData(jsonString)
 
@@ -51,7 +51,7 @@ class StatsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testAllStats() {
+  func testAllStats() throws {
     let jsonString = """
       {
         "databaseSize": 447819776,
@@ -82,7 +82,7 @@ class StatsTests: XCTestCase {
       """
     // Prepare the mock server
     let jsonData = jsonString.data(using: .utf8)!
-    let stubAllStats: AllStats = try! Constants.customJSONDecoder.decode(AllStats.self, from: jsonData)
+    let stubAllStats: AllStats = try Constants.customJSONDecoder.decode(AllStats.self, from: jsonData)
 
     session.pushData(jsonString)
 
@@ -103,4 +103,3 @@ class StatsTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

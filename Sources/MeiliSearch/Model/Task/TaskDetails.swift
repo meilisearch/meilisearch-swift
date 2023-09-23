@@ -12,12 +12,12 @@ public extension Task {
     case dumpCreation(TaskDumpCreationDetails)
     case taskCancelation(TaskCancellationDetails)
     case taskDeletion(TaskDeletionDetails)
-    
+
     init?(decoder: Decoder?, type: TaskType) throws {
       guard let decoder = decoder else {
         return nil
       }
-      
+
       switch type {
       case .indexCreation:
         self = try .indexCreation(.init(from: decoder))
@@ -48,7 +48,7 @@ public extension Task {
       }
     }
   }
-  
+
   struct TaskDocumentAdditionOrUpdateDetails: Decodable, Equatable {
     /// Number of documents sent
     public let receivedDocuments: Int?
@@ -56,7 +56,7 @@ public extension Task {
     /// Number of documents successfully indexed/updated in Meilisearch
     public let indexedDocuments: Int?
   }
-  
+
   struct TaskDocumentDeletionDetails: Decodable, Equatable {
     /// Number of documents queued for deletion
     public let providedIds: Int?
@@ -65,26 +65,26 @@ public extension Task {
     /// Number of documents deleted. nil while the task status is enqueued or processing
     public let deletedDocuments: Int?
   }
-  
+
   struct TaskIndexCreationDetails: Decodable, Equatable {
     /// Value of the primaryKey field supplied during index creation. nil if it was not specified
     public let primaryKey: String?
   }
-  
+
   struct TaskIndexUpdateDetails: Decodable, Equatable {
     /// Value of the primaryKey field supplied during index update. nil if it was not specified
     public let primaryKey: String?
   }
-  
+
   struct TaskIndexDeletionDetails: Decodable, Equatable {
     /// Number of deleted documents. This should equal the total number of documents in the deleted index. nil while the task status is enqueued or processing
     public let deletedDocuments: Int?
   }
-  
+
   struct TaskIndexSwapDetails: Decodable, Equatable {
     // To be populated under https://github.com/meilisearch/meilisearch-swift/issues/367
   }
-  
+
   struct TaskCancellationDetails: Decodable, Equatable {
     /// The number of matched tasks. If the API key used for the request doesn’t have access to an index, tasks relating to that index will not be included in matchedTasks
     public let matchedTasks: Int?
@@ -93,7 +93,7 @@ public extension Task {
       /// The filter used in the cancel task request
     public let originalFilter: String?
   }
-  
+
   struct TaskDeletionDetails: Decodable, Equatable {
     /// The number of matched tasks. If the API key used for the request doesn’t have access to an index, tasks relating to that index will not be included in matchedTasks
     public let matchedTasks: Int?
@@ -102,7 +102,7 @@ public extension Task {
     /// The filter used in the delete task request
     public let originalFilter: String?
   }
-  
+
   struct TaskDumpCreationDetails: Decodable, Equatable {
     /// The generated uid of the dump. This is also the name of the generated dump file. nil when the task status is enqueued, processing, canceled, or failed
     public let dumpUid: String?

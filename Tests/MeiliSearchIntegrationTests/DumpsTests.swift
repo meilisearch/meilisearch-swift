@@ -5,18 +5,17 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_try
 class DumpsTests: XCTestCase {
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
 
   // MARK: Setup
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
     if client == nil {
       session = URLSession(configuration: .ephemeral)
-      client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+      client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     }
   }
 
@@ -38,4 +37,3 @@ class DumpsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 }
-// swiftlint:enable force_try

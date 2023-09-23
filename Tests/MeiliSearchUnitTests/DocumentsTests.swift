@@ -6,7 +6,7 @@ import Foundation
 #endif
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 // swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
   let id: Int
@@ -28,13 +28,13 @@ class DocumentsTests: XCTestCase {
   private var uid: String = "movies_test"
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
   }
 
-  func testAddDocuments() {
+  func testAddDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
@@ -42,7 +42,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -69,7 +69,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testAddDataDocuments() {
+  func testAddDataDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
@@ -77,7 +77,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let documentJsonString = """
@@ -112,7 +112,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDataDocuments() {
+  func testUpdateDataDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
@@ -120,7 +120,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentJsonString = """
       [{
@@ -149,7 +149,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDocuments() {
+  func testUpdateDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
@@ -157,7 +157,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     let movie = Movie(
@@ -185,7 +185,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testGetDocument() {
+  func testGetDocument() throws {
     let jsonString = """
       {
         "id": 25684,
@@ -201,7 +201,7 @@ class DocumentsTests: XCTestCase {
     let decoder = Constants.customJSONDecoder
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
-    let stubMovie: Movie = try! decoder.decode(Movie.self, from: data)
+    let stubMovie: Movie = try decoder.decode(Movie.self, from: data)
     let identifier: String = "25684"
 
     // Start the test with the mocked server
@@ -289,7 +289,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testGetDocuments() {
+  func testGetDocuments() throws {
     let jsonString = """
       {
         "results": [
@@ -319,7 +319,7 @@ class DocumentsTests: XCTestCase {
     let decoder = Constants.customJSONDecoder
     decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
     let data = jsonString.data(using: .utf8)!
-    let stubMovies: DocumentsResults<Movie> = try! decoder.decode(DocumentsResults<Movie>.self, from: data)
+    let stubMovies: DocumentsResults<Movie> = try decoder.decode(DocumentsResults<Movie>.self, from: data)
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get Movies documents")
@@ -336,7 +336,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteDocument() {
+  func testDeleteDocument() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
@@ -344,7 +344,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let identifier: String = "25684"
 
@@ -364,7 +364,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteAllDocuments() {
+  func testDeleteAllDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
@@ -372,7 +372,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -390,7 +390,7 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteBatchDocuments() {
+  func testDeleteBatchDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
@@ -398,7 +398,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [String] = ["23488", "153738", "437035", "363869"]
 
@@ -418,7 +418,7 @@ class DocumentsTests: XCTestCase {
   }
 
   @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
-  func testDeprecatedDeleteBatchDocuments() {
+  func testDeprecatedDeleteBatchDocuments() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
@@ -426,7 +426,7 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     let decoder = Constants.customJSONDecoder
     let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
 
@@ -447,5 +447,5 @@ class DocumentsTests: XCTestCase {
 }
 // swiftlint:enable force_unwrapping
 // swiftlint:enable force_cast
-// swiftlint:enable force_try
+
 // swiftlint:enable line_length

@@ -2,18 +2,18 @@
 import XCTest
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 class SystemTests: XCTestCase {
   private var client: MeiliSearch!
 
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
   }
 
-  func testHealthStatusAvailable() {
+  func testHealthStatusAvailable() throws {
     // Prepare the mock server
 
     let jsonString = """
@@ -24,7 +24,7 @@ class SystemTests: XCTestCase {
 
     let jsonData = jsonString.data(using: .utf8)!
 
-    let expectedHealthBody: Health = try! Constants.customJSONDecoder.decode(Health.self, from: jsonData)
+    let expectedHealthBody: Health = try Constants.customJSONDecoder.decode(Health.self, from: jsonData)
 
     session.pushData(jsonString, code: 200)
 
@@ -93,7 +93,7 @@ class SystemTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testVersion() {
+  func testVersion() throws {
     // Prepare the mock server
 
     let jsonString = """
@@ -106,7 +106,7 @@ class SystemTests: XCTestCase {
 
     let jsonData = jsonString.data(using: .utf8)!
 
-    let stubVersion: Version = try! Constants.customJSONDecoder.decode(Version.self, from: jsonData)
+    let stubVersion: Version = try Constants.customJSONDecoder.decode(Version.self, from: jsonData)
 
     session.pushData(jsonString)
 
@@ -128,4 +128,3 @@ class SystemTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

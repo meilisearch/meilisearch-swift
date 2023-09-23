@@ -24,7 +24,7 @@ public enum TaskType: Codable, Equatable, LosslessStringConvertible {
     let value = try decoder.singleValueContainer().decode(String.self)
     self.init(rawValue: value)
   }
-  
+
   internal init(rawValue: String) {
     switch rawValue {
     case "indexCreation":
@@ -61,11 +61,11 @@ public enum TaskType: Codable, Equatable, LosslessStringConvertible {
 
   // MARK: LosslessStringConvertible
   // ensures that when TaskType is converted to String, the "unknown" context is ignored
-  
+
   public init?(_ description: String) {
     self.init(rawValue: description)
   }
-  
+
   public var description: String {
     switch self {
     case .indexCreation:

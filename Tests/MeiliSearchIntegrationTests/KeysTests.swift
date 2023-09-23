@@ -5,18 +5,17 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_try
 class KeysTests: XCTestCase {
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
 
   // MARK: Setup
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
 
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
 
     let semaphore = XCTestExpectation(description: "Setup: delete all keys")
 

@@ -6,7 +6,7 @@ import Foundation
 #endif
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 private let movies: [Movie] = [
   Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
   Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
@@ -24,10 +24,10 @@ class DocumentsTests: XCTestCase {
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
     self.client.createIndex(uid: uid) { result in
@@ -176,9 +176,9 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 3.0)
   }
 
-  func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
+  func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() throws {
     let movie = Movie(id: 10, title: "test", comment: "test movie")
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
     self.index.addDocuments(
@@ -219,9 +219,9 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testAddAndGetOneDocument() {
+  func testAddAndGetOneDocument() throws {
     let movie = Movie(id: 10, title: "test", comment: "test movie")
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
     self.index.addDocuments(
@@ -262,10 +262,10 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDocument() {
+  func testUpdateDocument() throws {
     let identifier: Int = 1844
     let movie: Movie = movies.first(where: { (movie: Movie) in movie.id == identifier })!
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
 
     let expectation = XCTestExpectation(description: "Add or update Movies document")
 
@@ -296,8 +296,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteOneDocument() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteOneDocument() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete one Movie")
     self.index.addDocuments(
@@ -338,8 +338,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: 3.0)
   }
 
-  func testDeleteAllDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteAllDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -386,8 +386,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteBatchDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteBatchDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -431,8 +431,8 @@ class DocumentsTests: XCTestCase {
   }
 
   @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
-  func testDeprecatedDeleteBatchDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeprecatedDeleteBatchDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -476,4 +476,3 @@ class DocumentsTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

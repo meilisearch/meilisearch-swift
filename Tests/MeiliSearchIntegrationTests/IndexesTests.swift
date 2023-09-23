@@ -5,19 +5,18 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_try
 class IndexesTests: XCTestCase {
   private var client: MeiliSearch!
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
   private var index: Indexes!
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
 
     if client == nil {
       session = URLSession(configuration: .ephemeral)
-      client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+      client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     }
     index = self.client.index(self.uid)
 
@@ -275,4 +274,3 @@ class IndexesTests: XCTestCase {
     self.wait(for: [deleteException], timeout: TESTS_TIME_OUT)
   }
 }
-// swiftlint:enable force_try
