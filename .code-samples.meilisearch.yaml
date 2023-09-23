@@ -168,8 +168,44 @@ async_guide_canceled_by: |-
       print(error)
     }
   }
+get_dictionary_1: |-
+  client.index("books").getDictionary { result in
+    // handle result
+  }
+update_dictionary_1: |-
+  client.index("books").updateDictionary(["J. R. R.", "W. E. B."]) { result in
+    // handle result
+  }
+reset_dictionary_1: |-
+  client.index("books").resetDictionary { result in
+    // handle result
+  }
+get_separator_tokens_1: |-
+  client.index("books").getSeparatorTokens { result in
+    // handle result
+  }
+update_separator_tokens_1: |-
+  client.index("books").updateSeparatorTokens(["|", "&hellip;"]) { result in
+    // handle result
+  }
+reset_separator_tokens_1: |-
+  client.index("books").resetSeparatorTokens { result in
+    // handle result
+  }
+get_non_separator_tokens_1: |-
+  client.index("books").getNonSeparatorTokens { result in
+    // handle result
+  }
+update_non_separator_tokens_1: |-
+  client.index("books").updateNonSeparatorTokens(["@", "#"]) { result in
+    // handle result
+  }
+reset_non_separator_tokens_1: |-
+  client.index("books").resetNonSeparatorTokens { result in
+    // handle result
+  }
 search_parameter_guide_hitsperpage_1: |-
-  let searchParameters = SearchParameters.query("", hitsPerPage: 15)
+  let searchParameters = SearchParameters(query: "", hitsPerPage: 15)
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
@@ -179,7 +215,7 @@ search_parameter_guide_hitsperpage_1: |-
     }
   }
 search_parameter_guide_page_1: |-
-  let searchParameters = SearchParameters.query("", page: 15)
+  let searchParameters = SearchParameters(query: "", page: 15)
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
     switch result {
     case .success(let searchResult):
@@ -362,7 +398,7 @@ delete_documents_1: |-
         }
     }
 search_post_1: |-
-  let searchParameters = SearchParameters.query("American ninja")
+  let searchParameters = SearchParameters(query: "American ninja")
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
@@ -458,7 +494,7 @@ delete_a_key_1: |-
 security_guide_search_key_1: |-
   client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
   client.index("patient_medical_records")
-    .search(SearchParameters.query("")) { (result: Result<Searchable<Patient>, Swift.Error>) in
+    .search(SearchParameters(query: "")) { (result: Result<Searchable<Patient>, Swift.Error>) in
       switch result {
       case .success(let searchResult):
           print(searchResult)
@@ -1454,7 +1490,7 @@ geosearch_guide_filter_usage_2: |-
   }
 geosearch_guide_filter_usage_3: |-
   let searchParameters = SearchParameters(
-      filter: '_geoBoundingBox([45.494181, 9.214024], [45.449484, 9.179175])'
+      filter: "_geoBoundingBox([45.494181, 9.214024], [45.449484, 9.179175])"
   )
   client.index("restaurants").search(searchParameters) { (result: Result<Searchable<Restaurant>, Swift.Error>) in
       switch result {
