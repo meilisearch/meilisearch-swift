@@ -31,27 +31,7 @@ struct Settings {
     _ setting: Setting,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONEncoder().encode(setting)
-    } catch {
-      completion(.failure(error))
-      return
-    }
-
-    self.request.patch(api: "/indexes/\(uid)/settings", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: nil, data: setting, completion: completion)
   }
 
   // can this be refactor
@@ -76,26 +56,7 @@ struct Settings {
     _ synonyms: [String: [String]]? = [:],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONEncoder().encode(synonyms)
-    } catch {
-      completion(.failure(error))
-      return
-    }
-    self.request.put(api: "/indexes/\(uid)/settings/synonyms", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "synonyms", data: synonyms, completion: completion)
   }
 
   func resetSynonyms(
@@ -119,26 +80,7 @@ struct Settings {
     _ stopWords: [String]? = [],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONEncoder().encode(stopWords)
-    } catch {
-      completion(.failure(error))
-      return
-    }
-    self.request.put(api: "/indexes/\(uid)/settings/stop-words", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "stop-words", data: stopWords, completion: completion)
   }
 
   func resetStopWords(
@@ -162,27 +104,7 @@ struct Settings {
     _ rankingRules: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONSerialization.data(withJSONObject: rankingRules, options: [])
-    } catch {
-      completion(.failure(error))
-      return
-    }
-
-    self.request.put(api: "/indexes/\(uid)/settings/ranking-rules", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "ranking-rules", data: rankingRules, completion: completion)
   }
 
   func resetRankingRules(
@@ -206,27 +128,7 @@ struct Settings {
     _ distinctAttribute: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONEncoder().encode(distinctAttribute)
-    } catch {
-      completion(.failure(error))
-      return
-    }
-
-    self.request.put(api: "/indexes/\(uid)/settings/distinct-attribute", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "distinct-attribute", data: distinctAttribute, completion: completion)
   }
 
   func resetDistinctAttribute(
@@ -250,26 +152,7 @@ struct Settings {
     _ searchableAttributes: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONSerialization.data(withJSONObject: searchableAttributes, options: [])
-    } catch {
-      completion(.failure(error))
-      return
-    }
-    self.request.put(api: "/indexes/\(uid)/settings/searchable-attributes", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "searchable-attributes", data: searchableAttributes, completion: completion)
   }
 
   func resetSearchableAttributes(
@@ -293,26 +176,7 @@ struct Settings {
     _ displayedAttributes: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONSerialization.data(withJSONObject: displayedAttributes, options: [])
-    } catch {
-      completion(.failure(error))
-      return
-    }
-    self.request.put(api: "/indexes/\(uid)/settings/displayed-attributes", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "displayed-attributes", data: displayedAttributes, completion: completion)
   }
 
   func resetDisplayedAttributes(
@@ -336,27 +200,7 @@ struct Settings {
     _ attributes: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONSerialization.data(withJSONObject: attributes, options: [])
-    } catch {
-      completion(.failure(error))
-      return
-    }
-
-    self.request.put(api: "/indexes/\(uid)/settings/filterable-attributes", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "filterable-attributes", data: attributes, completion: completion)
   }
 
   func resetFilterableAttributes(
@@ -380,27 +224,7 @@ struct Settings {
     _ attributes: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    let data: Data
-    do {
-      data = try JSONSerialization.data(withJSONObject: attributes, options: [])
-    } catch {
-      completion(.failure(error))
-      return
-    }
-
-    self.request.put(api: "/indexes/\(uid)/settings/sortable-attributes", data) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    updateSetting(uid: uid, key: "sortable-attributes", data: attributes, completion: completion)
   }
 
   func resetSortableAttributes(
@@ -411,7 +235,7 @@ struct Settings {
   }
 
   // MARK: Reusable Requests
-  
+
   private func getSetting<ResponseType: Decodable>(
     uid: String,
     key: String?,
@@ -437,7 +261,38 @@ struct Settings {
       }
     }
   }
-  
+
+  private func updateSetting(
+    uid: String,
+    key: String?,
+    data: Encodable,
+    completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void
+  ) {
+    let body: Data
+    do {
+      body = try JSONEncoder().encode(data)
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    // if a key is provided, path is equal to `/<key>`, else it's an empty string
+    let path = key.map { "/" + $0 } ?? ""
+    self.request.put(api: "/indexes/\(uid)/settings\(path)", body) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
   private func resetSetting(
     uid: String,
     key: String?,
