@@ -269,14 +269,14 @@ struct Settings {
     _ attributes: [String],
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    updateSetting(uid: uid, key: "non-separator-tokens", data: attributes, completion: completion)
+    updateSetting(uid: uid, key: "separator-tokens", data: attributes, completion: completion)
   }
 
   func resetSeparatorTokens(
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    resetSetting(uid: uid, key: "non-separator-tokens", completion: completion)
+    resetSetting(uid: uid, key: "separator-tokens", completion: completion)
   }
   
   // MARK: Non-Separator Tokens
