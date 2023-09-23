@@ -75,6 +75,9 @@ public struct Task: Codable, Equatable {
 
     /// Distinct attribute on settings actions
     public let distinctAttribute: String?
+    
+    /// Settings for index level pagination rules
+    public let pagination: Pagination?
 
   }
   /// Error information in case of failed update.

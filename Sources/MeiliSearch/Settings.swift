@@ -254,6 +254,51 @@ struct Settings {
 
     resetSetting(uid: uid, key: "sortable-attributes", completion: completion)
   }
+  
+  // MARK: Pagination Preferences
+
+  func getPaginationSettings(
+    _ uid: String,
+    _ completion: @escaping (Result<Pagination, Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "pagination", completion: completion)
+  }
+
+  func updatePaginationSettings(
+    _ uid: String,
+    _ pagination: Pagination,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(pagination)
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    // this uses patch instead of put for networking, so shouldn't use the reusable 'updateSetting' function
+    self.request.patch(api: "/indexes/\(uid)/settings/pagination", data) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func resetPaginationSettings(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "pagination", completion: completion)
+  }
 
   // MARK: Reusable Requests
 

@@ -27,6 +27,7 @@ class SettingsTests: XCTestCase {
   private let defaultSortableAttributes: [String] = []
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
+  private let defaultPagination: Pagination = .init(maxTotalHits: 1000)
   private var defaultGlobalSettings: Setting?
   private var defaultGlobalReturnedSettings: SettingResult?
 
@@ -71,7 +72,8 @@ class SettingsTests: XCTestCase {
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
       filterableAttributes: self.defaultFilterableAttributes,
-      sortableAttributes: self.defaultSortableAttributes
+      sortableAttributes: self.defaultSortableAttributes,
+      pagination: self.defaultPagination
     )
   }
 
@@ -513,6 +515,93 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  // MARK: Pagination
+
+  func testGetPagination() {
+    let expectation = XCTestExpectation(description: "Get current pagination")
+
+    self.index.getPaginationSettings { result in
+      switch result {
+      case .success(let pagination):
+        XCTAssertEqual(self.defaultPagination, pagination)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get searchable attributes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdatePagination() {
+    let expectation = XCTestExpectation(description: "Update settings for pagination")
+
+    let newPaginationSettings: Pagination = .init(maxTotalHits: 5)
+
+    self.index.updatePaginationSettings(newPaginationSettings) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let pagination = details.pagination {
+                XCTAssertEqual(newPaginationSettings, pagination)
+              } else {
+                XCTFail("pagination should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating pagination")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetPagination() {
+    let expectation = XCTestExpectation(description: "Reset settings for pagination")
+
+    self.index.resetPaginationSettings { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting pagination")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   // MARK: Stop words
 
   func testGetStopWords() {
@@ -847,7 +936,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Global Settings
 
-  func testgetSettings() {
+  func testGetSettings() {
     let expectation = XCTestExpectation(description: "Get current settings")
 
     self.index.getSettings { result in
@@ -865,7 +954,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testupdateSettings() {
+  func testUpdateSettings() {
     let newSettings = Setting(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
@@ -884,7 +973,8 @@ class SettingsTests: XCTestCase {
       synonyms: [:],
       distinctAttribute: nil,
       filterableAttributes: [],
-      sortableAttributes: ["title"]
+      sortableAttributes: ["title"],
+      pagination: .init(maxTotalHits: 1000)
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -950,7 +1040,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [overrideSettingsExpectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testupdateSettingssWithSynonymsAndStopWordsNil() {
+  func testUpdateSettingsWithSynonymsAndStopWordsNil() {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
@@ -961,7 +1051,9 @@ class SettingsTests: XCTestCase {
       synonyms: nil,
       distinctAttribute: nil,
       filterableAttributes: ["title"],
-      sortableAttributes: ["title"])
+      sortableAttributes: ["title"],
+      pagination: .init(maxTotalHits: 500)
+    )
 
     let expectedSettingResult = SettingResult(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
@@ -971,7 +1063,9 @@ class SettingsTests: XCTestCase {
       synonyms: [:],
       distinctAttribute: nil,
       filterableAttributes: ["title"],
-      sortableAttributes: ["title"])
+      sortableAttributes: ["title"],
+      pagination: .init(maxTotalHits: 500)
+    )
 
     self.index.updateSettings(newSettings) { result in
       switch result {
@@ -988,6 +1082,7 @@ class SettingsTests: XCTestCase {
             XCTAssertEqual(expectedSettingResult.distinctAttribute, details.distinctAttribute)
             XCTAssertEqual(expectedSettingResult.filterableAttributes, details.filterableAttributes)
             XCTAssertEqual(expectedSettingResult.sortableAttributes, details.sortableAttributes)
+            XCTAssertEqual(expectedSettingResult.pagination.maxTotalHits, details.pagination?.maxTotalHits)
           } else {
             XCTFail("details should exists in details field of task")
           }
@@ -1008,7 +1103,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testresetSettingss() {
+  func testResetSettings() {
     let expectation = XCTestExpectation(description: "Reset settings")
 
     self.index.resetSettings { result in

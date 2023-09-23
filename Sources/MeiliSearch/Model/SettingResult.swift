@@ -27,4 +27,7 @@ public struct SettingResult: Codable, Equatable {
 
   /// List of attributes used for sorting
   public let sortableAttributes: [String]
+  
+  /// Pagination settings for the current index
+  public let pagination: Pagination
 }

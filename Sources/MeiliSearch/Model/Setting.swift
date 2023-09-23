@@ -32,6 +32,9 @@ public struct Setting: Codable, Equatable {
 
   /// List of attributes used for sorting
   public let sortableAttributes: [String]?
+  
+  /// Pagination settings for the current index
+  public let pagination: Pagination?
 
   // MARK: Initializers
 
@@ -43,7 +46,8 @@ public struct Setting: Codable, Equatable {
     synonyms: [String: [String]]? = nil,
     distinctAttribute: String? = nil,
     filterableAttributes: [String]? = nil,
-    sortableAttributes: [String]? = nil
+    sortableAttributes: [String]? = nil,
+    pagination: Pagination? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -53,5 +57,6 @@ public struct Setting: Codable, Equatable {
     self.distinctAttribute = distinctAttribute
     self.filterableAttributes = filterableAttributes
     self.sortableAttributes = sortableAttributes
+    self.pagination = pagination
   }
 }

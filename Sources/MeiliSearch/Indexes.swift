@@ -867,6 +867,47 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
+
+  // MARK: Pagination
+
+  /**
+   Get the pagination settings for the current index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `Pagination`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getPaginationSettings(
+    _ completion: @escaping (Result<Pagination, Swift.Error>) -> Void) {
+    self.settings.getPaginationSettings(self.uid, completion)
+  }
+
+  /**
+   Updates the pagination setting for the index.
+
+   - parameter settings: The new preferences to use for pagination.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updatePaginationSettings(
+    _ settings: Pagination,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updatePaginationSettings(self.uid, settings, completion)
+  }
+
+  /**
+   Reset the pagination settings for the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetPaginationSettings(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetPaginationSettings(self.uid, completion)
+  }
+
   // MARK: Stats
 
   /**
