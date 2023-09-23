@@ -9,7 +9,7 @@ public struct Task: Decodable, Equatable {
   public let uid: Int
 
   /// Unique identifier of the targeted index
-  public let indexUid: String
+  public let indexUid: String?
 
   /// Returns if the task has been successful or not.
   public let status: Status
@@ -43,7 +43,7 @@ public struct Task: Decodable, Equatable {
     let type = try container.decode(TaskType.self, forKey: .type)
 
     self.uid = try container.decode(Int.self, forKey: .uid)
-    self.indexUid = try container.decode(String.self, forKey: .indexUid)
+    self.indexUid = try container.decodeIfPresent(String.self, forKey: .indexUid)
     self.status = try container.decode(Status.self, forKey: .status)
     self.type = type
     self.duration = try container.decodeIfPresent(String.self, forKey: .duration)

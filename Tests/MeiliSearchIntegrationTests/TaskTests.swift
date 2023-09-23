@@ -154,6 +154,61 @@ class TasksTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testCancelTask() {
+    let addDocExpectation = XCTestExpectation(description: "Add documents")
+    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+      switch result {
+      case .success(let task):
+        self.client.cancelTasks(filter: .init(uids: [task.uid])) { _ in
+          self.client.getTasks { result in
+            switch result {
+            case .success(let tasks):
+              XCTAssertGreaterThanOrEqual(tasks.results.count, 2)
+              XCTAssertEqual(tasks.results[0].type, .taskCancelation)
+              XCTAssertEqual(tasks.results[1].type, .documentAdditionOrUpdate)
+            case .failure(let error):
+              dump(error)
+              XCTFail("Failed to get tasks")
+            }
+            addDocExpectation.fulfill()
+          }
+        }
+
+      case .failure:
+        XCTFail("Failed to add document")
+        addDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testDeleteTask() {
+    let addDocExpectation = XCTestExpectation(description: "Add documents")
+    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+      switch result {
+      case .success(let task):
+        self.client.deleteTasks(filter: .init(uids: [task.uid])) { _ in
+          self.client.getTasks { result in
+            switch result {
+            case .success(let tasks):
+              XCTAssertEqual(tasks.results[0].type, .taskDeletion)
+              XCTAssertNotEqual(tasks.results[1].uid, task.uid)
+            case .failure(let error):
+              dump(error)
+              XCTFail("Failed to get tasks")
+            }
+
+            addDocExpectation.fulfill()
+          }
+        }
+      case .failure:
+        XCTFail("Failed to add document")
+        addDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+  }
+
   func testWaitForTask() {
     let createIndexExpectation = XCTestExpectation(description: "Add documents")
 
