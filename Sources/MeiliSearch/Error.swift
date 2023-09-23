@@ -9,9 +9,13 @@ import Foundation
 public extension MeiliSearch {
   // MARK: Error
   struct MSErrorResponse: Decodable, Encodable, Equatable {
+    /// A human-readable description of the error
     public let message: String
+    /// The error code (https://www.meilisearch.com/docs/reference/errors/error_codes)
     public let code: String
+    /// The error type (https://www.meilisearch.com/docs/reference/errors/overview#errors)
     public let type: String
+    /// A link to the relevant section of the documentation
     public let link: String?
   }
 

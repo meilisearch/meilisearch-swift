@@ -132,16 +132,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let filterableAttributes = details.filterableAttributes {
-                XCTAssertEqual(newFilterableAttributes, filterableAttributes)
-              } else {
-                XCTFail("filterableAttributes should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newFilterableAttributes, details.filterableAttributes)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -169,7 +165,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -218,16 +214,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let displayedAttributes = details.displayedAttributes {
-                XCTAssertEqual(newDisplayedAttributes, displayedAttributes)
-              } else {
-                XCTFail("displayedAttributes should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newDisplayedAttributes, details.displayedAttributes)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -255,7 +247,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -303,16 +295,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let distinctAttribute = details.distinctAttribute {
-                XCTAssertEqual(newDistinctAttribute, distinctAttribute)
-              } else {
-                XCTFail("distinctAttribute should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newDistinctAttribute, details.distinctAttribute)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -339,7 +327,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -393,16 +381,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let rankingRules = details.rankingRules {
-                XCTAssertEqual(newRankingRules, rankingRules)
-              } else {
-                XCTFail("rankingRules should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newRankingRules, details.rankingRules)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -430,7 +414,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -483,16 +467,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let searchableAttributes = details.searchableAttributes {
-                XCTAssertEqual(newSearchableAttributes, searchableAttributes)
-              } else {
-                XCTFail("searchableAttributes should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newSearchableAttributes, details.searchableAttributes)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -520,7 +500,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -668,16 +648,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let separatorTokens = details.separatorTokens {
-                XCTAssertEqual(newSeparatorTokens, separatorTokens)
-              } else {
-                XCTFail("separatorTokens should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newSeparatorTokens, details.separatorTokens)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -705,7 +681,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -759,16 +735,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let nonSeparatorTokens = details.nonSeparatorTokens {
-                XCTAssertEqual(newNonSeparatorTokens, nonSeparatorTokens)
-              } else {
-                XCTFail("nonSeparatorTokens should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newNonSeparatorTokens, details.nonSeparatorTokens)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -796,7 +768,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -850,16 +822,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let dictionary = details.dictionary {
-                XCTAssertEqual(newDictionary.sorted(), dictionary.sorted())
-              } else {
-                XCTFail("dictionary should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newDictionary.sorted(), details.dictionary?.sorted())
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -887,7 +855,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -937,16 +905,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let pagination = details.pagination {
-                XCTAssertEqual(newPaginationSettings, pagination)
-              } else {
-                XCTFail("pagination should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newPaginationSettings, details.pagination)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -974,7 +938,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -1024,16 +988,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let stopWords = details.stopWords {
-                XCTAssertEqual(newStopWords, stopWords)
-              } else {
-                XCTFail("stopWords should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newStopWords, details.stopWords)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1062,16 +1022,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let stopWords = details.stopWords {
-                XCTAssertEqual(emptyStopWords, stopWords)
-              } else {
-                XCTFail("stopWords should be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(emptyStopWords, details.stopWords)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1100,16 +1056,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if details.stopWords == nil {
-                XCTAssertEqual(nilStopWords, details.stopWords)
-              } else {
-                XCTFail("stopWords should be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(nilStopWords, details.stopWords)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1137,7 +1089,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -1192,16 +1144,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let synonyms = details.synonyms {
-                XCTAssertEqual(newSynonyms, synonyms)
-              } else {
-                XCTFail("synonyms should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1230,16 +1178,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let synonyms = details.synonyms {
-                XCTAssertEqual(newSynonyms, synonyms)
-              } else {
-                XCTFail("synonyms should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1269,16 +1213,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if details.synonyms == nil {
-                XCTAssertEqual(newSynonyms, details.synonyms)
-              } else {
-                XCTFail("synonyms should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1306,7 +1246,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -1379,14 +1319,14 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
+            if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
               XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
               XCTAssertEqual(expectedSettingResult.stopWords, details.stopWords)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -1412,12 +1352,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
+            if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             overrideSettingsExpectation.fulfill()
           case .failure(let error):
@@ -1476,9 +1416,9 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
         switch result {
         case .success(let task):
-          XCTAssertEqual("settingsUpdate", task.type)
+          XCTAssertEqual("settingsUpdate", task.type.description)
           XCTAssertEqual(Task.Status.succeeded, task.status)
-          if let details = task.details {
+          if case .settingsUpdate(let details) = task.details {
             XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
             XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
             XCTAssertEqual(expectedSettingResult.displayedAttributes, details.displayedAttributes)
@@ -1490,7 +1430,7 @@ class SettingsTests: XCTestCase {
             XCTAssertEqual(expectedSettingResult.dictionary, details.dictionary)
             XCTAssertEqual(expectedSettingResult.pagination.maxTotalHits, details.pagination?.maxTotalHits)
           } else {
-            XCTFail("details should exists in details field of task")
+            XCTFail("settingsUpdate details should be set by task")
           }
           expectation.fulfill()
         case .failure(let error):
@@ -1518,7 +1458,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):

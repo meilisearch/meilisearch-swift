@@ -3,8 +3,7 @@ import Foundation
 /**
  `TasksResults` is a wrapper used in the tasks routes to handle the returned data.
  */
-
-public struct TasksResults: Codable, Equatable {
+public struct TasksResults: Decodable, Equatable {
   /// Results list containing objects of `Task`.
   public let results: [Task]
   /// Integer value used to retrieve the next batch of tasks.
@@ -13,4 +12,6 @@ public struct TasksResults: Codable, Equatable {
   public let from: Int?
   /// Max number of records to be returned in one request.
   public let limit: Int
+  /// Total number of tasks matching the filter or query
+  public let total: Int
 }

@@ -57,7 +57,7 @@ class IndexesTests: XCTestCase {
         self.client.waitForTask(task: task, options: WaitOptions(timeOut: 10.0)) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("indexCreation", task.type)
+            XCTAssertEqual("indexCreation", task.type.description)
             XCTAssertEqual(task.status, Task.Status.succeeded)
             createExpectation.fulfill()
           case .failure(let error):
@@ -93,7 +93,7 @@ class IndexesTests: XCTestCase {
     createGenericIndex(client: self.client, uid: self.uid ) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual("indexCreation", task.type)
+        XCTAssertEqual("indexCreation", task.type.description)
         XCTAssertEqual(task.status, Task.Status.succeeded)
         createExpectation.fulfill()
       case .failure(let error):
@@ -111,7 +111,7 @@ class IndexesTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("indexCreation", task.type)
+            XCTAssertEqual("indexCreation", task.type.description)
             XCTAssertEqual(task.status, Task.Status.failed)
             if let error = task.error {
               XCTAssertEqual(error.code, "index_already_exists")
@@ -221,14 +221,10 @@ class IndexesTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("indexUpdate", task.type)
+            XCTAssertEqual("indexUpdate", task.type.description)
             XCTAssertEqual(task.status, Task.Status.succeeded)
-            if let details = task.details {
-              if let primaryKey = details.primaryKey {
-                XCTAssertEqual("random", primaryKey)
-              } else {
-                XCTFail("Primary key should not be nil")
-              }
+            if case .indexUpdate(let details) = task.details, let primaryKey = details.primaryKey {
+              XCTAssertEqual("random", primaryKey)
             } else {
               XCTFail("Primary key should exists in details field of task")
             }
@@ -267,7 +263,7 @@ class IndexesTests: XCTestCase {
     deleteIndex(client: self.client, uid: self.uid) { result in
       switch result {
       case .success(let task):
-        XCTAssertEqual("indexDeletion", task.type)
+        XCTAssertEqual("indexDeletion", task.type.description)
         XCTAssertEqual(task.status, Task.Status.succeeded)
         deleteException.fulfill()
       case .failure(let error):

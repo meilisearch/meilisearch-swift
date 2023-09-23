@@ -43,7 +43,7 @@ class TasksTests: XCTestCase {
         self.index.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "documentAdditionOrUpdate")
+            XCTAssertEqual(task.type.description, "documentAdditionOrUpdate")
             addDocExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -75,6 +75,9 @@ class TasksTests: XCTestCase {
               case .success(let tasks):
                 // Only one because index has been deleted and recreated
                 XCTAssertEqual(tasks.results.count, 1)
+                XCTAssertEqual(tasks.total, 1)
+                XCTAssertNotNil(tasks.results[0].startedAt)
+                XCTAssertNotNil(tasks.results[0].finishedAt)
                 expectation.fulfill()
               case .failure(let error):
                 dump(error)
@@ -105,7 +108,7 @@ class TasksTests: XCTestCase {
         self.client.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             addDocExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -161,7 +164,7 @@ class TasksTests: XCTestCase {
         self.client.waitForTask(task: task, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             createIndexExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -186,7 +189,7 @@ class TasksTests: XCTestCase {
         self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             createIndexExpectation.fulfill()
           case .failure(let error):
             dump(error)

@@ -63,26 +63,13 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let indexedDocuments = details.indexedDocuments {
-                XCTAssertEqual(8, indexedDocuments)
-              } else {
-                XCTFail("IndexedDocuments field should not be nil")
-              }
+            if case .documentAdditionOrUpdate(let details) = task.details {
+              XCTAssertEqual(8, details.indexedDocuments)
+              XCTAssertEqual(8, details.receivedDocuments)
             } else {
-              XCTFail("IndexedDocuments field should exists in details field of task")
-            }
-
-            if let details = task.details {
-              if let receivedDocuments = details.receivedDocuments {
-                XCTAssertEqual(8, receivedDocuments)
-              } else {
-                XCTFail("receivedDocuments field should not be nil")
-              }
-            } else {
-              XCTFail("receivedDocuments field should exists in details field of task")
+              XCTFail("documentAdditionOrUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -111,7 +98,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -143,7 +130,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
 
             self.index.getDocuments(params: DocumentsQuery(limit: 1, offset: 1, fields: ["id", "title"])) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
               switch result {
@@ -204,7 +191,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument(10
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -247,7 +234,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument("10"
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -292,7 +279,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             expectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -335,7 +322,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -377,17 +364,11 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
-            if let details = task.details {
-              if let deletedDocuments = details.deletedDocuments {
-                XCTAssertGreaterThanOrEqual(deletedDocuments, 8)
-              } else {
-                XCTFail("deletedDocuments field should not be nil")
-                deleteExpectation.fulfill()
-              }
+            XCTAssertEqual("documentDeletion", task.type.description)
+            if case .documentDeletion(let details) = task.details {
+              XCTAssertEqual(8, details.deletedDocuments)
             } else {
-              XCTFail("deletedDocuments field should exists in details field of task")
-              deleteExpectation.fulfill()
+              XCTFail("documentDeletion details should be set by task")
             }
             deleteExpectation.fulfill()
           case .failure:
@@ -433,7 +414,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -478,7 +459,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
