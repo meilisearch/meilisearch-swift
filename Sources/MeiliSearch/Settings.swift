@@ -255,6 +255,78 @@ struct Settings {
     resetSetting(uid: uid, key: "sortable-attributes", completion: completion)
   }
   
+  // MARK: Separator Tokens
+
+  func getSeparatorTokens(
+    _ uid: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "separator-tokens", completion: completion)
+  }
+
+  func updateSeparatorTokens(
+    _ uid: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    updateSetting(uid: uid, key: "non-separator-tokens", data: attributes, completion: completion)
+  }
+
+  func resetSeparatorTokens(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "non-separator-tokens", completion: completion)
+  }
+  
+  // MARK: Non-Separator Tokens
+
+  func getNonSeparatorTokens(
+    _ uid: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "non-separator-tokens", completion: completion)
+  }
+
+  func updateNonSeparatorTokens(
+    _ uid: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    updateSetting(uid: uid, key: "non-separator-tokens", data: attributes, completion: completion)
+  }
+
+  func resetNonSeparatorTokens(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "non-separator-tokens", completion: completion)
+  }
+  
+  // MARK: Dictionary
+
+  func getDictionary(
+    _ uid: String,
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "dictionary", completion: completion)
+  }
+
+  func updateDictionary(
+    _ uid: String,
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    updateSetting(uid: uid, key: "dictionary", data: attributes, completion: completion)
+  }
+
+  func resetDictionary(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "dictionary", completion: completion)
+  }
+  
   // MARK: Pagination Preferences
 
   func getPaginationSettings(

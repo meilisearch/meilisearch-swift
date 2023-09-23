@@ -75,7 +75,16 @@ public struct Task: Codable, Equatable {
 
     /// Distinct attribute on settings actions
     public let distinctAttribute: String?
-    
+
+    /// List of tokens that will be considered as word separators by Meilisearch.
+    public let separatorTokens: [String]?
+
+    /// List of tokens that will not be considered as word separators by Meilisearch.
+    public let nonSeparatorTokens: [String]?
+
+    /// List of words on which the segmentation will be overridden.
+    public let dictionary: [String]?
+
     /// Settings for index level pagination rules
     public let pagination: Pagination?
 

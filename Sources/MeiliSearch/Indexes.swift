@@ -867,6 +867,126 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
+  
+  // MARK: Separator Tokens
+
+  /**
+   Fetch the `separatorTokens` setting of a Meilisearch index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getSeparatorTokens(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getSeparatorTokens(self.uid, completion)
+  }
+
+  /**
+   Modify the `separatorTokens` setting of a Meilisearch index.
+
+   - parameter attributes: List of tokens that will be considered as word separators
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateSeparatorTokens(
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateSeparatorTokens(self.uid, attributes, completion)
+  }
+
+  /**
+   Reset the `separatorTokens` setting of a Meilisearch index to the default value `[]`.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetSeparatorTokens(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetSeparatorTokens(self.uid, completion)
+  }
+
+  // MARK: Non Separator Tokens
+
+  /**
+   Fetch the `nonSeparatorTokens` setting of a Meilisearch index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getNonSeparatorTokens(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getNonSeparatorTokens(self.uid, completion)
+  }
+
+  /**
+   Modify the `nonSeparatorTokens` setting of a Meilisearch index.
+
+   - parameter attributes: List of tokens that will not be considered as word separators
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateNonSeparatorTokens(
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateNonSeparatorTokens(self.uid, attributes, completion)
+  }
+
+  /**
+   Reset the `nonSeparatorTokens` setting of a Meilisearch index to the default value `[]`.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetNonSeparatorTokens(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetNonSeparatorTokens(self.uid, completion)
+  }
+  
+  // MARK: Dictionary
+
+  /**
+   Fetch the `dictionary` setting of a Meilisearch index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains an `[String]`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getDictionary(
+    _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
+    self.settings.getDictionary(self.uid, completion)
+  }
+
+  /**
+   Modify the `dictionary` setting of a Meilisearch index.
+
+   - parameter attributes: List of words on which the segmentation will be overridden
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateDictionary(
+    _ attributes: [String],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateDictionary(self.uid, attributes, completion)
+  }
+
+  /**
+   Reset the `dictionary` setting of a Meilisearch index to the default value `[]`.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetDictionary(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetDictionary(self.uid, completion)
+  }
 
   // MARK: Pagination
 
