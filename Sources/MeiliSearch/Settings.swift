@@ -22,7 +22,7 @@ struct Settings {
   func get(
     _ uid: String,
     _ completion: @escaping (Result<SettingResult, Swift.Error>) -> Void) {
-      
+
     getSetting(uid: uid, key: nil, completion: completion)
   }
 
@@ -92,7 +92,7 @@ struct Settings {
   func getStopWords(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-      
+
     getSetting(uid: uid, key: "stop-words", completion: completion)
   }
 
@@ -116,7 +116,7 @@ struct Settings {
   func getRankingRules(
     _ uid: String,
     _ completion: @escaping (Result<[String], Swift.Error>) -> Void) {
-      
+
     getSetting(uid: uid, key: "ranking-rules", completion: completion)
   }
 
@@ -254,7 +254,7 @@ struct Settings {
 
     resetSetting(uid: uid, key: "sortable-attributes", completion: completion)
   }
-  
+
   // MARK: Separator Tokens
 
   func getSeparatorTokens(
@@ -278,7 +278,7 @@ struct Settings {
 
     resetSetting(uid: uid, key: "separator-tokens", completion: completion)
   }
-  
+
   // MARK: Non-Separator Tokens
 
   func getNonSeparatorTokens(
@@ -302,7 +302,7 @@ struct Settings {
 
     resetSetting(uid: uid, key: "non-separator-tokens", completion: completion)
   }
-  
+
   // MARK: Dictionary
 
   func getDictionary(
@@ -326,7 +326,7 @@ struct Settings {
 
     resetSetting(uid: uid, key: "dictionary", completion: completion)
   }
-  
+
   // MARK: Pagination Preferences
 
   func getPaginationSettings(

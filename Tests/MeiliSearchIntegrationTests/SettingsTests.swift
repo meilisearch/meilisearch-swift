@@ -524,7 +524,7 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   // MARK: Separator Tokens
 
   func testGetSeparatorTokens() {
@@ -615,7 +615,7 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   // MARK: Non Separator Tokens
 
   func testGetNonSeparatorTokens() {
@@ -706,7 +706,7 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   // MARK: Dictionary
 
   func testGetDictionary() {

@@ -15,7 +15,7 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
 
   /// Distribution of the given facets.
   public var facetDistribution: [String: [String: Int]]?
-  
+
   /// Maximum & minimum stats of a numeric facet.
   public var facetStats: [String: FacetStats]?
 

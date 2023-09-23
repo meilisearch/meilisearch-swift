@@ -867,7 +867,7 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetSortableAttributes(self.uid, completion)
   }
-  
+
   // MARK: Separator Tokens
 
   /**
@@ -947,7 +947,7 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetNonSeparatorTokens(self.uid, completion)
   }
-  
+
   // MARK: Dictionary
 
   /**
