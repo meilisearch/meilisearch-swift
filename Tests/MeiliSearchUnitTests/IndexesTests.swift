@@ -250,7 +250,7 @@ class IndexesTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get keys with parameters")
 
-    self.index.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: ["indexCreation"])) { result in
+    self.index.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: [.indexCreation])) { result in
       switch result {
       case .success:
         let requestQuery = self.session.nextDataTask.request?.url?.query

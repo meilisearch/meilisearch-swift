@@ -13,9 +13,9 @@ public class TasksQuery: Queryable {
   /// Integer value used to retrieve the next batch of tasks.
   private var next: Int?
   /// List of strings with all the types the response should contain.
-  private var types: [String]
+  private var types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  private var statuses: [String]
+  private var statuses: [Task.Status]
   /// Filter tasks response by a particular list of index Uids strings
   var indexUids: [String]
   /// Filter tasks based on a list of task's uids.
@@ -37,7 +37,7 @@ public class TasksQuery: Queryable {
 
   init(
     limit: Int? = nil, from: Int? = nil, next: Int? = nil,
-    statuses: [String]? = nil, types: [String]? = nil,
+    statuses: [Task.Status]? = nil, types: [TaskType]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     afterFinishedAt: Date? = nil, beforeStartedAt: Date? = nil,
@@ -65,8 +65,8 @@ public class TasksQuery: Queryable {
       "from": from,
       "next": next,
       "uids": uids.isEmpty ? nil : uids.map(String.init).joined(separator: ","),
-      "types": types.isEmpty ? nil : types.joined(separator: ","),
-      "statuses": statuses.isEmpty ? nil : statuses.joined(separator: ","),
+      "types": types.isEmpty ? nil : types.map({ $0.description }).joined(separator: ","),
+      "statuses": statuses.isEmpty ? nil : statuses.map({ $0.rawValue }).joined(separator: ","),
       "indexUids": indexUids.isEmpty ? nil : indexUids.joined(separator: ","),
       "canceledBy": canceledBy.isEmpty ? nil : canceledBy.map(String.init).joined(separator: ","),
       "beforeEnqueuedAt": Formatter.formatOptionalDate(date: beforeEnqueuedAt),

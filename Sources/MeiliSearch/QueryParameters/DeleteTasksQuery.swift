@@ -5,9 +5,9 @@ import Foundation
  */
 public class DeleteTasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
-  public let types: [String]
+  public let types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  public let statuses: [String]
+  public let statuses: [Task.Status]
   /// Filter tasks response by a particular list of index Uids strings
   public let indexUids: [String]
   /// Filter tasks based on a list of task's uids.
@@ -28,7 +28,7 @@ public class DeleteTasksQuery: Queryable {
   public let afterFinishedAt: Date?
 
   init(
-    statuses: [String]? = nil, types: [String]? = nil,
+    statuses: [Task.Status]? = nil, types: [TaskType]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     beforeStartedAt: Date? = nil, afterStartedAt: Date? = nil,
@@ -50,8 +50,8 @@ public class DeleteTasksQuery: Queryable {
   internal func buildQuery() -> [String: Codable?] {
     [
       "uids": uids.isEmpty ? nil : uids.map(String.init).joined(separator: ","),
-      "types": types.isEmpty ? nil : types.joined(separator: ","),
-      "statuses": statuses.isEmpty ? nil : statuses.joined(separator: ","),
+      "types": types.isEmpty ? nil : types.map({ $0.description }).joined(separator: ","),
+      "statuses": statuses.isEmpty ? nil : statuses.map({ $0.rawValue }).joined(separator: ","),
       "indexUids": indexUids.isEmpty ? nil : indexUids.joined(separator: ","),
       "canceledBy": canceledBy.isEmpty ? nil : canceledBy.map(String.init).joined(separator: ","),
       "beforeEnqueuedAt": Formatter.formatOptionalDate(date: beforeEnqueuedAt),
