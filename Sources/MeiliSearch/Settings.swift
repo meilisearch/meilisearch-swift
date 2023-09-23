@@ -74,23 +74,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: nil, completion: completion)
   }
 
   // MARK: Synonyms
@@ -149,23 +133,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/synonyms") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "synonyms", completion: completion)
   }
 
   // MARK: Stop Words
@@ -223,23 +191,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/stop-words") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "stop-words", completion: completion)
   }
 
   // MARK: Ranking
@@ -298,23 +250,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/ranking-rules") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "ranking-rules", completion: completion)
   }
 
   // MARK: Distinct attribute
@@ -374,23 +310,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/distinct-attribute") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "distinct-attribute", completion: completion)
   }
 
   // MARK: Searchable attributes
@@ -449,23 +369,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/searchable-attributes") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "searchable-attributes", completion: completion)
   }
 
   // MARK: Displayed attributes
@@ -524,23 +428,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/displayed-attributes") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "displayed-attributes", completion: completion)
   }
 
   // MARK: Filterable Attributes
@@ -600,23 +488,7 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/filterable-attributes") { result in
-      switch result {
-      case .success(let data):
-        guard let data: Data = data else {
-          completion(.failure(MeiliSearch.Error.dataNotFound))
-          return
-        }
-        do {
-          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
-          completion(.success(task))
-        } catch {
-          completion(.failure(error))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+    resetSetting(uid: uid, key: "filterable-attributes", completion: completion)
   }
 
   // MARK: Sortable Attributes
@@ -676,7 +548,19 @@ struct Settings {
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    self.request.delete(api: "/indexes/\(uid)/settings/sortable-attributes") { result in
+    resetSetting(uid: uid, key: "sortable-attributes", completion: completion)
+  }
+
+  // MARK: Reusable Requests
+  
+  private func resetSetting(
+    uid: String,
+    key: String?,
+    completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void
+  ) {
+    // if a key is provided, path is equal to `/<key>`, else it's an empty string
+    let path = key.map { "/" + $0 } ?? ""
+    self.request.delete(api: "/indexes/\(uid)/settings\(path)") { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
