@@ -138,6 +138,98 @@ class SearchTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  // MARK: Search ranking
+  func testSearchRankingScore() {
+    let expectation = XCTestExpectation(description: "Search for Books with query")
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let query = "Moreninha"
+
+    self.index.search(SearchParameters(query: query, showRankingScore: true)) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        let result = response as! SearchResult<Book>
+        XCTAssertEqual(result.hits.count, 1)
+        XCTAssertGreaterThan(result.hits[0].rankingScore ?? 0, 0.1)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search with testSearchRankingScore")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testSearchBoxEncodingWithScore() {
+    let expectation = XCTestExpectation(description: "Search for Books with query")
+
+    let expectedValue = """
+    {"hits":[{"_rankingScore":0.5,"comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"],"id":1844,"title":"A Moreninha"}],"processingTimeMs":0,"query":"Moreninha"}
+    """
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let query = "Moreninha"
+
+    self.index.search(SearchParameters(query: query, showRankingScore: true)) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        do {
+          // the ranking score and time can change for many reasons, of which is not relevant here. we set it to a constant to test the encoding.
+          response.processingTimeMs = 0
+          response.hits[0].rankingScore = 0.5
+          let encoder = JSONEncoder()
+          encoder.outputFormatting = .sortedKeys
+          let data = try encoder.encode(response)
+          XCTAssertEqual(String(decoding: data, as: UTF8.self), expectedValue)
+        } catch {
+          XCTFail("Failed to encode search result")
+        }
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search with testSearchBoxEncodingWithScore")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testSearchBoxEncodingWithoutScore() {
+    let expectation = XCTestExpectation(description: "Search for Books with query")
+
+    let expectedValue = """
+    {"hits":[{"comment":"A Book from Joaquim Manuel de Macedo","genres":["Novel"],"id":1844,"title":"A Moreninha"}],"processingTimeMs":0,"query":"Moreninha"}
+    """
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let query = "Moreninha"
+
+    self.index.search(SearchParameters(query: query, showRankingScore: false)) { (result: MeiliResult) in
+      switch result {
+      case .success(let response):
+        do {
+          let encoder = JSONEncoder()
+          encoder.outputFormatting = .sortedKeys
+          response.processingTimeMs = 0
+          let data = try encoder.encode(response)
+          XCTAssertEqual(String(decoding: data, as: UTF8.self), expectedValue)
+        } catch {
+          XCTFail("Failed to encode search result")
+        }
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to search with testSearchBoxEncodingWithoutScore")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   // MARK: Basic search with finite pagination
   func testBasicSearchWithFinitePagination() {
     let expectation = XCTestExpectation(description: "Search for Books with finite pagination")
@@ -466,7 +558,7 @@ class SearchTests: XCTestCase {
 
         XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 1)
-        let book: Book = documents.hits[0]
+        let book: SearchHit<Book> = documents.hits[0]
         XCTAssertEqual("…from Joaquim Manuel de Macedo", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
@@ -494,7 +586,7 @@ class SearchTests: XCTestCase {
     self.index.search(searchParameters) { (result: MeiliResult) in
       switch result {
       case .success(let documents):
-        let book: Book = documents.hits[0]
+        let book: SearchHit<Book> = documents.hits[0]
         XCTAssertEqual("(ꈍᴗꈍ)Joaquim Manuel(ꈍᴗꈍ)", book.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
@@ -527,7 +619,7 @@ class SearchTests: XCTestCase {
         XCTAssertEqual(result.limit, limit)
         XCTAssertEqual(documents.hits.count, 2)
 
-        let moreninhaBook: Book = documents.hits.first(where: { book in book.id == 1844 })!
+        let moreninhaBook: SearchHit<Book> = documents.hits.first(where: { book in book.id == 1844 })!
         XCTAssertEqual("A Book from Joaquim Manuel…", moreninhaBook.formatted!.comment!)
         expectation.fulfill()
       case .failure(let error):
@@ -878,7 +970,7 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, 1)
-            guard let book: Book = documents.hits.first(where: { book in book.id == 1344 }) else {
+            guard let book: SearchHit<Book> = documents.hits.first(where: { book in book.id == 1344 }) else {
               XCTFail("Failed to search with testSearchFilterWithEmptySpace")
               expectation.fulfill()
               return

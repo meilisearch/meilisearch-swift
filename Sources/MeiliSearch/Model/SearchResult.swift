@@ -11,7 +11,7 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
   // MARK: Properties
 
   /// Possible hints from the search query.
-  public var hits: [T] = []
+  public var hits: [SearchHit<T>] = []
 
   /// Distribution of the given facets.
   public var facetDistribution: [String: [String: Int]]?
@@ -31,6 +31,37 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
     case facetStats
     case processingTimeMs
     case query
+  }
+}
+
+@dynamicMemberLookup
+public struct SearchHit<T>: Equatable, Codable where T: Codable, T: Equatable {
+  public let document: T
+  public internal(set) var rankingScore: Double?
+
+  /// Dynamic member lookup is used to allow easy access to instance members of the hit result, maintaining a level of backwards compatibility.
+  public subscript<V>(dynamicMember keyPath: KeyPath<T, V>) -> V {
+    document[keyPath: keyPath]
+  }
+
+  // MARK: Codable
+
+  enum CodingKeys: String, CodingKey {
+    case rankingScore = "_rankingScore"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.document = try T(from: decoder)
+    self.rankingScore = try container.decodeIfPresent(Double.self, forKey: .rankingScore)
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(document)
+
+    var containerTwo = encoder.container(keyedBy: CodingKeys.self)
+    try containerTwo.encodeIfPresent(rankingScore, forKey: .rankingScore)
   }
 }
 
