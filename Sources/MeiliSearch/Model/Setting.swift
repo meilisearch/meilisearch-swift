@@ -33,6 +33,18 @@ public struct Setting: Codable, Equatable {
   /// List of attributes used for sorting
   public let sortableAttributes: [String]?
 
+  /// List of tokens that will be considered as word separators by Meilisearch.
+  public let separatorTokens: [String]?
+
+  /// List of tokens that will not be considered as word separators by Meilisearch.
+  public let nonSeparatorTokens: [String]?
+
+  /// List of words on which the segmentation will be overridden.
+  public let dictionary: [String]?
+
+  /// Pagination settings for the current index
+  public let pagination: Pagination?
+
   // MARK: Initializers
 
   public init(
@@ -43,7 +55,11 @@ public struct Setting: Codable, Equatable {
     synonyms: [String: [String]]? = nil,
     distinctAttribute: String? = nil,
     filterableAttributes: [String]? = nil,
-    sortableAttributes: [String]? = nil
+    sortableAttributes: [String]? = nil,
+    separatorTokens: [String]? = nil,
+    nonSeparatorTokens: [String]? = nil,
+    dictionary: [String]? = nil,
+    pagination: Pagination? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -53,5 +69,9 @@ public struct Setting: Codable, Equatable {
     self.distinctAttribute = distinctAttribute
     self.filterableAttributes = filterableAttributes
     self.sortableAttributes = sortableAttributes
+    self.nonSeparatorTokens = nonSeparatorTokens
+    self.separatorTokens = separatorTokens
+    self.dictionary = dictionary
+    self.pagination = pagination
   }
 }

@@ -25,8 +25,12 @@ class SettingsTests: XCTestCase {
   private let defaultSearchableAttributes: [String] = ["*"]
   private let defaultFilterableAttributes: [String] = []
   private let defaultSortableAttributes: [String] = []
+  private let defaultNonSeparatorTokens: [String] = []
+  private let defaultSeparatorTokens: [String] = []
+  private let defaultDictionary: [String] = []
   private let defaultStopWords: [String] = []
   private let defaultSynonyms: [String: [String]] = [:]
+  private let defaultPagination: Pagination = .init(maxTotalHits: 1000)
   private var defaultGlobalSettings: Setting?
   private var defaultGlobalReturnedSettings: SettingResult?
 
@@ -60,7 +64,11 @@ class SettingsTests: XCTestCase {
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
       filterableAttributes: self.defaultFilterableAttributes,
-      sortableAttributes: self.defaultFilterableAttributes
+      sortableAttributes: self.defaultFilterableAttributes,
+      separatorTokens: self.defaultSeparatorTokens,
+      nonSeparatorTokens: self.defaultNonSeparatorTokens,
+      dictionary: self.defaultDictionary,
+      pagination: self.defaultPagination
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -71,7 +79,11 @@ class SettingsTests: XCTestCase {
       synonyms: self.defaultSynonyms,
       distinctAttribute: self.defaultDistinctAttribute,
       filterableAttributes: self.defaultFilterableAttributes,
-      sortableAttributes: self.defaultSortableAttributes
+      sortableAttributes: self.defaultSortableAttributes,
+      separatorTokens: self.defaultSeparatorTokens,
+      nonSeparatorTokens: self.defaultNonSeparatorTokens,
+      dictionary: self.defaultDictionary,
+      pagination: self.defaultPagination
     )
   }
 
@@ -513,6 +525,366 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  // MARK: Separator Tokens
+
+  func testGetSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Get current Separator Tokens")
+
+    self.index.getSeparatorTokens { result in
+      switch result {
+      case .success(let separatorTokens):
+        XCTAssertEqual(self.defaultSeparatorTokens, separatorTokens)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get Separator Tokens")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdateSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Update settings for separator tokens")
+
+    let newSeparatorTokens: [String] = [
+      "&",
+      "</br>",
+      "@"
+    ]
+
+    self.index.updateSeparatorTokens(newSeparatorTokens) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let separatorTokens = details.separatorTokens {
+                XCTAssertEqual(newSeparatorTokens, separatorTokens)
+              } else {
+                XCTFail("separatorTokens should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating separator tokens")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Reset settings for separator tokens")
+
+    self.index.resetSeparatorTokens { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting separator tokens")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Non Separator Tokens
+
+  func testGetNonSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Get current non separator tokens")
+
+    self.index.getNonSeparatorTokens { result in
+      switch result {
+      case .success(let nonSeparatorTokens):
+        XCTAssertEqual(self.defaultNonSeparatorTokens, nonSeparatorTokens)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get non separator tokens")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdateNonSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Update settings for non separator tokens")
+
+    let newNonSeparatorTokens: [String] = [
+      "#",
+      "-",
+      "_"
+    ]
+
+    self.index.updateNonSeparatorTokens(newNonSeparatorTokens) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let nonSeparatorTokens = details.nonSeparatorTokens {
+                XCTAssertEqual(newNonSeparatorTokens, nonSeparatorTokens)
+              } else {
+                XCTFail("nonSeparatorTokens should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating non separator tokens")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetNonSeparatorTokens() {
+    let expectation = XCTestExpectation(description: "Reset settings for searchable attributes")
+
+    self.index.resetSearchableAttributes { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting searchable attributes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Dictionary
+
+  func testGetDictionary() {
+    let expectation = XCTestExpectation(description: "Get current dictionary")
+
+    self.index.getDictionary { result in
+      switch result {
+      case .success(let dictionary):
+        XCTAssertEqual(self.defaultDictionary, dictionary)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get dictionary")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdateDictionary() {
+    let expectation = XCTestExpectation(description: "Update settings for dictionary")
+
+    let newDictionary: [String] = [
+      "J.K",
+      "Dr.",
+      "G/Box"
+    ]
+
+    self.index.updateDictionary(newDictionary) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let dictionary = details.dictionary {
+                XCTAssertEqual(newDictionary.sorted(), dictionary.sorted())
+              } else {
+                XCTFail("dictionary should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating dictionary")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetDictionary() {
+    let expectation = XCTestExpectation(description: "Reset settings for dictionary")
+
+    self.index.resetDictionary { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting dictionary")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  // MARK: Pagination
+
+  func testGetPagination() {
+    let expectation = XCTestExpectation(description: "Get current pagination")
+
+    self.index.getPaginationSettings { result in
+      switch result {
+      case .success(let pagination):
+        XCTAssertEqual(self.defaultPagination, pagination)
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get searchable attributes")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testUpdatePagination() {
+    let expectation = XCTestExpectation(description: "Update settings for pagination")
+
+    let newPaginationSettings: Pagination = .init(maxTotalHits: 5)
+
+    self.index.updatePaginationSettings(newPaginationSettings) { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            if let details = task.details {
+              if let pagination = details.pagination {
+                XCTAssertEqual(newPaginationSettings, pagination)
+              } else {
+                XCTFail("pagination should not be nil")
+              }
+            } else {
+              XCTFail("details should exists in details field of task")
+            }
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed updating pagination")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testResetPagination() {
+    let expectation = XCTestExpectation(description: "Reset settings for pagination")
+
+    self.index.resetPaginationSettings { result in
+      switch result {
+      case .success(let task):
+        self.client.waitForTask(task: task) { result in
+          switch result {
+          case .success(let task):
+            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual(Task.Status.succeeded, task.status)
+            expectation.fulfill()
+          case .failure(let error):
+            dump(error)
+            XCTFail("Failed to wait for task")
+            expectation.fulfill()
+          }
+        }
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed reseting pagination")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   // MARK: Stop words
 
   func testGetStopWords() {
@@ -847,7 +1219,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Global Settings
 
-  func testgetSettings() {
+  func testGetSettings() {
     let expectation = XCTestExpectation(description: "Get current settings")
 
     self.index.getSettings { result in
@@ -865,7 +1237,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testupdateSettings() {
+  func testUpdateSettings() {
     let newSettings = Setting(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
@@ -884,7 +1256,11 @@ class SettingsTests: XCTestCase {
       synonyms: [:],
       distinctAttribute: nil,
       filterableAttributes: [],
-      sortableAttributes: ["title"]
+      sortableAttributes: ["title"],
+      separatorTokens: [],
+      nonSeparatorTokens: [],
+      dictionary: [],
+      pagination: .init(maxTotalHits: 1000)
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -950,7 +1326,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [overrideSettingsExpectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testupdateSettingssWithSynonymsAndStopWordsNil() {
+  func testUpdateSettingsWithSynonymsAndStopWordsNil() {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
@@ -961,7 +1337,12 @@ class SettingsTests: XCTestCase {
       synonyms: nil,
       distinctAttribute: nil,
       filterableAttributes: ["title"],
-      sortableAttributes: ["title"])
+      sortableAttributes: ["title"],
+      separatorTokens: ["&"],
+      nonSeparatorTokens: ["#"],
+      dictionary: ["J.K"],
+      pagination: .init(maxTotalHits: 500)
+    )
 
     let expectedSettingResult = SettingResult(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
@@ -971,7 +1352,12 @@ class SettingsTests: XCTestCase {
       synonyms: [:],
       distinctAttribute: nil,
       filterableAttributes: ["title"],
-      sortableAttributes: ["title"])
+      sortableAttributes: ["title"],
+      separatorTokens: ["&"],
+      nonSeparatorTokens: ["#"],
+      dictionary: ["J.K"],
+      pagination: .init(maxTotalHits: 500)
+    )
 
     self.index.updateSettings(newSettings) { result in
       switch result {
@@ -988,6 +1374,10 @@ class SettingsTests: XCTestCase {
             XCTAssertEqual(expectedSettingResult.distinctAttribute, details.distinctAttribute)
             XCTAssertEqual(expectedSettingResult.filterableAttributes, details.filterableAttributes)
             XCTAssertEqual(expectedSettingResult.sortableAttributes, details.sortableAttributes)
+            XCTAssertEqual(expectedSettingResult.separatorTokens, details.separatorTokens)
+            XCTAssertEqual(expectedSettingResult.nonSeparatorTokens, details.nonSeparatorTokens)
+            XCTAssertEqual(expectedSettingResult.dictionary, details.dictionary)
+            XCTAssertEqual(expectedSettingResult.pagination.maxTotalHits, details.pagination?.maxTotalHits)
           } else {
             XCTFail("details should exists in details field of task")
           }
@@ -1008,7 +1398,7 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testresetSettingss() {
+  func testResetSettings() {
     let expectation = XCTestExpectation(description: "Reset settings")
 
     self.index.resetSettings { result in

@@ -1,9 +1,7 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_unwrapping
 // swiftlint:disable force_cast
-// swiftlint:disable force_try
 class SettingsTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
@@ -32,6 +30,12 @@ class SettingsTests: XCTestCase {
       "filterableAttributes": [],
       "sortableAttributes": [],
       "stopWords": [],
+      "separatorTokens": [],
+      "nonSeparatorTokens": [],
+      "dictionary": [],
+      "pagination": {
+        "maxTotalHits": 1000
+      },
       "synonyms": {
         "wolverine": ["xmen", "logan"],
         "logan": ["wolverine", "xmen"]
@@ -39,17 +43,17 @@ class SettingsTests: XCTestCase {
     }
     """
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
   }
 
   // MARK: Settings
 
-  func testgetSettings() {
+  func testGetSettings() throws {
     // Prepare the mock server
-    let stubSetting: SettingResult = buildStubSettingResult(from: json)
+    let stubSetting: SettingResult = try buildStubSettingResult(from: json)
     session.pushData(json)
 
     // Start the test with the mocked server
@@ -67,18 +71,18 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testupdateSettings() {
+  func testUpdateSettings() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: jsonData)
+    let jsonData = Data(jsonString.utf8)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
 
     session.pushData(jsonString)
-    let setting: Setting = buildStubSetting(from: json)
+    let setting: Setting = try buildStubSetting(from: json)
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update settings")
@@ -96,15 +100,15 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetSettings() {
+  func testResetSettings() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let data: Data = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try! decoder.decode(TaskInfo.self, from: data)
+    let data: Data = Data(jsonString.utf8)
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: data)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -125,7 +129,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Synonyms
 
-  func testGetSynonyms() {
+  func testGetSynonyms() throws {
     let jsonString = """
       {
         "wolverine": ["xmen", "logan"],
@@ -135,8 +139,8 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubSynonyms: [String: [String]] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(jsonString.utf8)
+    let stubSynonyms: [String: [String]] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String: [String]]
 
     session.pushData(jsonString)
@@ -157,16 +161,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateSynonyms() {
+  func testUpdateSynonyms() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
     let json = """
@@ -176,8 +180,8 @@ class SettingsTests: XCTestCase {
         "wow": ["world of warcraft"]
       }
       """
-    let jsonData = json.data(using: .utf8)!
-    let synonyms: [String: [String]] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(json.utf8)
+    let synonyms: [String: [String]] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String: [String]]
 
     // Start the test with the mocked server
@@ -195,16 +199,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetSynonyms() {
+  func testResetSynonyms() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -225,14 +229,14 @@ class SettingsTests: XCTestCase {
 
   // MARK: Stop words
 
-  func testGetStopWords() {
+  func testGetStopWords() throws {
     let jsonString = """
       ["of", "the", "to"]
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubStopWords: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(jsonString.utf8)
+    let stubStopWords: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
     session.pushData(jsonString)
 
@@ -252,23 +256,23 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateStopWords() {
+  func testUpdateStopWords() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
     let json = """
       ["of", "the", "to"]
       """
 
-    let stopWords: [String] = try! JSONSerialization.jsonObject(
-      with: json.data(using: .utf8)!, options: []) as! [String]
+    let stopWords: [String] = try JSONSerialization.jsonObject(
+      with: Data(json.utf8), options: []) as! [String]
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update stop-words")
@@ -285,16 +289,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetStopWords() {
+  func testResetStopWords() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
 
@@ -316,7 +320,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Ranking rules
 
-  func testGetRankingRules() {
+  func testGetRankingRules() throws {
     let jsonString = """
       [
         "words",
@@ -330,8 +334,8 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubRakingRules: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(jsonString.utf8)
+    let stubRankingRules: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
     session.pushData(jsonString)
 
@@ -341,7 +345,7 @@ class SettingsTests: XCTestCase {
     self.index.getRankingRules { result in
       switch result {
       case .success(let rankingRules):
-        XCTAssertEqual(stubRakingRules, rankingRules)
+        XCTAssertEqual(stubRankingRules, rankingRules)
       case .failure:
         XCTFail("Failed to get ranking rules")
       }
@@ -351,22 +355,22 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateRankingRules() {
+  func testUpdateRankingRules() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
     let json = """
       ["of", "the", "to"]
       """
-    let stopWords: [String] = try! JSONSerialization.jsonObject(
-      with: json.data(using: .utf8)!, options: []) as! [String]
+    let stopWords: [String] = try JSONSerialization.jsonObject(
+      with: Data(json.utf8), options: []) as! [String]
 
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Update ranking rules")
@@ -384,16 +388,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetRankingRules() {
+  func testResetRankingRules() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
 
@@ -415,7 +419,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Distinct Attribute
 
-  func testGetDistinctAttribute() {
+  func testGetDistinctAttribute() throws {
     let stubDistinctAttribute: String = """
       "movie_id"
       """
@@ -429,7 +433,7 @@ class SettingsTests: XCTestCase {
     self.index.getDistinctAttribute { result in
       switch result {
       case .success(let distinctAttribute):
-        XCTAssertEqual("movie_id", distinctAttribute!)
+        XCTAssertEqual("movie_id", distinctAttribute)
       case .failure:
         XCTFail("Failed to get distinct attribute")
       }
@@ -439,16 +443,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDistinctAttribute() {
+  func testUpdateDistinctAttribute() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
     let distinctAttribute = "movie_id"
 
@@ -468,16 +472,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetDistinctAttribute() {
+  func testResetDistinctAttribute() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -498,14 +502,14 @@ class SettingsTests: XCTestCase {
 
   // MARK: Searchable Attribute
 
-  func testGetSearchableAttributes() {
+  func testGetSearchableAttributes() throws {
     let jsonString = """
       ["title", "description", "uid"]
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubSearchableAttribute: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(jsonString.utf8)
+    let stubSearchableAttribute: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
     session.pushData(jsonString)
 
@@ -525,23 +529,23 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateSearchableAttributes() {
+  func testUpdateSearchableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     let json = """
       ["title", "description", "uid"]
       """
-    let jsonData = json.data(using: .utf8)!
-    let searchableAttribute: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(json.utf8)
+    let searchableAttribute: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
 
     // Start the test with the mocked server
@@ -559,16 +563,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetSearchableAttributes() {
+  func testResetSearchableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -588,14 +592,14 @@ class SettingsTests: XCTestCase {
 
   // MARK: Displayed Attributes
 
-  func testGetDisplayedAttributes() {
+  func testGetDisplayedAttributes() throws {
     let jsonString = """
       ["title", "description", "release_date", "rank", "poster"]
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubDisplayedAttributes: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(jsonString.utf8)
+    let stubDisplayedAttributes: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
     session.pushData(jsonString)
 
@@ -615,16 +619,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDisplayedAttributes() {
+  func testUpdateDisplayedAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
 
@@ -632,8 +636,8 @@ class SettingsTests: XCTestCase {
       ["title", "description", "release_date", "rank", "poster"]
       """
 
-    let jsonData = json.data(using: .utf8)!
-    let displayedAttributes: [String] = try! JSONSerialization.jsonObject(
+    let jsonData = Data(json.utf8)
+    let displayedAttributes: [String] = try JSONSerialization.jsonObject(
       with: jsonData, options: []) as! [String]
 
     // Start the test with the mocked server
@@ -652,16 +656,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetDisplayedAttributes() {
+  func testResetDisplayedAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -682,7 +686,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Filterable Attributes
 
-  func testGetFilterableAttributes() {
+  func testGetFilterableAttributes() throws {
     let jsonString = """
       ["genre", "director"]
       """
@@ -706,16 +710,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateFilterableAttributes() {
+  func testUpdateFilterableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
     let attributes: [String] = ["genre", "director"]
@@ -736,16 +740,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetFilterableAttributes() {
+  func testResetFilterableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
 
@@ -767,7 +771,7 @@ class SettingsTests: XCTestCase {
 
   // MARK: Filterable Attributes
 
-  func testGetSortableAttributes() {
+  func testGetSortableAttributes() throws {
     let jsonString = """
       ["genre", "director"]
       """
@@ -791,16 +795,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateSortableAttributes() {
+  func testUpdateSortableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
     let attributes: [String] = ["genre", "director"]
@@ -821,16 +825,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetSortableAttributes() {
+  func testResetSortableAttributes() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
     let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
+    let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+      from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -849,18 +853,16 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  private func buildStubSetting(from json: String) -> Setting {
-    let data = json.data(using: .utf8)!
+  private func buildStubSetting(from json: String) throws -> Setting {
+    let data = Data(json.utf8)
     let decoder = JSONDecoder()
-    return try! decoder.decode(Setting.self, from: data)
+    return try decoder.decode(Setting.self, from: data)
   }
 
-  private func buildStubSettingResult(from json: String) -> SettingResult {
-    let data = json.data(using: .utf8)!
+  private func buildStubSettingResult(from json: String) throws -> SettingResult {
+    let data = Data(json.utf8)
     let decoder = JSONDecoder()
-    return try! decoder.decode(SettingResult.self, from: data)
+    return try decoder.decode(SettingResult.self, from: data)
   }
 }
-// swiftlint:enable force_unwrapping
 // swiftlint:enable force_cast
-// swiftlint:enable force_try
