@@ -1028,6 +1028,46 @@ public struct Indexes {
     self.settings.resetPaginationSettings(self.uid, completion)
   }
 
+  // MARK: Typo Tolerance
+
+  /**
+   Get the typo tolerance settings.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `TypoToleranceResult`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getTypoTolerance(
+    _ completion: @escaping (Result<TypoToleranceResult, Swift.Error>) -> Void) {
+    self.settings.getTypoTolerance(self.uid, completion)
+  }
+
+  /**
+   Update the typo tolerance settings.
+
+   - parameter typoTolerance: An object containing the settings for the `Index`.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateTypoTolerance(
+    _ typoTolerance: TypoTolerance,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateTypoTolerance(self.uid, typoTolerance, completion)
+  }
+
+  /**
+   Reset the typo tolerance settings.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetTypoTolerance(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetTypoTolerance(self.uid, completion)
+  }
+
   // MARK: Stats
 
   /**

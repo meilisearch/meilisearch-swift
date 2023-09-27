@@ -39,4 +39,7 @@ public struct SettingResult: Codable, Equatable {
 
   /// Pagination settings for the current index
   public let pagination: Pagination
+
+  /// Settings for typo tolerance
+  public let typoTolerance: TypoToleranceResult
 }

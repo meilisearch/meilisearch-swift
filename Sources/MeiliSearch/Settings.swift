@@ -372,6 +372,51 @@ struct Settings {
     resetSetting(uid: uid, key: "pagination", completion: completion)
   }
 
+  // MARK: Typo Tolerance
+
+  func getTypoTolerance(
+    _ uid: String,
+    _ completion: @escaping (Result<TypoToleranceResult, Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "typo-tolerance", completion: completion)
+  }
+
+  func updateTypoTolerance(
+    _ uid: String,
+    _ setting: TypoTolerance,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(setting)
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    // this uses patch instead of put for networking, so shouldn't use the reusable 'updateSetting' function
+    self.request.patch(api: "/indexes/\(uid)/settings/typo-tolerance", data) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func resetTypoTolerance(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "typo-tolerance", completion: completion)
+  }
+
   // MARK: Reusable Requests
 
   private func getSetting<ResponseType: Decodable>(
