@@ -8,7 +8,7 @@ public struct FacetStats: Codable, Equatable {
 
   /// The minimum value found in the given facet
   public let min: Double
-  
+
   /// The maximum value found in the given facet
   public let max: Double
 }

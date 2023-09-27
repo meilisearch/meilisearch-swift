@@ -1018,7 +1018,7 @@ class SearchTests: XCTestCase {
             XCTAssertEqual(documents.query, query)
             XCTAssertEqual(result.limit, limit)
             XCTAssertEqual(documents.hits.count, limit)
-            
+
             XCTAssertEqual(documents.facetStats?["id"]?.min, 1)
             XCTAssertEqual(documents.facetStats?["id"]?.max, 1844)
 

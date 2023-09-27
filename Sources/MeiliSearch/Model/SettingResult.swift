@@ -27,4 +27,16 @@ public struct SettingResult: Codable, Equatable {
 
   /// List of attributes used for sorting
   public let sortableAttributes: [String]
+
+  /// List of tokens that will be considered as word separators by Meilisearch.
+  public let separatorTokens: [String]
+
+  /// List of tokens that will not be considered as word separators by Meilisearch.
+  public let nonSeparatorTokens: [String]
+
+  /// List of words on which the segmentation will be overridden.
+  public let dictionary: [String]
+
+  /// Pagination settings for the current index
+  public let pagination: Pagination
 }
