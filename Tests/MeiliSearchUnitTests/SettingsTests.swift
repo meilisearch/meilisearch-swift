@@ -892,16 +892,14 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateTypoTolerance() {
+  func testUpdateTypoTolerance() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
-      TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
     let typoTolerance: TypoTolerance = .init(enabled: false)
@@ -922,16 +920,14 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetTypoTolerance() {
+  func testResetTypoTolerance() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
-      TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server

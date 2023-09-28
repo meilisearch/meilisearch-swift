@@ -556,16 +556,12 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let typoTolerance = details.typoTolerance {
-                XCTAssertEqual(newTypoTolerance, typoTolerance)
-              } else {
-                XCTFail("typoTolerance should not be nil")
-              }
+            if case .settingsUpdate(let details) = task.details {
+              XCTAssertEqual(newTypoTolerance, details.typoTolerance)
             } else {
-              XCTFail("details should exists in details field of task")
+              XCTFail("settingsUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -593,7 +589,7 @@ class SettingsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("settingsUpdate", task.type)
+            XCTAssertEqual("settingsUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
