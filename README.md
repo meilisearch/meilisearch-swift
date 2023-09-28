@@ -183,6 +183,48 @@ Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search r
 
 > Note: All package APIs support closure-based results for backwards compatibility. Newer async/await variants are being added under [issue 332](https://github.com/meilisearch/meilisearch-swift/issues/332).
 
+#### Custom Search With Filters <!-- omit in toc -->
+
+If you want to enable filtering, you must add your attributes to the `filterableAttributes` index setting.
+
+```swift
+index.updateFilterableAttributes(["id", "genres"]) { result in
+    // Handle Result in Closure
+}
+```
+
+You only need to perform this operation once.
+
+Note that MeiliSearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [update status](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+
+Then, you can perform the search:
+
+```swift
+let searchParameters = SearchParameters(
+    query: "wonder",
+    filter: "id > 1 AND genres = Action"
+)
+
+let response: Searchable<Meteorite> = try await index.search(searchParameters)
+```
+
+```json
+{
+  "hits": [
+    {
+      "id": 2,
+      "title": "Wonder Woman",
+      "genres": ["Action","Adventure"]
+    }
+  ],
+  "offset": 0,
+  "limit": 20,
+  "nbHits": 1,
+  "processingTimeMs": 0,
+  "query": "wonder"
+}
+```
+
 ## 🤖 Compatibility with Meilisearch
 
 This package guarantees compatibility with [version v1.x of Meilisearch](https://github.com/meilisearch/meilisearch/releases/latest), but some features may not be present. Please check the [issues](https://github.com/meilisearch/meilisearch-swift/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22+label%3Aenhancement) for more info.
