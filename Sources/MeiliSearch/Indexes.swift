@@ -465,7 +465,7 @@ public struct Indexes {
   public func search<T>(
     _ searchParameters: SearchParameters,
     _ completion: @escaping (Result<Searchable<T>, Swift.Error>) -> Void)
-  where T: Codable, T: Equatable {
+  where T: Decodable {
     self.search.search(self.uid, searchParameters, completion)
   }
 

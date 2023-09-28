@@ -9,7 +9,7 @@ extension Indexes {
    - Throws: Error if a failure occurred.
    - Returns: On completion if the request was successful a `Searchable<T>` instance is returned containing the values.
    */
-  public func search<T: Codable & Equatable>(_ searchParameters: SearchParameters) async throws -> Searchable<T> {
+  public func search<T: Decodable>(_ searchParameters: SearchParameters) async throws -> Searchable<T> {
     try await withCheckedThrowingContinuation { continuation in
       self.search.search(self.uid, searchParameters) { result in
         continuation.resume(with: result)
