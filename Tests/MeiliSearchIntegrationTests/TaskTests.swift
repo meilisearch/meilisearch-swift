@@ -187,17 +187,25 @@ class TasksTests: XCTestCase {
     addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
       switch result {
       case .success(let task):
-        self.client.deleteTasks(filter: .init(uids: [task.uid])) { _ in
-          self.client.getTasks { result in
-            switch result {
-            case .success(let tasks):
-              XCTAssertEqual(tasks.results[0].type, .taskDeletion)
-              XCTAssertNotEqual(tasks.results[1].uid, task.uid)
-            case .failure(let error):
-              dump(error)
-              XCTFail("Failed to get tasks")
-            }
+        self.client.deleteTasks(filter: .init(uids: [task.uid])) { result in
+          switch result {
+          case .success(let taskInfo):
+            self.client.waitForTask(task: taskInfo) { _ in
+              self.client.getTasks { result in
+                switch result {
+                case .success(let tasks):
+                  XCTAssertEqual(tasks.results[0].type, .taskDeletion)
+                  XCTAssertNotEqual(tasks.results[1].uid, task.uid)
+                case .failure(let error):
+                  dump(error)
+                  XCTFail("Failed to get tasks")
+                }
 
+                addDocExpectation.fulfill()
+              }
+            }
+          case .failure:
+            XCTFail("Failed to delete document")
             addDocExpectation.fulfill()
           }
         }
