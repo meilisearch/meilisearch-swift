@@ -13,7 +13,9 @@ class ClientTests: XCTestCase {
   }
 
   func testWrongHostURL() {
-    XCTAssertNotNil(try MeiliSearch(host: "1234"))
+    XCTAssertThrowsError(try MeiliSearch(host: "1234")) { error in
+      XCTAssertEqual(error as! MeiliSearch.Error, MeiliSearch.Error.hostNotValid)
+    }
   }
 
   func testNotValidHostURL() {
