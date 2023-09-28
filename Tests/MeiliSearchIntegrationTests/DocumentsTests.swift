@@ -366,7 +366,9 @@ class DocumentsTests: XCTestCase {
             XCTAssertEqual(Task.Status.succeeded, task.status)
             XCTAssertEqual("documentDeletion", task.type.description)
             if case .documentDeletion(let details) = task.details {
-              XCTAssertEqual(8, details.deletedDocuments)
+              // It's possible for this to number to be greater than 8 (the number of documents we have inserted) due
+              // to other integration tests populating the shared index.
+              XCTAssertGreaterThanOrEqual(details.deletedDocuments ?? -1, 8)
             } else {
               XCTFail("documentDeletion details should be set by task")
             }
