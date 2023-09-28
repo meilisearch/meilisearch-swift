@@ -105,6 +105,7 @@ To do a simple search using the client, you can create a Swift script like this:
     import MeiliSearch
 
     // Create a new client instance of Meilisearch.
+    // Note: you should provide a fully qualified URL, with scheme, into the client initialiser.
     let client = try! MeiliSearch(host: "http://localhost:7700")
 
     struct Movie: Codable, Equatable {

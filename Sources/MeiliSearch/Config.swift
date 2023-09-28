@@ -47,8 +47,14 @@ public class Config {
    Validate if the Meilisearch provided host is a well formatted URL.
    */
   func validate() throws -> Config {
-    guard URL(string: host) != nil else {
-      throw MeiliSearch.Error.hostNotValid
+    if #available(macOS 14.0, iOS 17.0, watchOS 10.0, tvOS 17.0, *) {
+      guard URL(string: host, encodingInvalidCharacters: false) != nil else {
+        throw MeiliSearch.Error.hostNotValid
+      }
+    } else {
+      guard URL(string: host) != nil else {
+        throw MeiliSearch.Error.hostNotValid
+      }
     }
     return self
   }
