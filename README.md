@@ -149,24 +149,13 @@ With the `uid` of the task, you can check the status (`enqueued`, `canceled`, `p
 #### Basic Search <!-- omit in toc -->
 
 ```swift
-
-let semaphore = DispatchSemaphore(value: 0)
-
-// Typealias that represents the result from Meilisearch.
-typealias MeiliResult = Result<SearchResult<Movie>, Swift.Error>
-
-// Call the function search and wait for the closure result.
-client.index("movies").search(SearchParameters( query: "philoudelphia" )) { (result: MeiliResult) in
-    switch result {
-    case .success(let searchResult):
-        dump(searchResult)
-    case .failure(let error):
-        print(error.localizedDescription)
-    }
-    semaphore.signal()
+do {
+  // Call the search function and wait for the result.
+  let result: SearchResult<Movie> = try await client.index("movies").search(SearchParameters(query: "philoudelphia"))
+  dump(result)
+} catch {
+  print(error.localizedDescription)
 }
-semaphore.wait()
-
 ```
 
 Output:
@@ -190,6 +179,8 @@ Output:
 ```
 
 Since Meilisearch is typo-tolerant, the movie `philadelphia` is a valid search response to `philoudelphia`.
+
+> Note: All package APIs support closure-based results for backwards compatibility. Newer async/await variants are being added under [issue 332](https://github.com/meilisearch/meilisearch-swift/issues/332).
 
 ## 🤖 Compatibility with Meilisearch
 
