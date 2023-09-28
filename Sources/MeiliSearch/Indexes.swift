@@ -26,7 +26,7 @@ public struct Indexes {
   private let documents: Documents
 
   // Search methods
-  private let search: Search
+  internal let search: Search
 
   // Settings methods
   private let settings: Settings
