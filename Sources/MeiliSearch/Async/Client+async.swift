@@ -181,8 +181,8 @@ extension MeiliSearch {
   /**
    See `isHealthy(_:)`
    */
-  public func isHealthy() async throws -> Bool {
-    try await withCheckedThrowingContinuation { continuation in
+  public func isHealthy() async -> Bool {
+    await withCheckedContinuation { continuation in
       self.isHealthy { result in
         continuation.resume(returning: result)
       }
