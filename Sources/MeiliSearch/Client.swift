@@ -132,7 +132,13 @@ public struct MeiliSearch {
     self.index(uid).delete(completion)
   }
 
-  // MARK: WAIT FOR TASK
+  public func swapIndexes(
+    _ pairs: [(String, String)],
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    Indexes.swapIndexes(pairs: pairs, request: request, completion)
+  }
+
+  // MARK: Wait for Task
 
   /**
     Wait for a task to be successful or fail.
