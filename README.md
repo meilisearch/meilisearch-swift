@@ -95,18 +95,6 @@ curl -L https://install.meilisearch.com | sh
 
 NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
 
-### Import
-
-After installing `meilisearch-swift`, you must import it into your application.
-
-```swift
-import MeiliSearch
-
-let client = try! MeiliSearch(host: "http://localhost:7700")
-```
-
-When initialising the MeiliSearch client, you must provide a fully qualified URL including scheme.
-
 ## 🎬 Getting started
 
 To do a simple search using the client, you can create a Swift script like this:
@@ -117,6 +105,7 @@ To do a simple search using the client, you can create a Swift script like this:
     import MeiliSearch
 
     // Create a new client instance of Meilisearch.
+    // Note: You must provide a fully qualified URL including scheme.
     let client = try! MeiliSearch(host: "http://localhost:7700")
 
     struct Movie: Codable, Equatable {
