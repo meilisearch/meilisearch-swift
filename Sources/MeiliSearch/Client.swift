@@ -201,6 +201,34 @@ public struct MeiliSearch {
     self.tasks.getTasks(params: params, completion)
   }
 
+  /**
+   Cancel any number of enqueued or processing tasks, stopping them from continuing to run
+
+   - parameter filter: The filter in which chooses which tasks will be canceled
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
+   */
+  public func cancelTasks(
+    filter: CancelTasksQuery,
+    completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.tasks.cancelTasks(filter, completion)
+  }
+
+  /**
+   Delete a finished (succeeded, failed, or canceled) task
+
+   - parameter filter: The filter in which chooses which tasks will be deleted
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value. If the request was successful or `Error` if a failure occurred.
+   */
+  public func deleteTasks(
+    filter: DeleteTasksQuery,
+    completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.tasks.deleteTasks(filter, completion)
+  }
+
   // MARK: Keys
 
   /**

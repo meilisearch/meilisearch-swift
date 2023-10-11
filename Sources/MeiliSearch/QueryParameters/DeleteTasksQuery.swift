@@ -1,51 +1,39 @@
 import Foundation
+
 /**
- `TasksQuery` class represent the options used to filter a get tasks call.
+ `DeleteTasksQuery` class represent the options used to filter a delete tasks call.
  */
-
-public class TasksQuery: Queryable {
-  // MARK: Properties
-
-  /// Integer value representing the first `uid` of the first task returned.
-  private var from: Int?
-  /// Max number of indexes to be returned in one request.
-  private var limit: Int?
-  /// Integer value used to retrieve the next batch of tasks.
-  private var next: Int?
+public class DeleteTasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
-  private var types: [TaskType]
+  public let types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  private var statuses: [Task.Status]
+  public let statuses: [Task.Status]
   /// Filter tasks response by a particular list of index Uids strings
-  var indexUids: [String]
+  public let indexUids: [String]
   /// Filter tasks based on a list of task's uids.
-  private var uids: [Int]
+  public let uids: [Int]
   /// Filter tasks based on a list of task's uids which were used to cancel other tasks.
-  private var canceledBy: [Int]
+  public let canceledBy: [Int]
   /// Filter tasks based on the date before the task were enqueued at.
-  private var beforeEnqueuedAt: Date?
+  public let beforeEnqueuedAt: Date?
   /// Filter tasks based on the date after the task were enqueued at.
-  private var afterEnqueuedAt: Date?
+  public let afterEnqueuedAt: Date?
   /// Filter tasks based on the date before the task were started.
-  private var beforeStartedAt: Date?
+  public let beforeStartedAt: Date?
   /// Filter tasks based on the date after the task were started at.
-  private var afterStartedAt: Date?
+  public let afterStartedAt: Date?
   /// Filter tasks based on the date before the task was finished.
-  private var beforeFinishedAt: Date?
+  public let beforeFinishedAt: Date?
   /// Filter tasks based on the date after the task was finished.
-  private var afterFinishedAt: Date?
+  public let afterFinishedAt: Date?
 
   init(
-    limit: Int? = nil, from: Int? = nil, next: Int? = nil,
     statuses: [Task.Status]? = nil, types: [TaskType]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
-    afterFinishedAt: Date? = nil, beforeStartedAt: Date? = nil,
-    afterStartedAt: Date? = nil, beforeFinishedAt: Date? = nil
+    beforeStartedAt: Date? = nil, afterStartedAt: Date? = nil,
+    beforeFinishedAt: Date? = nil, afterFinishedAt: Date? = nil
   ) {
-    self.from = from
-    self.limit = limit
-    self.next = next
     self.statuses = statuses ?? []
     self.types = types ?? []
     self.indexUids = indexUids ?? []
@@ -61,9 +49,6 @@ public class TasksQuery: Queryable {
 
   internal func buildQuery() -> [String: Codable?] {
     [
-      "limit": limit,
-      "from": from,
-      "next": next,
       "uids": uids.isEmpty ? nil : uids.map(String.init).joined(separator: ","),
       "types": types.isEmpty ? nil : types.map({ $0.description }).joined(separator: ","),
       "statuses": statuses.isEmpty ? nil : statuses.map({ $0.rawValue }).joined(separator: ","),

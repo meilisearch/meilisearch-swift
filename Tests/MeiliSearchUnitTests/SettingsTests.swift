@@ -86,7 +86,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let jsonData = Data(jsonString.utf8)
     let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
 
@@ -115,7 +115,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let data: Data = Data(jsonString.utf8)
     let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: data)
     session.pushData(jsonString)
@@ -176,7 +176,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -214,7 +214,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -271,7 +271,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -304,7 +304,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -370,7 +370,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -403,7 +403,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -458,7 +458,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -487,7 +487,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -544,7 +544,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -578,7 +578,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -634,7 +634,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -671,7 +671,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -725,7 +725,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -755,7 +755,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -810,7 +810,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -840,7 +840,7 @@ class SettingsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     let stubTask: TaskInfo = try decoder.decode(
       TaskInfo.self,
       from: Data(jsonString.utf8))
@@ -892,16 +892,14 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateTypoTolerance() {
+  func testUpdateTypoTolerance() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
-      TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
 
     session.pushData(jsonString)
     let typoTolerance: TypoTolerance = .init(enabled: false)
@@ -922,16 +920,14 @@ class SettingsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testResetTypoTolerance() {
+  func testResetTypoTolerance() throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
 
     // Prepare the mock server
-    let decoder = JSONDecoder()
-    let stubTask: TaskInfo = try! decoder.decode(
-      TaskInfo.self,
-      from: jsonString.data(using: .utf8)!)
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -952,13 +948,13 @@ class SettingsTests: XCTestCase {
 
   private func buildStubSetting(from json: String) throws -> Setting {
     let data = Data(json.utf8)
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     return try decoder.decode(Setting.self, from: data)
   }
 
   private func buildStubSettingResult(from json: String) throws -> SettingResult {
     let data = Data(json.utf8)
-    let decoder = JSONDecoder()
+    let decoder = Constants.customJSONDecoder
     return try decoder.decode(SettingResult.self, from: data)
   }
 }

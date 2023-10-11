@@ -23,7 +23,7 @@ struct Keys {
           return
         }
         do {
-          let decoder = JSONDecoder()
+          let decoder = Constants.customJSONDecoder
           let key: Key = try decoder.decode(Key.self, from: data)
           completion(.success(key))
         } catch {

@@ -5,7 +5,6 @@ import Foundation
 import XCTest
 @testable import MeiliSearch
 
-// swiftlint:disable force_try
 private let movies: [Movie] = [
   Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
   Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
@@ -99,7 +98,13 @@ public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, 
 public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
   let jsonEncoder = JSONEncoder()
 
-  let documents: Data = try! jsonEncoder.encode(dataset)
+  let documents: Data
+  do {
+    documents = try jsonEncoder.encode(dataset)
+  } catch {
+    completion(.failure(error))
+    return
+  }
   let index = client.index(uid)
 
   client.deleteIndex(uid) { result in

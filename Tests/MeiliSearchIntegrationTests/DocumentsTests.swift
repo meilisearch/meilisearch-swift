@@ -6,7 +6,7 @@ import Foundation
 #endif
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 private let movies: [Movie] = [
   Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
   Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
@@ -24,10 +24,10 @@ class DocumentsTests: XCTestCase {
   private var session: URLSessionProtocol!
   private let uid: String = "books_test"
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let expectation = XCTestExpectation(description: "Create index if it does not exist")
     self.client.createIndex(uid: uid) { result in
@@ -63,26 +63,13 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            if let details = task.details {
-              if let indexedDocuments = details.indexedDocuments {
-                XCTAssertEqual(8, indexedDocuments)
-              } else {
-                XCTFail("IndexedDocuments field should not be nil")
-              }
+            if case .documentAdditionOrUpdate(let details) = task.details {
+              XCTAssertEqual(8, details.indexedDocuments)
+              XCTAssertEqual(8, details.receivedDocuments)
             } else {
-              XCTFail("IndexedDocuments field should exists in details field of task")
-            }
-
-            if let details = task.details {
-              if let receivedDocuments = details.receivedDocuments {
-                XCTAssertEqual(8, receivedDocuments)
-              } else {
-                XCTFail("receivedDocuments field should not be nil")
-              }
-            } else {
-              XCTFail("receivedDocuments field should exists in details field of task")
+              XCTFail("documentAdditionOrUpdate details should be set by task")
             }
             expectation.fulfill()
           case .failure(let error):
@@ -111,7 +98,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             XCTAssertEqual(Task.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
@@ -143,7 +130,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
 
             self.index.getDocuments(params: DocumentsQuery(limit: 1, offset: 1, fields: ["id", "title"])) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
               switch result {
@@ -189,9 +176,9 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: 3.0)
   }
 
-  func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() {
+  func testAddAndGetOneDocumentWithIntIdentifierAndSucceed() throws {
     let movie = Movie(id: 10, title: "test", comment: "test movie")
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
     self.index.addDocuments(
@@ -204,7 +191,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument(10
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -232,9 +219,9 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testAddAndGetOneDocument() {
+  func testAddAndGetOneDocument() throws {
     let movie = Movie(id: 10, title: "test", comment: "test movie")
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
     let expectation = XCTestExpectation(description: "Add or replace Movies document")
 
     self.index.addDocuments(
@@ -247,7 +234,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument("10"
             ) { (result: Result<Movie, Swift.Error>) in
               switch result {
@@ -275,10 +262,10 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testUpdateDocument() {
+  func testUpdateDocument() throws {
     let identifier: Int = 1844
     let movie: Movie = movies.first(where: { (movie: Movie) in movie.id == identifier })!
-    let documents: Data = try! JSONEncoder().encode([movie])
+    let documents: Data = try JSONEncoder().encode([movie])
 
     let expectation = XCTestExpectation(description: "Add or update Movies document")
 
@@ -292,7 +279,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentAdditionOrUpdate", task.type)
+            XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             expectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -309,8 +296,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteOneDocument() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteOneDocument() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Delete one Movie")
     self.index.addDocuments(
@@ -335,7 +322,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -351,8 +338,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: 3.0)
   }
 
-  func testDeleteAllDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteAllDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -377,17 +364,13 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
-            if let details = task.details {
-              if let deletedDocuments = details.deletedDocuments {
-                XCTAssertGreaterThanOrEqual(deletedDocuments, 8)
-              } else {
-                XCTFail("deletedDocuments field should not be nil")
-                deleteExpectation.fulfill()
-              }
+            XCTAssertEqual("documentDeletion", task.type.description)
+            if case .documentDeletion(let details) = task.details {
+              // It's possible for this to number to be greater than 8 (the number of documents we have inserted) due
+              // to other integration tests populating the shared index.
+              XCTAssertGreaterThanOrEqual(details.deletedDocuments ?? -1, 8)
             } else {
-              XCTFail("deletedDocuments field should exists in details field of task")
-              deleteExpectation.fulfill()
+              XCTFail("documentDeletion details should be set by task")
             }
             deleteExpectation.fulfill()
           case .failure:
@@ -405,8 +388,8 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [deleteExpectation], timeout: TESTS_TIME_OUT)
   }
 
-  func testDeleteBatchDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeleteBatchDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -433,7 +416,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -450,8 +433,8 @@ class DocumentsTests: XCTestCase {
   }
 
   @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
-  func testDeprecatedDeleteBatchDocuments() {
-    let documents: Data = try! JSONEncoder().encode(movies)
+  func testDeprecatedDeleteBatchDocuments() throws {
+    let documents: Data = try JSONEncoder().encode(movies)
 
     let expectation = XCTestExpectation(description: "Add documents")
     self.index.addDocuments(
@@ -478,7 +461,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual(Task.Status.succeeded, task.status)
-            XCTAssertEqual("documentDeletion", task.type)
+            XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
             XCTFail("Failed to wait for task")
@@ -495,4 +478,3 @@ class DocumentsTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

@@ -136,7 +136,7 @@ To do a simple search using the client, you can create a Swift script like this:
     ) { result in
         switch result {
         case .success(let task):
-            print(task) // => Task(uid: 0, status: "enqueued", ...)
+            print(task) // => Task(uid: 0, status: Task.Status.enqueued, ...)
         case .failure(let error):
             print(error.localizedDescription)
         }

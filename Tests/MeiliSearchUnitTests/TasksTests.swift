@@ -1,16 +1,15 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_try
 class TasksTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
   private let uid: String = "movies_test"
   private let session = MockURLSession()
 
-  override func setUp() {
-    super.setUp()
-    client = try! MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
     index = client.index(self.uid)
   }
 
@@ -20,7 +19,8 @@ class TasksTests: XCTestCase {
         "results": [],
         "limit": 20,
         "from": 5,
-        "next": 98
+        "next": 98,
+        "total": 6
       }
       """
 
@@ -30,7 +30,7 @@ class TasksTests: XCTestCase {
     // Start the test with the mocked server
     let expectation = XCTestExpectation(description: "Get keys with parameters")
 
-    self.client.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: ["indexCreation"])) { result in
+    self.client.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: [.indexCreation])) { result in
       switch result {
       case .success:
         let requestQuery = self.session.nextDataTask.request?.url?.query
@@ -49,4 +49,3 @@ class TasksTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

@@ -5,9 +5,6 @@ import Foundation
   verify the status of your transaction.
  */
 public struct TaskInfo: Codable, Equatable {
-
-  // MARK: Properties
-
   /// Unique ID for the current `TaskInfo`.
   public let taskUid: Int
 
@@ -18,10 +15,10 @@ public struct TaskInfo: Codable, Equatable {
   public let status: Task.Status
 
   /// Type of the task.
-  public let type: String
+  public let type: TaskType
 
   /// Date when the task has been enqueued.
-  public let enqueuedAt: String
+  public let enqueuedAt: Date
 
   public enum CodingKeys: String, CodingKey {
     case taskUid, indexUid, status, type, enqueuedAt

@@ -18,7 +18,7 @@ private let books: [Book] = [
 ]
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_try
+
 private let nestedBooks: [NestedBook] = [
   NestedBook(id: 123, title: "Pride and Prejudice", info: InfoNested(comment: "A great book", reviewNb: 100), genres: ["Classic Regency nove"]),
   NestedBook(id: 456, title: "Le Petit Prince", info: InfoNested(comment: "A french book", reviewNb: 100), genres: ["Novel"]),
@@ -35,11 +35,11 @@ class SearchTests: XCTestCase {
 
   // MARK: Setup
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
 
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     nestedIndex = self.client.index(self.nested_uid)
 
@@ -1132,4 +1132,3 @@ class SearchTests: XCTestCase {
   }
 }
 // swiftlint:enable force_unwrapping
-// swiftlint:enable force_try

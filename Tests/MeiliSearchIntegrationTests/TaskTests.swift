@@ -5,7 +5,6 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_try
 class TasksTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
@@ -14,10 +13,10 @@ class TasksTests: XCTestCase {
 
   // MARK: Setup
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
     session = URLSession(configuration: .ephemeral)
-    client = try! MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
+    client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
     let createExpectation = XCTestExpectation(description: "Create Movies index")
     createGenericIndex(client: self.client, uid: self.uid) { result in
@@ -43,7 +42,7 @@ class TasksTests: XCTestCase {
         self.index.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "documentAdditionOrUpdate")
+            XCTAssertEqual(task.type.description, "documentAdditionOrUpdate")
             addDocExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -75,6 +74,9 @@ class TasksTests: XCTestCase {
               case .success(let tasks):
                 // Only one because index has been deleted and recreated
                 XCTAssertEqual(tasks.results.count, 1)
+                XCTAssertEqual(tasks.total, 1)
+                XCTAssertNotNil(tasks.results[0].startedAt)
+                XCTAssertNotNil(tasks.results[0].finishedAt)
                 expectation.fulfill()
               case .failure(let error):
                 dump(error)
@@ -105,7 +107,7 @@ class TasksTests: XCTestCase {
         self.client.getTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             addDocExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -152,6 +154,69 @@ class TasksTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testCancelTask() {
+    let addDocExpectation = XCTestExpectation(description: "Add documents")
+    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+      switch result {
+      case .success(let task):
+        self.client.cancelTasks(filter: .init(uids: [task.uid])) { _ in
+          self.client.getTasks { result in
+            switch result {
+            case .success(let tasks):
+              XCTAssertGreaterThanOrEqual(tasks.results.count, 2)
+              XCTAssertEqual(tasks.results[0].type, .taskCancelation)
+              XCTAssertEqual(tasks.results[1].type, .documentAdditionOrUpdate)
+            case .failure(let error):
+              dump(error)
+              XCTFail("Failed to get tasks")
+            }
+            addDocExpectation.fulfill()
+          }
+        }
+
+      case .failure:
+        XCTFail("Failed to add document")
+        addDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+  }
+
+  func testDeleteTask() {
+    let addDocExpectation = XCTestExpectation(description: "Add documents")
+    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+      switch result {
+      case .success(let task):
+        self.client.deleteTasks(filter: .init(uids: [task.uid])) { result in
+          switch result {
+          case .success(let taskInfo):
+            self.client.waitForTask(task: taskInfo) { _ in
+              self.client.getTasks { result in
+                switch result {
+                case .success(let tasks):
+                  XCTAssertEqual(tasks.results[0].type, .taskDeletion)
+                  XCTAssertNotEqual(tasks.results[1].uid, task.uid)
+                case .failure(let error):
+                  dump(error)
+                  XCTFail("Failed to get tasks")
+                }
+
+                addDocExpectation.fulfill()
+              }
+            }
+          case .failure:
+            XCTFail("Failed to delete document")
+            addDocExpectation.fulfill()
+          }
+        }
+      case .failure:
+        XCTFail("Failed to add document")
+        addDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+  }
+
   func testWaitForTask() {
     let createIndexExpectation = XCTestExpectation(description: "Add documents")
 
@@ -161,7 +226,7 @@ class TasksTests: XCTestCase {
         self.client.waitForTask(task: task, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             createIndexExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -186,7 +251,7 @@ class TasksTests: XCTestCase {
         self.client.waitForTask(taskUid: task.taskUid, options: WaitOptions(timeOut: 1, interval: 0.5)) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(task.type, "indexCreation")
+            XCTAssertEqual(task.type.description, "indexCreation")
             createIndexExpectation.fulfill()
           case .failure(let error):
             dump(error)

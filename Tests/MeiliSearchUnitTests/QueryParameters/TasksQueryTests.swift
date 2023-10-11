@@ -8,7 +8,7 @@ class TasksQueryTests: XCTestCase {
   func testRenderedQuery() {
     let data: [[String: TasksQuery]] = [
       ["?limit=2": TasksQuery(limit: 2)],
-      ["?from=99&limit=2&types=name,title": TasksQuery(limit: 2, from: 99, types: ["name", "title"])],
+      ["?from=99&limit=2&types=indexSwap,dumpCreation": TasksQuery(limit: 2, from: 99, types: [.indexSwap, .dumpCreation])],
       ["?limit=2": TasksQuery(limit: 2, next: nil)],
       ["?from=2": TasksQuery(from: 2)],
       ["?indexUids=my-index,123": TasksQuery(indexUids: ["my-index", "123"])],
