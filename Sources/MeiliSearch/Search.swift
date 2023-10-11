@@ -18,7 +18,7 @@ struct Search {
     _ uid: String,
     _ searchParameters: SearchParameters,
     _ completion: @escaping (Result<Searchable<T>, Swift.Error>) -> Void)
-  where T: Codable, T: Equatable {
+  where T: Decodable {
     let data: Data
     do {
       data = try JSONEncoder().encode(searchParameters)

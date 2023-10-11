@@ -445,10 +445,10 @@ struct Settings {
     }
   }
 
-  private func updateSetting(
+  private func updateSetting<T: Encodable>(
     uid: String,
     key: String?,
-    data: Encodable,
+    data: T,
     completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void
   ) {
     let body: Data
