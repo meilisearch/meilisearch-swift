@@ -102,6 +102,28 @@ extension MeiliSearch {
   }
 
   /**
+   See `cancelTasks(filter:completion:)`
+   */
+  public func cancelTasks(filter: CancelTasksQuery) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.cancelTasks(filter: filter) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `deleteTasks(filter:completion:)`
+   */
+  public func deleteTasks(filter: DeleteTasksQuery) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.deleteTasks(filter: filter) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `getKeys(params:_:)`
    */
   public func getKeys(params: KeysQuery? = nil) async throws -> KeysResults {
