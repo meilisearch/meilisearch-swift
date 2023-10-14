@@ -80,7 +80,7 @@ class SearchTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
   func testSearchForBotmanMovieAsync() async throws {
     let jsonString = """
@@ -108,15 +108,15 @@ class SearchTests: XCTestCase {
         "query": "botman"
       }
       """
-    
+
     // Prepare the mock server
     let data = jsonString.data(using: .utf8)!
     let stubSearchResult: Searchable<Movie> = try! Constants.customJSONDecoder.decode(Searchable<Movie>.self, from: data)
     session.pushData(jsonString)
-    
+
     // Start the test with the mocked server
     let searchParameters = SearchParameters.query("botman")
-    
+
     let searchResult: Searchable<Movie> = try await self.index.search(searchParameters)
     XCTAssertEqual(stubSearchResult, searchResult)
   }
