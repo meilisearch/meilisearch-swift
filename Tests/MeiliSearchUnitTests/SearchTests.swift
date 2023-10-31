@@ -1,8 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_unwrapping
-
 private struct Movie: Codable, Equatable {
   let id: Int
   let title: String
@@ -30,7 +28,7 @@ class SearchTests: XCTestCase {
     index = client.index("movies_test")
   }
 
-  func testSearchForBotmanMovie() throws {
+  func testSearchForBotmanMovie() async throws {
     let jsonString = """
       {
         "hits": [
@@ -58,70 +56,16 @@ class SearchTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let data = jsonString.data(using: .utf8)!
-    let stubSearchResult: Searchable<Movie> = try Constants.customJSONDecoder.decode(Searchable<Movie>.self, from: data)
+    let stubSearchResult: Searchable<Movie> = try decodeJSON(from: jsonString)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
     let searchParameters = SearchParameters.query("botman")
-    let expectation = XCTestExpectation(description: "Searching for botman")
-    typealias MeiliResult = Result<Searchable<Movie>, Swift.Error>
-
-    self.index.search(searchParameters) { (result: MeiliResult) in
-      switch result {
-      case .success(let searchResult):
-        XCTAssertEqual(stubSearchResult, searchResult)
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed to search for botman")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
-  }
-
-  @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-  func testSearchForBotmanMovieAsync() async throws {
-    let jsonString = """
-      {
-        "hits": [
-          {
-            "id": 29751,
-            "title": "Batman Unmasked: The Psychology of the Dark Knight",
-            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
-            "overview": "Delve into the world of Batman and the vigilante justice tha",
-            "release_date": "2020-04-04T19:59:49.259572Z"
-          },
-          {
-            "id": 471474,
-            "title": "Batman: Gotham by Gaslight",
-            "poster": "https://image.tmdb.org/t/p/w1280/7souLi5zqQCnpZVghaXv0Wowi0y.jpg",
-            "overview": "ve Victorian Age Gotham City, Batman begins his war on crime",
-            "release_date": "2020-04-04T19:59:49.259572Z"
-          }
-        ],
-        "offset": 0,
-        "limit": 20,
-        "processingTimeMs": 2,
-        "estimatedTotalHits": 2,
-        "query": "botman"
-      }
-      """
-
-    // Prepare the mock server
-    let data = jsonString.data(using: .utf8)!
-    let stubSearchResult: Searchable<Movie> = try! Constants.customJSONDecoder.decode(Searchable<Movie>.self, from: data)
-    session.pushData(jsonString)
-
-    // Start the test with the mocked server
-    let searchParameters = SearchParameters.query("botman")
-
     let searchResult: Searchable<Movie> = try await self.index.search(searchParameters)
     XCTAssertEqual(stubSearchResult, searchResult)
   }
 
-  func testSearchForBotmanMovieFacets() throws {
+  func testSearchForBotmanMovieFacets() async throws {
     let jsonString = """
       {
         "hits": [
@@ -149,8 +93,7 @@ class SearchTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let data = jsonString.data(using: .utf8)!
-    let stubSearchResult: Searchable<Movie> = try Constants.customJSONDecoder.decode(Searchable<Movie>.self, from: data)
+    let stubSearchResult: Searchable<Movie> = try decodeJSON(from: jsonString)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
@@ -160,25 +103,11 @@ class SearchTests: XCTestCase {
       sort: ["id:asc"]
     )
 
-    let expectation = XCTestExpectation(description: "Searching for botman")
-    typealias MeiliResult = Result<Searchable<Movie>, Swift.Error>
-
-    self.index.search(searchParameters) { (result: MeiliResult) in
-      switch result {
-      case .success(let searchResult):
-        print(searchResult)
-        XCTAssertEqual(stubSearchResult, searchResult)
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed to search for botman")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let searchResult: Searchable<Movie> = try await self.index.search(searchParameters)
+    XCTAssertEqual(stubSearchResult, searchResult)
   }
 
-  func testShouldFilterValuesWithSpaces() {
+  func testShouldFilterValuesWithSpaces() async throws {
     let jsonString = """
       {
         "hits": [
@@ -269,25 +198,11 @@ class SearchTests: XCTestCase {
       sort: ["id:asc"]
     )
 
-    let expectation = XCTestExpectation(description: "Searching for the hobbit")
-    typealias MeiliResult = Result<Searchable<Movie>, Swift.Error>
-
-    index.search(searchParameters) { (result: MeiliResult) in
-      switch result {
-      case .success(let searchResult):
-        XCTAssertEqual(stubSearchResult, searchResult)
-        expectation.fulfill()
-      case .failure(let err):
-        print(err)
-        XCTFail("Failed to search for hobbit")
-        expectation.fulfill()
-      }
-    }
-
-    wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let searchResult: Searchable<Movie> = try await index.search(searchParameters)
+    XCTAssertEqual(stubSearchResult, searchResult)
   }
 
-  func testSearchWithFinitePagination() throws {
+  func testSearchWithFinitePagination() async throws {
     let jsonString = """
       {
         "hits": [
@@ -316,35 +231,19 @@ class SearchTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let data = jsonString.data(using: .utf8)!
-    let stubSearchResult: Searchable<Movie> = try Constants.customJSONDecoder.decode(Searchable<Movie>.self, from: data)
+    let stubSearchResult: Searchable<Movie> = try decodeJSON(from: jsonString)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
     let searchParameters = SearchParameters(query: "botman", hitsPerPage: 10)
-    let expectation = XCTestExpectation(description: "Searching for botman with finite pagination")
-    typealias MeiliResult = Result<Searchable<Movie>, Swift.Error>
+    let searchResult: Searchable<Movie> = try await self.index.search(searchParameters)
+    let result = searchResult as! FiniteSearchResult<Movie>
 
-    self.index.search(searchParameters) { (result: MeiliResult) in
-      switch result {
-      case .success(let searchResult):
-        let result = searchResult as! FiniteSearchResult<Movie>
-
-        XCTAssertEqual(stubSearchResult, searchResult)
-        XCTAssertEqual(result.totalPages, 1)
-        XCTAssertEqual(result.totalHits, 2)
-        XCTAssertEqual(result.page, 1)
-        XCTAssertEqual(result.query, "botman")
-        XCTAssertEqual(result.processingTimeMs, 2)
-
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed to search for botman with finite pagination")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    XCTAssertEqual(stubSearchResult, searchResult)
+    XCTAssertEqual(result.totalPages, 1)
+    XCTAssertEqual(result.totalHits, 2)
+    XCTAssertEqual(result.page, 1)
+    XCTAssertEqual(result.query, "botman")
+    XCTAssertEqual(result.processingTimeMs, 2)
   }
 }
-// swiftlint:enable force_unwrapping

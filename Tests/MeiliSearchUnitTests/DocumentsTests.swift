@@ -5,9 +5,6 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_unwrapping
-
-// swiftlint:disable line_length
 private struct Movie: Codable, Equatable {
   let id: Int
   let title: String
@@ -34,15 +31,13 @@ class DocumentsTests: XCTestCase {
     index = self.client.index(self.uid)
   }
 
-  func testAddDocuments() throws {
+  func testAddDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
@@ -50,34 +45,20 @@ class DocumentsTests: XCTestCase {
       id: 287947,
       title: "Shazam",
       overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
-      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200)))
+      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200))
+    )
 
-    let expectation = XCTestExpectation(description: "Add or replace Movies document")
-    self.index.addDocuments(
-      documents: [movie],
-      primaryKey: "id"
-    ) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask.taskUid, update.taskUid)
-      case .failure:
-        XCTFail("Failed to add or replace Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.addDocuments(documents: [movie], primaryKey: "id")
+    XCTAssertEqual(stubTask.taskUid, update.taskUid)
   }
 
-  func testAddDataDocuments() throws {
+  func testAddDataDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
 
     let documentJsonString = """
@@ -91,36 +72,20 @@ class DocumentsTests: XCTestCase {
       """
 
     let primaryKey: String = ""
-    let documents: Data = documentJsonString.data(using: .utf8)!
+    let documents: Data = Data(documentJsonString.utf8)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Add or replace Movies document")
-
-    self.index.addDocuments(
-      documents: documents,
-      primaryKey: primaryKey
-    ) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to add or replace Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.addDocuments(documents: documents, primaryKey: primaryKey)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testUpdateDataDocuments() throws {
+  func testUpdateDataDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
     let documentJsonString = """
       [{
@@ -130,34 +95,20 @@ class DocumentsTests: XCTestCase {
       """
 
     let primaryKey: String = "movieskud"
-    let JsonDocuments: Data = documentJsonString.data(using: .utf8)!
+    let JsonDocuments: Data = Data(documentJsonString.utf8)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Add or update Movies document")
-    self.index.updateDocuments(
-      documents: JsonDocuments,
-      primaryKey: primaryKey) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to add or update Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateDocuments(documents: JsonDocuments, primaryKey: primaryKey)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testUpdateDocuments() throws {
+  func testUpdateDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
 
     let movie = Movie(
@@ -168,24 +119,11 @@ class DocumentsTests: XCTestCase {
     )
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "add or update Movies document")
-    self.index.updateDocuments(
-      documents: [movie],
-      primaryKey: "id"
-    ) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to add or update Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateDocuments(documents: [movie], primaryKey: "id")
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testGetDocument() throws {
+  func testGetDocument() async throws {
     let jsonString = """
       {
         "id": 25684,
@@ -198,29 +136,15 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder = Constants.customJSONDecoder
-    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-    let data = jsonString.data(using: .utf8)!
-    let stubMovie: Movie = try decoder.decode(Movie.self, from: data)
+    let stubMovie: Movie = try decodeJSON(from: jsonString)
     let identifier: String = "25684"
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get Movies document")
-
-    self.index.getDocument(identifier) { (result: Result<Movie, Swift.Error>) in
-      switch result {
-      case .success(let movie):
-        XCTAssertEqual(stubMovie, movie)
-      case .failure:
-        XCTFail("Failed to get Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let movie: Movie = try await self.index.getDocument(identifier)
+    XCTAssertEqual(stubMovie, movie)
   }
 
-  func testGetDocumentWithSparseFieldsets() {
+  func testGetDocumentWithSparseFieldsets() async throws {
     let jsonString = """
       {
         "id": 25684,
@@ -231,33 +155,17 @@ class DocumentsTests: XCTestCase {
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
 
-    do {
-      let decoder = Constants.customJSONDecoder
-      decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-      let data = jsonString.data(using: .utf8)!
-      let stubMovie: Movie = try decoder.decode(Movie.self, from: data)
-      let identifier: String = "25684"
+    let stubMovie: Movie = try decodeJSON(from: jsonString)
+    let identifier: String = "25684"
 
-      // Start the test with the mocked server
-      let expectation = XCTestExpectation(description: "Get Movies document")
+    // Start the test with the mocked server
+    let movie: Movie = try await self.index.getDocument(identifier, fields: ["title", "id"])
+    XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "fields=title,id")
 
-      self.index.getDocument(identifier, fields: ["title", "id"]) { (result: Result<Movie, Swift.Error>) in
-        switch result {
-        case .success(let movie):
-          XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "fields=title,id")
-
-          XCTAssertEqual(stubMovie, movie)
-        case .failure:
-          XCTFail("Failed to get Movies document")
-        }
-        expectation.fulfill()
-      }
-    } catch {
-      XCTFail("Failed to parse document")
-    }
+    XCTAssertEqual(stubMovie, movie)
   }
 
-  func testGetDocumentsWithParameters() {
+  func testGetDocumentsWithParameters() async throws {
     let jsonString = """
       {
         "results": [],
@@ -271,25 +179,11 @@ class DocumentsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get documents with parameters")
-
-    self.index.getDocuments(params: DocumentsQuery(limit: 2, offset: 10)) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
-      switch result {
-      case .success:
-        XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "limit=2&offset=10")
-
-        expectation.fulfill()
-      case .failure(let error):
-        dump(error)
-        XCTFail("Failed to get all Indexes")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let _: DocumentsResults<Movie> = try await self.index.getDocuments(params: DocumentsQuery(limit: 2, offset: 10))
+    XCTAssertEqual(self.session.nextDataTask.request?.url?.query, "limit=2&offset=10")
   }
 
-  func testGetDocuments() throws {
+  func testGetDocuments() async throws {
     let jsonString = """
       {
         "results": [
@@ -316,105 +210,55 @@ class DocumentsTests: XCTestCase {
 
     // Prepare the mock server
     session.pushData(jsonString, code: 200)
-    let decoder = Constants.customJSONDecoder
-    decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
-    let data = jsonString.data(using: .utf8)!
-    let stubMovies: DocumentsResults<Movie> = try decoder.decode(DocumentsResults<Movie>.self, from: data)
+    let stubMovies: DocumentsResults<Movie> = try decodeJSON(from: jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get Movies documents")
-
-    self.index.getDocuments { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let movies):
-        XCTAssertEqual(stubMovies, movies)
-      case .failure:
-        XCTFail("Failed to get Movies documents")
-      }
-      expectation.fulfill()
-    }
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let movies: DocumentsResults<Movie> = try await self.index.getDocuments()
+    XCTAssertEqual(stubMovies, movies)
   }
 
-  func testDeleteDocument() throws {
+  func testDeleteDocument() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
     let identifier: String = "25684"
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Delete Movies document")
-
-    self.index.deleteDocument(identifier) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to delete Movies document")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.deleteDocument(identifier)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testDeleteAllDocuments() throws {
+  func testDeleteAllDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
       """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Delete all Movies documents")
-    self.index.deleteAllDocuments { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to delete all Movies documents")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.deleteAllDocuments()
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testDeleteBatchDocuments() throws {
+  func testDeleteBatchDocuments() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
     """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [String] = ["23488", "153738", "437035", "363869"]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Delete all Movies documents")
-    self.index.deleteBatchDocuments(documentsIdentifiers) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to delete all Movies documents")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.deleteBatchDocuments(documentsIdentifiers)
+    XCTAssertEqual(stubTask, update)
   }
 
   @available(*, deprecated, message: "Testing deprecated methods - marked deprecated to avoid additional warnings below.")
@@ -424,9 +268,7 @@ class DocumentsTests: XCTestCase {
     """
 
     // Prepare the mock server
-    let decoder = Constants.customJSONDecoder
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: jsonData)
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
     session.pushData(jsonString, code: 202)
     let documentsIdentifiers: [Int] = [23488, 153738, 437035, 363869]
 
@@ -445,7 +287,3 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 }
-// swiftlint:enable force_unwrapping
-// swiftlint:enable force_cast
-
-// swiftlint:enable line_length

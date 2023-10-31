@@ -4,7 +4,6 @@ import Foundation
   import FoundationNetworking
 #endif
 
-// swiftlint:disable force_unwrapping
 class MockURLSession: URLSessionProtocol {
   private(set) var nextDataTask = MockURLSessionDataTask()
 
@@ -83,4 +82,3 @@ struct ResponsePayload {
 
   static let `default` = ResponsePayload(nextType: ResponseStatus.success, nextData: nil, nextError: nil, nextCode: 200)
 }
-// swiftlint:enable force_unwrapping

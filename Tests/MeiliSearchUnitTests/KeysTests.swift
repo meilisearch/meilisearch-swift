@@ -13,7 +13,7 @@ class KeysTests: XCTestCase {
     index = client.index(self.uid)
   }
 
-  func testGetKeysWithParameters() {
+  func testGetKeysWithParameters() async throws {
     let jsonString = """
       {
         "results": [],
@@ -27,24 +27,8 @@ class KeysTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get keys with parameters")
-
-    self.client.getKeys(params: KeysQuery(limit: 2, offset: 10)) { result in
-      switch result {
-      case .success:
-        let requestQuery = self.session.nextDataTask.request?.url?.query
-
-        XCTAssertEqual(requestQuery, "limit=2&offset=10")
-
-        expectation.fulfill()
-      case .failure(let error):
-        dump(error)
-        XCTFail("Failed to get all Indexes")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    _ = try await self.client.getKeys(params: KeysQuery(limit: 2, offset: 10))
+    let requestQuery = self.session.nextDataTask.request?.url?.query
+    XCTAssertEqual(requestQuery, "limit=2&offset=10")
   }
 }
-// swiftlint:enable force_unwrapping

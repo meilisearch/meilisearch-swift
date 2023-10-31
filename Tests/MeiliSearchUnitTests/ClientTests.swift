@@ -1,7 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_cast
 class ClientTests: XCTestCase {
   private let session = MockURLSession()
   private let validHost = "http://localhost:7700"
@@ -91,4 +90,3 @@ class ClientTests: XCTestCase {
     req.put(api: "/", "{}".data(using: .utf8) ?? Data(), requiredDataResponseHandler)
   }
 }
-// swiftlint:enable force_cast
