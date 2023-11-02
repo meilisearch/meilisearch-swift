@@ -1,8 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_unwrapping
-
 class StatsTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
@@ -15,7 +13,7 @@ class StatsTests: XCTestCase {
     index = client.index(self.uid)
   }
 
-  func testStats() throws {
+  func testStats() async throws {
     let jsonString = """
       {
         "numberOfDocuments": 19654,
@@ -31,27 +29,16 @@ class StatsTests: XCTestCase {
       """
 
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubStats: Stat = try Constants.customJSONDecoder.decode(Stat.self, from: jsonData)
+    let stubStats: Stat = try decodeJSON(from: jsonString)
 
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Check Movies stats")
-    self.index.stats { result in
-      switch result {
-      case .success(let stats):
-        XCTAssertEqual(stubStats, stats)
-      case .failure:
-        XCTFail("Failed to check Movies stats")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let stats = try await self.index.stats()
+    XCTAssertEqual(stubStats, stats)
   }
 
-  func testAllStats() throws {
+  func testAllStats() async throws {
     let jsonString = """
       {
         "databaseSize": 447819776,
@@ -81,25 +68,12 @@ class StatsTests: XCTestCase {
       }
       """
     // Prepare the mock server
-    let jsonData = jsonString.data(using: .utf8)!
-    let stubAllStats: AllStats = try Constants.customJSONDecoder.decode(AllStats.self, from: jsonData)
+    let stubAllStats: AllStats = try decodeJSON(from: jsonString)
 
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Check all indexes stats")
-
-    self.client.allStats { result in
-      switch result {
-      case .success(let allStats):
-        XCTAssertEqual(stubAllStats, allStats)
-      case .failure:
-        XCTFail("Failed to check all indexes stats")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let allStats = try await self.client.allStats()
+    XCTAssertEqual(stubAllStats, allStats)
   }
 }
-// swiftlint:enable force_unwrapping

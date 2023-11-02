@@ -1,8 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_unwrapping
-
 class SystemTests: XCTestCase {
   private var client: MeiliSearch!
 
@@ -13,118 +11,61 @@ class SystemTests: XCTestCase {
     client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
   }
 
-  func testHealthStatusAvailable() throws {
+  func testHealthStatusAvailable() async throws {
     // Prepare the mock server
-
     let jsonString = """
-      {
-        "status": "available"
-      }
-      """
+    {
+      "status": "available"
+    }
+    """
 
-    let jsonData = jsonString.data(using: .utf8)!
+    let expectedHealthBody: Health = try decodeJSON(from: jsonString)
+    session.pushData(jsonString, code: 200)
 
-    let expectedHealthBody: Health = try Constants.customJSONDecoder.decode(Health.self, from: jsonData)
+    // Start the test with the mocked server
+    let body = try await self.client.health()
+    XCTAssertEqual(expectedHealthBody, body)
+  }
+
+  func testIsHealthyTrue() async throws {
+    // Prepare the mock server
+    let jsonString = """
+    {
+      "status": "available"
+    }
+    """
 
     session.pushData(jsonString, code: 200)
 
     // Start the test with the mocked server
-
-    let expectation = XCTestExpectation(description: "Check body of health server on health method")
-
-    self.client.health { result in
-      switch result {
-      case .success(let body):
-        XCTAssertEqual(expectedHealthBody, body)
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed on available status check on health method")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let result = await self.client.isHealthy()
+    XCTAssertTrue(result)
   }
 
-  func testIsHealthyTrue() {
+  func testIsHealthyFalse() async throws {
     // Prepare the mock server
-
-    let jsonString = """
-      {
-        "status": "available"
-      }
-      """
-
-    session.pushData(jsonString, code: 200)
-
-    // Start the test with the mocked server
-
-    let expectation = XCTestExpectation(description: "Check if is healthy is true")
-
-    self.client.isHealthy { result in
-      if result == true {
-        XCTAssertEqual(result, true)
-        expectation.fulfill()
-      } else {
-        XCTFail("Failed on isHealthy should be true")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
-  }
-
-  func testIsHealthyFalse() {
-    // Prepare the mock server
-
     session.pushData("", code: 400)
 
     // Start the test with the mocked server
-
-    let expectation = XCTestExpectation(description: "Check if is healthy is false")
-
-    self.client.isHealthy { result in
-      if result == false {
-        XCTAssertEqual(result, false)
-        expectation.fulfill()
-      } else {
-        XCTFail("Failed on isHealthy should be false")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let result = await self.client.isHealthy()
+    XCTAssertFalse(result)
   }
 
-  func testVersion() throws {
+  func testVersion() async throws {
     // Prepare the mock server
-
     let jsonString = """
-      {
-        "commitSha": "b46889b5f0f2f8b91438a08a358ba8f05fc09fc1",
-        "commitDate": "2019-11-15T09:51:54.278247+00:00",
-        "pkgVersion": "0.1.1"
-      }
-      """
+    {
+      "commitSha": "b46889b5f0f2f8b91438a08a358ba8f05fc09fc1",
+      "commitDate": "2019-11-15T09:51:54.278247+00:00",
+      "pkgVersion": "0.1.1"
+    }
+    """
 
-    let jsonData = jsonString.data(using: .utf8)!
-
-    let stubVersion: Version = try Constants.customJSONDecoder.decode(Version.self, from: jsonData)
-
+    let stubVersion: Version = try decodeJSON(from: jsonString)
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-
-    let expectation = XCTestExpectation(description: "Load server version")
-
-    self.client.version { result in
-      switch result {
-      case .success(let version):
-        XCTAssertEqual(stubVersion, version)
-        expectation.fulfill()
-      case .failure:
-        XCTFail("Failed to load server version")
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let version = try await client.version()
+    XCTAssertEqual(stubVersion, version)
   }
 }
-// swiftlint:enable force_unwrapping

@@ -13,7 +13,7 @@ class TasksTests: XCTestCase {
     index = client.index(self.uid)
   }
 
-  func testGetTasksWithParametersFromClient() {
+  func testGetTasksWithParametersFromClient() async throws {
     let jsonString = """
       {
         "results": [],
@@ -28,24 +28,10 @@ class TasksTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get keys with parameters")
+    let params = TasksQuery(limit: 20, from: 5, next: 98, types: [.indexCreation])
+    _ = try await self.client.getTasks(params: params)
 
-    self.client.getTasks(params: TasksQuery(limit: 20, from: 5, next: 98, types: [.indexCreation])) { result in
-      switch result {
-      case .success:
-        let requestQuery = self.session.nextDataTask.request?.url?.query
-
-        XCTAssertEqual(requestQuery, "from=5&limit=20&next=98&types=indexCreation")
-
-        expectation.fulfill()
-      case .failure(let error):
-        dump(error)
-        XCTFail("Failed to get all Indexes")
-        expectation.fulfill()
-      }
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let requestQuery = self.session.nextDataTask.request?.url?.query
+    XCTAssertEqual(requestQuery, "from=5&limit=20&next=98&types=indexCreation")
   }
 }
-// swiftlint:enable force_unwrapping

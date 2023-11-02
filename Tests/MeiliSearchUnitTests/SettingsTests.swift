@@ -1,7 +1,6 @@
 @testable import MeiliSearch
 import XCTest
 
-// swiftlint:disable force_cast
 class SettingsTests: XCTestCase {
   private var client: MeiliSearch!
   private var index: Indexes!
@@ -60,27 +59,17 @@ class SettingsTests: XCTestCase {
 
   // MARK: Settings
 
-  func testGetSettings() throws {
+  func testGetSettings() async throws {
     // Prepare the mock server
     let stubSetting: SettingResult = try buildStubSettingResult(from: json)
     session.pushData(json)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get settings")
-    self.index.getSettings { result in
-      switch result {
-      case .success(let setting):
-        XCTAssertEqual(stubSetting, setting)
-      case .failure:
-        XCTFail("Failed to get settings")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let setting = try await self.index.getSettings()
+    XCTAssertEqual(stubSetting, setting)
   }
 
-  func testUpdateSettings() throws {
+  func testUpdateSettings() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -94,22 +83,11 @@ class SettingsTests: XCTestCase {
     let setting: Setting = try buildStubSetting(from: json)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update settings")
-
-    self.index.updateSettings(setting) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update settings")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateSettings(setting)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetSettings() throws {
+  func testResetSettings() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -121,24 +99,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset settings")
-
-    self.index.resetSettings { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset settings")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetSettings()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Synonyms
 
-  func testGetSynonyms() throws {
+  func testGetSynonyms() async throws {
     let jsonString = """
       {
         "wolverine": ["xmen", "logan"],
@@ -155,22 +122,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get synonyms")
-
-    self.index.getSynonyms { result in
-      switch result {
-      case .success(let synonyms):
-        XCTAssertEqual(stubSynonyms, synonyms)
-      case .failure:
-        XCTFail("Failed to get synonyms")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let synonyms = try await self.index.getSynonyms()
+    XCTAssertEqual(stubSynonyms, synonyms)
   }
 
-  func testUpdateSynonyms() throws {
+  func testUpdateSynonyms() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -194,21 +150,11 @@ class SettingsTests: XCTestCase {
       with: jsonData, options: []) as! [String: [String]]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update synonyms")
-    self.index.updateSynonyms(synonyms) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update synonyms")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateSynonyms(synonyms)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetSynonyms() throws {
+  func testResetSynonyms() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -221,24 +167,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset synonyms")
-
-    self.index.resetSynonyms { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset synonyms")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetSynonyms()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Stop words
 
-  func testGetStopWords() throws {
+  func testGetStopWords() async throws {
     let jsonString = """
       ["of", "the", "to"]
       """
@@ -250,22 +185,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get stop-words")
-
-    self.index.getStopWords { result in
-      switch result {
-      case .success(let stopWords):
-        XCTAssertEqual(stubStopWords, stopWords)
-      case .failure:
-        XCTFail("Failed to get stop-words")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let stopWords = try await self.index.getStopWords()
+    XCTAssertEqual(stubStopWords, stopWords)
   }
 
-  func testUpdateStopWords() throws {
+  func testUpdateStopWords() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -284,21 +208,11 @@ class SettingsTests: XCTestCase {
       with: Data(json.utf8), options: []) as! [String]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update stop-words")
-    self.index.updateStopWords(stopWords) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(update, stubTask)
-      case .failure:
-        XCTFail("Failed to update stop-words")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateStopWords(stopWords)
+    XCTAssertEqual(update, stubTask)
   }
 
-  func testResetStopWords() throws {
+  func testResetStopWords() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -312,24 +226,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset stop-words")
-
-    self.index.resetStopWords { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset stop-words")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetStopWords()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Ranking rules
 
-  func testGetRankingRules() throws {
+  func testGetRankingRules() async throws {
     let jsonString = """
       [
         "words",
@@ -349,22 +252,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get ranking rules")
-
-    self.index.getRankingRules { result in
-      switch result {
-      case .success(let rankingRules):
-        XCTAssertEqual(stubRankingRules, rankingRules)
-      case .failure:
-        XCTFail("Failed to get ranking rules")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let rankingRules = try await self.index.getRankingRules()
+    XCTAssertEqual(stubRankingRules, rankingRules)
   }
 
-  func testUpdateRankingRules() throws {
+  func testUpdateRankingRules() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -382,22 +274,11 @@ class SettingsTests: XCTestCase {
       with: Data(json.utf8), options: []) as! [String]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update ranking rules")
-
-    self.index.updateRankingRules(stopWords) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update ranking rules")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateRankingRules(stopWords)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetRankingRules() throws {
+  func testResetRankingRules() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -411,24 +292,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset ranking rules")
-
-    self.index.resetRankingRules { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset ranking rules")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetRankingRules()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Distinct Attribute
 
-  func testGetDistinctAttribute() throws {
+  func testGetDistinctAttribute() async throws {
     let stubDistinctAttribute: String = """
       "movie_id"
       """
@@ -437,22 +307,11 @@ class SettingsTests: XCTestCase {
     session.pushData(stubDistinctAttribute)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get distinct attribute")
-
-    self.index.getDistinctAttribute { result in
-      switch result {
-      case .success(let distinctAttribute):
-        XCTAssertEqual("movie_id", distinctAttribute)
-      case .failure:
-        XCTFail("Failed to get distinct attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let distinctAttribute = try await self.index.getDistinctAttribute()
+    XCTAssertEqual("movie_id", distinctAttribute)
   }
 
-  func testUpdateDistinctAttribute() throws {
+  func testUpdateDistinctAttribute() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -466,22 +325,11 @@ class SettingsTests: XCTestCase {
     let distinctAttribute = "movie_id"
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update distinct attribute")
-
-    self.index.updateDistinctAttribute(distinctAttribute) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update distinct attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateDistinctAttribute(distinctAttribute)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetDistinctAttribute() throws {
+  func testResetDistinctAttribute() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -494,24 +342,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset distinct attribute")
-
-    self.index.resetDistinctAttribute { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset distinct attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetDistinctAttribute()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Searchable Attribute
 
-  func testGetSearchableAttributes() throws {
+  func testGetSearchableAttributes() async throws {
     let jsonString = """
       ["title", "description", "uid"]
       """
@@ -523,22 +360,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get searchable attribute")
-
-    self.index.getSearchableAttributes { result in
-      switch result {
-      case .success(let searchableAttribute):
-        XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
-      case .failure:
-        XCTFail("Failed to get searchable attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let searchableAttribute = try await self.index.getSearchableAttributes()
+    XCTAssertEqual(stubSearchableAttribute, searchableAttribute)
   }
 
-  func testUpdateSearchableAttributes() throws {
+  func testUpdateSearchableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -558,21 +384,11 @@ class SettingsTests: XCTestCase {
       with: jsonData, options: []) as! [String]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update searchable attribute")
-    self.index.updateSearchableAttributes(searchableAttribute) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update searchable attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateSearchableAttributes(searchableAttribute)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetSearchableAttributes() throws {
+  func testResetSearchableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -585,23 +401,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset searchable attribute")
-    self.index.resetSearchableAttributes { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset searchable attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetSearchableAttributes()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Displayed Attributes
 
-  func testGetDisplayedAttributes() throws {
+  func testGetDisplayedAttributes() async throws {
     let jsonString = """
       ["title", "description", "release_date", "rank", "poster"]
       """
@@ -613,22 +419,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get displayed attribute")
-
-    self.index.getDisplayedAttributes { result in
-      switch result {
-      case .success(let displayedAttributes):
-        XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
-      case .failure:
-        XCTFail("Failed to get displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let displayedAttributes = try await self.index.getDisplayedAttributes()
+    XCTAssertEqual(stubDisplayedAttributes, displayedAttributes)
   }
 
-  func testUpdateDisplayedAttributes() throws {
+  func testUpdateDisplayedAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -650,22 +445,11 @@ class SettingsTests: XCTestCase {
       with: jsonData, options: []) as! [String]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.updateDisplayedAttributes(displayedAttributes) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateDisplayedAttributes(displayedAttributes)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetDisplayedAttributes() throws {
+  func testResetDisplayedAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -678,24 +462,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Reset displayed attribute")
-
-    self.index.resetDisplayedAttributes { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to reset displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetDisplayedAttributes()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Filterable Attributes
 
-  func testGetFilterableAttributes() throws {
+  func testGetFilterableAttributes() async throws {
     let jsonString = """
       ["genre", "director"]
       """
@@ -704,22 +477,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get displayed attribute")
-
-    self.index.getFilterableAttributes { result in
-      switch result {
-      case .success(let filterableAttributes):
-        XCTAssertFalse(filterableAttributes.isEmpty)
-      case .failure:
-        XCTFail("Failed to get displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let filterableAttributes = try await self.index.getFilterableAttributes()
+    XCTAssertFalse(filterableAttributes.isEmpty)
   }
 
-  func testUpdateFilterableAttributes() throws {
+  func testUpdateFilterableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -734,22 +496,11 @@ class SettingsTests: XCTestCase {
     let attributes: [String] = ["genre", "director"]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.updateFilterableAttributes(attributes) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateFilterableAttributes(attributes)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetFilterableAttributes() throws {
+  func testResetFilterableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -763,24 +514,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.resetFilterableAttributes { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetFilterableAttributes()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Filterable Attributes
 
-  func testGetSortableAttributes() throws {
+  func testGetSortableAttributes() async throws {
     let jsonString = """
       ["genre", "director"]
       """
@@ -789,22 +529,11 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get displayed attribute")
-
-    self.index.getSortableAttributes { result in
-      switch result {
-      case .success(let sortableAttributes):
-        XCTAssertFalse(sortableAttributes.isEmpty)
-      case .failure:
-        XCTFail("Failed to get displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let sortableAttributes = try await self.index.getSortableAttributes()
+    XCTAssertFalse(sortableAttributes.isEmpty)
   }
 
-  func testUpdateSortableAttributes() throws {
+  func testUpdateSortableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -819,22 +548,11 @@ class SettingsTests: XCTestCase {
     let attributes: [String] = ["genre", "director"]
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.updateSortableAttributes(attributes) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateSortableAttributes(attributes)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetSortableAttributes() throws {
+  func testResetSortableAttributes() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -847,24 +565,13 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.resetSortableAttributes { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetSortableAttributes()
+    XCTAssertEqual(stubTask, update)
   }
 
   // MARK: Typo Tolerance
 
-  func testGetTypoTolerance() {
+  func testGetTypoTolerance() async throws {
     let jsonString = """
       {"enabled":true,"minWordSizeForTypos":{"oneTypo":3,"twoTypos":7},"disableOnWords":["of", "the"],"disableOnAttributes":["genre"]}
       """
@@ -873,26 +580,15 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Get displayed attribute")
-
-    self.index.getTypoTolerance { result in
-      switch result {
-      case .success(let typoTolerance):
-        XCTAssertTrue(typoTolerance.enabled)
-        XCTAssertEqual(typoTolerance.minWordSizeForTypos.oneTypo, 3)
-        XCTAssertEqual(typoTolerance.minWordSizeForTypos.twoTypos, 7)
-        XCTAssertFalse(typoTolerance.disableOnWords.isEmpty)
-        XCTAssertFalse(typoTolerance.disableOnAttributes.isEmpty)
-      case .failure:
-        XCTFail("Failed to get displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let typoTolerance = try await self.index.getTypoTolerance()
+    XCTAssertTrue(typoTolerance.enabled)
+    XCTAssertEqual(typoTolerance.minWordSizeForTypos.oneTypo, 3)
+    XCTAssertEqual(typoTolerance.minWordSizeForTypos.twoTypos, 7)
+    XCTAssertFalse(typoTolerance.disableOnWords.isEmpty)
+    XCTAssertFalse(typoTolerance.disableOnAttributes.isEmpty)
   }
 
-  func testUpdateTypoTolerance() throws {
+  func testUpdateTypoTolerance() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -905,22 +601,11 @@ class SettingsTests: XCTestCase {
     let typoTolerance: TypoTolerance = .init(enabled: false)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.updateTypoTolerance(typoTolerance) { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.updateTypoTolerance(typoTolerance)
+    XCTAssertEqual(stubTask, update)
   }
 
-  func testResetTypoTolerance() throws {
+  func testResetTypoTolerance() async throws {
     let jsonString = """
       {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
       """
@@ -931,19 +616,8 @@ class SettingsTests: XCTestCase {
     session.pushData(jsonString)
 
     // Start the test with the mocked server
-    let expectation = XCTestExpectation(description: "Update displayed attribute")
-
-    self.index.resetTypoTolerance { result in
-      switch result {
-      case .success(let update):
-        XCTAssertEqual(stubTask, update)
-      case .failure:
-        XCTFail("Failed to update displayed attribute")
-      }
-      expectation.fulfill()
-    }
-
-    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+    let update = try await self.index.resetTypoTolerance()
+    XCTAssertEqual(stubTask, update)
   }
 
   private func buildStubSetting(from json: String) throws -> Setting {
@@ -958,4 +632,3 @@ class SettingsTests: XCTestCase {
     return try decoder.decode(SettingResult.self, from: data)
   }
 }
-// swiftlint:enable force_cast
