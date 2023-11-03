@@ -1575,3 +1575,8 @@ landing_getting_started_1: |-
         print(error)
     }
   }
+swap_indexes_1: |-
+  let task = try await self.client.swapIndexes([
+    ("indexA", "indexB"),
+    ("indexX", "indexY")
+  ])
