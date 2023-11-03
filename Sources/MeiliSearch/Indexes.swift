@@ -1127,7 +1127,7 @@ public struct Indexes {
     let primaryKey: String?
   }
 
-  struct SwapIndexPayload: Codable {
-    let indexes: [String]
+  public struct SwapIndexPayload: Codable, Equatable {
+    public let indexes: [String]
   }
 }
