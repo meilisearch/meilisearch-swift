@@ -271,12 +271,12 @@ class IndexesTests: XCTestCase {
     // Replace indexes
     let task = try await client.swapIndexes([("indexA", "indexB")]).wait(on: client)
     XCTAssertEqual(task.type, .indexSwap)
-    
+
     guard case .indexSwap(let value) = task.details else {
       XCTFail("Task Not a Swap")
       return
     }
-    
+
     XCTAssertEqual(value.swaps[0], .init(indexes: ["indexA", "indexB"]))
 
     // Verify indexA (now source) does have stop words and documents
