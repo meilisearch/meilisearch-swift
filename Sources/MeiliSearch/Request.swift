@@ -22,7 +22,7 @@ public protocol URLSessionDataTaskProtocol {
   func resume()
 }
 
-private enum HTTPMethod: String {
+enum HTTPMethod: String {
   case get = "GET"
   case put = "PUT"
   case post = "POST"
@@ -33,16 +33,17 @@ private enum HTTPMethod: String {
 public final class Request {
   private let config: Config
   private let session: URLSessionProtocol
+  private let headers: [String: String]
 
   init(_ config: Config) {
     self.config = config
     self.session = config.session ?? URLSession.shared
+    self.headers = config.headers
   }
 
-  private func request(
+  func request(
     _ httpMethod: HTTPMethod,
     _ url: URL,
-    _ headers: [String: String] = [:],
     data: Data? = nil
   ) -> URLRequest {
     var request = URLRequest(url: url)
@@ -54,13 +55,13 @@ public final class Request {
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
 
+    for (key, value) in headers {
+      request.setValue(value, forHTTPHeaderField: key)
+    }
+
     if let apiKey: String = config.apiKey {
       let bearer = "Bearer \(apiKey)"
       request.setValue(bearer, forHTTPHeaderField: "Authorization")
-    }
-
-    headers.forEach { key, value in
-      request.addValue(value, forHTTPHeaderField: key)
     }
 
     return request
@@ -69,7 +70,6 @@ public final class Request {
   func get(
     api: String,
     param: String? = nil,
-    headers: [String: String] = [:],
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
       var urlString: String = config.url(api: api)
       if let param: String = param, !param.isEmpty {
@@ -79,7 +79,7 @@ public final class Request {
         completion(.failure(MeiliSearch.Error.invalidURL(url: urlString)))
         return
       }
-      let request = self.request(.get, url, headers)
+      let request = self.request(.get, url)
       let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
         do {
           try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -97,7 +97,6 @@ public final class Request {
   func post(
     api: String,
     param: String? = nil,
-    headers: [String: String] = [:],
     _ data: Data?,
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
     var urlString: String = config.url(api: api)
@@ -109,7 +108,7 @@ public final class Request {
       return
     }
 
-    let request = self.request(.post, url, headers, data: data)
+    let request = self.request(.post, url, data: data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -129,14 +128,13 @@ public final class Request {
 
   func put(
     api: String,
-    headers: [String: String] = [:],
     _ data: Data,
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
     guard let url = URL(string: config.url(api: api)) else {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-    let request = self.request(.put, url, headers, data: data)
+    let request = self.request(.put, url, data: data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -156,14 +154,13 @@ public final class Request {
 
   func patch(
     api: String,
-    headers: [String: String] = [:],
     _ data: Data,
     _ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
     guard let url = URL(string: config.url(api: api)) else {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-      let request = self.request(.patch, url, headers, data: data)
+      let request = self.request(.patch, url, data: data)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)
@@ -184,7 +181,6 @@ public final class Request {
   func delete(
     api: String,
     param: String? = nil,
-    headers: [String: String] = [:],
     _ completion: @escaping (Result<Data?, Swift.Error>) -> Void) {
     var urlString: String = config.url(api: api)
     if let param: String = param, !param.isEmpty {
@@ -194,7 +190,7 @@ public final class Request {
       completion(.failure(MeiliSearch.Error.invalidURL()))
       return
     }
-      let request = self.request(.delete, url, headers)
+      let request = self.request(.delete, url)
     let task: URLSessionDataTaskProtocol = session.execute(with: request) { data, response, error in
       do {
         try MeiliSearch.errorHandler(url: url, data: data, response: response, error: error)

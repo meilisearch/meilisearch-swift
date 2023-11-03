@@ -16,7 +16,10 @@ public class Config {
   let apiKey: String?
 
   /// Custom URL session useful to replace the native network library.
-  var session: URLSessionProtocol?
+  let session: URLSessionProtocol?
+
+  /// Custom headers provided along with each request.
+  let headers: [String: String]
 
   // MARK: Initializers
 
@@ -31,10 +34,13 @@ public class Config {
   public init(
     host: String,
     apiKey: String? = nil,
-    session: URLSessionProtocol? = URLSession.shared) {
+    session: URLSessionProtocol? = URLSession.shared,
+    headers: [String: String] = [:]
+  ) {
     self.host = host
     self.apiKey = apiKey
     self.session = session
+    self.headers = headers
   }
 
   // MARK: Build URL
