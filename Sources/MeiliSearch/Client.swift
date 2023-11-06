@@ -33,14 +33,11 @@ public struct MeiliSearch {
    - parameter host:   The host to the Meilisearch http server.
    - parameter apiKey:    The authorization key to communicate with Meilisearch.
    - parameter session:   A custom produced `URLSessionProtocol`.
+   - parameter headers: A dictionary of custom headers passed with every API request.
    */
-  public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil, request: Request? = nil) throws {
-    self.config = try Config(host: host, apiKey: apiKey, session: session).validate()
-    if let request: Request = request {
-      self.request = request
-    } else {
-      self.request = Request(self.config)
-    }
+  public init(host: String, apiKey: String? = nil, session: URLSessionProtocol? = nil, headers: [String: String] = [:]) throws {
+    self.config = try Config(host: host, apiKey: apiKey, session: session, headers: headers).validate()
+    self.request = Request(self.config)
     self.keys = Keys(self.request)
     self.stats = Stats(self.request)
     self.system = System(self.request)

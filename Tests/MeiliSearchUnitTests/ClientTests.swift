@@ -45,6 +45,26 @@ class ClientTests: XCTestCase {
     }
   }
 
+  func testCustomHeaders() throws {
+    self.session.pushEmpty(code: 200)
+
+    let config = Config(
+      host: self.validHost,
+      apiKey: self.key,
+      session: self.session,
+      headers: [
+        "Custom": "test",
+        "Authorization": "will be overridden"
+      ]
+    )
+
+    let url = try XCTUnwrap(URL(string: validHost))
+    let request = Request(config).request(.get, url)
+    XCTAssertEqual(request.allHTTPHeaderFields?["Custom"], "test")
+    XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(key)")
+    XCTAssertEqual(request.allHTTPHeaderFields?["User-Agent"], PackageVersion.qualifiedVersion())
+  }
+
   func testGETHeaders() {
     self.session.pushEmpty(code: 200)
 
