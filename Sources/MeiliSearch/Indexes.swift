@@ -167,6 +167,40 @@ public struct Indexes {
     }
   }
 
+  static func swapIndexes(
+    pairs: [(old: String, new: String)],
+    request: Request,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    let swapIndexPayload: [SwapIndexPayload] = pairs.map {
+      SwapIndexPayload(indexes: [ $0.old, $0.new ])
+    }
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(swapIndexPayload)
+    } catch {
+      completion(.failure(MeiliSearch.Error.invalidJSON))
+      return
+    }
+
+    request.post(api: "/swap-indexes", data) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let taskInfo: TaskInfo = try Constants.customJSONDecoder.decode(
+            TaskInfo.self,
+            from: data)
+          completion(.success(taskInfo))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
   /**
    Update the index primaryKey.
 
@@ -1089,15 +1123,11 @@ public struct Indexes {
   }
 
   struct CreateIndexPayload: Codable {
-    public let uid: String
-    public let primaryKey: String?
+    let uid: String
+    let primaryKey: String?
+  }
 
-    public init(
-      uid: String,
-      primaryKey: String? = nil
-    ) {
-      self.uid = uid
-      self.primaryKey = primaryKey
-    }
+  public struct SwapIndexPayload: Codable, Equatable {
+    public let indexes: [String]
   }
 }

@@ -58,6 +58,17 @@ extension MeiliSearch {
   }
 
   /**
+   See `swapIndexes(_:_:)`
+   */
+  public func swapIndexes(_ pairs: [(String, String)]) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.swapIndexes(pairs) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `waitForTask(taskUid:options:_:)`
    */
   public func waitForTask(taskUid: Int, options: WaitOptions? = nil) async throws -> Task {

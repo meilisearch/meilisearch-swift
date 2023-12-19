@@ -82,7 +82,8 @@ public extension Task {
   }
 
   struct TaskIndexSwapDetails: Decodable, Equatable {
-    // To be populated under https://github.com/meilisearch/meilisearch-swift/issues/367
+    /// Object containing the payload for the indexSwap task
+    public let swaps: [Indexes.SwapIndexPayload]
   }
 
   struct TaskCancellationDetails: Decodable, Equatable {

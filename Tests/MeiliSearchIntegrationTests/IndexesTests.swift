@@ -243,6 +243,50 @@ class IndexesTests: XCTestCase {
     self.wait(for: [updateExpectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testSwapIndex() async throws {
+    let documents: [Movie] = [
+      Movie(id: 123, title: "Pride and Prejudice", comment: "A great book"),
+      Movie(id: 456, title: "Le Petit Prince", comment: "A french book"),
+    ]
+
+    // Remove indexes (if present)
+    try await client.deleteIndex("indexA").wait(on: client)
+    try await client.deleteIndex("indexB").wait(on: client)
+
+    // Create destination index
+    try await client.createIndex(uid: "indexA").wait(on: client)
+
+    // Create source index
+    try await client.createIndex(uid: "indexB").wait(on: client)
+    try await client.index("indexB").addDocuments(documents: documents).wait(on: client)
+    try await client.index("indexB").updateStopWords(["test"]).wait(on: client)
+
+    // Verify indexA (destination) does not have any stop words or documents
+    let stopWords: [String] = try await client.index("indexA").getStopWords()
+    XCTAssertEqual(stopWords, [])
+
+    let movies: DocumentsResults<Movie> = try await client.index("indexA").getDocuments()
+    XCTAssertEqual(movies.total, 0)
+
+    // Replace indexes
+    let task = try await client.swapIndexes([("indexA", "indexB")]).wait(on: client)
+    XCTAssertEqual(task.type, .indexSwap)
+
+    guard case .indexSwap(let value) = task.details else {
+      XCTFail("Task Not a Swap")
+      return
+    }
+
+    XCTAssertEqual(value.swaps[0], .init(indexes: ["indexA", "indexB"]))
+
+    // Verify indexA (now source) does have stop words and documents
+    let stopWordsNew: [String] = try await client.index("indexA").getStopWords()
+    XCTAssertEqual(stopWordsNew, ["test"])
+
+    let moviesNew: DocumentsResults<Movie> = try await client.index("indexA").getDocuments()
+    XCTAssertEqual(moviesNew.total, 2)
+  }
+
   func testDeleteIndex() {
 
     let createExpectation = XCTestExpectation(description: "Create Movies index")
