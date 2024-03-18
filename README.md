@@ -75,7 +75,7 @@ Once you have your Swift package set up, adding **Meilisearch-Swift** as a depen
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.15.0")
+    .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.16.0")
 ]
 ```
 
