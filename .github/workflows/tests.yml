@@ -23,13 +23,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
     steps:
       - uses: actions/checkout@v4
-      - name: Download the latest stable version of Meilisearch
-        run: |
-          curl -L https://install.meilisearch.com | sh
-          chmod +x meilisearch
-      - name: Run Meilisearch
-        run: |
-          ./meilisearch --master-key=masterKey --no-analytics &
+      - uses: moy2010/meilisearch-github-action@main
       - name: Run tests
         run: swift test
 
