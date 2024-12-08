@@ -132,7 +132,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newFilterableAttributes, details.filterableAttributes)
             } else {
@@ -165,7 +165,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -214,7 +214,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newDisplayedAttributes, details.displayedAttributes)
             } else {
@@ -247,7 +247,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -295,7 +295,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newDistinctAttribute, details.distinctAttribute)
             } else {
@@ -327,7 +327,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -381,7 +381,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newRankingRules, details.rankingRules)
             } else {
@@ -414,7 +414,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -467,7 +467,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newSearchableAttributes, details.searchableAttributes)
             } else {
@@ -500,7 +500,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -557,7 +557,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newTypoTolerance, details.typoTolerance)
             } else {
@@ -590,7 +590,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -644,7 +644,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newSeparatorTokens, details.separatorTokens)
             } else {
@@ -677,7 +677,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -731,7 +731,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newNonSeparatorTokens, details.nonSeparatorTokens)
             } else {
@@ -764,7 +764,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -818,7 +818,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newDictionary.sorted(), details.dictionary?.sorted())
             } else {
@@ -851,7 +851,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -901,7 +901,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newPaginationSettings, details.pagination)
             } else {
@@ -934,7 +934,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -984,7 +984,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newStopWords, details.stopWords)
             } else {
@@ -1018,7 +1018,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(emptyStopWords, details.stopWords)
             } else {
@@ -1052,7 +1052,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(nilStopWords, details.stopWords)
             } else {
@@ -1085,7 +1085,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -1140,7 +1140,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
@@ -1174,7 +1174,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
@@ -1209,7 +1209,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(newSynonyms, details.synonyms)
             } else {
@@ -1242,7 +1242,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -1315,7 +1315,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
               XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
@@ -1348,7 +1348,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .settingsUpdate(let details) = task.details {
               XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
             } else {
@@ -1412,7 +1412,7 @@ class SettingsTests: XCTestCase {
         switch result {
         case .success(let task):
           XCTAssertEqual("settingsUpdate", task.type.description)
-          XCTAssertEqual(Task.Status.succeeded, task.status)
+          XCTAssertEqual(MTask.Status.succeeded, task.status)
           if case .settingsUpdate(let details) = task.details {
             XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
             XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
@@ -1454,7 +1454,7 @@ class SettingsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("settingsUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)

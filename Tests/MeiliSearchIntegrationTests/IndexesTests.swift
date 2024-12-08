@@ -57,7 +57,7 @@ class IndexesTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("indexCreation", task.type.description)
-            XCTAssertEqual(task.status, Task.Status.succeeded)
+            XCTAssertEqual(task.status, MTask.Status.succeeded)
             createExpectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -93,7 +93,7 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let task):
         XCTAssertEqual("indexCreation", task.type.description)
-        XCTAssertEqual(task.status, Task.Status.succeeded)
+        XCTAssertEqual(task.status, MTask.Status.succeeded)
         createExpectation.fulfill()
       case .failure(let error):
         dump(error)
@@ -111,7 +111,7 @@ class IndexesTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("indexCreation", task.type.description)
-            XCTAssertEqual(task.status, Task.Status.failed)
+            XCTAssertEqual(task.status, MTask.Status.failed)
             if let error = task.error {
               XCTAssertEqual(error.code, "index_already_exists")
             } else {
@@ -221,7 +221,7 @@ class IndexesTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("indexUpdate", task.type.description)
-            XCTAssertEqual(task.status, Task.Status.succeeded)
+            XCTAssertEqual(task.status, MTask.Status.succeeded)
             if case .indexUpdate(let details) = task.details, let primaryKey = details.primaryKey {
               XCTAssertEqual("random", primaryKey)
             } else {
@@ -307,7 +307,7 @@ class IndexesTests: XCTestCase {
       switch result {
       case .success(let task):
         XCTAssertEqual("indexDeletion", task.type.description)
-        XCTAssertEqual(task.status, Task.Status.succeeded)
+        XCTAssertEqual(task.status, MTask.Status.succeeded)
         deleteException.fulfill()
       case .failure(let error):
         dump(error)

@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Task {
+public extension MTask {
   enum Status: String, Codable, Equatable {
     /// When a task was successfully enqueued and is waiting to be processed.
     case enqueued

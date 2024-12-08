@@ -7,7 +7,7 @@ public class CancelTasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
   public let types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  public let statuses: [Task.Status]
+  public let statuses: [MTask.Status]
   /// Filter tasks response by a particular list of index Uids strings
   public let indexUids: [String]
   /// Filter tasks based on a list of task's uids.
@@ -22,7 +22,7 @@ public class CancelTasksQuery: Queryable {
   public let afterStartedAt: Date?
 
   init(
-    types: [TaskType]? = nil, statuses: [Task.Status]? = nil,
+    types: [TaskType]? = nil, statuses: [MTask.Status]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     beforeStartedAt: Date? = nil, afterStartedAt: Date? = nil

@@ -25,13 +25,13 @@ public func currentHost() -> String {
 public func waitForTask(
   _ client: MeiliSearch,
   _ uid: String,
-  _ task: Task,
-  _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+  _ task: MTask,
+  _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
   func request() {
     client.index(uid).getTask(taskUid: task.uid) { result in
       switch result {
       case .success(let taskRes):
-        if taskRes.status == Task.Status.succeeded || taskRes.status == Task.Status.failed {
+        if taskRes.status == MTask.Status.succeeded || taskRes.status == MTask.Status.failed {
           completion(.success(taskRes))
           return
         }
@@ -46,7 +46,7 @@ public func waitForTask(
   request()
 }
 
-public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<MTask, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
     switch result {
     case .success:
@@ -71,7 +71,7 @@ public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @
   }
 }
 
-public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<MTask, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
     switch result {
     case .success(let task):
@@ -90,12 +90,12 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
   }
 }
 
-public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<MTask, Swift.Error>) -> Void) {
   let movie = Movie(id: 1, title: "test", comment: "test movie")
   addDocuments(client: client, uid: uid, dataset: [movie], primaryKey: primaryKey, completion)
 }
 
-public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<MTask, Swift.Error>) -> Void) {
   let jsonEncoder = JSONEncoder()
 
   let documents: Data

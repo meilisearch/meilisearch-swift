@@ -15,7 +15,7 @@ public class TasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
   private var types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  private var statuses: [Task.Status]
+  private var statuses: [MTask.Status]
   /// Filter tasks response by a particular list of index Uids strings
   var indexUids: [String]
   /// Filter tasks based on a list of task's uids.
@@ -37,7 +37,7 @@ public class TasksQuery: Queryable {
 
   init(
     limit: Int? = nil, from: Int? = nil, next: Int? = nil,
-    statuses: [Task.Status]? = nil, types: [TaskType]? = nil,
+    statuses: [MTask.Status]? = nil, types: [TaskType]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     afterFinishedAt: Date? = nil, beforeStartedAt: Date? = nil,

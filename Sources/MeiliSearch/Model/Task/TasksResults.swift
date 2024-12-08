@@ -5,7 +5,7 @@ import Foundation
  */
 public struct TasksResults: Decodable, Equatable {
   /// Results list containing objects of `Task`.
-  public let results: [Task]
+  public let results: [MTask]
   /// Integer value used to retrieve the next batch of tasks.
   public let next: Int?
   /// Integer value representing the first `uid` of the first task returned.

@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Task {
+public extension MTask {
   enum Details: Equatable {
     case indexCreation(TaskIndexCreationDetails)
     case indexUpdate(TaskIndexUpdateDetails)
