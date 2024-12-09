@@ -29,3 +29,11 @@ public struct Key: Codable, Equatable {
   /// Date and time when the key was last updated, represented in RFC 3339 format.
   public let updatedAt: String
 }
+
+public extension Key {
+  var enumActions: [KeyAction] {
+    self.actions.map { action in
+      KeyAction(action)
+    }
+  }
+}

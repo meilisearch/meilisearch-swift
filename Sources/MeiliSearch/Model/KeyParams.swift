@@ -35,6 +35,22 @@ public struct KeyParams: Codable, Equatable {
     self.indexes = indexes
     self.expiresAt = expiresAt
   }
+  
+  public init(
+    description: String? = nil,
+    name: String? = nil,
+    uid: String? = nil,
+    actions: [KeyAction],
+    indexes: [String],
+    expiresAt: String?
+  ) {
+    self.description = description
+    self.name = name
+    self.uid = uid
+    self.actions = actions.map { $0.value }
+    self.indexes = indexes
+    self.expiresAt = expiresAt
+  }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -65,5 +81,11 @@ public struct KeyUpdateParams: Codable, Equatable {
     if name != nil {
       try container.encode(name, forKey: .name)
     }
+  }
+}
+
+public extension KeyParams {
+  var enumActions: [KeyAction] {
+    self.actions.map { KeyAction($0) }
   }
 }

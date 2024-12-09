@@ -171,6 +171,54 @@ class KeysTests: XCTestCase {
     }
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
+  
+  //is expected to fail
+  func testCreateKeyWithEnumCase() {
+    let keyExpectation = XCTestExpectation(description: "Create a key")
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let someDateTime = formatter.string(from: Date.distantFuture)
+
+    let keyParams = KeyParams(description: "Custom", actions: KeyAction.allCases, indexes: ["*"], expiresAt: someDateTime)
+    self.client.createKey(keyParams) { result in
+      switch result {
+      case .success(let key):
+        XCTAssertEqual(key.description, keyParams.description)
+        XCTAssertEqual(key.actions, keyParams.actions)
+        XCTAssertEqual(key.enumActions, keyParams.enumActions)
+        XCTAssertEqual(key.indexes, keyParams.indexes)
+        XCTAssertNotNil(key.expiresAt)
+        keyExpectation.fulfill()
+      case .failure(let error):
+        print(error.localizedDescription)
+        dump(error)
+        XCTFail("Failed to create a key")
+        keyExpectation.fulfill()
+      }
+    }
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
+  }
+  
+  //is expected to fail
+  func testCreateKeyWithUnsupportedEnumCase() {
+    let keyExpectation = XCTestExpectation(description: "Create a key")
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let someDateTime = formatter.string(from: Date.distantFuture)
+
+    let keyParams = KeyParams(description: "Custom", actions: [.unknown("anyUnknownValue")], indexes: ["*"], expiresAt: someDateTime)
+    self.client.createKey(keyParams) { result in
+      switch result {
+      case .success:
+        XCTFail("should have failed")
+      case .failure(let error):
+        XCTAssertTrue(error.localizedDescription.contains("Unknown value `anyUnknownValue` at `.actions[0]`:"))
+        dump(error)
+        keyExpectation.fulfill()
+      }
+    }
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
+  }
 
   func testUpdateKey() {
     let keyExpectation = XCTestExpectation(description: "Update a key")

@@ -31,4 +31,14 @@ class KeyParamsTests: XCTestCase {
     XCTAssertNil(keyParams.name)
     XCTAssertNil(keyParams.uid)
   }
+  
+  func testEnumInitializer() {
+    let keyParams = KeyParams(actions: [.unknown("action1")], indexes: ["index1"], expiresAt: nil)
+    XCTAssertEqual(keyParams.actions, ["action1"])
+    XCTAssertEqual(keyParams.indexes, ["index1"])
+    XCTAssertNil(keyParams.expiresAt)
+    XCTAssertNil(keyParams.description)
+    XCTAssertNil(keyParams.name)
+    XCTAssertNil(keyParams.uid)
+  }
 }
