@@ -1,5 +1,5 @@
 ///Documentation: https://www.meilisearch.com/docs/reference/api/keys#actions
-public enum KeyAction: Equatable {
+public enum KeyAction: Equatable, Codable {
   case wildcard
   case search
   case documentsWildcard
@@ -28,6 +28,19 @@ public enum KeyAction: Equatable {
   case keysUpdate
   case keysDelete
   case unknown(String)
+  
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    let rawValue = try container.decode(String.self)
+    
+    self = KeyAction(rawValue)
+  }
+  
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    
+    try container.encode(self.value)
+  }
 }
 
 public extension KeyAction {

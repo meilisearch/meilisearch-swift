@@ -37,12 +37,12 @@ class KeysTests: XCTestCase {
                   name: "name",
                   description: "some description",
                   key: "any",
-                  actions: ["documents.add", "any-nonsupported-value"],
+                  actions: [.documentsAdd, .unknown("unsupported")],
                   indexes: ["index1"],
                   expiresAt: nil,
                   createdAt: "2021-08-11T10:00:00Z",
                   updatedAt: "2021-08-11T10:00:00Z")
     
-    XCTAssertEqual(key.enumActions, [.documentsAdd, .unknown("any-nonsupported-value")])
+    XCTAssertEqual(key.actions, [.documentsAdd, .unknown("unsupported")])
   }
 }

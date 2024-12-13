@@ -47,7 +47,7 @@ class KeysTests: XCTestCase {
   func testGetKeys() {
     let keyExpectation = XCTestExpectation(description: "Get a list of keys")
 
-    self.client.createKey(KeyParams(actions: ["*"], indexes: ["*"], expiresAt: nil)) { result in
+    self.client.createKey(KeyParams(actions: [.wildcard], indexes: ["*"], expiresAt: nil)) { result in
       switch result {
       case .success:
         self.client.getKeys { result in
@@ -74,7 +74,7 @@ class KeysTests: XCTestCase {
   func testGetKey() {
     let keyExpectation = XCTestExpectation(description: "Get one key")
 
-    self.client.createKey(KeyParams(actions: ["*"], indexes: ["*"], expiresAt: nil)) { result in
+    self.client.createKey(KeyParams(actions: [.wildcard], indexes: ["*"], expiresAt: nil)) { result in
       switch result {
       case .success(let createdKey):
         self.client.getKey(keyOrUid: createdKey.uid) { result in
@@ -105,7 +105,7 @@ class KeysTests: XCTestCase {
   func testCreateKey() {
     let keyExpectation = XCTestExpectation(description: "Create a key")
 
-    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    let keyParams = KeyParams(description: "Custom", actions: [.wildcard], indexes: ["*"], expiresAt: nil)
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
@@ -127,7 +127,7 @@ class KeysTests: XCTestCase {
   func testCreateKeyWithOptionalUid() {
     let keyExpectation = XCTestExpectation(description: "Create a key")
     let uid = UUID().uuidString.lowercased()
-    let keyParams = KeyParams(uid: uid, actions: ["*"], indexes: ["*"], expiresAt: nil)
+    let keyParams = KeyParams(uid: uid, actions: [.wildcard], indexes: ["*"], expiresAt: nil)
 
     self.client.createKey(keyParams) { result in
       switch result {
@@ -154,7 +154,7 @@ class KeysTests: XCTestCase {
     formatter.dateFormat = "yyyy-MM-dd"
     let someDateTime = formatter.string(from: Date.distantFuture)
 
-    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: someDateTime)
+    let keyParams = KeyParams(description: "Custom", actions: [.wildcard], indexes: ["*"], expiresAt: someDateTime)
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
@@ -185,7 +185,7 @@ class KeysTests: XCTestCase {
       case .success(let key):
         XCTAssertEqual(key.description, keyParams.description)
         XCTAssertEqual(key.actions, keyParams.actions)
-        XCTAssertEqual(key.enumActions, keyParams.enumActions)
+        XCTAssertEqual(key.actions, keyParams.actions)
         XCTAssertEqual(key.indexes, keyParams.indexes)
         XCTAssertNotNil(key.expiresAt)
         keyExpectation.fulfill()
@@ -199,9 +199,7 @@ class KeysTests: XCTestCase {
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
   
-  //is expected to fail
   func testCreateKeyWithUnsupportedEnumCase() {
-    let keyExpectation = XCTestExpectation(description: "Create a key")
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
     let someDateTime = formatter.string(from: Date.distantFuture)
@@ -214,16 +212,14 @@ class KeysTests: XCTestCase {
       case .failure(let error):
         XCTAssertTrue(error.localizedDescription.contains("Unknown value `anyUnknownValue` at `.actions[0]`:"))
         dump(error)
-        keyExpectation.fulfill()
       }
     }
-    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateKey() {
     let keyExpectation = XCTestExpectation(description: "Update a key")
 
-    let keyParams = KeyParams(description: "Custom", name: "old name", actions: ["*"], indexes: ["index"], expiresAt: nil)
+    let keyParams = KeyParams(description: "Custom", name: "old name", actions: [.wildcard], indexes: ["index"], expiresAt: nil)
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
@@ -254,7 +250,7 @@ class KeysTests: XCTestCase {
   func testDeleteKey() {
     let keyExpectation = XCTestExpectation(description: "Delete a key")
 
-    let keyParams = KeyParams(description: "Custom", actions: ["*"], indexes: ["*"], expiresAt: nil)
+    let keyParams = KeyParams(description: "Custom", actions: [.wildcard], indexes: ["*"], expiresAt: nil)
     self.client.createKey(keyParams) { result in
       switch result {
       case .success(let key):
