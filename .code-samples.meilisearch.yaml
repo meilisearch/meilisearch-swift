@@ -1580,3 +1580,5 @@ swap_indexes_1: |-
     ("indexA", "indexB"),
     ("indexX", "indexY")
   ])
+create_snapshot_1: |-
+  let task = try await self.client.createSnapshot()

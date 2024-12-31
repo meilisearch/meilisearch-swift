@@ -243,4 +243,15 @@ extension MeiliSearch {
       }
     }
   }
+  
+  /**
+   See `createSnapshot(_:)`
+   */
+  public func createSnapshot() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.createSnapshot { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
 }

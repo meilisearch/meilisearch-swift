@@ -23,6 +23,7 @@ public struct MeiliSearch {
   private let stats: Stats
   private let system: System
   private let dumps: Dumps
+  private let snapshots: Snapshots
   private let tasks: Tasks
 
   // MARK: Initializers
@@ -42,6 +43,7 @@ public struct MeiliSearch {
     self.stats = Stats(self.request)
     self.system = System(self.request)
     self.dumps = Dumps(self.request)
+    self.snapshots = Snapshots(self.request)
     self.tasks = Tasks(self.request)
   }
 
@@ -380,5 +382,16 @@ public struct MeiliSearch {
    */
   public func createDump(_ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.dumps.create(completion)
+  }
+  
+  /**
+   Triggers the snapshot creation process.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo` value.
+   If the request was successful or `Error` if a failure occurred.
+   */
+  public func createSnapshot(_ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.snapshots.create(completion)
   }
 }
