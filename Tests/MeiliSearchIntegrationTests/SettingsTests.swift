@@ -951,6 +951,31 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
+  
+  // MARK: Proximity Precision
+  
+  func testProximityPrecision() async throws {
+    do { // GET
+      let currentValue = try await self.index.getProximityPrecision()
+      XCTAssertEqual(currentValue, .byWord) // default value
+    }
+    
+    do { // PUT
+      let taskInfo = try await self.index.updateProximityPrecision(.byAttribute)
+      _ = try await self.client.waitForTask(task: taskInfo)
+      
+      let newValue = try await self.index.getProximityPrecision()
+      XCTAssertEqual(newValue, .byAttribute)
+    }
+    
+    do { // DELETE
+      let taskInfo = try await self.index.resetProximityPrecision()
+      _ = try await self.client.waitForTask(task: taskInfo)
+      
+      let newValue = try await self.index.getProximityPrecision()
+      XCTAssertEqual(newValue, .byWord) // default value
+    }
+  }
 
   // MARK: Stop words
 

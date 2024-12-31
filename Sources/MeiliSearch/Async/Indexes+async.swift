@@ -639,6 +639,39 @@ extension Indexes {
       }
     }
   }
+  
+  /**
+   See `getProximityPrecision(_:)`
+   */
+  public func getProximityPrecision() async throws -> ProximityPrecision {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getProximityPrecision { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updateProximityPrecision(_:_:)`
+   */
+  public func updateProximityPrecision(_ proximityPrecision: ProximityPrecision) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updateProximityPrecision(proximityPrecision) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `resetProximityPrecision(_:)`
+   */
+  public func resetProximityPrecision() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.resetProximityPrecision { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
 
   /**
    See `stats(_:)`
