@@ -4,7 +4,7 @@ public struct SearchScoreRankingDetails: Codable, Equatable {
   public enum MatchType: String, Codable {
     case exactMatch, matchesStart, noExactMatch
   }
-  
+
   public let order: Int
   public let score: Double?
   public let maxTypoCount: Int?

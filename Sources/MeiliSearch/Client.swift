@@ -383,7 +383,7 @@ public struct MeiliSearch {
   public func createDump(_ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.dumps.create(completion)
   }
-  
+
   /**
    Triggers the snapshot creation process.
 

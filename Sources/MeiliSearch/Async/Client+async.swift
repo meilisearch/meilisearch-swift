@@ -243,7 +243,7 @@ extension MeiliSearch {
       }
     }
   }
-  
+
   /**
    See `createSnapshot(_:)`
    */

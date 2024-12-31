@@ -47,7 +47,9 @@ class SettingsTests: XCTestCase {
         },
         "disableOnWords": [],
         "disableOnAttributes": []
-      }
+      },
+      "proximityPrecision": "byWord",
+      "searchCutoffMs": null
     }
     """
 

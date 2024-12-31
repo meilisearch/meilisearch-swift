@@ -639,7 +639,7 @@ extension Indexes {
       }
     }
   }
-  
+
   /**
    See `getProximityPrecision(_:)`
    */
@@ -672,7 +672,7 @@ extension Indexes {
       }
     }
   }
-  
+
   /**
    See `getSearchCutoffMs(_:)`
    */

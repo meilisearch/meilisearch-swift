@@ -64,7 +64,7 @@ public struct SearchParameters: Codable, Equatable {
 
   /// Whether to return the search ranking score or not.
   public let showRankingScore: Bool?
-  
+
   /// Whether to return the ranking score details or not.
   public let showRankingScoreDetails: Bool?
 
