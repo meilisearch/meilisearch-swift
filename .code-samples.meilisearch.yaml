@@ -1583,14 +1583,17 @@ swap_indexes_1: |-
 create_snapshot_1: |-
   let task = try await self.client.createSnapshot()
 get_proximity_precision_settings_1: |-
-  let precisionValue = try await self.client.index("books").getProximityPrecision();
+  let precisionValue = try await self.client.index("books").getProximityPrecision()
 update_proximity_precision_settings_1: |-
-  let task = try await self.client.index("books").updateProximityPrecision(.byWord);
+  let task = try await self.client.index("books").updateProximityPrecision(.byWord)
 reset_proximity_precision_settings_1: |-
-  let task = try await self.client.index("books").resetProximityPrecision();
+  let task = try await self.client.index("books").resetProximityPrecision()
 get_search_cutoff_1: |-
-  let precisionValue = try await self.client.index("books").getSearchCutoffMs();
+  let precisionValue = try await self.client.index("books").getSearchCutoffMs()
 update_search_cutoff_1: |-
-  let task = try await self.client.index("books").updateSearchCutoffMs(150);
+  let task = try await self.client.index("books").updateSearchCutoffMs(150)
 reset_search_cutoff_1: |-
-  let task = try await self.client.index("books").resetSearchCutoffMs();
+  let task = try await self.client.index("books").resetSearchCutoffMs()
+search_parameter_guide_show_ranking_score_details_1: |-
+  let searchParameters = SearchParameters(query: "dragon", showRankingScoreDetails: true)
+  let movies: Searchable<Movie> = try await client.index("movies").search(searchParameters)
