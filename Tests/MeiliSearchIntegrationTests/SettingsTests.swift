@@ -80,7 +80,9 @@ class SettingsTests: XCTestCase {
       nonSeparatorTokens: self.defaultNonSeparatorTokens,
       dictionary: self.defaultDictionary,
       pagination: self.defaultPagination,
-      typoTolerance: self.defaultTypoTolerance
+      typoTolerance: self.defaultTypoTolerance,
+      proximityPrecision: .byWord,
+      searchCutoffMs: nil
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -96,7 +98,9 @@ class SettingsTests: XCTestCase {
       nonSeparatorTokens: self.defaultNonSeparatorTokens,
       dictionary: self.defaultDictionary,
       pagination: self.defaultPagination,
-      typoTolerance: self.defaultTypoToleranceResult
+      typoTolerance: self.defaultTypoToleranceResult,
+      proximityPrecision: .byWord,
+      searchCutoffMs: nil
     )
   }
 
@@ -1334,7 +1338,9 @@ class SettingsTests: XCTestCase {
     let newSettings = Setting(
       rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
       searchableAttributes: ["id", "title"],
-      stopWords: ["a"]
+      stopWords: ["a"],
+      proximityPrecision: .byWord,
+      searchCutoffMs: 200
     )
 
     let overrideSettings = Setting(
@@ -1354,7 +1360,9 @@ class SettingsTests: XCTestCase {
       nonSeparatorTokens: [],
       dictionary: [],
       pagination: .init(maxTotalHits: 1000),
-      typoTolerance: defaultTypoToleranceResult
+      typoTolerance: defaultTypoToleranceResult,
+      proximityPrecision: .byWord,
+      searchCutoffMs: 200
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -1370,6 +1378,8 @@ class SettingsTests: XCTestCase {
               XCTAssertEqual(expectedSettingResult.rankingRules, details.rankingRules)
               XCTAssertEqual(expectedSettingResult.searchableAttributes, details.searchableAttributes)
               XCTAssertEqual(expectedSettingResult.stopWords, details.stopWords)
+              XCTAssertEqual(expectedSettingResult.searchCutoffMs, details.searchCutoffMs)
+              XCTAssertEqual(expectedSettingResult.proximityPrecision, details.proximityPrecision)
             } else {
               XCTFail("settingsUpdate details should be set by task")
             }
@@ -1452,7 +1462,9 @@ class SettingsTests: XCTestCase {
       nonSeparatorTokens: ["#"],
       dictionary: ["J.K"],
       pagination: .init(maxTotalHits: 500),
-      typoTolerance: defaultTypoToleranceResult
+      typoTolerance: defaultTypoToleranceResult,
+      proximityPrecision: .byWord,
+      searchCutoffMs: nil
     )
 
     self.index.updateSettings(newSettings) { result in

@@ -42,4 +42,10 @@ public struct SettingResult: Codable, Equatable {
 
   /// Settings for typo tolerance
   public let typoTolerance: TypoToleranceResult
+  
+  /// Precision level when calculating the proximity ranking rule
+  public let proximityPrecision: ProximityPrecision
+  
+  /// Maximum duration of a search query
+  public let searchCutoffMs: Int?
 }
