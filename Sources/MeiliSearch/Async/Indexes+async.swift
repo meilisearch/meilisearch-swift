@@ -672,6 +672,39 @@ extension Indexes {
       }
     }
   }
+  
+  /**
+   See `getSearchCutoffMs(_:)`
+   */
+  public func getSearchCutoffMs() async throws -> Int? {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getSearchCutoffMs { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updateSearchCutoffMs(_:_:)`
+   */
+  public func updateSearchCutoffMs(_ newValue: Int) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updateSearchCutoffMs(newValue) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `resetSearchCutoffMs(_:)`
+   */
+  public func resetSearchCutoffMs() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.resetSearchCutoffMs { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
 
   /**
    See `stats(_:)`
