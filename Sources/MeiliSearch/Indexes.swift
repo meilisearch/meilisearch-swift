@@ -1101,7 +1101,7 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.settings.resetTypoTolerance(self.uid, completion)
   }
-  
+
   // MARK: Proximity Precision
 
   /**
@@ -1141,7 +1141,7 @@ public struct Indexes {
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
       self.settings.resetSetting(uid: uid, key: "proximity-precision", completion: completion)
   }
-  
+
   // MARK: Search Cutoff
 
   /**

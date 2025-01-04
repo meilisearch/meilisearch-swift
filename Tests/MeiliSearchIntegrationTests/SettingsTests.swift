@@ -955,52 +955,52 @@ class SettingsTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   // MARK: Proximity Precision
-  
+
   func testProximityPrecision() async throws {
     do { // GET
       let currentValue = try await self.index.getProximityPrecision()
       XCTAssertEqual(currentValue, .byWord) // default value
     }
-    
+
     do { // PUT
       let taskInfo = try await self.index.updateProximityPrecision(.byAttribute)
       _ = try await self.client.waitForTask(task: taskInfo)
-      
+
       let newValue = try await self.index.getProximityPrecision()
       XCTAssertEqual(newValue, .byAttribute)
     }
-    
+
     do { // DELETE
       let taskInfo = try await self.index.resetProximityPrecision()
       _ = try await self.client.waitForTask(task: taskInfo)
-      
+
       let newValue = try await self.index.getProximityPrecision()
       XCTAssertEqual(newValue, .byWord) // default value
     }
   }
-  
+
   // MARK: Search Cut-off Milliseconds
-  
+
   func testSearchCutOff() async throws {
     do { // GET
       let currentValue = try await self.index.getSearchCutoffMs()
       XCTAssertEqual(currentValue, nil) // default value
     }
-    
+
     do { // PUT
       let taskInfo = try await self.index.updateSearchCutoffMs(150)
       _ = try await self.client.waitForTask(task: taskInfo)
-      
+
       let newValue = try await self.index.getSearchCutoffMs()
       XCTAssertEqual(newValue, 150)
     }
-    
+
     do { // DELETE
       let taskInfo = try await self.index.resetSearchCutoffMs()
       _ = try await self.client.waitForTask(task: taskInfo)
-      
+
       let newValue = try await self.index.getSearchCutoffMs()
       XCTAssertEqual(newValue, nil) // default value
     }

@@ -103,14 +103,14 @@ class SearchTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   func testSearchWithRankingDetails() async throws {
     let result: Searchable<Book> = try await index.search(SearchParameters(query: "Moreninha", showRankingScoreDetails: true))
     XCTAssertTrue(result.hits.count > 0)
-    
+
     let hit = try XCTUnwrap(result.hits.first)
     let details = try XCTUnwrap(hit.rankingScoreDetails)
-    
+
     XCTAssertNotNil(details["exactness"])
     XCTAssertNotNil(details["typo"])
     XCTAssertNotNil(details["words"])
