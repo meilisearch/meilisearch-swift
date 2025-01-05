@@ -30,7 +30,7 @@
 
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
-- [🎬 Getting started](#-getting-started)
+- [🚀 Getting started](#-getting-started)
 - [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn more](#-learn-more)
 - [⚙️ Contributing](#️-contributing)
