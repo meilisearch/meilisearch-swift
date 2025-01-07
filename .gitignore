@@ -98,3 +98,10 @@ iOSInjectionProject/
 
 .swiftpm
 .vscode/
+
+# MeiliSearch
+
+meilisearch
+data.ms
+dumps/*.dump
+snapshots/*.snapshot

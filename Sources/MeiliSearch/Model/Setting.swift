@@ -36,6 +36,12 @@ public struct Setting: Codable, Equatable {
   /// Settings for typo tolerance
   public let typoTolerance: TypoTolerance?
 
+  /// Precision level when calculating the proximity ranking rule
+  public let proximityPrecision: ProximityPrecision?
+
+  /// Maximum duration of a search query
+  public let searchCutoffMs: Int?
+
   /// List of tokens that will be considered as word separators by Meilisearch.
   public let separatorTokens: [String]?
 
@@ -63,7 +69,9 @@ public struct Setting: Codable, Equatable {
     nonSeparatorTokens: [String]? = nil,
     dictionary: [String]? = nil,
     pagination: Pagination? = nil,
-    typoTolerance: TypoTolerance? = nil
+    typoTolerance: TypoTolerance? = nil,
+    proximityPrecision: ProximityPrecision? = nil,
+    searchCutoffMs: Int? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -78,5 +86,7 @@ public struct Setting: Codable, Equatable {
     self.dictionary = dictionary
     self.pagination = pagination
     self.typoTolerance = typoTolerance
+    self.proximityPrecision = proximityPrecision
+    self.searchCutoffMs = searchCutoffMs
   }
 }

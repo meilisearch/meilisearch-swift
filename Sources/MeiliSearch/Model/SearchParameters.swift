@@ -65,6 +65,9 @@ public struct SearchParameters: Codable, Equatable {
   /// Whether to return the search ranking score or not.
   public let showRankingScore: Bool?
 
+  /// Whether to return the ranking score details or not.
+  public let showRankingScoreDetails: Bool?
+
   // MARK: Initializers
 
   public init(
@@ -85,7 +88,9 @@ public struct SearchParameters: Codable, Equatable {
     sort: [String]? = nil,
     facets: [String]? = nil,
     showMatchesPosition: Bool? = nil,
-    showRankingScore: Bool? = nil) {
+    showRankingScore: Bool? = nil,
+    showRankingScoreDetails: Bool? = nil
+  ) {
     self.query = query
     self.offset = offset
     self.limit = limit
@@ -104,6 +109,7 @@ public struct SearchParameters: Codable, Equatable {
     self.facets = facets
     self.showMatchesPosition = showMatchesPosition
     self.showRankingScore = showRankingScore
+    self.showRankingScoreDetails = showRankingScoreDetails
   }
 
   // MARK: Query Initializers
@@ -139,5 +145,6 @@ public struct SearchParameters: Codable, Equatable {
     case hitsPerPage
     case page
     case showRankingScore
+    case showRankingScoreDetails
   }
 }

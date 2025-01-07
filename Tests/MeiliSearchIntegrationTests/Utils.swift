@@ -46,7 +46,7 @@ public func waitForTask(
   request()
 }
 
-public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
     switch result {
     case .success:
@@ -71,7 +71,7 @@ public func createGenericIndex(client: MeiliSearch, uid: String, _ completion: @
   }
 }
 
-public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   client.deleteIndex(uid) { result in
     switch result {
     case .success(let task):
@@ -90,12 +90,12 @@ public func deleteIndex(client: MeiliSearch, uid: String, _ completion: @escapin
   }
 }
 
-public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func addDocuments(client: MeiliSearch, uid: String, primaryKey: String?, _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   let movie = Movie(id: 1, title: "test", comment: "test movie")
   addDocuments(client: client, uid: uid, dataset: [movie], primaryKey: primaryKey, completion)
 }
 
-public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping(Result<Task, Swift.Error>) -> Void) {
+public func addDocuments<T: Encodable>(client: MeiliSearch, uid: String, dataset: [T], primaryKey: String?, _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
   let jsonEncoder = JSONEncoder()
 
   let documents: Data
