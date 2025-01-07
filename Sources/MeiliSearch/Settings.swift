@@ -419,7 +419,7 @@ struct Settings {
 
   // MARK: Reusable Requests
 
-  private func getSetting<ResponseType: Decodable>(
+  func getSetting<ResponseType: Decodable>(
     uid: String,
     key: String?,
     completion: @escaping (Result<ResponseType, Swift.Error>) -> Void
@@ -445,7 +445,7 @@ struct Settings {
     }
   }
 
-  private func updateSetting<T: Encodable>(
+  func updateSetting<T: Encodable>(
     uid: String,
     key: String?,
     data: T,
@@ -476,7 +476,7 @@ struct Settings {
     }
   }
 
-  private func resetSetting(
+  func resetSetting(
     uid: String,
     key: String?,
     completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void

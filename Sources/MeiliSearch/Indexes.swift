@@ -1102,6 +1102,86 @@ public struct Indexes {
     self.settings.resetTypoTolerance(self.uid, completion)
   }
 
+  // MARK: Proximity Precision
+
+  /**
+   Get the proximity precision value.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `TypoToleranceResult`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getProximityPrecision(
+    _ completion: @escaping (Result<ProximityPrecision, Swift.Error>) -> Void) {
+    self.settings.getSetting(uid: uid, key: "proximity-precision", completion: completion)
+  }
+
+  /**
+   Update the proximity precision value.
+
+   - parameter proximityPrecision: The new value.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateProximityPrecision(
+    _ proximityPrecision: ProximityPrecision,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+      self.settings.updateSetting(uid: uid, key: "proximity-precision", data: proximityPrecision.rawValue, completion: completion)
+  }
+
+  /**
+   Reset the proximity precision value.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetProximityPrecision(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+      self.settings.resetSetting(uid: uid, key: "proximity-precision", completion: completion)
+  }
+
+  // MARK: Search Cutoff
+
+  /**
+   Get the search cut-off value.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `TypoToleranceResult`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getSearchCutoffMs(
+    _ completion: @escaping (Result<Int?, Swift.Error>) -> Void) {
+    self.settings.getSetting(uid: uid, key: "search-cutoff-ms", completion: completion)
+  }
+
+  /**
+   Update the search cut-off value.
+
+   - parameter newValue: The new cut-off in milliseconds.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateSearchCutoffMs(
+    _ newValue: Int,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+      self.settings.updateSetting(uid: uid, key: "search-cutoff-ms", data: newValue, completion: completion)
+  }
+
+  /**
+   Reset the search cut-off value.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetSearchCutoffMs(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+      self.settings.resetSetting(uid: uid, key: "search-cutoff-ms", completion: completion)
+  }
+
   // MARK: Stats
 
   /**

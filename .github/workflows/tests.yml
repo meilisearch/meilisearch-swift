@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: ["macos-latest", "ubuntu-20.04"]
     env:
-      GITHUB_PAT: ${{ secrets.MEILIBOT_PAT_REPO }}
+      GITHUB_PAT: ${{ secrets.MEILI_BOT_GH_PAT }}
     steps:
       - uses: actions/checkout@v4
       - name: Download the latest stable version of Meilisearch

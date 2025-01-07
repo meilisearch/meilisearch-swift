@@ -89,7 +89,7 @@ class ClientTests: XCTestCase {
     let config = Config(host: self.validHost, apiKey: self.key, session: self.session)
     let req = Request(config)
 
-    req.post(api: "/", "{}".data(using: .utf8) ?? Data(), requiredDataResponseHandler)
+    req.post(api: "/", Data("{}".utf8), requiredDataResponseHandler)
   }
 
   func testPATCHHeaders() {
@@ -98,7 +98,7 @@ class ClientTests: XCTestCase {
     let config = Config(host: self.validHost, apiKey: self.key, session: self.session)
     let req = Request(config)
 
-    req.patch(api: "/", "{}".data(using: .utf8) ?? Data(), requiredDataResponseHandler)
+    req.patch(api: "/", Data("{}".utf8), requiredDataResponseHandler)
   }
 
   func testPUTHeaders() {
@@ -107,6 +107,6 @@ class ClientTests: XCTestCase {
     let config = Config(host: self.validHost, apiKey: self.key, session: self.session)
     let req = Request(config)
 
-    req.put(api: "/", "{}".data(using: .utf8) ?? Data(), requiredDataResponseHandler)
+    req.put(api: "/", Data("{}".utf8), requiredDataResponseHandler)
   }
 }
