@@ -20,12 +20,12 @@ jobs:
       matrix:
         os: ["macos-latest", "ubuntu-20.04"]
     env:
-      GITHUB_PAT: ${{ secrets.MEILI_BOT_GH_PAT }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - name: Download the latest stable version of Meilisearch
         run: |
-          curl -L https://install.meilisearch.com | sh
+          curl -L https://raw.githubusercontent.com/meilisearch/meilisearch/main/download-latest.sh | sh
           chmod +x meilisearch
       - name: Run Meilisearch
         run: |
