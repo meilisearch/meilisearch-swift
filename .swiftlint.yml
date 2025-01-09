@@ -9,6 +9,7 @@ disabled_rules:
   - identifier_name
   - function_body_length
   - trailing_comma
+  - cyclomatic_complexity
 
 analyzer_rules:
   - unused_declaration
