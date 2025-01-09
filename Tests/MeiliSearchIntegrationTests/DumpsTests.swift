@@ -25,7 +25,7 @@ class DumpsTests: XCTestCase {
     self.client.createDump { result in
       switch result {
       case .success(let dumpTask):
-        XCTAssertEqual(dumpTask.status, Task.Status.enqueued)
+        XCTAssertEqual(dumpTask.status, MTask.Status.enqueued)
         expectation.fulfill()
       case .failure(let error):
         dump(error)

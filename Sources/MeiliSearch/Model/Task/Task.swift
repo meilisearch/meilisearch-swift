@@ -4,7 +4,7 @@ import Foundation
  `Task` instances represent the current transaction status, use the `uid` value to
   verify the status of your transaction.
  */
-public struct Task: Decodable, Equatable {
+public struct MTask: Decodable, Equatable {
   /// Unique ID for the current `Task`.
   public let uid: Int
 

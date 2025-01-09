@@ -64,7 +64,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             if case .documentAdditionOrUpdate(let details) = task.details {
               XCTAssertEqual(8, details.indexedDocuments)
               XCTAssertEqual(8, details.receivedDocuments)
@@ -99,7 +99,7 @@ class DocumentsTests: XCTestCase {
           switch result {
           case .success(let task):
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             expectation.fulfill()
           case .failure(let error):
             dump(error)
@@ -129,7 +129,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
 
             self.index.getDocuments(params: DocumentsQuery(limit: 1, offset: 1, fields: ["id", "title"])) { (result: Result<DocumentsResults<Movie>, Swift.Error>) in
@@ -190,7 +190,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument(10
             ) { (result: Result<Movie, Swift.Error>) in
@@ -233,7 +233,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             self.index.getDocument("10"
             ) { (result: Result<Movie, Swift.Error>) in
@@ -278,7 +278,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentAdditionOrUpdate", task.type.description)
             expectation.fulfill()
           case .failure:
@@ -321,7 +321,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(taskUid: task.taskUid) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
@@ -363,7 +363,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentDeletion", task.type.description)
             if case .documentDeletion(let details) = task.details {
               // It's possible for this to number to be greater than 8 (the number of documents we have inserted) due
@@ -415,7 +415,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:
@@ -460,7 +460,7 @@ class DocumentsTests: XCTestCase {
         self.client.waitForTask(task: task) { result in
           switch result {
           case .success(let task):
-            XCTAssertEqual(Task.Status.succeeded, task.status)
+            XCTAssertEqual(MTask.Status.succeeded, task.status)
             XCTAssertEqual("documentDeletion", task.type.description)
             deleteExpectation.fulfill()
           case .failure:

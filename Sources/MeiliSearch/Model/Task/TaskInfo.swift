@@ -12,7 +12,7 @@ public struct TaskInfo: Codable, Equatable {
   public let indexUid: String?
 
   /// Returns if the task has been successful or not.
-  public let status: Task.Status
+  public let status: MTask.Status
 
   /// Type of the task.
   public let type: TaskType
@@ -26,7 +26,7 @@ public struct TaskInfo: Codable, Equatable {
 
   @discardableResult
   @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-  public func wait(on client: MeiliSearch, options: WaitOptions? = nil) async throws -> Task {
+  public func wait(on client: MeiliSearch, options: WaitOptions? = nil) async throws -> MTask {
     try await client.waitForTask(task: self, options: options)
   }
 }

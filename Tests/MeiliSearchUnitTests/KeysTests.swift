@@ -31,4 +31,18 @@ class KeysTests: XCTestCase {
     let requestQuery = self.session.nextDataTask.request?.url?.query
     XCTAssertEqual(requestQuery, "limit=2&offset=10")
   }
+  
+  func testEnumActions() {
+    let key = Key(uid: "uid",
+                  name: "name",
+                  description: "some description",
+                  key: "any",
+                  actions: [.documentsAdd, .unknown("unsupported")],
+                  indexes: ["index1"],
+                  expiresAt: nil,
+                  createdAt: "2021-08-11T10:00:00Z",
+                  updatedAt: "2021-08-11T10:00:00Z")
+    
+    XCTAssertEqual(key.actions, [.documentsAdd, .unknown("unsupported")])
+  }
 }

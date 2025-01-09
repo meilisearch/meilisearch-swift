@@ -7,7 +7,7 @@ public class DeleteTasksQuery: Queryable {
   /// List of strings with all the types the response should contain.
   public let types: [TaskType]
   /// List of strings with all the statuses the response should contain.
-  public let statuses: [Task.Status]
+  public let statuses: [MTask.Status]
   /// Filter tasks response by a particular list of index Uids strings
   public let indexUids: [String]
   /// Filter tasks based on a list of task's uids.
@@ -28,7 +28,7 @@ public class DeleteTasksQuery: Queryable {
   public let afterFinishedAt: Date?
 
   init(
-    statuses: [Task.Status]? = nil, types: [TaskType]? = nil,
+    statuses: [MTask.Status]? = nil, types: [TaskType]? = nil,
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     beforeStartedAt: Date? = nil, afterStartedAt: Date? = nil,

@@ -153,7 +153,7 @@ public struct MeiliSearch {
   public func waitForTask(
     taskUid: Int,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>
+    _ completion: @escaping (Result<MTask, Swift.Error>
   ) -> Void) {
     self.tasks.waitForTask(taskUid: taskUid, options: options, completion)
   }
@@ -171,7 +171,7 @@ public struct MeiliSearch {
   public func waitForTask(
     task: TaskInfo,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>
+    _ completion: @escaping (Result<MTask, Swift.Error>
   ) -> Void) {
     self.tasks.waitForTask(taskUid: task.taskUid, options: options, completion)
   }
@@ -188,7 +188,7 @@ public struct MeiliSearch {
    */
   public func getTask(
     taskUid: Int,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
     self.tasks.get(taskUid: taskUid, completion)
   }
 

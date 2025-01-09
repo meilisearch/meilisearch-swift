@@ -515,7 +515,7 @@ public struct Indexes {
    */
   public func getTask(
     taskUid: Int,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
     self.tasks.get(taskUid: taskUid, completion)
   }
 

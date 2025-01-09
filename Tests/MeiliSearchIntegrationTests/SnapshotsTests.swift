@@ -25,7 +25,7 @@ class SnapshotsTests: XCTestCase {
     self.client.createSnapshot { result in
       switch result {
       case .success(let snapshotTask):
-        XCTAssertEqual(snapshotTask.status, Task.Status.enqueued)
+        XCTAssertEqual(snapshotTask.status, MTask.Status.enqueued)
         expectation.fulfill()
       case .failure(let error):
         dump(error)

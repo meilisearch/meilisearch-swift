@@ -159,7 +159,7 @@ extension Indexes {
   /**
    See `getTask(taskUid:_:)`
    */
-  public func getTask(taskUid: Int) async throws -> Task {
+  public func getTask(taskUid: Int) async throws -> MTask {
     try await withCheckedThrowingContinuation { continuation in
       self.getTask(taskUid: taskUid) { result in
         continuation.resume(with: result)

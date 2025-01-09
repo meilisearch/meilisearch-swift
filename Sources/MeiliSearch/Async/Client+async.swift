@@ -71,7 +71,7 @@ extension MeiliSearch {
   /**
    See `waitForTask(taskUid:options:_:)`
    */
-  public func waitForTask(taskUid: Int, options: WaitOptions? = nil) async throws -> Task {
+  public func waitForTask(taskUid: Int, options: WaitOptions? = nil) async throws -> MTask {
     try await withCheckedThrowingContinuation { continuation in
       self.waitForTask(taskUid: taskUid, options: options) { result in
         continuation.resume(with: result)
@@ -82,7 +82,7 @@ extension MeiliSearch {
   /**
    See `waitForTask(task:options:_:)`
    */
-  public func waitForTask(task: TaskInfo, options: WaitOptions? = nil) async throws -> Task {
+  public func waitForTask(task: TaskInfo, options: WaitOptions? = nil) async throws -> MTask {
     try await withCheckedThrowingContinuation { continuation in
       self.waitForTask(task: task, options: options) { result in
         continuation.resume(with: result)
@@ -93,7 +93,7 @@ extension MeiliSearch {
   /**
    See `getTask(taskUid:_:)`
    */
-  public func getTask(taskUid: Int) async throws -> Task {
+  public func getTask(taskUid: Int) async throws -> MTask {
     try await withCheckedThrowingContinuation { continuation in
       self.getTask(taskUid: taskUid) { result in
         continuation.resume(with: result)

@@ -20,18 +20,18 @@ struct Tasks {
   // Get on client
   func get(
     taskUid: Int,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
       get(path: "/tasks/\(taskUid)", completion)
   }
 
   private func get (
     path: String,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
       self.request.get(api: path) { result in
         switch result {
         case .success(let data):
           do {
-            let task: Result<Task, Swift.Error>  = try Constants.resultDecoder(data: data)
+            let task: Result<MTask, Swift.Error>  = try Constants.resultDecoder(data: data)
             completion(task)
           } catch {
             completion(.failure(error))
@@ -90,11 +90,11 @@ struct Tasks {
     _ taskUid: Int,
     _ options: WaitOptions,
     _ startingDate: Date,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
       self.get(taskUid: taskUid) { result in
         switch result {
         case .success(let status):
-          if status.status == Task.Status.succeeded || status.status == Task.Status.failed {
+          if status.status == MTask.Status.succeeded || status.status == MTask.Status.failed {
             completion(.success(status))
           } else if 0 - startingDate.timeIntervalSinceNow > options.timeOut {
             completion(.failure(MeiliSearch.Error.timeOut(timeOut: options.timeOut)))
@@ -111,9 +111,9 @@ struct Tasks {
 
   // wait for task using task structure
   func waitForTask(
-    task: Task,
+  task: MTask,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
       waitForTask(taskUid: task.uid, options: options, completion)
   }
 
@@ -121,7 +121,7 @@ struct Tasks {
   func waitForTask(
     taskUid: Int,
     options: WaitOptions? = nil,
-    _ completion: @escaping (Result<Task, Swift.Error>) -> Void) {
+    _ completion: @escaping (Result<MTask, Swift.Error>) -> Void) {
       do {
         let currentDate = Date()
         let waitOptions = options ?? WaitOptions()
