@@ -1098,42 +1098,34 @@ primary_field_guide_add_document_primary_key: |-
           print(error)
       }
   }
-getting_started_add_documents_md: |-
-  Add this to your `Package.swift`:
-  ```swift
-    dependencies: [
-      .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.17.0")
-    ]
-  ```
+getting_started_add_documents: |-
+  // Add this to your `Package.swift`
+  dependencies: [
+    .package(url: "https://github.com/meilisearch/meilisearch-swift.git", from: "0.17.0")
+  ]
 
-  ```swift
-    let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
-    let documents: Data = try Data(contentsOf: path)
-    let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "aSampleMasterKey")
+  // In your .swift file:
+  let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
+  let documents: Data = try Data(contentsOf: path)
+  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "aSampleMasterKey")
 
-    client.index("movies").addDocuments(documents: documents) { (result) in
-        switch result {
-        case .success(let task):
-            print(task)
-        case .failure(let error):
-            print(error)
-        }
-    }
-  ```
-  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
-getting_started_search_md: |-
-  ```swift
-    client.index("movies").search(SearchParameters(query: "botman")) { (result) in
-        switch result {
-        case .success(let searchResult):
-            print(searchResult)
-        case .failure(let error):
-            print(error)
-        }
-    }
-  ```
-  [About this SDK](https://www.github.com/meilisearch/meilisearch-swift)
-
+  client.index("movies").addDocuments(documents: documents) { (result) in
+      switch result {
+      case .success(let task):
+          print(task)
+      case .failure(let error):
+          print(error)
+      }
+  }
+getting_started_search: |-
+  client.index("movies").search(SearchParameters(query: "botman")) { (result) in
+      switch result {
+      case .success(let searchResult):
+          print(searchResult)
+      case .failure(let error):
+          print(error)
+      }
+  }
 getting_started_update_ranking_rules: |-
   let rankingRules: [String] = [
     "exactness",
