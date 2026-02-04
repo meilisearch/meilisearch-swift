@@ -25,12 +25,18 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
   /// Query string from the search.
   public var query: String?
 
+  /// Performance details trace when `showPerformanceDetails` is enabled.
+  /// Available from Meilisearch v1.35.0.
+  /// Note: The structure of this object is subject to change.
+  public var performanceDetails: PerformanceDetails?
+
   public enum CodingKeys: String, CodingKey {
     case hits
     case facetDistribution
     case facetStats
     case processingTimeMs
     case query
+    case performanceDetails
   }
 }
 
