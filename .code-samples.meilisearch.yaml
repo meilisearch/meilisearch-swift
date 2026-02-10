@@ -995,29 +995,6 @@ getting_started_check_task_status: |-
           print(error)
       }
   }
-getting_started_synonyms: |-
-  let synonyms: [String: [String]] = [
-     "winnie": ["piglet"],
-     "piglet": ["winnie"]
-  ]
-   client.index("movies").updateSynonyms(synonyms) { (result) in
-       switch result {
-       case .success(let task):
-           print(task)
-       case .failure(let error):
-           print(error)
-       }
-   }
-getting_started_update_displayed_attributes: |-
-  let displayedAttributes: [String] = ["title", "overview", "poster"]
-  client.index("movies").updateDisplayedAttributes(displayedAttributes) { (result) in
-       switch result {
-       case .success(let task):
-           print(task)
-       case .failure(let error):
-           print(error)
-       }
-   }
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes { (result) in
       switch result {
