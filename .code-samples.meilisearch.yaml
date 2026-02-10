@@ -29,10 +29,6 @@ sorting_guide_sort_nested_1: |-
           print(error)
       }
   }
-getting_started_faceting: |-
-  client.index("movies").updateFaceting({ maxValuesPerFacet: 2 })
-getting_started_pagination: |-
-  client.index("movies").updatePagination({ maxTotalHits: 500 })
 synonyms_guide_1: |-
   let synonyms: [String: [String]] = [
     "great": ["fantastic"],
@@ -105,15 +101,6 @@ date_guide_sort_1: |-
     }
   }
 
-async_guide_filter_by_date_1: |-
-  client.getTasks(params: TasksQuery(afterEnqueuedAt: dateFormatter.date(from: "2020-10-11T11:49:53.000Z"))) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
 async_guide_multiple_filters_1: |-
   client.getTasks(params: TasksQuery(indexUids: "movies", types: ["documentAdditionOrUpdate", "documentDeletion"], statuses: ["processing"])) { result in
     switch result {
@@ -123,44 +110,8 @@ async_guide_multiple_filters_1: |-
       print(error)
     }
   }
-async_guide_filter_by_ids_1: |-
-  client.getTasks(params: TasksQuery(uids: [5, 10, 13])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
 async_guide_filter_by_statuses_1: |-
   client.getTasks(params: TasksQuery(statuses: [.failed, .canceled])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
-async_guide_filter_by_types_1: |-
-  client.getTasks(params: TasksQuery(types: [.dumpCreation, .indexSwap])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
-async_guide_filter_by_index_uids_1: |-
-  client.getTasks(params: TasksQuery(indexUids: ["movies"])) { result in
-    switch result {
-    case .success(let taskResult):
-      print(taskResult)
-    case .failure(let error):
-      print(error)
-    }
-  }
-async_guide_canceled_by: |-
-  client.getTasks(params: TasksQuery(canceledBy: [9, 15])) { result in
     switch result {
     case .success(let taskResult):
       print(taskResult)
@@ -254,8 +205,6 @@ authorization_header_1: |-
           print(error)
       }
   }
-getting_started_typo_tolerance: |-
-
 get_all_tasks_paginating_1: |-
   client.getTasks(params: TasksQuery(limit: 2, from: 10)) { result in
     switch result {
@@ -397,16 +346,6 @@ delete_one_document_1: |-
           print(error)
       }
   }
-delete_documents_1: |-
-  client.index("movies").deleteBatchDocuments(["23488", "153738", "437035", "363869"]) {
-  (result) in
-        switch result {
-        case .success(let task):
-            print(task)
-        case .failure(let error):
-            print(error)
-        }
-    }
 search_post_1: |-
   let searchParameters = SearchParameters(query: "American ninja")
   client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
@@ -510,68 +449,6 @@ delete_a_key_1: |-
       }
   }
 
-security_guide_search_key_1: |-
-  client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
-  client.index("patient_medical_records")
-    .search(SearchParameters(query: "")) { (result: Result<Searchable<Patient>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-security_guide_update_key_1: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-  let keyParams = KeyUpdateParams(description: "Default Search API Key")
-
-  client.updateKey(key: "74c9c733-3368-4738-bbe5-1d18a5fecb37", keyParams: keyParams) { result in
-    switch result {
-    case .success(let key):
-      print(key)
-    case .failure(let error):
-      print(error)
-    }
-  }
-security_guide_create_key_1: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-
-  let keyParams = KeyParams(
-    description: "Search patient records key",
-    actions: ["search"],
-    indexes: ["patient_medical_records"],
-    expiresAt: "2023-01-01T00:00:00Z"
-  )
-  client.createKey(keyParams) { result in
-    switch result {
-    case .success(let key):
-      print(key)
-    case .failure(let error):
-      print(error)
-    }
-  }
-security_guide_list_keys_1: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-
-  client.getKeys() { result in
-      switch result {
-      case .success(let keys):
-          print(keys)
-      case .failure(let error):
-          print(error)
-      }
-  }
-security_guide_delete_key_1: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-
-  client.deleteKey(keyOrUid: "ac5cd97d-5a4b-4226-a868-2d0eb6d197ab") { result in
-      switch result {
-      case .success:
-          print("success")
-      case .failure(let error):
-          print(error)
-      }
-  }
 get_settings_1: |-
   client.index("movies").getSettings { (result) in
       switch result {
@@ -1042,23 +919,6 @@ add_movies_json_1: |-
           print(error)
       }
   }
-documents_guide_add_movie_1: |-
-  let documentJsonString = """
-  [{
-      "movie_id": 123sq178,
-      "title": "Amélie Poulain"
-  }]
-  """
-  let documents: Data = documentJsonString.data(using: .utf8)!
-
-  client.index("movies").addDocuments(documents: documents) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
 primary_field_guide_create_index_primary_key: |-
   client.createIndex(uid: "books", primaryKey: "reference_number") { (result) in
     switch result {
@@ -1126,45 +986,6 @@ getting_started_search: |-
           print(error)
       }
   }
-getting_started_update_ranking_rules: |-
-  let rankingRules: [String] = [
-    "exactness",
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "release_date:asc",
-    "rank:desc"
-  ]
-  client.index("movies").updateRankingRules(rankingRules) { (result) in
-    switch result {
-    case .success(let task):
-      print(task)
-    case .failure(let error):
-      print(error)
-    }
-  }
-getting_started_update_searchable_attributes: |-
-  let searchableAttributes: [String] = ["title"]
-  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_update_stop_words: |-
-  let stopWords: [String] = ["the"]
-  client.index("movies").updateStopWords(stopWords) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
 getting_started_check_task_status: |-
   client.getTask(taskUid: 0) { (result) in
       switch result {
@@ -1193,96 +1014,6 @@ getting_started_update_displayed_attributes: |-
        switch result {
        case .success(let task):
            print(task)
-       case .failure(let error):
-           print(error)
-       }
-   }
-getting_started_communicating_with_a_protected_instance: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "apiKey")
-
-  client.index("movies").search(SearchParameters(query: "")) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_add_meteorites: |-
-  let file = "meteorites.json"
-  let path = URL(fileURLWithPath: file)
-  let documents: Data = try Data(contentsOf: path)
-
-  client.index("meteorites").addDocuments(documents: documents) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_configure_settings: |-
-  let settings = Setting(
-    filterableAttributes: ["mass", "_geo"],
-    sortableAttributes: ["mass", "_geo"]
-  )
-  client.index("meteorites").updateSettings(settings) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_geo_radius: |-
-  let searchParameters = SearchParameters(
-      query: "",
-      filter: "_geoRadius(46.9480, 7.4474, 210000)"
-  )
-  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_geo_point: |-
-  let searchParameters = SearchParameters(
-      query: "",
-      sort: ["_geoPoint(48.8583701, 2.2922926):asc"]
-  )
-  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_sorting: |-
-  let searchParameters = SearchParameters(
-    query: "",
-    filter: "mass < 200",
-    sort: ["mass:asc"]
-  )
-  client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-getting_started_filtering: |-
-  let searchParameters = SearchParameters(
-     query: "",
-     filter: "mass < 200"
-   )
-   client.index("meteorites").search(searchParameters) { (result: Result<Searchable<Meteorite>, Swift.Error>) in
-       switch result {
-       case .success(let searchResult):
-           print(searchResult)
        case .failure(let error):
            print(error)
        }
@@ -1324,18 +1055,6 @@ filtering_update_settings_1: |-
       }
   }
 
-faceted_search_facets_1: |-
-  let searchParameters = SearchParameters(
-      query: "Batman",
-      facets: ["genres"])
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
 faceted_search_walkthrough_filter_1: |-
   let searchParameters = SearchParameters(
       query: "thriller",
@@ -1545,27 +1264,6 @@ geosearch_guide_sort_usage_2: |-
       case .failure(let error):
           print(error)
       }
-  }
-landing_getting_started_1: |-
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
-  let documents = """
-  [
-    { "id": 1, "title": "Carol" },
-    { "id": 2, "title": "Wonder Woman" },
-    { "id": 3, "title": "Life of Pi" },
-    { "id": 4, "title": "Mad Max: Fury Road" },
-    { "id": 5, "title": "Moana" },
-    { "id": 6, "title": "Philadelphia"}
-  ]
-  """.data(using: .utf8)!
-
-  client.index("movies").addDocuments(documents: documents, primaryKey: "reference_number") { (result) in
-    switch result {
-    case .success(let task):
-        print(task)
-    case .failure(let error):
-        print(error)
-    }
   }
 swap_indexes_1: |-
   let task = try await self.client.swapIndexes([
