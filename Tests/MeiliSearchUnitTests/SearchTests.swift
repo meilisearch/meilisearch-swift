@@ -202,6 +202,46 @@ class SearchTests: XCTestCase {
     XCTAssertEqual(stubSearchResult, searchResult)
   }
 
+  func testSearchWithPerformanceDetails() async throws {
+    let jsonString = """
+      {
+        "hits": [
+          {
+            "id": 29751,
+            "title": "Batman Unmasked: The Psychology of the Dark Knight",
+            "poster": "https://image.tmdb.org/t/p/w1280/jjHu128XLARc2k4cJrblAvZe0HE.jpg",
+            "overview": "Delve into the world of Batman and the vigilante justice tha",
+            "release_date": "2020-04-04T19:59:49.259572Z"
+          }
+        ],
+        "offset": 0,
+        "limit": 20,
+        "processingTimeMs": 5,
+        "estimatedTotalHits": 1,
+        "query": "batman",
+        "performanceDetails": {
+          "search": "3.56ms",
+          "search > tokenize": "436.67µs",
+          "search > resolve universe": "649.00µs"
+        }
+      }
+      """
+
+    let stubSearchResult: Searchable<Movie> = try decodeJSON(from: jsonString)
+    session.pushData(jsonString)
+
+    let searchParameters = SearchParameters(
+      query: "batman",
+      showPerformanceDetails: true
+    )
+
+    let searchResult: Searchable<Movie> = try await self.index.search(searchParameters)
+    XCTAssertEqual(stubSearchResult, searchResult)
+    XCTAssertNotNil(searchResult.performanceDetails)
+    XCTAssertEqual(searchResult.performanceDetails?["search"], "3.56ms")
+    XCTAssertEqual(searchResult.performanceDetails?["search > tokenize"], "436.67µs")
+  }
+
   func testSearchWithFinitePagination() async throws {
     let jsonString = """
       {

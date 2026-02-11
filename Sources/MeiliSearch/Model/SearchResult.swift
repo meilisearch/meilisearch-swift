@@ -25,12 +25,17 @@ public class Searchable<T>: Equatable, Codable where T: Codable, T: Equatable {
   /// Query string from the search.
   public var query: String?
 
+  /// Performance details of the search query. Only present when `showPerformanceDetails` is set to `true`.
+  /// Returned as raw data since the fields are subject to change.
+  public var performanceDetails: [String: String]?
+
   public enum CodingKeys: String, CodingKey {
     case hits
     case facetDistribution
     case facetStats
     case processingTimeMs
     case query
+    case performanceDetails
   }
 }
 
