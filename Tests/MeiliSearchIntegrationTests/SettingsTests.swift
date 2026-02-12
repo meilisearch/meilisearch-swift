@@ -82,7 +82,9 @@ class SettingsTests: XCTestCase {
       pagination: self.defaultPagination,
       typoTolerance: self.defaultTypoTolerance,
       proximityPrecision: .byWord,
-      searchCutoffMs: nil
+      searchCutoffMs: nil,
+      facetSearch: true,
+      prefixSearch: "indexingTime"
     )
 
     self.defaultGlobalReturnedSettings = SettingResult(
@@ -100,7 +102,9 @@ class SettingsTests: XCTestCase {
       pagination: self.defaultPagination,
       typoTolerance: self.defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: nil
+      searchCutoffMs: nil,
+      facetSearch: true,
+      prefixSearch: "indexingTime"
     )
   }
 
@@ -1006,6 +1010,56 @@ class SettingsTests: XCTestCase {
     }
   }
 
+  // MARK: Facet Search
+
+  func testFacetSearch() async throws {
+    do { // GET
+      let currentValue = try await self.index.getFacetSearch()
+      XCTAssertTrue(currentValue) // default value
+    }
+
+    do { // PUT
+      let taskInfo = try await self.index.updateFacetSearch(false)
+      _ = try await self.client.waitForTask(task: taskInfo)
+
+      let newValue = try await self.index.getFacetSearch()
+      XCTAssertFalse(newValue)
+    }
+
+    do { // DELETE
+      let taskInfo = try await self.index.resetFacetSearch()
+      _ = try await self.client.waitForTask(task: taskInfo)
+
+      let newValue = try await self.index.getFacetSearch()
+      XCTAssertTrue(newValue) // default value
+    }
+  }
+
+  // MARK: Prefix Search
+
+  func testPrefixSearch() async throws {
+    do { // GET
+      let currentValue = try await self.index.getPrefixSearch()
+      XCTAssertEqual(currentValue, "indexingTime") // default value
+    }
+
+    do { // PUT
+      let taskInfo = try await self.index.updatePrefixSearch("disabled")
+      _ = try await self.client.waitForTask(task: taskInfo)
+
+      let newValue = try await self.index.getPrefixSearch()
+      XCTAssertEqual(newValue, "disabled")
+    }
+
+    do { // DELETE
+      let taskInfo = try await self.index.resetPrefixSearch()
+      _ = try await self.client.waitForTask(task: taskInfo)
+
+      let newValue = try await self.index.getPrefixSearch()
+      XCTAssertEqual(newValue, "indexingTime") // default value
+    }
+  }
+
   // MARK: Stop words
 
   func testGetStopWords() {
@@ -1362,7 +1416,9 @@ class SettingsTests: XCTestCase {
       pagination: .init(maxTotalHits: 1000),
       typoTolerance: defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: 200
+      searchCutoffMs: 200,
+      facetSearch: true,
+      prefixSearch: "indexingTime"
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -1464,7 +1520,9 @@ class SettingsTests: XCTestCase {
       pagination: .init(maxTotalHits: 500),
       typoTolerance: defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: nil
+      searchCutoffMs: nil,
+      facetSearch: true,
+      prefixSearch: "indexingTime"
     )
 
     self.index.updateSettings(newSettings) { result in

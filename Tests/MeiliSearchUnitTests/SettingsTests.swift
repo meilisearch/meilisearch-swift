@@ -49,7 +49,9 @@ class SettingsTests: XCTestCase {
         "disableOnAttributes": []
       },
       "proximityPrecision": "byWord",
-      "searchCutoffMs": null
+      "searchCutoffMs": null,
+      "facetSearch": true,
+      "prefixSearch": "indexingTime"
     }
     """
 
@@ -619,6 +621,94 @@ class SettingsTests: XCTestCase {
 
     // Start the test with the mocked server
     let update = try await self.index.resetTypoTolerance()
+    XCTAssertEqual(stubTask, update)
+  }
+
+  // MARK: Facet Search
+
+  func testGetFacetSearch() async throws {
+    let jsonString = "true"
+
+    // Prepare the mock server
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let facetSearch = try await self.index.getFacetSearch()
+    XCTAssertTrue(facetSearch)
+  }
+
+  func testUpdateFacetSearch() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
+      """
+
+    // Prepare the mock server
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let update = try await self.index.updateFacetSearch(false)
+    XCTAssertEqual(stubTask, update)
+  }
+
+  func testResetFacetSearch() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
+      """
+
+    // Prepare the mock server
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let update = try await self.index.resetFacetSearch()
+    XCTAssertEqual(stubTask, update)
+  }
+
+  // MARK: Prefix Search
+
+  func testGetPrefixSearch() async throws {
+    let jsonString = "\"indexingTime\""
+
+    // Prepare the mock server
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let prefixSearch = try await self.index.getPrefixSearch()
+    XCTAssertEqual(prefixSearch, "indexingTime")
+  }
+
+  func testUpdatePrefixSearch() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
+      """
+
+    // Prepare the mock server
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
+
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let update = try await self.index.updatePrefixSearch("disabled")
+    XCTAssertEqual(stubTask, update)
+  }
+
+  func testResetPrefixSearch() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
+      """
+
+    // Prepare the mock server
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
+    session.pushData(jsonString)
+
+    // Start the test with the mocked server
+    let update = try await self.index.resetPrefixSearch()
     XCTAssertEqual(stubTask, update)
   }
 
