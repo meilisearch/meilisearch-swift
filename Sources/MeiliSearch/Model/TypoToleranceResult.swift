@@ -18,6 +18,9 @@ public struct TypoToleranceResult: Codable, Equatable {
   /// An array of attributes for which the typo tolerance feature is disabled
   public let disableOnAttributes: [String]
 
+  /// Whether typo tolerance is disabled on numbers
+  public let disableOnNumbers: Bool
+
   public struct MinWordSize: Codable, Equatable {
     /// The minimum word size for accepting 1 typo; must be between 0 and `twoTypos`
     public let oneTypo: Int

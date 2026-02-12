@@ -40,7 +40,8 @@ class SettingsTests: XCTestCase {
     enabled: true,
     minWordSizeForTypos: .init(oneTypo: 5, twoTypos: 9),
     disableOnWords: [],
-    disableOnAttributes: []
+    disableOnAttributes: [],
+    disableOnNumbers: false
   )
   private var defaultGlobalSettings: Setting?
   private var defaultGlobalReturnedSettings: SettingResult?
