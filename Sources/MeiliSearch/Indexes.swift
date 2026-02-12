@@ -1182,6 +1182,86 @@ public struct Indexes {
       self.settings.resetSetting(uid: uid, key: "search-cutoff-ms", completion: completion)
   }
 
+  // MARK: Facet Search
+
+  /**
+   Get the facet search setting of the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `Bool`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getFacetSearch(
+    _ completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+    self.settings.getFacetSearch(self.uid, completion)
+  }
+
+  /**
+   Update the facet search setting of the index.
+
+   - parameter value: Whether facet search should be enabled.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateFacetSearch(
+    _ value: Bool,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateFacetSearch(self.uid, value, completion)
+  }
+
+  /**
+   Reset the facet search setting of the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetFacetSearch(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetFacetSearch(self.uid, completion)
+  }
+
+  // MARK: Prefix Search
+
+  /**
+   Get the prefix search setting of the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `String`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getPrefixSearch(
+    _ completion: @escaping (Result<String, Swift.Error>) -> Void) {
+    self.settings.getPrefixSearch(self.uid, completion)
+  }
+
+  /**
+   Update the prefix search setting of the index.
+
+   - parameter value: The prefix search behavior, either "indexingTime" or "disabled".
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updatePrefixSearch(
+    _ value: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updatePrefixSearch(self.uid, value, completion)
+  }
+
+  /**
+   Reset the prefix search setting of the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetPrefixSearch(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetPrefixSearch(self.uid, completion)
+  }
+
   // MARK: Stats
 
   /**
