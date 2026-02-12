@@ -282,6 +282,7 @@ public struct Indexes {
    - parameter documents:  The documents to add in Meilisearch.
    - parameter encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
+   - parameter skipCreation: If `true`, updates existing documents but does not add new documents.
    - parameter completion: The completion closure is used to notify when the server
    completes the update request, it returns a `Result` object that contains `TaskInfo`
    value. If the request was successful or `Error` if a failure occurred.
@@ -290,12 +291,14 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
+    skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
     self.documents.add(
       self.uid,
       documents,
       encoder,
       primaryKey,
+      skipCreation,
       completion)
   }
 
@@ -310,6 +313,7 @@ public struct Indexes {
 
    - parameter documents:  The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
+   - parameter skipCreation: If `true`, updates existing documents but does not add new documents.
    - parameter completion: The completion closure is used to notify when the server
    completes the update request, it returns a `Result` object that contains `TaskInfo`
    value. If the request was successful or `Error` if a failure occurred.
@@ -317,11 +321,13 @@ public struct Indexes {
   public func addDocuments(
     documents: Data,
     primaryKey: String? = nil,
+    skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.add(
       self.uid,
       documents,
       primaryKey,
+      skipCreation,
       completion)
   }
 
@@ -337,6 +343,7 @@ public struct Indexes {
    - parameter documents:  The documents to update in Meilisearch.
    - parameter encoder:    The data structure of your documents.
    - parameter primaryKey: The primary key of a document.
+   - parameter skipCreation: If `true`, updates existing documents but does not add new documents.
    - parameter completion: The completion closure is used to notify when the server
    completes the update request, it returns a `Result` object that contains `TaskInfo`
    value. If the request was successful or `Error` if a failure occurred.
@@ -345,12 +352,14 @@ public struct Indexes {
     documents: [T],
     encoder: JSONEncoder? = nil,
     primaryKey: String? = nil,
+    skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
     self.documents.update(
       self.uid,
       documents,
       encoder,
       primaryKey,
+      skipCreation,
       completion)
   }
 
@@ -365,6 +374,7 @@ public struct Indexes {
 
    - parameter documents: The document data (JSON) to be processed.
    - parameter primaryKey: The primary key of a document.
+   - parameter skipCreation: If `true`, updates existing documents but does not add new documents.
    - parameter completion: The completion closure is used to notify when the server
    completes the update request, it returns a `Result` object that contains `TaskInfo`
    value. If the request was successful or `Error` if a failure occurred.
@@ -372,11 +382,13 @@ public struct Indexes {
   public func updateDocuments(
     documents: Data,
     primaryKey: String? = nil,
+    skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
     self.documents.update(
       self.uid,
       documents,
       primaryKey,
+      skipCreation,
       completion
     )
   }
