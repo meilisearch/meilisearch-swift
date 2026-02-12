@@ -1295,11 +1295,4 @@ tenant_token_guide_search_sdk_1: |-
   }
 typo_tolerance_guide_5: |-
   let typoTolerance = TypoTolerance(disableOnNumbers: true)
-  client.index("movies").updateTypoTolerance(typoTolerance) { (result) in
-    switch result {
-    case .success(let task):
-      print(task)
-    case .failure(let error):
-      print(error)
-    }
-  }
+  let task = try await client.index("movies").updateTypoTolerance(typoTolerance)
