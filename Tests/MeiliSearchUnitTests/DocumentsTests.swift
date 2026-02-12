@@ -123,6 +123,92 @@ class DocumentsTests: XCTestCase {
     XCTAssertEqual(stubTask, update)
   }
 
+  func testAddDocumentsWithSkipCreation() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
+    """
+
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
+    session.pushData(jsonString, code: 202)
+
+    let movie = Movie(
+      id: 287947,
+      title: "Shazam",
+      overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200))
+    )
+
+    let update = try await self.index.addDocuments(documents: [movie], primaryKey: "id", skipCreation: true)
+    XCTAssertEqual(stubTask.taskUid, update.taskUid)
+    XCTAssertTrue(self.session.nextDataTask.request?.url?.query?.contains("skipCreation=true") ?? false)
+  }
+
+  func testAddDataDocumentsWithSkipCreation() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
+      """
+
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
+    session.pushData(jsonString, code: 202)
+
+    let documentJsonString = """
+      [{
+        "id": 287947,
+        "title": "Shazam",
+        "poster": "https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg",
+        "overview": "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+        "release_date": "2019-03-23"
+      }]
+      """
+
+    let documents: Data = Data(documentJsonString.utf8)
+
+    let update = try await self.index.addDocuments(documents: documents, primaryKey: "id", skipCreation: true)
+    XCTAssertEqual(stubTask, update)
+    XCTAssertTrue(self.session.nextDataTask.request?.url?.query?.contains("skipCreation=true") ?? false)
+  }
+
+  func testUpdateDocumentsWithSkipCreation() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
+      """
+
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
+    session.pushData(jsonString, code: 202)
+
+    let movie = Movie(
+      id: 287947,
+      title: "Shazam",
+      overview: "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      releaseDate: Date(timeIntervalSince1970: TimeInterval(1553299200))
+    )
+
+    let update = try await self.index.updateDocuments(documents: [movie], primaryKey: "id", skipCreation: true)
+    XCTAssertEqual(stubTask, update)
+    XCTAssertTrue(self.session.nextDataTask.request?.url?.query?.contains("skipCreation=true") ?? false)
+  }
+
+  func testUpdateDataDocumentsWithSkipCreation() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"books_test","status":"enqueued","type":"documentAdditionOrUpdate","enqueuedAt":"2022-07-21T21:47:50.565717794Z"}
+      """
+
+    let stubTask: TaskInfo = try decodeJSON(from: jsonString)
+    session.pushData(jsonString, code: 202)
+    let documentJsonString = """
+      [{
+        "id": 287947,
+        "title": "Shazam ⚡️"
+      }]
+      """
+
+    let JsonDocuments: Data = Data(documentJsonString.utf8)
+
+    let update = try await self.index.updateDocuments(documents: JsonDocuments, primaryKey: "movieskud", skipCreation: true)
+    XCTAssertEqual(stubTask, update)
+    XCTAssertTrue(self.session.nextDataTask.request?.url?.query?.contains("skipCreation=true") ?? false)
+  }
+
   func testGetDocument() async throws {
     let jsonString = """
       {
