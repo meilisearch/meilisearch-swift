@@ -15,8 +15,9 @@ class SettingsTests: XCTestCase {
     "words",
     "typo",
     "proximity",
-    "attribute",
+    "attributeRank",
     "sort",
+    "wordPosition",
     "exactness"
   ]
   private let defaultDistinctAttribute: String? = nil
