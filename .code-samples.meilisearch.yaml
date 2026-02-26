@@ -1293,3 +1293,6 @@ tenant_token_guide_search_sdk_1: |-
         print(error)
       }
   }
+typo_tolerance_guide_5: |-
+  let typoTolerance = TypoTolerance(disableOnNumbers: true)
+  let task = try await client.index("movies").updateTypoTolerance(typoTolerance)
