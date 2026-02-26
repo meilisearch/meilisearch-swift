@@ -196,7 +196,7 @@ search_parameter_guide_show_ranking_score_1: |-
     }
   }
 authorization_header_1: |-
-  client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey")
+  client = try MeiliSearch(host: "MEILISEARCH_URL", apiKey: "masterKey")
   client.getKeys { result in
       switch result {
       case .success(let keys):
@@ -967,7 +967,7 @@ getting_started_add_documents: |-
   // In your .swift file:
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
   let documents: Data = try Data(contentsOf: path)
-  let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "aSampleMasterKey")
+  let client = try MeiliSearch(host: "MEILISEARCH_URL", apiKey: "aSampleMasterKey")
 
   client.index("movies").addDocuments(documents: documents) { (result) in
       switch result {
@@ -1282,7 +1282,7 @@ tenant_token_guide_generate_sdk_1: |-
     }
   }
 tenant_token_guide_search_sdk_1: |-
-  let frontEndClient = MeiliSearch(host: "http://localhost:7700", apiKey: token)
+  let frontEndClient = MeiliSearch(host: "MEILISEARCH_URL", apiKey: token)
 
   client.index("patient_medical_records")
     .search(parameters) { (result: Result<SearchResult<Record>, Swift.Error>) in
