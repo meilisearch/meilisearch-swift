@@ -54,6 +54,12 @@ public struct Setting: Codable, Equatable {
   /// Pagination settings for the current index
   public let pagination: Pagination?
 
+  /// Whether facet search is enabled
+  public let facetSearch: Bool?
+
+  /// Prefix search behavior: "indexingTime" or "disabled"
+  public let prefixSearch: String?
+
   // MARK: Initializers
 
   public init(
@@ -71,7 +77,9 @@ public struct Setting: Codable, Equatable {
     pagination: Pagination? = nil,
     typoTolerance: TypoTolerance? = nil,
     proximityPrecision: ProximityPrecision? = nil,
-    searchCutoffMs: Int? = nil
+    searchCutoffMs: Int? = nil,
+    facetSearch: Bool? = nil,
+    prefixSearch: String? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -88,5 +96,7 @@ public struct Setting: Codable, Equatable {
     self.typoTolerance = typoTolerance
     self.proximityPrecision = proximityPrecision
     self.searchCutoffMs = searchCutoffMs
+    self.facetSearch = facetSearch
+    self.prefixSearch = prefixSearch
   }
 }

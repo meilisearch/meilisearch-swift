@@ -1261,6 +1261,18 @@ update_search_cutoff_1: |-
   let task = try await self.client.index("books").updateSearchCutoffMs(150)
 reset_search_cutoff_1: |-
   let task = try await self.client.index("books").resetSearchCutoffMs()
+get_facet_search_settings_1: |-
+  let facetSearch = try await self.client.index("books").getFacetSearch()
+update_facet_search_settings_1: |-
+  let task = try await self.client.index("books").updateFacetSearch(false)
+reset_facet_search_settings_1: |-
+  let task = try await self.client.index("books").resetFacetSearch()
+get_prefix_search_settings_1: |-
+  let prefixSearch = try await self.client.index("books").getPrefixSearch()
+update_prefix_search_settings_1: |-
+  let task = try await self.client.index("books").updatePrefixSearch("disabled")
+reset_prefix_search_settings_1: |-
+  let task = try await self.client.index("books").resetPrefixSearch()
 search_parameter_guide_show_ranking_score_details_1: |-
   let searchParameters = SearchParameters(query: "dragon", showRankingScoreDetails: true)
   let movies: Searchable<Movie> = try await client.index("movies").search(searchParameters)
