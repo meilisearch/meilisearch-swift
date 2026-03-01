@@ -155,46 +155,6 @@ reset_non_separator_tokens_1: |-
   client.index("books").resetNonSeparatorTokens { result in
     // handle result
   }
-search_parameter_guide_hitsperpage_1: |-
-  let searchParameters = SearchParameters(query: "", hitsPerPage: 15)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-    switch result {
-    case .success(let searchResult):
-        print(searchResult)
-    case .failure(let error):
-        print(error)
-    }
-  }
-search_parameter_guide_page_1: |-
-  let searchParameters = SearchParameters(query: "", page: 15)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-    switch result {
-    case .success(let searchResult):
-        print(searchResult)
-    case .failure(let error):
-        print(error)
-    }
-  }
-search_parameter_guide_attributes_to_search_on_1: |-
-  let searchParameters = SearchParameters(query: "adventure", attributesToSearchOn: ["overview"])
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-    switch result {
-    case .success(let searchResult):
-        print(searchResult)
-    case .failure(let error):
-        print(error)
-    }
-  }
-search_parameter_guide_show_ranking_score_1: |-
-  let searchParameters = SearchParameters(query: "dragon", showRankingScore: true)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-    switch result {
-    case .success(let searchResult):
-        print(searchResult.rankingScore)
-    case .failure(let error):
-        print(error)
-    }
-  }
 authorization_header_1: |-
   client = try MeiliSearch(host: "MEILISEARCH_URL", apiKey: "masterKey")
   client.getKeys { result in
@@ -798,115 +758,6 @@ filtering_guide_3: |-
           print(error)
       }
   }
-search_parameter_guide_query_1: |-
-  client.index("movies").search(SearchParameters(query: "shifu")) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_offset_1: |-
-  let searchParameters = SearchParameters(
-      query: "shifu",
-      offset: 1)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_limit_1: |-
-  let searchParameters = SearchParameters(
-      query: "shifu",
-      limit: 2)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_retrieve_1: |-
-  let searchParameters = SearchParameters(
-      query: "shifu",
-      attributesToRetrieve: ["overview", "title"])
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_crop_1: |-
-  let searchParameters = SearchParameters(
-      query: "shifu",
-      attributesToCrop: ["overview"],
-      cropLength: 5)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_crop_marker_1: |-
-  let searchParameters = SearchParameters(
-      query: "shifu",
-      attributesToCrop: ["overview"],
-      cropMarker: "[…]")
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_highlight_1: |-
-  let searchParameters = SearchParameters(
-      query: "winter feast",
-      attributesToHighlight: ["overview"])
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_highlight_tag_1: |-
-  let searchParameters = SearchParameters(
-      query: "winter feast",
-      attributesToHighlight: ["overview"],
-      highlightPreTag: "<span class=\"highlight\">",
-      highlightPostTag: "</span>")
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-search_parameter_guide_show_matches_position_1: |-
-  let searchParameters = SearchParameters(
-      query: "winter feast",
-      showMatchesPosition: true)
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
 add_movies_json_1: |-
   let path = Bundle.main.url(forResource: "movies", withExtension: "json")!
   let documents: Data = try Data(contentsOf: path)
@@ -1032,35 +883,6 @@ filtering_update_settings_1: |-
       }
   }
 
-faceted_search_walkthrough_filter_1: |-
-  let searchParameters = SearchParameters(
-      query: "thriller",
-      filter: [
-        [
-          "genres = Horror",
-          "genres = Mystery"
-        ],
-        "director = \"Jordan Peele\""
-      ])
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
-phrase_search_1: |-
-  let searchParameters = SearchParameters(
-      query: "\"african american\" horror")
-  client.index("movies").search(searchParameters) { (result: Result<Searchable<Movie>, Swift.Error>) in
-      switch result {
-      case .success(let searchResult):
-          print(searchResult)
-      case .failure(let error):
-          print(error)
-      }
-  }
 sorting_guide_update_sortable_attributes_1: |-
   client.index("books").updateSortableAttributes(["price", "author"]) { (result: Result<TaskInfo, Swift.Error>) in
     switch result {
@@ -1136,19 +958,6 @@ reset_sortable_attributes_1: |-
     switch result {
     case .success(let attributes):
       print(attributes)
-    case .failure(let error):
-      print(error)
-    }
-  }
-search_parameter_guide_sort_1: |-
-  let searchParameters = SearchParameters(
-    query: "science fiction",
-    sort: ["price:asc"]
-  )
-  client.index("books").search(searchParameters) { (result: Result<Searchable<Book>, Swift.Error>) in
-    switch result {
-    case .success(let searchResult):
-      print(searchResult)
     case .failure(let error):
       print(error)
     }
