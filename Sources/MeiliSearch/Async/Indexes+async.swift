@@ -707,6 +707,72 @@ extension Indexes {
   }
 
   /**
+   See `getFacetSearch(_:)`
+   */
+  public func getFacetSearch() async throws -> Bool {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getFacetSearch { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updateFacetSearch(_:_:)`
+   */
+  public func updateFacetSearch(_ value: Bool) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updateFacetSearch(value) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `resetFacetSearch(_:)`
+   */
+  public func resetFacetSearch() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.resetFacetSearch { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `getPrefixSearch(_:)`
+   */
+  public func getPrefixSearch() async throws -> String {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getPrefixSearch { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updatePrefixSearch(_:_:)`
+   */
+  public func updatePrefixSearch(_ value: String) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updatePrefixSearch(value) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `resetPrefixSearch(_:)`
+   */
+  public func resetPrefixSearch() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.resetPrefixSearch { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `stats(_:)`
    */
   public func stats() async throws -> Stat {

@@ -48,4 +48,10 @@ public struct SettingResult: Codable, Equatable {
 
   /// Maximum duration of a search query
   public let searchCutoffMs: Int?
+
+  /// Whether facet search is enabled
+  public let facetSearch: Bool
+
+  /// Prefix search behavior: "indexingTime" or "disabled"
+  public let prefixSearch: String
 }

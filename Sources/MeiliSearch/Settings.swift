@@ -417,6 +417,54 @@ struct Settings {
     resetSetting(uid: uid, key: "typo-tolerance", completion: completion)
   }
 
+  // MARK: Facet Search
+
+  func getFacetSearch(
+    _ uid: String,
+    _ completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "facet-search", completion: completion)
+  }
+
+  func updateFacetSearch(
+    _ uid: String,
+    _ value: Bool,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    updateSetting(uid: uid, key: "facet-search", data: value, completion: completion)
+  }
+
+  func resetFacetSearch(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "facet-search", completion: completion)
+  }
+
+  // MARK: Prefix Search
+
+  func getPrefixSearch(
+    _ uid: String,
+    _ completion: @escaping (Result<String, Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "prefix-search", completion: completion)
+  }
+
+  func updatePrefixSearch(
+    _ uid: String,
+    _ value: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    updateSetting(uid: uid, key: "prefix-search", data: value, completion: completion)
+  }
+
+  func resetPrefixSearch(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "prefix-search", completion: completion)
+  }
+
   // MARK: Reusable Requests
 
   func getSetting<ResponseType: Decodable>(
