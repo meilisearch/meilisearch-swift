@@ -69,12 +69,10 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
+    _ skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    var path: String = "/indexes/\(uid)/documents"
-    if let primaryKey: String = primaryKey {
-      path += "?primaryKey=\(primaryKey)"
-    }
+    let path = Documents.buildDocumentsPath(uid: uid, primaryKey: primaryKey, skipCreation: skipCreation)
 
     request.post(api: path, document) { result in
       switch result {
@@ -91,11 +89,9 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
+    _ skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
-    var path: String = "/indexes/\(uid)/documents"
-    if let primaryKey: String = primaryKey {
-      path += "?primaryKey=\(primaryKey)"
-    }
+    let path = Documents.buildDocumentsPath(uid: uid, primaryKey: primaryKey, skipCreation: skipCreation)
 
     let data: Data!
     switch encodeJSON(documents, encoder) {
@@ -120,12 +116,10 @@ struct Documents {
     _ uid: String,
     _ document: Data,
     _ primaryKey: String? = nil,
+    _ skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
 
-    var path: String = "/indexes/\(uid)/documents"
-    if let primaryKey: String = primaryKey {
-      path += "?primaryKey=\(primaryKey)"
-    }
+    let path = Documents.buildDocumentsPath(uid: uid, primaryKey: primaryKey, skipCreation: skipCreation)
 
     request.put(api: path, document) { result in
       switch result {
@@ -142,12 +136,10 @@ struct Documents {
     _ documents: [T],
     _ encoder: JSONEncoder? = nil,
     _ primaryKey: String? =  nil,
+    _ skipCreation: Bool? = nil,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) where T: Encodable {
 
-    var path: String = "/indexes/\(uid)/documents"
-    if let primaryKey: String = primaryKey {
-      path += "?primaryKey=\(primaryKey)"
-    }
+    let path = Documents.buildDocumentsPath(uid: uid, primaryKey: primaryKey, skipCreation: skipCreation)
 
     let data: Data!
     switch encodeJSON(documents, encoder) {
@@ -235,6 +227,21 @@ struct Documents {
         completion(.failure(error))
       }
     }
+  }
+
+  private static func buildDocumentsPath(uid: String, primaryKey: String?, skipCreation: Bool?) -> String {
+    var queryItems: [String] = []
+    if let primaryKey: String = primaryKey {
+      queryItems.append("primaryKey=\(primaryKey)")
+    }
+    if let skipCreation: Bool = skipCreation, skipCreation {
+      queryItems.append("skipCreation=true")
+    }
+    var path = "/indexes/\(uid)/documents"
+    if !queryItems.isEmpty {
+      path += "?\(queryItems.joined(separator: "&"))"
+    }
+    return path
   }
 
   private static func decodeJSON<T: Codable>(
