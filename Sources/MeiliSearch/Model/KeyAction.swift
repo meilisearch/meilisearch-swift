@@ -1,4 +1,4 @@
-///Documentation: https://www.meilisearch.com/docs/reference/api/keys#actions
+///Documentation: https://www.meilisearch.com/docs/reference/api/keys/list-api-keys#actions
 public enum KeyAction: Equatable, Codable {
   case wildcard
   case search
