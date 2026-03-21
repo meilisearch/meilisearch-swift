@@ -156,7 +156,7 @@ reset_non_separator_tokens_1: |-
     // handle result
   }
 authorization_header_1: |-
-  client = try MeiliSearch(host: "MEILISEARCH_URL", apiKey: "masterKey")
+  client = try MeiliSearch(host: "MEILISEARCH_URL", apiKey: "MEILISEARCH_KEY")
   client.getKeys { result in
       switch result {
       case .success(let keys):
