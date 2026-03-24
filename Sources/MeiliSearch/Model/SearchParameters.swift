@@ -68,6 +68,9 @@ public struct SearchParameters: Codable, Equatable {
   /// Whether to return the ranking score details or not.
   public let showRankingScoreDetails: Bool?
 
+  /// Attribute whose value must be different for each returned document.
+  public let distinct: String?
+
   // MARK: Initializers
 
   public init(
@@ -89,7 +92,8 @@ public struct SearchParameters: Codable, Equatable {
     facets: [String]? = nil,
     showMatchesPosition: Bool? = nil,
     showRankingScore: Bool? = nil,
-    showRankingScoreDetails: Bool? = nil
+    showRankingScoreDetails: Bool? = nil,
+    distinct: String? = nil
   ) {
     self.query = query
     self.offset = offset
@@ -110,6 +114,7 @@ public struct SearchParameters: Codable, Equatable {
     self.showMatchesPosition = showMatchesPosition
     self.showRankingScore = showRankingScore
     self.showRankingScoreDetails = showRankingScoreDetails
+    self.distinct = distinct
   }
 
   // MARK: Query Initializers
