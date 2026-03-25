@@ -50,6 +50,22 @@ class TasksTests: XCTestCase {
     XCTAssertEqual(documents.count, 0)
   }
 
+  func testGetTaskDocumentsMalformedResponse() async throws {
+    session.pushData("""
+    {"id":1}
+    not-json
+    """)
+
+    struct SimpleDoc: Decodable { let id: Int }
+
+    do {
+      let _: [SimpleDoc] = try await self.client.getTaskDocuments(taskUid: 1)
+      XCTFail("Expected decoding to fail")
+    } catch {
+      XCTAssertNotNil(error)
+    }
+  }
+
   func testGetTasksWithParametersFromClient() async throws {
     let jsonString = """
       {

@@ -164,12 +164,15 @@ struct Tasks {
 
   private static func decodeNDJSON<T: Decodable>(_ data: Data) throws -> [T] {
     let decoder = Constants.customJSONDecoder
-    guard let string = String(data: data, encoding: .utf8) else {
-      throw MeiliSearch.Error.invalidJSON
-    }
-    let lines = string.split(separator: "\n", omittingEmptySubsequences: true)
-    return try lines.map { line in
-      guard let lineData = line.data(using: .utf8) else {
+    let newline = UInt8(0x0A)
+    let cr = UInt8(0x0D)
+    let chunks = data.split(separator: newline, omittingEmptySubsequences: true)
+    return try chunks.map { chunk in
+      var lineData = Data(chunk)
+      if lineData.last == cr {
+        lineData.removeLast()
+      }
+      guard !lineData.isEmpty else {
         throw MeiliSearch.Error.invalidJSON
       }
       return try decoder.decode(T.self, from: lineData)
