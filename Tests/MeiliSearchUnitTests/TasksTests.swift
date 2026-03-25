@@ -13,6 +13,43 @@ class TasksTests: XCTestCase {
     index = client.index(self.uid)
   }
 
+  func testGetTaskDocumentsFromClient() async throws {
+    let ndjsonString = """
+    {"id":1,"title":"Movie 1"}
+    {"id":2,"title":"Movie 2"}
+    """
+
+    struct SimpleDoc: Decodable, Equatable {
+      let id: Int
+      let title: String
+    }
+
+    session.pushData(ndjsonString)
+
+    let documents: [SimpleDoc] = try await self.client.getTaskDocuments(taskUid: 1)
+
+    XCTAssertEqual(documents.count, 2)
+    XCTAssertEqual(documents[0].id, 1)
+    XCTAssertEqual(documents[0].title, "Movie 1")
+    XCTAssertEqual(documents[1].id, 2)
+    XCTAssertEqual(documents[1].title, "Movie 2")
+
+    let requestPath = self.session.nextDataTask.request?.url?.path
+    XCTAssertEqual(requestPath, "/tasks/1/documents")
+  }
+
+  func testGetTaskDocumentsEmptyResponse() async throws {
+    session.pushData("")
+
+    struct SimpleDoc: Decodable, Equatable {
+      let id: Int
+    }
+
+    let documents: [SimpleDoc] = try await self.client.getTaskDocuments(taskUid: 1)
+
+    XCTAssertEqual(documents.count, 0)
+  }
+
   func testGetTasksWithParametersFromClient() async throws {
     let jsonString = """
       {
