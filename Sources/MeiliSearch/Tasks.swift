@@ -137,6 +137,48 @@ struct Tasks {
       }
   }
 
+  // MARK: Get Task Documents
+
+  func getTaskDocuments<T>(
+    taskUid: Int,
+    _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
+  where T: Decodable {
+    self.request.get(api: "/tasks/\(taskUid)/documents") { result in
+      switch result {
+      case .success(let data):
+        guard let data = data else {
+          completion(.failure(MeiliSearch.Error.dataNotFound))
+          return
+        }
+        do {
+          let documents: [T] = try Tasks.decodeNDJSON(data)
+          completion(.success(documents))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  private static func decodeNDJSON<T: Decodable>(_ data: Data) throws -> [T] {
+    let decoder = Constants.customJSONDecoder
+    let newline = UInt8(0x0A)
+    let cr = UInt8(0x0D)
+    let chunks = data.split(separator: newline, omittingEmptySubsequences: true)
+    return try chunks.map { chunk in
+      var lineData = Data(chunk)
+      if lineData.last == cr {
+        lineData.removeLast()
+      }
+      guard !lineData.isEmpty else {
+        throw MeiliSearch.Error.invalidJSON
+      }
+      return try decoder.decode(T.self, from: lineData)
+    }
+  }
+
   // MARK: Cancel Tasks
 
   func cancelTasks(

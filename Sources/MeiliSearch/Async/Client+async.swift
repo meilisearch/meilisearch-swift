@@ -113,6 +113,17 @@ extension MeiliSearch {
   }
 
   /**
+   See `getTaskDocuments(taskUid:_:)`
+   */
+  public func getTaskDocuments<T>(taskUid: Int) async throws -> [T] where T: Decodable {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getTaskDocuments(taskUid: taskUid) { (result: Result<[T], Swift.Error>) in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `cancelTasks(filter:completion:)`
    */
   public func cancelTasks(filter: CancelTasksQuery) async throws -> TaskInfo {
