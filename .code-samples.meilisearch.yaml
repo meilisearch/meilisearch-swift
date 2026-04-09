@@ -692,20 +692,6 @@ distinct_attribute_guide_1: |-
           print(error)
       }
   }
-field_properties_guide_searchable_1: |-
-  let searchableAttributes: [String] = [
-      "title",
-      "overview",
-      "genres"
-  ]
-  client.index("movies").updateSearchableAttributes(searchableAttributes) { (result) in
-      switch result {
-      case .success(let task):
-          print(task)
-      case .failure(let error):
-          print(error)
-      }
-  }
 field_properties_guide_displayed_1: |-
   let displayedAttributes: [String] = [
       "title",
@@ -1070,9 +1056,6 @@ update_search_cutoff_1: |-
   let task = try await self.client.index("books").updateSearchCutoffMs(150)
 reset_search_cutoff_1: |-
   let task = try await self.client.index("books").resetSearchCutoffMs()
-search_parameter_guide_show_ranking_score_details_1: |-
-  let searchParameters = SearchParameters(query: "dragon", showRankingScoreDetails: true)
-  let movies: Searchable<Movie> = try await client.index("movies").search(searchParameters)
 tenant_token_guide_generate_sdk_1: |-
   let apiKey = "B5KdX2MY2jV6EXfUs6scSfmC..."
   let expiresAt = Date.distantFuture
