@@ -421,7 +421,7 @@ public struct Indexes {
    - parameter params: A `DocumentsQuery?` object with pagination & filter metadata.
    - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `DocumentsResults<T>` value.
-   If the request was successful or `Error` if a failure occured.
+   If the request was successful or `Error` if a failure occurred.
    */
   public func getDocuments<T>(
     params: DocumentsQuery? = nil,
