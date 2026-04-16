@@ -347,7 +347,7 @@ public struct MeiliSearch {
 
    - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Bool` that is `true`
-   If the request was successful or `false` if a failure occured.
+   If the request was successful or `false` if a failure occurred.
    */
   public func isHealthy(_ completion: @escaping (Bool) -> Void) {
     self.health { result in
