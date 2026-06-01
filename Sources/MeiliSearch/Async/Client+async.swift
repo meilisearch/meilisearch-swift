@@ -190,11 +190,11 @@ extension MeiliSearch {
   }
 
   /**
-   See `allStats(_:)`
+   See `allStats(query:_:)`
    */
-  public func allStats() async throws -> AllStats {
+  public func allStats(query: StatsQuery? = nil) async throws -> AllStats {
     try await withCheckedThrowingContinuation { continuation in
-      self.allStats { result in
+      self.allStats(query: query) { result in
         continuation.resume(with: result)
       }
     }

@@ -707,11 +707,11 @@ extension Indexes {
   }
 
   /**
-   See `stats(_:)`
+   See `stats(query:_:)`
    */
-  public func stats() async throws -> Stat {
+  public func stats(query: StatsQuery? = nil) async throws -> Stat {
     try await withCheckedThrowingContinuation { continuation in
-      self.stats { result in
+      self.stats(query: query) { result in
         continuation.resume(with: result)
       }
     }

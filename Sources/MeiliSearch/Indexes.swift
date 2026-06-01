@@ -1187,13 +1187,16 @@ public struct Indexes {
   /**
    Get stats of the index.
 
+   - parameter query: Optional query parameters to control size formatting and
+   whether internal database sizes are included.
    - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `Stat` value.
    If the request was successful or `Error` if a failure occurred.
    */
   public func stats(
+    query: StatsQuery? = nil,
     _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-    self.stats.stats(self.uid, completion)
+    self.stats.stats(self.uid, query: query, completion)
   }
 
   // MARK: Codable

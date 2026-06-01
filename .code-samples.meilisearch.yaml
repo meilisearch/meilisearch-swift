@@ -648,7 +648,8 @@ reset_displayed_attributes_1: |-
   }
 
 get_index_stats_1: |-
-  client.index("movies").stats { (result) in
+  let query = StatsQuery(showInternalDatabaseSizes: true, sizeFormat: .human)
+  client.index("movies").stats(query: query) { (result) in
       switch result {
       case .success(let stats):
           print(stats)
@@ -657,7 +658,8 @@ get_index_stats_1: |-
       }
   }
 get_indexes_stats_1: |-
-  client.allStats { (result) in
+  let query = StatsQuery(showInternalDatabaseSizes: true, sizeFormat: .human)
+  client.allStats(query: query) { (result) in
       switch result {
       case .success(let stats):
           print(stats)
