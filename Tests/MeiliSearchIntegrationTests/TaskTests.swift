@@ -154,6 +154,39 @@ class TasksTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testGetTasksClientReversed() {
+    let addDocExpectation = XCTestExpectation(description: "Add documents")
+
+    addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
+      switch result {
+      case .success:
+        addDocExpectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to create index")
+        addDocExpectation.fulfill()
+      }
+    }
+    self.wait(for: [addDocExpectation], timeout: TESTS_TIME_OUT)
+
+    let expectation = XCTestExpectation(description: "Get tasks in reversed order")
+    self.client.getTasks(params: TasksQuery(reverse: true)) { (result: Result<TasksResults, Swift.Error>) in
+      switch result {
+      case .success(let tasks):
+        XCTAssertNotNil(tasks.results)
+        let uids = tasks.results.map(\.uid)
+        XCTAssertEqual(uids, uids.sorted(), "reverse=true should return tasks in ascending uid order")
+        expectation.fulfill()
+      case .failure(let error):
+        dump(error)
+        XCTFail("Failed to get tasks")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
+
   func testCancelTask() {
     let addDocExpectation = XCTestExpectation(description: "Add documents")
     addDocuments(client: self.client, uid: self.uid, primaryKey: nil) { result in
