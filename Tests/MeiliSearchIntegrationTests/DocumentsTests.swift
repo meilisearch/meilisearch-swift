@@ -29,21 +29,14 @@ class DocumentsTests: XCTestCase {
     session = URLSession(configuration: .ephemeral)
     client = try MeiliSearch(host: currentHost(), apiKey: "masterKey", session: session)
     index = self.client.index(self.uid)
-    let expectation = XCTestExpectation(description: "Create index if it does not exist")
-    self.client.createIndex(uid: uid) { result in
+    let expectation = XCTestExpectation(description: "Reset document test index")
+    createGenericIndex(client: self.client, uid: self.uid) { result in
       switch result {
-      case .success(let task):
-        self.client.waitForTask(task: task) { result in
-          switch result {
-          case .success:
-            expectation.fulfill()
-          case .failure(let error):
-            dump(error)
-            expectation.fulfill()
-          }
-        }
+      case .success:
+        expectation.fulfill()
       case .failure(let error):
         dump(error)
+        XCTFail("Failed to reset index")
         expectation.fulfill()
       }
     }

@@ -31,7 +31,7 @@ class KeysTests: XCTestCase {
     let requestQuery = self.session.nextDataTask.request?.url?.query
     XCTAssertEqual(requestQuery, "limit=2&offset=10")
   }
-  
+
   func testEnumActions() {
     let key = Key(uid: "uid",
                   name: "name",
@@ -42,7 +42,17 @@ class KeysTests: XCTestCase {
                   expiresAt: nil,
                   createdAt: "2021-08-11T10:00:00Z",
                   updatedAt: "2021-08-11T10:00:00Z")
-    
+
     XCTAssertEqual(key.actions, [.documentsAdd, .unknown("unsupported")])
+  }
+
+  func testKeyActionStringRoundTrip() {
+    XCTAssertEqual(KeyAction("keys.delete"), .keysDelete)
+    XCTAssertEqual(KeyAction("snapshots.create"), .snapshotsCreate)
+    XCTAssertEqual(KeyAction("unsupported"), .unknown("unsupported"))
+
+    XCTAssertEqual(KeyAction.keysDelete.value, "keys.delete")
+    XCTAssertEqual(KeyAction.snapshotsCreate.value, "snapshots.create")
+    XCTAssertEqual(KeyAction.unknown("unsupported").value, "unsupported")
   }
 }

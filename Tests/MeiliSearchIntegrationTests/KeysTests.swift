@@ -171,7 +171,7 @@ class KeysTests: XCTestCase {
     }
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   //is expected to fail
   func testCreateKeyWithEnumCase() {
     let keyExpectation = XCTestExpectation(description: "Create a key")
@@ -198,8 +198,9 @@ class KeysTests: XCTestCase {
     }
     self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
-  
+
   func testCreateKeyWithUnsupportedEnumCase() {
+    let keyExpectation = XCTestExpectation(description: "Create key with unsupported enum case should fail")
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
     let someDateTime = formatter.string(from: Date.distantFuture)
@@ -209,11 +210,14 @@ class KeysTests: XCTestCase {
       switch result {
       case .success:
         XCTFail("should have failed")
+        keyExpectation.fulfill()
       case .failure(let error):
         XCTAssertTrue(error.localizedDescription.contains("Unknown value `anyUnknownValue` at `.actions[0]`:"))
         dump(error)
+        keyExpectation.fulfill()
       }
     }
+    self.wait(for: [keyExpectation], timeout: TESTS_TIME_OUT)
   }
 
   func testUpdateKey() {
