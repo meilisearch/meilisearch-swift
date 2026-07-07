@@ -15,8 +15,9 @@ class SettingsTests: XCTestCase {
     "words",
     "typo",
     "proximity",
-    "attribute",
+    "attributeRank",
     "sort",
+    "wordPosition",
     "exactness"
   ]
   private let defaultDistinctAttribute: String? = nil
@@ -1336,7 +1337,7 @@ class SettingsTests: XCTestCase {
 
   func testUpdateSettings() {
     let newSettings = Setting(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"],
       searchableAttributes: ["id", "title"],
       stopWords: ["a"],
       proximityPrecision: .byWord,
@@ -1344,11 +1345,11 @@ class SettingsTests: XCTestCase {
     )
 
     let overrideSettings = Setting(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"]
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"]
     )
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: ["a"],
@@ -1434,7 +1435,7 @@ class SettingsTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Update settings")
 
     let newSettings = Setting(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: nil,
@@ -1450,7 +1451,7 @@ class SettingsTests: XCTestCase {
     )
 
     let expectedSettingResult = SettingResult(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"],
       searchableAttributes: ["id", "title"],
       displayedAttributes: ["*"],
       stopWords: [],

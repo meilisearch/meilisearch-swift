@@ -115,7 +115,8 @@ class SearchTests: XCTestCase {
     XCTAssertNotNil(details["typo"])
     XCTAssertNotNil(details["words"])
     XCTAssertNotNil(details["proximity"])
-    XCTAssertNotNil(details["attribute"])
+    XCTAssertNotNil(details["attributeRank"])
+    XCTAssertNotNil(details["wordPosition"])
   }
 
   // MARK: Attributes to search on
@@ -786,7 +787,7 @@ class SearchTests: XCTestCase {
   private func configureFilters(_ completion: @escaping (Result<(), Swift.Error>) -> Void) {
     let filterableAttributes = ["genres", "author", "id"]
     let settings = Setting(
-      rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+      rankingRules: ["words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness"],
       searchableAttributes: ["*"],
       displayedAttributes: ["*"],
       stopWords: ["the", "a"],

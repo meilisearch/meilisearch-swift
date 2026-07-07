@@ -28,141 +28,141 @@ public enum KeyAction: Equatable, Codable {
   case keysUpdate
   case keysDelete
   case unknown(String)
-  
+
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
     let rawValue = try container.decode(String.self)
-    
+
     self = KeyAction(rawValue)
   }
-  
+
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
-    
+
     try container.encode(self.value)
   }
 }
 
 public extension KeyAction {
   init(_ value: String) {
-    self = switch value {
+    switch value {
     case "*":
-      .wildcard
+      self = .wildcard
     case "search":
-      .search
+      self = .search
     case "documents.*":
-      .documentsWildcard
+      self = .documentsWildcard
     case "documents.add":
-      .documentsAdd
+      self = .documentsAdd
     case "documents.get":
-      .documentsGet
+      self = .documentsGet
     case "documents.delete":
-      .documentsDelete
+      self = .documentsDelete
     case "indexes.*":
-      .indexesWildcard
+      self = .indexesWildcard
     case "indexes.create":
-      .indexesCreate
+      self = .indexesCreate
     case "indexes.get":
-      .indexesGet
+      self = .indexesGet
     case "indexes.update":
-      .indexesUpdate
+      self = .indexesUpdate
     case "indexes.delete":
-      .indexesDelete
+      self = .indexesDelete
     case "indexes.swap":
-        .indexesSwap
+      self = .indexesSwap
     case "tasks.*":
-        .tasksWildcard
+      self = .tasksWildcard
     case "tasks.get":
-        .tasksGet
+      self = .tasksGet
     case "tasks.cancel":
-        .tasksCancel
+      self = .tasksCancel
     case "tasks.delete":
-        .tasksDelete
+      self = .tasksDelete
     case "settings.*":
-        .settingsWildcard
+      self = .settingsWildcard
     case "settings.get":
-        .settingsGet
+      self = .settingsGet
     case "settings.update":
-        .settingsUpdate
+      self = .settingsUpdate
     case "stats.get":
-        .statsGet
+      self = .statsGet
     case "dumps.create":
-        .dumpsCreate
+      self = .dumpsCreate
     case "snapshots.create":
-        .snapshotsCreate
+      self = .snapshotsCreate
     case "version":
-        .version
+      self = .version
     case "keys.get":
-        .keysGet
+      self = .keysGet
     case "keys.create":
-        .keysCreate
+      self = .keysCreate
     case "keys.update":
-        .keysUpdate
+      self = .keysUpdate
     case "keys.delete":
-        .keysDelete
+      self = .keysDelete
     default:
-        .unknown(value)
+      self = .unknown(value)
     }
   }
-  
+
   var value: String {
     switch self {
     case .wildcard:
-      "*"
+      return "*"
     case .search:
-      "search"
+      return "search"
     case .documentsWildcard:
-      "documents.*"
+      return "documents.*"
     case .documentsAdd:
-      "documents.add"
+      return "documents.add"
     case .documentsGet:
-      "documents.get"
+      return "documents.get"
     case .documentsDelete:
-      "documents.delete"
+      return "documents.delete"
     case .indexesWildcard:
-      "indexes.*"
+      return "indexes.*"
     case .indexesCreate:
-      "indexes.create"
+      return "indexes.create"
     case .indexesGet:
-      "indexes.get"
+      return "indexes.get"
     case .indexesUpdate:
-      "indexes.update"
+      return "indexes.update"
     case .indexesDelete:
-      "indexes.delete"
+      return "indexes.delete"
     case .indexesSwap:
-      "indexes.swap"
+      return "indexes.swap"
     case .tasksWildcard:
-      "tasks.*"
+      return "tasks.*"
     case .tasksGet:
-      "tasks.get"
+      return "tasks.get"
     case .tasksCancel:
-      "tasks.cancel"
+      return "tasks.cancel"
     case .tasksDelete:
-      "tasks.delete"
+      return "tasks.delete"
     case .settingsWildcard:
-      "settings.*"
+      return "settings.*"
     case .settingsGet:
-      "settings.get"
+      return "settings.get"
     case .settingsUpdate:
-      "settings.update"
+      return "settings.update"
     case .statsGet:
-      "stats.get"
+      return "stats.get"
     case .dumpsCreate:
-      "dumps.create"
+      return "dumps.create"
     case .snapshotsCreate:
-      "snapshots.create"
+      return "snapshots.create"
     case .version:
-      "version"
+      return "version"
     case .keysGet:
-      "keys.get"
+      return "keys.get"
     case .keysCreate:
-      "keys.create"
+      return "keys.create"
     case .keysUpdate:
-      "keys.update"
+      return "keys.update"
     case .keysDelete:
-      "keys.delete"
+      return "keys.delete"
     case .unknown(let string):
-      string
+      return string
     }
   }
 }
