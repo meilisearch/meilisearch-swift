@@ -34,6 +34,8 @@ public class TasksQuery: Queryable {
   private var beforeFinishedAt: Date?
   /// Filter tasks based on the date after the task was finished.
   private var afterFinishedAt: Date?
+  /// When `true`, tasks are returned in reversed (ascending `uid`) order instead of the default most-recent-first order.
+  private var reverse: Bool?
 
   init(
     limit: Int? = nil, from: Int? = nil, next: Int? = nil,
@@ -41,7 +43,8 @@ public class TasksQuery: Queryable {
     indexUids: [String]? = nil, uids: [Int]? = nil, canceledBy: [Int]? = nil,
     beforeEnqueuedAt: Date? = nil, afterEnqueuedAt: Date? = nil,
     afterFinishedAt: Date? = nil, beforeStartedAt: Date? = nil,
-    afterStartedAt: Date? = nil, beforeFinishedAt: Date? = nil
+    afterStartedAt: Date? = nil, beforeFinishedAt: Date? = nil,
+    reverse: Bool? = nil
   ) {
     self.from = from
     self.limit = limit
@@ -57,6 +60,7 @@ public class TasksQuery: Queryable {
     self.afterStartedAt = afterStartedAt
     self.beforeFinishedAt = beforeFinishedAt
     self.afterFinishedAt = afterFinishedAt
+    self.reverse = reverse
   }
 
   internal func buildQuery() -> [String: Codable?] {
@@ -74,6 +78,7 @@ public class TasksQuery: Queryable {
       "beforeStartedAt": Formatter.formatOptionalDate(date: beforeStartedAt),
       "beforeFinishedAt": Formatter.formatOptionalDate(date: beforeFinishedAt),
       "afterFinishedAt": Formatter.formatOptionalDate(date: afterFinishedAt),
+      "reverse": reverse,
     ]
   }
 }

@@ -14,6 +14,8 @@ class TasksQueryTests: XCTestCase {
       ["?indexUids=my-index,123": TasksQuery(indexUids: ["my-index", "123"])],
       ["?limit=10&next=0": TasksQuery(limit: 10, next: 0)],
       ["?beforeEnqueuedAt=2019-03-22T10:07:01.000Z&next=10": TasksQuery(next: 10, beforeEnqueuedAt: sampleDate)],
+      ["?reverse=true": TasksQuery(reverse: true)],
+      ["?limit=2&reverse=false": TasksQuery(limit: 2, reverse: false)],
       ["": TasksQuery()]
     ]
 
