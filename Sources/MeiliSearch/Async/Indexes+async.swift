@@ -36,44 +36,44 @@ extension Indexes {
   }
 
   /**
-   See `addDocuments(documents:encoder:primaryKey:_:)`
+   See `addDocuments(documents:encoder:primaryKey:skipCreation:_:)`
    */
-  public func addDocuments<T: Encodable>(documents: [T], encoder: JSONEncoder? = nil, primaryKey: String? = nil) async throws -> TaskInfo {
+  public func addDocuments<T: Encodable>(documents: [T], encoder: JSONEncoder? = nil, primaryKey: String? = nil, skipCreation: Bool? = nil) async throws -> TaskInfo {
     try await withCheckedThrowingContinuation { continuation in
-      self.addDocuments(documents: documents, encoder: encoder, primaryKey: primaryKey) { result in
+      self.addDocuments(documents: documents, encoder: encoder, primaryKey: primaryKey, skipCreation: skipCreation) { result in
         continuation.resume(with: result)
       }
     }
   }
 
   /**
-   See `addDocuments(documents:primaryKey:_:)`
+   See `addDocuments(documents:primaryKey:skipCreation:_:)`
    */
-  public func addDocuments(documents: Data, primaryKey: String? = nil) async throws -> TaskInfo {
+  public func addDocuments(documents: Data, primaryKey: String? = nil, skipCreation: Bool? = nil) async throws -> TaskInfo {
     try await withCheckedThrowingContinuation { continuation in
-      self.addDocuments(documents: documents, primaryKey: primaryKey) { result in
+      self.addDocuments(documents: documents, primaryKey: primaryKey, skipCreation: skipCreation) { result in
         continuation.resume(with: result)
       }
     }
   }
 
   /**
-   See `updateDocuments(documents:encoder:primaryKey:_:)`
+   See `updateDocuments(documents:encoder:primaryKey:skipCreation:_:)`
    */
-  public func updateDocuments<T: Encodable>(documents: [T], encoder: JSONEncoder? = nil, primaryKey: String? = nil) async throws -> TaskInfo {
+  public func updateDocuments<T: Encodable>(documents: [T], encoder: JSONEncoder? = nil, primaryKey: String? = nil, skipCreation: Bool? = nil) async throws -> TaskInfo {
     try await withCheckedThrowingContinuation { continuation in
-      self.updateDocuments(documents: documents, encoder: encoder, primaryKey: primaryKey) { result in
+      self.updateDocuments(documents: documents, encoder: encoder, primaryKey: primaryKey, skipCreation: skipCreation) { result in
         continuation.resume(with: result)
       }
     }
   }
 
   /**
-   See `updateDocuments(documents:primaryKey:_:)`
+   See `updateDocuments(documents:primaryKey:skipCreation:_:)`
    */
-  public func updateDocuments(documents: Data, primaryKey: String? = nil) async throws -> TaskInfo {
+  public func updateDocuments(documents: Data, primaryKey: String? = nil, skipCreation: Bool? = nil) async throws -> TaskInfo {
     try await withCheckedThrowingContinuation { continuation in
-      self.updateDocuments(documents: documents, primaryKey: primaryKey) { result in
+      self.updateDocuments(documents: documents, primaryKey: primaryKey, skipCreation: skipCreation) { result in
         continuation.resume(with: result)
       }
     }
