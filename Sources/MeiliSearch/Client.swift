@@ -207,6 +207,22 @@ public struct MeiliSearch {
   }
 
   /**
+   Retrieve the list of documents that were processed or affected by a given task.
+   Only available for document-related tasks.
+
+   - parameter taskUid: The task unique identifier.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `[T]` value.
+   If the request was successful or `Error` if a failure occurred.
+   */
+  public func getTaskDocuments<T>(
+    taskUid: Int,
+    _ completion: @escaping (Result<[T], Swift.Error>) -> Void)
+  where T: Decodable {
+    self.tasks.getTaskDocuments(taskUid: taskUid, completion)
+  }
+
+  /**
    Cancel any number of enqueued or processing tasks, stopping them from continuing to run
 
    - parameter filter: The filter in which chooses which tasks will be canceled

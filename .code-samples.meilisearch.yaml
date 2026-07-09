@@ -325,6 +325,9 @@ get_task_1: |-
             print(error)
         }
     }
+get_task_documents_1: |-
+  let documents: [MyDocument] = try await client.getTaskDocuments(taskUid: 1)
+  print(documents)
 get_all_tasks_1: |-
   client.getTasks { (result) in
       switch result {
