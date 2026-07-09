@@ -46,7 +46,8 @@ class SettingsTests: XCTestCase {
           "twoTypos": 9
         },
         "disableOnWords": [],
-        "disableOnAttributes": []
+        "disableOnAttributes": [],
+        "disableOnNumbers": false
       },
       "proximityPrecision": "byWord",
       "searchCutoffMs": null
@@ -575,7 +576,7 @@ class SettingsTests: XCTestCase {
 
   func testGetTypoTolerance() async throws {
     let jsonString = """
-      {"enabled":true,"minWordSizeForTypos":{"oneTypo":3,"twoTypos":7},"disableOnWords":["of", "the"],"disableOnAttributes":["genre"]}
+      {"enabled":true,"minWordSizeForTypos":{"oneTypo":3,"twoTypos":7},"disableOnWords":["of", "the"],"disableOnAttributes":["genre"],"disableOnNumbers":true}
       """
 
     // Prepare the mock server
@@ -588,6 +589,7 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual(typoTolerance.minWordSizeForTypos.twoTypos, 7)
     XCTAssertFalse(typoTolerance.disableOnWords.isEmpty)
     XCTAssertFalse(typoTolerance.disableOnAttributes.isEmpty)
+    XCTAssertTrue(typoTolerance.disableOnNumbers)
   }
 
   func testUpdateTypoTolerance() async throws {
@@ -601,6 +603,23 @@ class SettingsTests: XCTestCase {
 
     session.pushData(jsonString)
     let typoTolerance: TypoTolerance = .init(enabled: false)
+
+    // Start the test with the mocked server
+    let update = try await self.index.updateTypoTolerance(typoTolerance)
+    XCTAssertEqual(stubTask, update)
+  }
+
+  func testUpdateTypoToleranceDisableOnNumbers() async throws {
+    let jsonString = """
+      {"taskUid":0,"indexUid":"movies_test","status":"enqueued","type":"settingsUpdate","enqueuedAt":"2022-07-27T19:03:50.494232841Z"}
+      """
+
+    // Prepare the mock server
+    let decoder = Constants.customJSONDecoder
+    let stubTask: TaskInfo = try decoder.decode(TaskInfo.self, from: Data(jsonString.utf8))
+
+    session.pushData(jsonString)
+    let typoTolerance: TypoTolerance = .init(disableOnNumbers: true)
 
     // Start the test with the mocked server
     let update = try await self.index.updateTypoTolerance(typoTolerance)
