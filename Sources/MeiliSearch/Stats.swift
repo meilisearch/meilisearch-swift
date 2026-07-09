@@ -16,8 +16,10 @@ struct Stats {
 
   func stats(
     _ uid: String,
+    query: StatsQuery? = nil,
     _ completion: @escaping (Result<Stat, Swift.Error>) -> Void) {
-    self.request.get(api: "/indexes/\(uid)/stats") { result in
+    let param = query?.toQuery()
+    self.request.get(api: "/indexes/\(uid)/stats", param: param) { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {
@@ -37,8 +39,11 @@ struct Stats {
     }
   }
 
-  func allStats(_ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
-    self.request.get(api: "/stats") { result in
+  func allStats(
+    query: StatsQuery? = nil,
+    _ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
+    let param = query?.toQuery()
+    self.request.get(api: "/stats", param: param) { result in
       switch result {
       case .success(let data):
         guard let data: Data = data else {

@@ -320,13 +320,16 @@ public struct MeiliSearch {
   /**
    Get stats of all indexes.
 
+   - parameter query: Optional query parameters to control size formatting and
+   whether internal database sizes are included.
    - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `AllStats`
    value. If the request was successful or `Error` if a failure occurred.
    */
   public func allStats(
+    query: StatsQuery? = nil,
     _ completion: @escaping (Result<AllStats, Swift.Error>) -> Void) {
-    self.stats.allStats(completion)
+    self.stats.allStats(query: query, completion)
   }
 
   // MARK: System
