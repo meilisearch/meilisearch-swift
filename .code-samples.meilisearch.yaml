@@ -352,6 +352,64 @@ cancel_tasks_1: |-
           print(error)
       }
   }
+list_dynamic_search_rules_1: |-
+  client.listDynamicSearchRules { result in
+    switch result {
+    case .success(let rules):
+      print(rules)
+    case .failure(let error):
+      print(error)
+    }
+  }
+get_dynamic_search_rule_1: |-
+  client.getDynamicSearchRule(uid: "black-friday") { result in
+    switch result {
+    case .success(let rule):
+      print(rule)
+    case .failure(let error):
+      print(error)
+    }
+  }
+patch_dynamic_search_rule_1: |-
+  let ruleParams = DynamicSearchRuleParams(
+    description: "Black Friday 2025 rules",
+    precedence: 10,
+    active: true,
+    conditions: DynamicSearchRuleConditions(
+      time: DynamicSearchRuleTimeCondition(
+        start: "2025-11-28T00:00:00Z",
+        end: "2025-11-28T23:59:59Z"
+      ),
+      query: DynamicSearchRuleQueryCondition(isEmpty: true)
+    ),
+    actions: [
+      DynamicSearchRuleAction(
+        selector: DynamicSearchRuleSelector(indexUid: "products", id: "123"),
+        action: DynamicSearchRuleActionPayload(position: 1)
+      )
+    ]
+  )
+
+  client.updateOrCreateDynamicSearchRule(
+    uid: "black-friday",
+    ruleParams: ruleParams
+  ) { result in
+    switch result {
+    case .success(let task):
+      print(task)
+    case .failure(let error):
+      print(error)
+    }
+  }
+delete_dynamic_search_rule_1: |-
+  client.deleteDynamicSearchRule(uid: "black-friday") { result in
+    switch result {
+    case .success(let task):
+      print(task)
+    case .failure(let error):
+      print(error)
+    }
+  }
 get_one_key_1: |-
   client.getKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
       switch result {

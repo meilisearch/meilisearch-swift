@@ -25,6 +25,7 @@ public struct MeiliSearch {
   private let dumps: Dumps
   private let snapshots: Snapshots
   private let tasks: Tasks
+  private let dynamicSearchRules: DynamicSearchRules
 
   // MARK: Initializers
 
@@ -45,6 +46,7 @@ public struct MeiliSearch {
     self.dumps = Dumps(self.request)
     self.snapshots = Snapshots(self.request)
     self.tasks = Tasks(self.request)
+    self.dynamicSearchRules = DynamicSearchRules(self.request)
   }
 
   // MARK: Index
@@ -313,6 +315,66 @@ public struct MeiliSearch {
       keyOrUid: keyOrUid,
       completion
     )
+  }
+
+  // MARK: Dynamic Search Rules
+
+  /**
+   List dynamic search rules using optional pagination and filtering criteria.
+
+   - parameter params: Pagination and filtering criteria sent in the request body.
+   - parameter completion: The completion closure returns paginated dynamic search rules or an error.
+   */
+  public func listDynamicSearchRules(
+    params: DynamicSearchRulesQuery? = nil,
+    _ completion: @escaping (Result<DynamicSearchRulesResults, Swift.Error>) -> Void
+  ) {
+    dynamicSearchRules.list(params: params, completion)
+  }
+
+  /**
+   Get a dynamic search rule by UID.
+
+   - parameter uid: The unique identifier of the dynamic search rule.
+   - parameter completion: The completion closure returns the dynamic search rule or an error.
+   */
+  public func getDynamicSearchRule(
+    uid: String,
+    _ completion: @escaping (Result<DynamicSearchRule, Swift.Error>) -> Void
+  ) {
+    dynamicSearchRules.get(uid: uid, completion)
+  }
+
+  /**
+   Create or partially update a dynamic search rule.
+
+   - parameter uid: The unique identifier of the dynamic search rule.
+   - parameter ruleParams: Fields to create or update on the dynamic search rule.
+   - parameter completion: The completion closure returns the enqueued task or an error.
+   */
+  public func updateOrCreateDynamicSearchRule(
+    uid: String,
+    ruleParams: DynamicSearchRuleParams,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void
+  ) {
+    dynamicSearchRules.updateOrCreate(
+      uid: uid,
+      ruleParams: ruleParams,
+      completion
+    )
+  }
+
+  /**
+   Delete a dynamic search rule.
+
+   - parameter uid: The unique identifier of the dynamic search rule.
+   - parameter completion: The completion closure returns the enqueued task or an error.
+   */
+  public func deleteDynamicSearchRule(
+    uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void
+  ) {
+    dynamicSearchRules.delete(uid: uid, completion)
   }
 
   // MARK: Stats

@@ -42,6 +42,8 @@ public extension MTask {
       case .snapshotCreation:
         // as per documentation: "The details object is set to null for snapshotCreation tasks."
         return nil
+      case .dynamicSearchRuleUpdate:
+        return nil
       case .unknown:
         // we do not handle this type, and as such even if details exist we do not support them here
         return nil

@@ -190,6 +190,58 @@ extension MeiliSearch {
   }
 
   /**
+   See `listDynamicSearchRules(params:_:)`
+   */
+  public func listDynamicSearchRules(
+    params: DynamicSearchRulesQuery? = nil
+  ) async throws -> DynamicSearchRulesResults {
+    try await withCheckedThrowingContinuation { continuation in
+      self.listDynamicSearchRules(params: params) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `getDynamicSearchRule(uid:_:)`
+   */
+  public func getDynamicSearchRule(uid: String) async throws -> DynamicSearchRule {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getDynamicSearchRule(uid: uid) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updateOrCreateDynamicSearchRule(uid:ruleParams:_:)`
+   */
+  public func updateOrCreateDynamicSearchRule(
+    uid: String,
+    ruleParams: DynamicSearchRuleParams
+  ) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updateOrCreateDynamicSearchRule(
+        uid: uid,
+        ruleParams: ruleParams
+      ) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `deleteDynamicSearchRule(uid:_:)`
+   */
+  public func deleteDynamicSearchRule(uid: String) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.deleteDynamicSearchRule(uid: uid) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `allStats(_:)`
    */
   public func allStats() async throws -> AllStats {
