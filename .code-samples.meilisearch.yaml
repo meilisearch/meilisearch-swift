@@ -353,23 +353,9 @@ cancel_tasks_1: |-
       }
   }
 list_dynamic_search_rules_1: |-
-  client.listDynamicSearchRules { result in
-    switch result {
-    case .success(let rules):
-      print(rules)
-    case .failure(let error):
-      print(error)
-    }
-  }
+  let rules = try await self.client.listDynamicSearchRules()
 get_dynamic_search_rule_1: |-
-  client.getDynamicSearchRule(uid: "black-friday") { result in
-    switch result {
-    case .success(let rule):
-      print(rule)
-    case .failure(let error):
-      print(error)
-    }
-  }
+  let rule = try await self.client.getDynamicSearchRule(uid: "black-friday")
 patch_dynamic_search_rule_1: |-
   let ruleParams = DynamicSearchRuleParams(
     description: "Black Friday 2025 rules",
@@ -390,26 +376,12 @@ patch_dynamic_search_rule_1: |-
     ]
   )
 
-  client.updateOrCreateDynamicSearchRule(
+  let task = try await self.client.updateOrCreateDynamicSearchRule(
     uid: "black-friday",
     ruleParams: ruleParams
-  ) { result in
-    switch result {
-    case .success(let task):
-      print(task)
-    case .failure(let error):
-      print(error)
-    }
-  }
+  )
 delete_dynamic_search_rule_1: |-
-  client.deleteDynamicSearchRule(uid: "black-friday") { result in
-    switch result {
-    case .success(let task):
-      print(task)
-    case .failure(let error):
-      print(error)
-    }
-  }
+  let task = try await self.client.deleteDynamicSearchRule(uid: "black-friday")
 get_one_key_1: |-
   client.getKey(keyOrUid: "6062abda-a5aa-4414-ac91-ecd7944c0f8d") { result in
       switch result {
