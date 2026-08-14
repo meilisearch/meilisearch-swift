@@ -24,7 +24,9 @@ class StatsTests: XCTestCase {
           "title": 19654,
           "id": 19654,
           "overview": 19654
-        }
+        },
+        "indexSize": 1572864,
+        "usedIndexSize": 524288
       }
       """
 
@@ -36,6 +38,30 @@ class StatsTests: XCTestCase {
     // Start the test with the mocked server
     let stats = try await self.index.stats()
     XCTAssertEqual(stubStats, stats)
+    XCTAssertEqual(stats.indexSize, 1572864)
+    XCTAssertEqual(stats.usedIndexSize, 524288)
+  }
+
+  func testStatsWithoutIndexSizeFields() async throws {
+    // Servers older than Meilisearch v1.53.0 do not return indexSize/usedIndexSize.
+    let jsonString = """
+      {
+        "numberOfDocuments": 19654,
+        "isIndexing": false,
+        "fieldDistribution": {
+          "poster": 19654
+        }
+      }
+      """
+
+    let stubStats: Stat = try decodeJSON(from: jsonString)
+
+    session.pushData(jsonString)
+
+    let stats = try await self.index.stats()
+    XCTAssertEqual(stubStats, stats)
+    XCTAssertNil(stats.indexSize)
+    XCTAssertNil(stats.usedIndexSize)
   }
 
   func testAllStats() async throws {
@@ -53,7 +79,9 @@ class StatsTests: XCTestCase {
               "title": 19654,
               "id": 19654,
               "release_date": 19654
-            }
+            },
+            "indexSize": 1572864,
+            "usedIndexSize": 524288
           },
           "rangemovies": {
             "numberOfDocuments": 19654,
@@ -75,5 +103,8 @@ class StatsTests: XCTestCase {
     // Start the test with the mocked server
     let allStats = try await self.client.allStats()
     XCTAssertEqual(stubAllStats, allStats)
+    XCTAssertEqual(allStats.indexes["movies"]?.indexSize, 1572864)
+    XCTAssertEqual(allStats.indexes["movies"]?.usedIndexSize, 524288)
+    XCTAssertNil(allStats.indexes["rangemovies"]?.indexSize)
   }
 }
