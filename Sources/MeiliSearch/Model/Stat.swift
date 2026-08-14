@@ -33,4 +33,10 @@ public struct Stat: Codable, Equatable {
 
   /// Usage frequency for each Index field.
   public let fieldDistribution: [String: Int]
+
+  /// Size of the index database, in bytes.
+  public let indexSize: Int?
+
+  /// Size of the used pages of the index database, in bytes.
+  public let usedIndexSize: Int?
 }

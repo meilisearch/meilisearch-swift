@@ -68,6 +68,10 @@ public struct SearchParameters: Codable, Equatable {
   /// Whether to return the ranking score details or not.
   public let showRankingScoreDetails: Bool?
 
+  /// Personalize search results for a described user. Experimental: personalized
+  /// search must be enabled on the Meilisearch instance.
+  public let personalize: Personalize?
+
   // MARK: Initializers
 
   public init(
@@ -89,7 +93,8 @@ public struct SearchParameters: Codable, Equatable {
     facets: [String]? = nil,
     showMatchesPosition: Bool? = nil,
     showRankingScore: Bool? = nil,
-    showRankingScoreDetails: Bool? = nil
+    showRankingScoreDetails: Bool? = nil,
+    personalize: Personalize? = nil
   ) {
     self.query = query
     self.offset = offset
@@ -110,6 +115,7 @@ public struct SearchParameters: Codable, Equatable {
     self.showMatchesPosition = showMatchesPosition
     self.showRankingScore = showRankingScore
     self.showRankingScoreDetails = showRankingScoreDetails
+    self.personalize = personalize
   }
 
   // MARK: Query Initializers
@@ -146,5 +152,6 @@ public struct SearchParameters: Codable, Equatable {
     case page
     case showRankingScore
     case showRankingScoreDetails
+    case personalize
   }
 }
