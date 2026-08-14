@@ -1145,5 +1145,39 @@ class SearchTests: XCTestCase {
 
     self.wait(for: [expectation], timeout: 2.0)
   }
+
+  func testSearchWithPersonalizeReachesServer() {
+    // Personalized search (Meilisearch v1.47.0+) requires the server to be started with
+    // --experimental-personalization-api-key set to a real provider key (e.g. Cohere), which
+    // isn't available in this test environment. Rather than skip coverage entirely, this
+    // verifies the `personalize` parameter is actually transmitted and recognized by the
+    // server: Meilisearch responds with `feature_not_enabled` (not an "unknown field" error),
+    // which only happens once the field has been parsed and matched against the feature gate.
+    let expectation = XCTestExpectation(description: "Search with personalize")
+
+    typealias MeiliResult = Result<Searchable<Book>, Swift.Error>
+    let parameters = SearchParameters(
+      query: "A",
+      personalize: Personalize(userContext: "loves science fiction")
+    )
+
+    self.index.search(parameters) { (result: MeiliResult) in
+      switch result {
+      case .success:
+        XCTFail("Expected feature_not_enabled since personalization is not configured on the test server")
+        expectation.fulfill()
+      case .failure(let error):
+        guard case let MeiliSearch.Error.meiliSearchApiError(_, msErrorResponse, _, _) = error else {
+          XCTFail("Expected a Meilisearch API error, got \(error)")
+          expectation.fulfill()
+          return
+        }
+        XCTAssertEqual(msErrorResponse?.code, "feature_not_enabled")
+        expectation.fulfill()
+      }
+    }
+
+    self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
+  }
 }
 // swiftlint:enable force_unwrapping

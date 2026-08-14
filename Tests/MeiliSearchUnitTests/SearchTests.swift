@@ -65,6 +65,60 @@ class SearchTests: XCTestCase {
     XCTAssertEqual(stubSearchResult, searchResult)
   }
 
+  func testSearchSendsPersonalizeInRequestBody() async throws {
+    let jsonString = """
+      {
+        "hits": [],
+        "offset": 0,
+        "limit": 20,
+        "processingTimeMs": 2,
+        "estimatedTotalHits": 0,
+        "query": "botman"
+      }
+      """
+
+    session.pushData(jsonString)
+
+    let searchParameters = SearchParameters(
+      query: "botman",
+      personalize: Personalize(userContext: "loves science fiction")
+    )
+    let _: Searchable<Movie> = try await self.index.search(searchParameters)
+
+    let sentBody = try XCTUnwrap(session.nextDataTask.request?.httpBody)
+    let decodedParameters = try Constants.customJSONDecoder.decode(SearchParameters.self, from: sentBody)
+    XCTAssertEqual(decodedParameters.personalize, Personalize(userContext: "loves science fiction"))
+  }
+
+  func testSearchOmitsPersonalizeWhenNil() async throws {
+    let jsonString = """
+      {
+        "hits": [],
+        "offset": 0,
+        "limit": 20,
+        "processingTimeMs": 2,
+        "estimatedTotalHits": 0,
+        "query": "botman"
+      }
+      """
+
+    session.pushData(jsonString)
+
+    let searchParameters = SearchParameters.query("botman")
+    let _: Searchable<Movie> = try await self.index.search(searchParameters)
+
+    let sentBody = try XCTUnwrap(session.nextDataTask.request?.httpBody)
+    let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: sentBody) as? [String: Any])
+    XCTAssertNil(json["personalize"])
+  }
+
+  func testPersonalizeCodableRoundTrip() throws {
+    let original = Personalize(userContext: "prefers documentaries")
+    let data = try JSONEncoder().encode(original)
+    let decoded = try JSONDecoder().decode(Personalize.self, from: data)
+    XCTAssertEqual(original, decoded)
+  }
+
   func testSearchForBotmanMovieFacets() async throws {
     let jsonString = """
       {
