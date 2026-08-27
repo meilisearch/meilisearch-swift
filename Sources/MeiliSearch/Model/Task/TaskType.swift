@@ -15,6 +15,7 @@ public enum TaskType: Codable, Equatable, LosslessStringConvertible {
   case taskCancelation
   case taskDeletion
   case snapshotCreation
+  case dynamicSearchRuleUpdate
 
   // Captures task types which are not currently known by the Swift package.
   // This allows for a future proofing should the MeiliSearch executable introduce new values.
@@ -49,6 +50,8 @@ public enum TaskType: Codable, Equatable, LosslessStringConvertible {
       self = .taskDeletion
     case "snapshotCreation":
       self = .snapshotCreation
+    case "dsrUpdate":
+      self = .dynamicSearchRuleUpdate
     default:
       self = .unknown(rawValue)
     }
@@ -90,6 +93,8 @@ public enum TaskType: Codable, Equatable, LosslessStringConvertible {
       return "taskDeletion"
     case .snapshotCreation:
       return "snapshotCreation"
+    case .dynamicSearchRuleUpdate:
+      return "dsrUpdate"
     case .unknown(let unknownTaskTypeValue):
       return unknownTaskTypeValue
     }

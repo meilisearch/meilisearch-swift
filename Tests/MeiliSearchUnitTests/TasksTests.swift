@@ -34,4 +34,13 @@ class TasksTests: XCTestCase {
     let requestQuery = self.session.nextDataTask.request?.url?.query
     XCTAssertEqual(requestQuery, "from=5&limit=20&next=98&types=indexCreation")
   }
+
+  func testDynamicSearchRuleUpdateTaskTypeRoundTrip() throws {
+    let decoded: TaskType = try decodeJSON(from: "\"dsrUpdate\"")
+    XCTAssertEqual(decoded, .dynamicSearchRuleUpdate)
+    XCTAssertEqual(decoded.description, "dsrUpdate")
+
+    let encoded = try JSONEncoder().encode(decoded)
+    XCTAssertEqual(String(data: encoded, encoding: .utf8), "\"dsrUpdate\"")
+  }
 }
