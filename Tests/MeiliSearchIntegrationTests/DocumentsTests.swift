@@ -43,6 +43,33 @@ class DocumentsTests: XCTestCase {
     self.wait(for: [expectation], timeout: TESTS_TIME_OUT)
   }
 
+  func testGetDocumentsWithSorting() async throws {
+    let settings = try await index.updateSortableAttributes(["title", "id"])
+    let settingsTask = try await client.waitForTask(taskUid: settings.taskUid)
+    XCTAssertEqual(settingsTask.status, .succeeded)
+    let documents = [
+      Movie(id: 3, title: "B"),
+      Movie(id: 1, title: "A"),
+      Movie(id: 2, title: "A")
+    ]
+    let addition = try await index.addDocuments(documents: documents, primaryKey: "id")
+    let completed = try await client.waitForTask(taskUid: addition.taskUid)
+    XCTAssertEqual(completed.status, .succeeded)
+
+    let sorted: DocumentsResults<Movie> = try await index.getDocuments(
+      params: DocumentsQuery(sort: ["title:asc", "id:desc"]))
+    XCTAssertEqual(sorted.results.map { $0.id }, [2, 1, 3])
+
+    let page: DocumentsResults<Movie> = try await index.getDocuments(
+      params: DocumentsQuery(limit: 1, offset: 1, sort: ["title:asc", "id:desc"]))
+    XCTAssertEqual(page.results.map { $0.id }, [1])
+    XCTAssertEqual(page.total, 3)
+
+    let descending: DocumentsResults<Movie> = try await index.getDocuments(
+      params: DocumentsQuery(sort: ["id:desc"]))
+    XCTAssertEqual(descending.results.map { $0.id }, [3, 2, 1])
+  }
+
   func testAddDocuments() {
     let expectation = XCTestExpectation(description: "Add documents")
 
