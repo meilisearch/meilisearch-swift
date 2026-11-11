@@ -54,6 +54,9 @@ public struct Setting: Codable, Equatable {
   /// Pagination settings for the current index
   public let pagination: Pagination?
 
+  /// Faceting settings for the current index
+  public let faceting: Faceting?
+
   // MARK: Initializers
 
   public init(
@@ -71,7 +74,8 @@ public struct Setting: Codable, Equatable {
     pagination: Pagination? = nil,
     typoTolerance: TypoTolerance? = nil,
     proximityPrecision: ProximityPrecision? = nil,
-    searchCutoffMs: Int? = nil
+    searchCutoffMs: Int? = nil,
+    faceting: Faceting? = nil
     ) {
     self.rankingRules = rankingRules
     self.searchableAttributes = searchableAttributes
@@ -88,5 +92,6 @@ public struct Setting: Codable, Equatable {
     self.typoTolerance = typoTolerance
     self.proximityPrecision = proximityPrecision
     self.searchCutoffMs = searchCutoffMs
+    self.faceting = faceting
   }
 }

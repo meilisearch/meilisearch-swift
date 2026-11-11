@@ -48,4 +48,7 @@ public struct SettingResult: Codable, Equatable {
 
   /// Maximum duration of a search query
   public let searchCutoffMs: Int?
+
+  /// Faceting settings for the current index
+  public let faceting: Faceting?
 }

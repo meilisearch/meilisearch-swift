@@ -69,6 +69,16 @@ class SettingsTests: XCTestCase {
     // Start the test with the mocked server
     let setting = try await self.index.getSettings()
     XCTAssertEqual(stubSetting, setting)
+    XCTAssertNil(setting.faceting)
+  }
+
+  func testGetSettingsWithFaceting() async throws {
+    var payload = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(json.utf8)) as? [String: Any])
+    payload["faceting"] = ["maxValuesPerFacet": 2, "sortFacetValuesBy": ["*": "alpha", "genres": "sampledCount"]]
+    let data = try JSONSerialization.data(withJSONObject: payload)
+    session.pushData(try XCTUnwrap(String(data: data, encoding: .utf8)))
+    let setting = try await index.getSettings()
+    XCTAssertEqual(setting.faceting, Faceting(maxValuesPerFacet: 2, sortFacetValuesBy: ["*": .alpha, "genres": .sampledCount]))
   }
 
   func testUpdateSettings() async throws {

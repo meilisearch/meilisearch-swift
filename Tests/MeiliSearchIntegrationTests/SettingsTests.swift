@@ -101,7 +101,8 @@ class SettingsTests: XCTestCase {
       pagination: self.defaultPagination,
       typoTolerance: self.defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: nil
+      searchCutoffMs: nil,
+      faceting: .init(maxValuesPerFacet: 100, sortFacetValuesBy: ["*": .alpha])
     )
   }
 
@@ -1363,7 +1364,8 @@ class SettingsTests: XCTestCase {
       pagination: .init(maxTotalHits: 1000),
       typoTolerance: defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: 200
+      searchCutoffMs: 200,
+      faceting: .init(maxValuesPerFacet: 100, sortFacetValuesBy: ["*": .alpha])
     )
 
     let expectation = XCTestExpectation(description: "Update settings")
@@ -1465,7 +1467,8 @@ class SettingsTests: XCTestCase {
       pagination: .init(maxTotalHits: 500),
       typoTolerance: defaultTypoToleranceResult,
       proximityPrecision: .byWord,
-      searchCutoffMs: nil
+      searchCutoffMs: nil,
+      faceting: .init(maxValuesPerFacet: 100, sortFacetValuesBy: ["*": .alpha])
     )
 
     self.index.updateSettings(newSettings) { result in
