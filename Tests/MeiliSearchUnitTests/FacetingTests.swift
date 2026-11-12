@@ -25,6 +25,7 @@ class FacetingTests: XCTestCase {
     XCTAssertEqual(session.lastURL?.path, "/indexes/books/settings/faceting")
   }
 
+  /// Verifies wildcard and per-attribute sort orders use PATCH and omit the unspecified facet limit.
   func testUpdateFacetingSettings() async throws {
     for sortOrder: [String: Faceting.SortOrder] in [
       ["*": .sampledCount], ["*": .alpha, "genres": .sampledCount]

@@ -374,6 +374,10 @@ struct Settings {
 
   // MARK: Faceting
 
+  /// Retrieves the index's faceting settings, forwarding request or decoding errors to the completion.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - completion: Receives the decoded settings or the error encountered.
   func getFacetingSettings(
     _ uid: String,
     _ completion: @escaping (Result<Faceting, Swift.Error>) -> Void) {
@@ -381,6 +385,12 @@ struct Settings {
     getSetting(uid: uid, key: "faceting", completion: completion)
   }
 
+  /// Applies a partial faceting update using PATCH. Nil properties are omitted during encoding.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - setting: Faceting properties to update.
+  ///   - completion: Receives the enqueued task, or an encoding, request, or decoding error.
+  ///     A successful response does not mean that the task has finished processing.
   func updateFacetingSettings(
     _ uid: String,
     _ setting: Faceting,
@@ -410,6 +420,10 @@ struct Settings {
     }
   }
 
+  /// Requests restoration of the index's default faceting settings.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - completion: Receives the enqueued reset task or the request or decoding error.
   func resetFacetingSettings(
     _ uid: String,
     _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {

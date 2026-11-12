@@ -2,6 +2,8 @@
 import XCTest
 
 class FacetingTests: XCTestCase {
+  /// Verifies wildcard and per-attribute sampled-count updates through both settings endpoints,
+  /// then checks reset defaults. Deletes the temporary index on success or a thrown error.
   func testSampledCountFacetingLifecycle() async throws {
     let client = try MeiliSearch(host: currentHost(), apiKey: "masterKey")
     let uid = "faceting_test"
