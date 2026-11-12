@@ -418,7 +418,7 @@ public struct Indexes {
   /**
    List documents given an optional criteria.
 
-   - parameter params: A `DocumentsQuery?` object with pagination & filter metadata.
+   - parameter params: A `DocumentsQuery?` object with pagination, field selection, and sorting options.
    - parameter completion: The completion closure is used to notify when the server
    completes the query request, it returns a `Result` object that contains `DocumentsResults<T>` value.
    If the request was successful or `Error` if a failure occured.
