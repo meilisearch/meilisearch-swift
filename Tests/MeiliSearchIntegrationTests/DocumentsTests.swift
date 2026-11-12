@@ -68,6 +68,34 @@ class DocumentsTests: XCTestCase {
     let descending: DocumentsResults<Movie> = try await index.getDocuments(
       params: DocumentsQuery(sort: ["id:desc"]))
     XCTAssertEqual(descending.results.map { $0.id }, [3, 2, 1])
+
+    let unsorted: DocumentsResults<Movie> = try await index.getDocuments()
+    let emptySort: DocumentsResults<Movie> = try await index.getDocuments(params: DocumentsQuery(sort: []))
+    XCTAssertEqual(emptySort.results.map { $0.id }, unsorted.results.map { $0.id })
+    XCTAssertEqual(emptySort.total, 3)
+  }
+
+  func testGetDocumentsWithReservedCharactersInSortAttributes() async throws {
+    let attributes = ["a&b", "c#d", "e+f", "g%26h", "i=j", "café name"]
+    let settings = try await index.updateSortableAttributes(attributes)
+    let settingsTask = try await client.waitForTask(taskUid: settings.taskUid)
+    XCTAssertEqual(settingsTask.status, .succeeded)
+
+    var first = ["id": "1"]
+    var second = ["id": "2"]
+    for attribute in attributes {
+      first[attribute] = "B"
+      second[attribute] = "A"
+    }
+    let addition = try await index.addDocuments(documents: [first, second], primaryKey: "id")
+    let completed = try await client.waitForTask(taskUid: addition.taskUid)
+    XCTAssertEqual(completed.status, .succeeded)
+
+    for attribute in attributes {
+      let sorted: DocumentsResults<[String: String]> = try await index.getDocuments(
+        params: DocumentsQuery(sort: ["\(attribute):asc"]))
+      XCTAssertEqual(sorted.results.compactMap { $0["id"] }, ["2", "1"], "Sorting by \(attribute)")
+    }
   }
 
   func testAddDocuments() {

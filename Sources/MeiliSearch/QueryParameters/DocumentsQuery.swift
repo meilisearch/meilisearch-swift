@@ -20,7 +20,11 @@ public class DocumentsQuery: Queryable {
 
   // MARK: Initializers
 
-  /// Creates a documents query. Omit `sort` to preserve the server's default document order.
+  /// Creates a documents query. Omit `sort` or pass an empty array to preserve the server's default document order.
+  ///
+  /// - Parameter sort: Ordered sorting criteria in `attribute:asc` or `attribute:desc` format,
+  ///   such as `["title:asc", "id:desc"]`. Requires Meilisearch v1.16 or later and attributes
+  ///   configured in the index's `sortableAttributes` setting.
   public init(limit: Int? = nil, offset: Int? = nil, fields: [String]? = nil, sort: [String]? = nil) {
     self.offset = offset
     self.limit = limit
@@ -29,11 +33,18 @@ public class DocumentsQuery: Queryable {
   }
 
   internal func buildQuery() -> [String: Codable?] {
-    [
+    let sortValue = sort.flatMap { criteria -> String? in
+      guard !criteria.isEmpty else {
+        return nil
+      }
+      let allowed = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: "&=+#%"))
+      return criteria.joined(separator: ",").addingPercentEncoding(withAllowedCharacters: allowed)
+    }
+    return [
       "limit": limit,
       "offset": offset,
       "fields": fields != nil ? fields?.joined(separator: ",") : nil,
-      "sort": sort?.joined(separator: ",")
+      "sort": sortValue
     ]
   }
 }

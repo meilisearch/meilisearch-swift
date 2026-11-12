@@ -33,4 +33,38 @@ class DocumentsSortingTests: XCTestCase {
     let items = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems)
     XCTAssertFalse(items.contains { $0.name == "sort" })
   }
+
+  func testGetDocumentsOmitsEmptySort() async throws {
+    let session = MockURLSession()
+    session.pushData("""
+      {"results":[],"offset":0,"limit":2,"total":0}
+      """)
+    let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    let query = DocumentsQuery(limit: 2, sort: [])
+    let _: DocumentsResults<[String: String]> = try await client.index("books").getDocuments(params: query)
+    let url = try XCTUnwrap(session.lastURL)
+    let items = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems)
+    XCTAssertEqual(items, [URLQueryItem(name: "limit", value: "2")])
+  }
+
+  func testGetDocumentsEncodesSortAsOneQueryValue() async throws {
+    let session = MockURLSession()
+    session.pushData("""
+      {"results":[],"offset":0,"limit":2,"total":0}
+      """)
+    let client = try MeiliSearch(host: "http://localhost:7700", apiKey: "masterKey", session: session)
+    let criteria = ["a&b:asc", "c#d:desc", "e+f:asc", "g%26h:desc", "i=j:asc", "café name:desc"]
+    let query = DocumentsQuery(limit: 2, sort: criteria)
+    let _: DocumentsResults<[String: String]> = try await client.index("books").getDocuments(params: query)
+    let url = try XCTUnwrap(session.lastURL)
+    let components = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false))
+    XCTAssertNil(components.fragment)
+    XCTAssertEqual(components.queryItems, [
+      URLQueryItem(name: "limit", value: "2"),
+      URLQueryItem(name: "sort", value: criteria.joined(separator: ","))
+    ])
+    let encodedQuery = try XCTUnwrap(components.percentEncodedQuery)
+    XCTAssertTrue(encodedQuery.contains("e%2Bf"))
+    XCTAssertTrue(encodedQuery.contains("g%2526h"))
+  }
 }
