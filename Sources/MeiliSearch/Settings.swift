@@ -372,6 +372,65 @@ struct Settings {
     resetSetting(uid: uid, key: "pagination", completion: completion)
   }
 
+  // MARK: Faceting
+
+  /// Retrieves the index's faceting settings, forwarding request or decoding errors to the completion.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - completion: Receives the decoded settings or the error encountered.
+  func getFacetingSettings(
+    _ uid: String,
+    _ completion: @escaping (Result<Faceting, Swift.Error>) -> Void) {
+
+    getSetting(uid: uid, key: "faceting", completion: completion)
+  }
+
+  /// Applies a partial faceting update using PATCH. Nil properties are omitted during encoding.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - setting: Faceting properties to update.
+  ///   - completion: Receives the enqueued task, or an encoding, request, or decoding error.
+  ///     A successful response does not mean that the task has finished processing.
+  func updateFacetingSettings(
+    _ uid: String,
+    _ setting: Faceting,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    let data: Data
+    do {
+      data = try JSONEncoder().encode(setting)
+    } catch {
+      completion(.failure(error))
+      return
+    }
+
+    // this uses patch instead of put for networking, so shouldn't use the reusable 'updateSetting' function
+    self.request.patch(api: "/indexes/\(uid)/settings/faceting", data) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let task: TaskInfo = try Constants.customJSONDecoder.decode(TaskInfo.self, from: data)
+          completion(.success(task))
+        } catch {
+          completion(.failure(error))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  /// Requests restoration of the index's default faceting settings.
+  /// - Parameters:
+  ///   - uid: Index identifier.
+  ///   - completion: Receives the enqueued reset task or the request or decoding error.
+  func resetFacetingSettings(
+    _ uid: String,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+
+    resetSetting(uid: uid, key: "faceting", completion: completion)
+  }
+
   // MARK: Typo Tolerance
 
   func getTypoTolerance(

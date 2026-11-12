@@ -1062,6 +1062,46 @@ public struct Indexes {
     self.settings.resetPaginationSettings(self.uid, completion)
   }
 
+  // MARK: Faceting
+
+  /**
+   Get the faceting settings for the current index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains a `Faceting`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func getFacetingSettings(
+    _ completion: @escaping (Result<Faceting, Swift.Error>) -> Void) {
+    self.settings.getFacetingSettings(self.uid, completion)
+  }
+
+  /**
+   Updates the faceting setting for the index.
+
+   - parameter settings: The new preferences to use for faceting.
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func updateFacetingSettings(
+    _ settings: Faceting,
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.updateFacetingSettings(self.uid, settings, completion)
+  }
+
+  /**
+   Reset the faceting settings for the index.
+
+   - parameter completion: The completion closure is used to notify when the server
+   completes the query request, it returns a `Result` object that contains `TaskInfo`
+   value if the request was successful, or `Error` if a failure occurred.
+   */
+  public func resetFacetingSettings(
+    _ completion: @escaping (Result<TaskInfo, Swift.Error>) -> Void) {
+    self.settings.resetFacetingSettings(self.uid, completion)
+  }
+
   // MARK: Typo Tolerance
 
   /**

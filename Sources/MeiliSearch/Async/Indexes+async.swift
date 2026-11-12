@@ -608,6 +608,39 @@ extension Indexes {
   }
 
   /**
+   See `getFacetingSettings(_:)`
+   */
+  public func getFacetingSettings() async throws -> Faceting {
+    try await withCheckedThrowingContinuation { continuation in
+      self.getFacetingSettings { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `updateFacetingSettings(_:_:)`
+   */
+  public func updateFacetingSettings(_ settings: Faceting) async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.updateFacetingSettings(settings) { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
+   See `resetFacetingSettings(_:)`
+   */
+  public func resetFacetingSettings() async throws -> TaskInfo {
+    try await withCheckedThrowingContinuation { continuation in
+      self.resetFacetingSettings { result in
+        continuation.resume(with: result)
+      }
+    }
+  }
+
+  /**
    See `getTypoTolerance(_:)`
    */
   public func getTypoTolerance() async throws -> TypoToleranceResult {
